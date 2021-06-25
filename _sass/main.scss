@@ -1,0 +1,41 @@
+@import 'reset';
+@import 'fonts';
+@import 'mixins';
+
+:root {
+  --teal: #58dea4;
+  --gold: #fbce47;
+  --purple: #7c3b98;
+  --light: #f0f5f2;
+  --dark: #1a171b;
+  --grey: #d4d2d5;
+  --af: "Virgo 01", sans-serif;
+  --mf: "Nunito", sans-serif;
+  box-sizing: border-box;
+}
+
+* {
+  box-sizing: inherit;
+}
+
+.grey { color: var(--grey); }
+.bg-grey { background-color: var(--grey); }
+
+.light { color: var(--light); }
+.bg-light { background-color: var(--light); }
+
+.dark { color: var(--dark); }
+.bg-dark { background-color: var(--dark); }
+
+.gold { color: var(--gold); }
+.bg-gold { background-color: var(--gold); }
+
+.teal { color: var(--teal); }
+.bg-teal { background-color: var(--teal); }
+
+.purple { color: var(--purple); }
+.bg-purple { background-color: var(--purple); }
+
+@import 'general';
+@import 'headings';
+
