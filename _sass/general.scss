@@ -119,7 +119,6 @@ p {
     width: 100%;
     height: 100vh;
     display: block;
-    background-position: center;
-    background-size: cover;
+    object-fit: cover;
   }
 }

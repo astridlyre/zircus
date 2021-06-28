@@ -8,8 +8,8 @@ import { q } from './utils.js'
     const imgPath = '/assets/img/people/'
 
     function setImage(n) {
-        const path = `url('${imgPath}hero${n}.jpg');`
-        return image.style.backgroundImage = path
+        const path = `${imgPath}hero${n}.jpg`
+        return image.src = path
     }
 
     function* getImageNumber(end) {
