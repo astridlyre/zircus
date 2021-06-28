@@ -12,7 +12,7 @@
 
   &__primary {
     background: var(--dark);
-    color: var(--light)
+    color: var(--light);
   }
 
   &:hover,
@@ -28,11 +28,32 @@
   padding: var(--btn-padding);
   border-radius: var(--radius);
   border: 2px solid var(--dark);
-  background: none;
+  background-color: var(--light);
   font-size: 0.9rem;
   letter-spacing: 0.1rem;
 
-  &:hover, &focus {
+  &:hover,
+  &focus {
     border-color: var(--gold);
   }
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+select {
+  padding-right: 1.5rem !important;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAh0lEQVQ4T93TMQrCUAzG8V9x8QziiYSuXdzFC7h4AcELOPQAdXYovZCHEATlgQV5GFTe1ozJlz/kS1IpjKqw3wQBVyy++JI0y1GTe7DCBbMAckeNIQKk/BanALBB+16LtnDELoMcsM/BESDlz2heDR3WePwKSLo5eoxz3z6NNcFD+vu3ij14Aqz/DxGbKB7CAAAAAElFTkSuQmCC');
+  background-repeat: no-repeat;
+  background-position: 4.5rem center;
 }
