@@ -1,0 +1,30 @@
+.btn {
+  padding: var(--btn-padding);
+  border-radius: var(--radius);
+  border: 2px solid var(--dark);
+  background: var(--dark);
+  color: var(--light);
+  font-family: var(--mf);
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.1rem;
+  cursor: pointer;
+  outline: none;
+
+  &:hover,
+  &:focus {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--dark);
+    @include easeOut();
+  }
+}
+
+.input {
+  padding: var(--btn-padding);
+  border-radius: var(--radius);
+  border: 2px solid var(--dark);
+  background: none;
+  font-size: 0.9rem;
+  letter-spacing: 0.1rem;
+}

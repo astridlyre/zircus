@@ -1,0 +1,42 @@
+<nav class="nav">
+  <h2 class="nav__heading">ZIRCUS</h2>
+  <div class="nav__mobile">
+    <button id="nav__button" class="nav__button" type="button">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="nav__button_bars"
+      >
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
+    <ul class="nav__mobile_items">
+      {% for item in site.data.nav %}
+      <li class="nav__mobile_item">
+        <a href="{{ item.link }}">{{ item.name }}</a>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="nav__desktop">
+    <ul class="nav__desktop_items">
+      {% for item in site.data.nav %}
+      <li class="nav__desktop_item">
+        <a
+          accesskey="{{ item.key }}"
+          tabindex="{{ item.index }}"
+          href="{{ item.link }}"
+          >{{ item.name }}</a
+        >
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</nav>

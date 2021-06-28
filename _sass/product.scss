@@ -1,0 +1,33 @@
+.product {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  gap: var(--two-col-gap);
+  padding: 5rem var(--side-padding);
+
+  &__img {
+    object-fit: contain;
+    max-width: 100%;
+    padding: 2rem;
+  }
+
+  &__details {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: flex-end;
+  }
+
+  &__inputs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    gap: 1rem;
+
+  }
+
+  &__form {
+    margin-top: 5rem;
+    display: flex;
+    flex-flow: column nowrap;
+  }
+}

@@ -1,0 +1,3 @@
+
+
+const q = document.getElementById

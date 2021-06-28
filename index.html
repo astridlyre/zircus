@@ -1,0 +1,27 @@
+---
+layout: default
+title: zircus
+---
+
+<div class="container">
+  <main class="main">
+    <div class="main__heading">
+      <h1 class="main__heading_text">For your thunder down under.</h1>
+    </div>
+    <ul class="products">
+      {% assign tab_count = 4 %} {% for product in site.products %}
+      <li class="products__product">
+        <a
+          accesskey="{{ product.key }}"
+          class="products__product_link"
+          href="{{ product.url }}"
+          tabindex="{{ tab_count }}"
+        >
+          <img src="{{ product.img }}" alt="Zircus Compression Front" />
+          <h3 class="products__product_label">{{ product.name }}</h3>
+        </a>
+      </li>
+      {% assign tab_count = tab_count | plus:1 %} {% endfor %}
+    </ul>
+  </main>
+</div>

@@ -1,0 +1,61 @@
+.footer {
+  margin-top: auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--two-col-gap);
+  padding: 12rem var(--side-padding) 5rem var(--side-padding);
+
+  &__heading {
+    font-size: 1.25rem;
+    font-family: var(--af);
+    padding-bottom: 0.75rem;
+    margin-bottom: 0.75rem;
+    border-bottom: 1px solid var(--light);
+    display: inline-block;
+  }
+
+  &__text {
+    font-size: 0.9rem;
+    line-height: 1.2;
+  }
+
+  &__right {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-end;
+    align-items: flex-end;
+  }
+
+  &__social {
+    display: flex;
+    font-size: 0.9rem;
+    font-weight: 600;
+    line-height: 1.2;
+
+    &_button {
+      outline: none;
+      padding: 0.5rem;
+      margin-left: 1rem;
+      margin-right: -0.5rem;
+      border: 2px solid var(--dark);
+      border-radius: var(--radius);
+      background: none;
+      color: var(--light);
+      cursor: pointer;
+
+      &:hover, &:focus {
+        border-color: var(--gold);
+        @include easeOut();
+      }
+    }
+
+    &_icon {
+      width: 1.2rem;
+    }
+
+    &_heading {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+  }
+}

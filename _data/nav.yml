@@ -1,0 +1,12 @@
+- name: shop
+  link: /
+  key: s
+  tab: 1
+- name: about
+  link: /about
+  key: b
+  tab: 2
+- name: cart
+  link: /cart
+  key: t
+  tab: 3

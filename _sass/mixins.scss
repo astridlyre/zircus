@@ -12,3 +12,11 @@
         @media only screen and (min-width: 112.5em) { @content };    //1800
     }
 }
+
+@mixin fadeIn {
+  animation: 1s ease-in forwards fadeIn;
+}
+
+@mixin easeOut {
+  transition: all 0.075s ease-out;
+}

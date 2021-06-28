@@ -1,6 +1,7 @@
 @import 'reset';
 @import 'fonts';
 @import 'mixins';
+@import 'animations';
 
 :root {
   --teal: #58dea4;
@@ -11,6 +12,10 @@
   --grey: #d4d2d5;
   --af: "Virgo 01", sans-serif;
   --mf: "Nunito", sans-serif;
+  --side-padding: 4rem;
+  --radius: 0.3rem;
+  --two-col-gap: 4rem;
+  --btn-padding: 0.5rem 1rem;
   box-sizing: border-box;
 }
 
@@ -36,6 +41,17 @@
 .purple { color: var(--purple); }
 .bg-purple { background-color: var(--purple); }
 
+.underline {
+  text-decoration: underline;
+}
+
+.mt-1 {
+  margin-top: 1rem;
+}
+
 @import 'general';
 @import 'headings';
-
+@import 'nav';
+@import 'footer';
+@import 'product';
+@import 'button';
