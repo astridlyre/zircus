@@ -5,16 +5,27 @@
   gap: var(--two-col-gap);
   padding: 5rem var(--side-padding);
 
+  &__heading {
+    margin-bottom: 1rem;
+  }
+
   &__img {
     object-fit: contain;
     max-width: 100%;
     padding: 2rem;
+    cursor: pointer;
+    @include fadeIn();
   }
 
   &__details {
     display: flex;
     flex-flow: column nowrap;
     align-items: flex-end;
+    justify-content: flex-end;
+  }
+
+  & p {
+    text-align: right;
   }
 
   &__inputs {

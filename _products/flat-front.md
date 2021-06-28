@@ -1,6 +1,6 @@
 ---
 name: flat front
-prefix: ff
+mark: ff
 key: f
 img: assets/img/products/masked/ff-yellow-a-1920.png
 ---

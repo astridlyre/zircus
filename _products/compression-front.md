@@ -1,6 +1,6 @@
 ---
 name: compression front
-prefix: cf
+mark: cf
 key: m
 img: assets/img/products/masked/cf-purple-a-1920.png
 ---

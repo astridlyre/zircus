@@ -1,6 +1,6 @@
 ---
 name: pouch front
-prefix: pf
+mark: pf
 key: p
 img: assets/img/products/masked/pf-teal-a-1920.png
 ---

@@ -11,10 +11,11 @@ layout: default
       id="product-image"
     />
     <div class="product__details">
-      <h3 class="product__heading">{{ product.name }}</h3>
-      <p class="product__description">{{ content }}</p>
+      <h3 class="product__heading">{{ page.name }}</h3>
+      {{ content }}
       <div class="product__form">
         <div class="product__inputs">
+          <input type="hidden" id="product-type" value="{{ page.mark }}" />
           <input
             id="product-quantity"
             class="input"
@@ -29,7 +30,7 @@ layout: default
             <option selected value="yellow" name="yellow">yellow</option>
             <option value="teal" name="teal">teal</option>
             <option value="purple" name="purple">purple</option>
-            <option value="striped" name="striped">striped</option>
+            <option value="stripe" name="striped">striped</option>
             <option value="black" name="black">black</option>
           </select>
         </div>

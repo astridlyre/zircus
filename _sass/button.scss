@@ -2,14 +2,18 @@
   padding: var(--btn-padding);
   border-radius: var(--radius);
   border: 2px solid var(--dark);
-  background: var(--dark);
-  color: var(--light);
+  color: var(--dark);
   font-family: var(--mf);
   font-size: 0.9rem;
   font-weight: 600;
   letter-spacing: 0.1rem;
   cursor: pointer;
   outline: none;
+
+  &__primary {
+    background: var(--dark);
+    color: var(--light)
+  }
 
   &:hover,
   &:focus {
@@ -27,4 +31,8 @@
   background: none;
   font-size: 0.9rem;
   letter-spacing: 0.1rem;
+
+  &:hover, &focus {
+    border-color: var(--gold);
+  }
 }
