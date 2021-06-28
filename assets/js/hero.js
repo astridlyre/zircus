@@ -14,11 +14,13 @@ import { q } from './utils.js'
 
     function* getImageNumber(end) {
         let num = 0
-        while (num < end) yield ++num
-        if (num == end) (num = 0)
+        while (true) {
+            if (num === end) (num = 0)
+            yield ++num
+        }
     }
 
-    const counter = getImageNumber(6)
+    const counter = getImageNumber(5)
 
     setImage(counter.next().value)
 

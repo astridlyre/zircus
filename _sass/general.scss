@@ -13,7 +13,6 @@ body {
   font-size: 15px;
   color: var(--light);
   min-height: 100vh;
-
 }
 
 p {
@@ -26,18 +25,19 @@ p {
   @include res("sm") {
     width: 95%;
   }
-  @include res('md') {
+  @include res("md") {
     width: 90%;
   }
-  @include res('lg') {
+  @include res("lg") {
     width: 85%;
   }
-  @include res('xl') {
+  @include res("xl") {
     width: 80%;
   }
 }
 
 .main {
+  border-radius: var(--big-radius);
   background: var(--light);
   color: var(--dark);
   display: flex;
@@ -56,7 +56,7 @@ p {
     &_text {
       padding: 0 2rem;
       margin-top: 5rem;
-      @include res('sm') {
+      @include res("sm") {
         font-size: 4rem;
       }
       font-size: 3rem;
@@ -112,7 +112,13 @@ p {
 }
 
 .section__hero {
+  border-radius: var(--big-radius);
+  overflow: hidden;
   background: var(--dark);
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-flow: column nowrap;
   width: 100%;
 
   &_image {
@@ -121,4 +127,60 @@ p {
     display: block;
     object-fit: cover;
   }
+}
+
+.section__text {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-flow: column nowrap;
+  padding: 5rem 0;
+  &_heading {
+    font-size: 4rem;
+  }
+
+  &_text {
+    padding-left: 4rem;
+    line-height: 1.2;
+    position: relative;
+    font-size: 1.1rem;
+
+    &:before,
+    &:after {
+      content: '"';
+      font-size: 8rem;
+      position: absolute;
+      opacity: 0.07;
+    }
+
+    &:before {
+      top: -2rem;
+      left: 0rem;
+    }
+
+    &:after {
+      right: 0;
+      bottom: -2rem;
+    }
+
+    &_cite {
+      position: absolute;
+      right: 4rem;
+      bottom: 3rem;
+      display: block;
+      font-size: 1.2rem;
+      letter-spacing: 0.1rem;
+    }
+  }
+}
+
+.two-col {
+  display: grid;
+  @include res("md") {
+    grid-template-columns: 1fr 1fr;
+  }
+  grid-template-columns: 1fr;
+  grid-template-rows: auto;
+  gap: var(--two-col-gap);
 }
