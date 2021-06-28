@@ -1,7 +1,7 @@
-@import 'reset';
-@import 'fonts';
-@import 'mixins';
-@import 'animations';
+@import "reset";
+@import "fonts";
+@import "mixins";
+@import "animations";
 
 :root {
   --teal: #58dea4;
@@ -12,7 +12,7 @@
   --grey: #d4d2d5;
   --af: "Virgo 01", sans-serif;
   --mf: "Nunito", sans-serif;
-  --side-padding: 4rem;
+  --side-padding: 2rem;
   --radius: 0.3rem;
   --two-col-gap: 4rem;
   --btn-padding: 0.5rem 1rem;
@@ -23,23 +23,47 @@
   box-sizing: inherit;
 }
 
-.grey { color: var(--grey); }
-.bg-grey { background-color: var(--grey); }
+.grey {
+  color: var(--grey);
+}
+.bg-grey {
+  background-color: var(--grey);
+}
 
-.light { color: var(--light); }
-.bg-light { background-color: var(--light); }
+.light {
+  color: var(--light);
+}
+.bg-light {
+  background-color: var(--light);
+}
 
-.dark { color: var(--dark); }
-.bg-dark { background-color: var(--dark); }
+.dark {
+  color: var(--dark);
+}
+.bg-dark {
+  background-color: var(--dark);
+}
 
-.gold { color: var(--gold); }
-.bg-gold { background-color: var(--gold); }
+.gold {
+  color: var(--gold);
+}
+.bg-gold {
+  background-color: var(--gold);
+}
 
-.teal { color: var(--teal); }
-.bg-teal { background-color: var(--teal); }
+.teal {
+  color: var(--teal);
+}
+.bg-teal {
+  background-color: var(--teal);
+}
 
-.purple { color: var(--purple); }
-.bg-purple { background-color: var(--purple); }
+.purple {
+  color: var(--purple);
+}
+.bg-purple {
+  background-color: var(--purple);
+}
 
 .underline {
   text-decoration: underline;
@@ -49,9 +73,9 @@
   margin-top: 1rem;
 }
 
-@import 'general';
-@import 'headings';
-@import 'nav';
-@import 'footer';
-@import 'product';
-@import 'button';
+@import "general";
+@import "headings";
+@import "nav";
+@import "footer";
+@import "product";
+@import "button";

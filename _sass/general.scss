@@ -7,6 +7,7 @@ body {
   display: flex;
   flex-flow: column nowrap;
   justify-content: flex-start;
+  align-items: center;
   background: var(--dark);
   font-family: var(--mf);
   font-size: 15px;
@@ -20,12 +21,29 @@ p {
 }
 
 .container {
-  background: var(--dark);
+  width: 100%;
+  @include res("sm") {
+    width: 95%;
+  }
+  @include res('md') {
+    width: 90%;
+  }
+  @include res('lg') {
+    width: 85%;
+  }
+  @include res('xl') {
+    width: 80%;
+  }
 }
 
 .main {
   background: var(--light);
   color: var(--dark);
+  display: flex;
+  width: 100%;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: center;
 
   &__heading {
     padding: 5rem;
@@ -37,7 +55,10 @@ p {
     &_text {
       padding: 0 2rem;
       margin-top: 5rem;
-      font-size: 5rem;
+      @include res('sm') {
+        font-size: 4rem;
+      }
+      font-size: 3rem;
       letter-spacing: 0.1rem;
       font-weight: 300;
     }
@@ -47,7 +68,10 @@ p {
 .products {
   padding: 5rem;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 1fr;
+  @include res("md") {
+    grid-template-columns: repeat(3, 1fr);
+  }
   grid-template-rows: auto;
   gap: 5rem;
 
@@ -64,7 +88,8 @@ p {
       outline: none;
       border-radius: 1rem;
       border: 2px solid var(--light);
-      &:hover, &:focus {
+      &:hover,
+      &:focus {
         @include easeOut();
         border-color: var(--gold);
       }
@@ -78,7 +103,7 @@ p {
 
     & img {
       object-fit: contain;
-      max-width: 15vw;
+      width: 100%;
       box-sizing: border-box;
     }
   }

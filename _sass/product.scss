@@ -1,6 +1,9 @@
 .product {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  @include res("md") {
+    grid-template-columns: 1fr 1fr;
+  }
+  grid-template-columns: 1fr;
   grid-template-rows: auto;
   gap: var(--two-col-gap);
   padding: 5rem var(--side-padding);
@@ -33,7 +36,6 @@
     grid-template-columns: 1fr 1fr;
     grid-template-rows: auto;
     gap: 1rem;
-
   }
 
   &__form {

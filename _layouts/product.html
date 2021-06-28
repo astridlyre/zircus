@@ -3,53 +3,55 @@ layout: default
 ---
 
 <main class="main">
-  <div class="product">
-    <img
-      src=""
-      alt="Flat-front briefs"
-      class="product__img"
-      id="product-image"
-    />
-    <div class="product__details">
-      <h3 class="product__heading">{{ page.name }}</h3>
-      {{ content }}
-      <div class="product__form">
-        <div class="product__inputs">
-          <input type="hidden" id="product-type" value="{{ page.mark }}" />
-          <input
-            id="product-quantity"
-            class="input"
-            max="10"
-            min="1"
-            name="product-quantity"
-            type="number"
-            value="1"
-            accesskey="q"
-          />
-          <select id="product-color" accesskey="c" class="input">
-            <option selected value="yellow" name="yellow">yellow</option>
-            <option value="teal" name="teal">teal</option>
-            <option value="purple" name="purple">purple</option>
-            <option value="stripe" name="striped">striped</option>
-            <option value="black" name="black">black</option>
-          </select>
+  <div class="container">
+    <div class="product">
+      <img
+        src=""
+        alt="Flat-front briefs"
+        class="product__img"
+        id="product-image"
+      />
+      <div class="product__details">
+        <h3 class="product__heading">{{ page.name }}</h3>
+        {{ content }}
+        <div class="product__form">
+          <div class="product__inputs">
+            <input type="hidden" id="product-type" value="{{ page.mark }}" />
+            <input
+              id="product-quantity"
+              class="input"
+              max="10"
+              min="1"
+              name="product-quantity"
+              type="number"
+              value="1"
+              accesskey="q"
+            />
+            <select id="product-color" accesskey="c" class="input">
+              <option selected value="yellow" name="yellow">yellow</option>
+              <option value="teal" name="teal">teal</option>
+              <option value="purple" name="purple">purple</option>
+              <option value="stripe" name="striped">striped</option>
+              <option value="black" name="black">black</option>
+            </select>
+          </div>
+          <button
+            class="btn btn__secondary mt-1"
+            type="button"
+            id="add-to-cart"
+            accesskey="a"
+          >
+            <span class="underline">a</span>dd to cart
+          </button>
+          <button
+            class="btn btn__primary mt-1"
+            type="button"
+            id="quick-purchase"
+            accesskey="b"
+          >
+            <span class="underline">b</span>uy now
+          </button>
         </div>
-        <button
-          class="btn btn__secondary mt-1"
-          type="button"
-          id="add-to-cart"
-          accesskey="a"
-        >
-          <span class="underline">a</span>dd to cart
-        </button>
-        <button
-          class="btn btn__primary mt-1"
-          type="button"
-          id="quick-purchase"
-          accesskey="b"
-        >
-          <span class="underline">b</span>uy now
-        </button>
       </div>
     </div>
   </div>
