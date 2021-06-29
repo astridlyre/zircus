@@ -18,9 +18,7 @@ export const cart = (function() {
             this.cartTotal = q("cart-total")
             this.list = q("cart-products")
             this.subtotal = 0
-            this.render()
-            this.setTotals()
-            this.updateNavLink()
+            this.render().setTotals()
         }
 
         get items() {
@@ -32,7 +30,7 @@ export const cart = (function() {
         }
 
         setTotals() {
-            if (!this.list) return
+            if (!this.list) return this.updateNavLink()
             // Clear prices
             this.total = 0
             this.subtotal = 0
@@ -51,8 +49,7 @@ export const cart = (function() {
             this.cartTotal.innerText = `$${Number(this.total + this.total * TAX_RATE).toFixed(2)}`
 
             // Update navLink
-            this.updateNavLink()
-            return this
+            return this.updateNavLink()
         }
 
         renderItem(item) {
@@ -103,22 +100,30 @@ export const cart = (function() {
                 return i
             })
             p.innerText = `$${Cart.getPrice(item.type) * n}`
-            this.setTotals()
+            return this.setTotals()
         }
 
         render() {
-            if (!this.list) return
-            const fragment = new DocumentFragment()
-            this.items.forEach(item => fragment.appendChild(this.renderItem(item)))
-            this.list.appendChild(fragment)
-            this.setTotals()
+            if (!this.list) return this
+            if (!this.items.length) {
+                this.list.appendChild(
+                    new Element('p', ['cart__empty']).addChild('No items in cart').render()
+                )
+                return this
+            } else {
+                const fragment = new DocumentFragment()
+                this.items.forEach(item => fragment.appendChild(this.renderItem(item)))
+                this.list.appendChild(fragment)
+                return this.setTotals()
+            }
         }
 
         removeItem(item) {
             this.items = this.items.filter(i => i.id != item.id)
             q(item.id).remove()
             state.remove(item)
-            this.setTotals()
+            if (!this.items.length) return this.render()
+            return this.setTotals()
         }
 
         updateNavLink() {
@@ -127,6 +132,7 @@ export const cart = (function() {
             } else {
                 this.navLink.innerText = 'cart'
             }
+            return this
         }
 
         static getPrice(type) {
