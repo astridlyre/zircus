@@ -63,7 +63,7 @@ class Cart {
         this.total = this.subtotal + this.tax
 
         // Set text
-        this.cartSubTotal.innerText = `$${this.total}`
+        this.cartSubTotal.innerText = `$${Number(this.total).toFixed(2)}`
         this.cartTax.innerText = `$${Number(this.total * TAX_RATE).toFixed(2)}`
         this.cartTotal.innerText = `$${Number(this.total + this.total * TAX_RATE).toFixed(2)}`
         return this
