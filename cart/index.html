@@ -2,3 +2,78 @@
 layout: default
 title: zircus | cart
 ---
+
+<main class="main cart">
+  <div class="container">
+    <h1 class="cart__heading">shopping cart</h1>
+    <div id="cart-products">
+      <div class="cart__product">
+        <div class="flex-row flex-grow">
+          <img
+            src="/assets/img/products/masked/ff-yellow-a-1920.png"
+            alt="Flat-front briefs"
+            class="cart__product_image"
+            id=""
+          />
+          <div class="cart__product_description"><p>flat front briefs</p></div>
+        </div>
+        <div class="cart__product_inputs">
+          <h3 class="cart__product_quantity" id="ff-product-price">$30</h3>
+          <input type="hidden" id="product-type" value="{{ page.mark }}" />
+          <input
+            type="number"
+            name="product-quantity"
+            value="1"
+            min="0"
+            class="input"
+          />
+          <button
+            class="btn btn__secondary"
+            type="button"
+            id="ff-remove-from-cart"
+            accesskey="r"
+          >
+            <span class="underline">r</span>emove
+          </button>
+        </div>
+      </div>
+      <div class="cart__total">
+        <ul class="cart__total_prices">
+          <li class="cart__total_price">
+            Subtotal:<span class="cart__total_price_item" id="cart-subtotal"
+              >$30</span
+            >
+          </li>
+          <li class="cart__total_price">
+            Tax:<span class="cart__total_price_item" id="cart-tax">$1.24</span>
+          </li>
+          <li class="cart__total_price bold">
+            Total:<span class="cart__total_price_item" id="cart-total"
+              >$31</span
+            >
+          </li>
+        </ul>
+      </div>
+      <div class="cart__product_checkout">
+        <div class="grid-2 w-30">
+          <button
+            class="btn btn__secondary"
+            type="button"
+            id="paypal"
+            accesskey="o"
+          >
+            <span class="underline">p</span>aypal
+          </button>
+          <button
+            class="btn btn__primary"
+            type="button"
+            id="checkout"
+            accesskey="o"
+          >
+            check<span class="underline">o</span>ut
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

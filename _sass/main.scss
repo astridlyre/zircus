@@ -24,6 +24,10 @@
   box-sizing: inherit;
 }
 
+.bold {
+  font-weight: 600;
+}
+
 .grey {
   color: var(--grey);
 }
@@ -74,9 +78,34 @@
   margin-top: 1rem;
 }
 
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  gap: 1rem;
+}
+
+.w-30 {
+  @include res("sm") {
+    width: 30vw;
+  }
+  width: 100%;
+}
+
+.flex-row {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+}
+
+.flex-grow {
+  flex-grow: 1;
+}
+
 @import "general";
 @import "headings";
 @import "nav";
 @import "footer";
 @import "product";
 @import "button";
+@import "cart";
