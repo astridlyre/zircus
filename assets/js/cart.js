@@ -69,6 +69,7 @@ class Cart {
         return this
     }
     renderItem(item) {
+        const root = new DocumentFragment()
         // Image and description
         const flexCon = new Element("div", ["flex-row", "flex-grow"])
             .addChild(new Element("img", ["cart__product_image"], {
@@ -100,10 +101,11 @@ class Cart {
             .addChild(quant)
             .addChild(removeBtn)
 
-        // Root element
-        const root = new Element("div", ["cart__product"], { id: item.id })
+        // List
+        const list = new Element("div", ["cart__product"], { id: item.id })
             .addChild(flexCon).addChild(inputs)
-        this.list.appendChild(root.render())
+        root.appendChild(list.render())
+        return this.list.appendChild(root)
     }
 
     updateQuantity(item, el, p) {
