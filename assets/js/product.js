@@ -1,4 +1,5 @@
-import { q } from './utils.js'
+import { numberInputHandler, q, state } from './utils.js'
+import { cart } from './cart.js'
 
 /* Path for masked product images. Images follow the convention:
 
@@ -9,18 +10,17 @@ import { q } from './utils.js'
   view is 'a' (front) or 'b' (folded)
   and size is the image size 400, 600 or 1000
 */
-(function product(type) {
-    if (!type) {
-        return
-    }
+(function() {
+    const type = q('product-type')
+    if (!type) return
 
     const IMAGE_PATH = '/assets/img/products/masked/'
     const VIEWS = ['a', 'b']
     const COLORS = ['yellow', 'purple', 'teal', 'black', 'stripe']
 
     class Underwear {
-        constructor(prefix, imgPath) {
-            this.t = prefix
+        constructor() {
+            this.name = q('product-name')
             this.price = q('product-price')
             this.size = q('product-size')
             this.image = q('product-image')
@@ -36,7 +36,7 @@ import { q } from './utils.js'
             for (const color of COLORS) {
                 const arr = []
                 for (const view of VIEWS) {
-                    arr.push(`${imgPath}${this.t}-${color}-${view}-1920.png`)
+                    arr.push(`${IMAGE_PATH}${this.type.value}-${color}-${view}-1920.png`)
                 }
                 this.images[color] = arr
             }
@@ -45,20 +45,34 @@ import { q } from './utils.js'
             this.price.innerText = `$${this.getPrice()}`
 
             // Add event listeners
-            this.color.addEventListener('change', () => this.changeColor(this.color.value))
+            this.color.addEventListener('change', () => this.setImage(0))
+            this.quantity.addEventListener('input', () => numberInputHandler(this.quantity))
             this.image.addEventListener('pointerover', () => this.hover(this.color.value))
             this.image.addEventListener('pointerleave', () => this.hover(this.color.value))
+            this.addToCart.addEventListener('click', () => this.add())
 
             this.setImage(0)
         }
 
-        getPrice() {
-            return this.t == 'cf' ? 38 : 30
+        add() {
+            state.add({
+                id: Math.round(Math.random() * 10000),
+                name: this.name.innerText,
+                color: this.color.value,
+                image: this.images[this.color.value][0],
+                size: this.size.value,
+                quantity: this.quantity.value,
+                type: this.type.value
+            })
+            this.addToCart.classList.add('added')
+            setTimeout(() => this.addToCart.classList.remove('added'), 2000)
+            this.addToCart.blur()
+            cart.updateNavLink()
+            return this
         }
 
-        changeColor(color) {
-            this.color.value = color
-            return this.setImage(0)
+        getPrice() {
+            return this.t == 'cf' ? 38 : 30
         }
 
         hover() {
@@ -77,5 +91,5 @@ import { q } from './utils.js'
         }
     }
 
-    return new Underwear(type.value, IMAGE_PATH)
-})(q('product-type'))
+    return new Underwear()
+})()

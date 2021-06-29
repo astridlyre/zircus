@@ -7,13 +7,14 @@ layout: default
     <div class="product">
       <img
         src=""
-        alt="Flat-front briefs"
+        alt="{{ page.name }}"
         class="product__img"
         id="product-image"
       />
       <div class="product__details">
         <h3 class="product__heading">
-          <span id="product-price"></span> - {{ page.name }}
+          <span id="product-price"></span> -
+          <span id="product-name">{{ page.name }}</span>
         </h3>
         {{ content }}
         <div class="product__form">

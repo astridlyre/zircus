@@ -1,12 +1,15 @@
 - name: shop
   link: /
   key: s
+  id: shop-link
   tab: 1
 - name: about
   link: /about
   key: b
   tab: 2
+  id: about-link
 - name: cart
   link: /cart
   key: t
   tab: 3
+  id: cart-link

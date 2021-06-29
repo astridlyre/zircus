@@ -52,7 +52,7 @@
     &_checkout {
       display: flex;
       justify-content: flex-end;
-      width: 100%;
+      max-width: 100vw;
     }
   }
 
@@ -76,5 +76,19 @@
         margin-left: 3rem;
       }
     }
+  }
+}
+
+.added {
+  position: relative;
+
+  &:before {
+    content: "added!";
+    position: absolute;
+    display: flex;
+    flex-flow: column nowrap;
+    top: 0.45rem;
+    left: -4rem;
+    @include fadeIn(0.2s);
   }
 }

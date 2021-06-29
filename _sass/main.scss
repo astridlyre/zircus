@@ -91,7 +91,7 @@
 
 .w-30 {
   @include res("sm") {
-    width: 30vw;
+    max-width: 40vw;
   }
   width: 100%;
 }

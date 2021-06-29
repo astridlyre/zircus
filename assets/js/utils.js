@@ -1,4 +1,41 @@
 export const q = x => document.getElementById(x)
+export const numberInputHandler = (el) => {
+    const v = Math.round(Number(el.value))
+    const result = v < 100 ? v : 100
+    return el.value = result
+}
+
+class State {
+    constructor() {
+        this.__state = this.get()
+    }
+
+    add(item) {
+        this.__state.push(item)
+        this.update()
+        return this
+    }
+
+    update(items) {
+        if (items) this.__state = items
+        localStorage.setItem('state', JSON.stringify(this.__state))
+        return this
+    }
+
+    remove(item) {
+        this.__state = this.__state.filter(i => i.id != item.id)
+        this.update()
+        return this
+    }
+
+    get() {
+        const storedState = localStorage.getItem('state')
+        if (storedState) return JSON.parse(storedState)
+        return []
+    }
+}
+
+export const state = new State()
 
 export class Element {
     constructor(type, classes, attributes) {
