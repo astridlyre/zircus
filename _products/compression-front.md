@@ -1,7 +1,8 @@
 ---
 name: compression front
-mark: cf
+type: cf
 key: m
+price: 38
 img: assets/img/products/masked/cf-purple-a-1920.png
 ---
 

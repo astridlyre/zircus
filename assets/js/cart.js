@@ -122,13 +122,17 @@ export const cart = (function() {
             this.items = this.items.filter(i => i.id != item.id)
             q(item.id).remove()
             state.remove(item)
-            if (!this.items.length) return this.render()
+            if (!this.items.length) return this.render().setTotals()
             return this.setTotals()
         }
 
         updateNavLink() {
             if (this.items.length) {
-                this.navLink.innerText = `cart (${this.items.length})`
+                let totalItems = 0
+                this.items.forEach(item => {
+                    totalItems += item.quantity
+                })
+                this.navLink.innerText = `cart (${totalItems})`
             } else {
                 this.navLink.innerText = 'cart'
             }

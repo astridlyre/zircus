@@ -1,7 +1,8 @@
 ---
 name: pouch front
-mark: pf
+type: pf
 key: p
+price: 30
 img: assets/img/products/masked/pf-teal-a-1920.png
 ---
 

@@ -22,6 +22,7 @@ import { cart } from './cart.js'
         constructor() {
             this.name = q('product-name')
             this.price = q('product-price')
+            this.priceText = q('product-price-text')
             this.size = q('product-size')
             this.image = q('product-image')
             this.quantity = q('product-quantity')
@@ -41,12 +42,12 @@ import { cart } from './cart.js'
                 this.images[color] = arr
             }
 
-            // Initialize the price
-            this.price.innerText = `$${this.getPrice()}`
-
+            this.updatePrice(Number(this.price.value) * Number(this.quantity.value))
             // Add event listeners
             this.color.addEventListener('change', () => this.setImage(0))
-            this.quantity.addEventListener('input', () => numberInputHandler(this.quantity))
+            this.quantity.addEventListener('input',
+                () => numberInputHandler(this.quantity, p => this.updatePrice(p * this.getPrice()))
+            )
             this.image.addEventListener('pointerover', () => this.hover(this.color.value))
             this.image.addEventListener('pointerleave', () => this.hover(this.color.value))
             this.addToCart.addEventListener('click', () => this.add())
@@ -61,7 +62,7 @@ import { cart } from './cart.js'
                 color: this.color.value,
                 image: this.images[this.color.value][0],
                 size: this.size.value,
-                quantity: this.quantity.value,
+                quantity: Number(this.quantity.value),
                 type: this.type.value
             })
             this.addToCart.classList.add('added')
@@ -71,8 +72,12 @@ import { cart } from './cart.js'
             return this
         }
 
+        updatePrice(p) {
+            this.priceText.innerText = `$${p}`
+        }
+
         getPrice() {
-            return this.t == 'cf' ? 38 : 30
+            return this.type.value == 'cf' ? 38 : 30
         }
 
         hover() {

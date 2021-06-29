@@ -13,13 +13,14 @@ layout: default
       />
       <div class="product__details">
         <h3 class="product__heading">
-          <span id="product-price"></span> -
+          <span id="product-price-text"></span> -
           <span id="product-name">{{ page.name }}</span>
         </h3>
         {{ content }}
         <div class="product__form">
           <div class="product__inputs">
-            <input type="hidden" id="product-type" value="{{ page.mark }}" />
+            <input type="hidden" id="product-type" value="{{ page.type }}" />
+            <input type="hidden" id="product-price" value="{{ page.price }}" />
             <div class="product__inputs_padding"></div>
             <input
               id="product-quantity"

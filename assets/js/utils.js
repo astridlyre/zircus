@@ -1,7 +1,8 @@
 export const q = x => document.getElementById(x)
-export const numberInputHandler = (el) => {
+export const numberInputHandler = (el, fn) => {
     const v = Math.round(Number(el.value))
-    const result = v < 100 ? v : 100
+    const result = v < 100 ? v === 0 ? 1 : v : 100
+    if (fn && typeof fn === "function") fn(result)
     return el.value = result
 }
 

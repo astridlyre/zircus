@@ -1,7 +1,8 @@
 ---
 name: flat front
-mark: ff
+type: ff
 key: f
+price: 30
 img: assets/img/products/masked/ff-yellow-a-1920.png
 ---
 
