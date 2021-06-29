@@ -1,20 +1,28 @@
 @mixin res($breakpoint) {
-    @if $breakpoint == sm {
-        @media only screen and (min-width: 37.5em) { @content };    //600px
-    }
-    @if $breakpoint == md {
-        @media only screen and (min-width: 56.25em) { @content };     //900px
-    }
-    @if $breakpoint == lg {
-        @media only screen and (min-width: 75em) { @content };    //1200px
-    }
-    @if $breakpoint == xl {
-        @media only screen and (min-width: 112.5em) { @content };    //1800
-    }
+  @if $breakpoint == sm {
+    @media only screen and (min-width: 37.5em) {
+      @content;
+    } //600px
+  }
+  @if $breakpoint == md {
+    @media only screen and (min-width: 56.25em) {
+      @content;
+    } //900px
+  }
+  @if $breakpoint == lg {
+    @media only screen and (min-width: 75em) {
+      @content;
+    } //1200px
+  }
+  @if $breakpoint == xl {
+    @media only screen and (min-width: 112.5em) {
+      @content;
+    } //1800
+  }
 }
 
-@mixin fadeIn {
-  animation: 1s ease-in forwards fadeIn;
+@mixin fadeIn($time) {
+  animation: $time ease-in forwards fadeIn;
 }
 
 @mixin easeOut {

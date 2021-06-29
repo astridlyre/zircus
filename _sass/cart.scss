@@ -11,6 +11,7 @@
   }
 
   &__product {
+    @include fadeIn(0.25s);
     padding: 1rem 0;
     display: flex;
     @include res("sm") {
@@ -36,9 +37,7 @@
       @include res("sm") {
         max-width: 40vw;
       }
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: auto;
+      display: flex;
       gap: 1rem;
     }
 

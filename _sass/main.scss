@@ -85,6 +85,10 @@
   gap: 1rem;
 }
 
+.w-4 {
+  width: 4rem;
+}
+
 .w-30 {
   @include res("sm") {
     width: 30vw;

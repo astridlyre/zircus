@@ -17,7 +17,7 @@
     max-width: 100%;
     padding: 2rem;
     cursor: pointer;
-    @include fadeIn();
+    @include fadeIn(1s);
   }
 
   &__details {
