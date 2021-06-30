@@ -31,7 +31,7 @@ import { cart } from './cart.js'
             this.color = q('product-color')
             this.type = q('product-type')
             this.addToCart = q('add-to-cart')
-            this.quickPurchase = q('quick-purchase')
+            this.checkout = q('checkout')
             this.images = {}
             this.hovered = false
 
@@ -55,6 +55,7 @@ import { cart } from './cart.js'
             this.image.addEventListener('click', () => this.viewFull())
             this.bigImageEl.addEventListener('click', () => this.hideFull())
             this.addToCart.addEventListener('click', () => this.add())
+            this.checkout.addEventListener('click', () => location.assign('/cart'))
 
             this.setImage(0)
         }
