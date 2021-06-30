@@ -81,17 +81,3 @@
     }
   }
 }
-
-.added {
-  position: relative;
-
-  &:before {
-    content: "added!";
-    position: absolute;
-    display: flex;
-    flex-flow: column nowrap;
-    top: 0.45rem;
-    left: -4rem;
-    @include fadeIn(0.2s);
-  }
-}

@@ -62,21 +62,16 @@ layout: default
           </div>
           <div class="product__inputs_buttons">
             <button
-              class="btn btn__secondary mt-1"
+              class="btn btn__primary mt-1"
               type="button"
               id="add-to-cart"
               accesskey="a"
             >
-              <span class="underline">a</span>dd to cart
+              add to cart
             </button>
-            <button
-              class="btn btn__primary mt-1"
-              type="button"
-              id="quick-purchase"
-              accesskey="b"
-            >
-              <span class="underline">b</span>uy now
-            </button>
+            <a class="btn btn__secondary mt-1" href="/cart" accesskey="c">
+              <span class="underline">c</span>heckout
+            </a>
           </div>
         </div>
         <div class="product__description">{{ content }}</div>

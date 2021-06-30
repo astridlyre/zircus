@@ -70,7 +70,11 @@ import { cart } from './cart.js'
                 type: this.type.value
             })
             this.addToCart.classList.add('added')
-            setTimeout(() => this.addToCart.classList.remove('added'), 2000)
+            this.addToCart.innerText = 'added!'
+            setTimeout(() => {
+                this.addToCart.classList.remove('added')
+                this.addToCart.innerText = 'add to cart'
+            }, 1000)
             this.addToCart.blur()
             cart.updateNavLink()
             return this
@@ -95,11 +99,11 @@ import { cart } from './cart.js'
         }
 
         viewFull() {
+            this.bigImage.src = this.images[this.color.value][0]
             this.bigImageEl.style.display = 'block';
         }
 
         hideFull() {
-            this.bigImage.src = this.images[this.color.value][0]
             this.bigImageEl.style.display = 'none';
         }
 
