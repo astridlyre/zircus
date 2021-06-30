@@ -23,11 +23,7 @@ export const cart = (function() {
         }
 
         get items() {
-            return state.get()
-        }
-
-        set items(items) {
-            return state.update(items)
+            return state.get().items
         }
 
         setTotals() {
@@ -93,13 +89,12 @@ export const cart = (function() {
 
         updateQuantity(item, el, p) {
             const n = numberInputHandler(el)
-            this.items = this.items.map(i => {
-                if (i.id === item.id) {
-                    i.quantity = n
-                    return i
-                }
-                return i
-            })
+            state.set(state => ({
+                ...state,
+                items: state.items.map(i => {
+                    return i.id === item.id ? { ...i, quantity: n } : i
+                })
+            }))
             p.innerText = `$${Cart.getPrice(item.type) * n}`
             return this.setTotals()
         }
@@ -120,9 +115,11 @@ export const cart = (function() {
         }
 
         removeItem(item) {
-            this.items = this.items.filter(i => i.id != item.id)
+            state.set(state => ({
+                ...state,
+                items: state.items.filter(i => i.id != item.id)
+            }))
             q(item.id).remove()
-            state.remove(item)
             if (!this.items.length) return this.render().setTotals()
             return this.setTotals()
         }

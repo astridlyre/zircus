@@ -1,43 +1,51 @@
+// Get an element
 export const q = x => document.getElementById(x)
-export const numberInputHandler = (el, fn) => {
+
+// Handle updating number fields
+export const numberInputHandler = (el, fn, max) => {
     const v = Math.round(Number(el.value))
-    const result = v < 100 ? v <= 0 ? 1 : v : 100
+    const m = max()
+    const result = v < m ? v <= 0 ? 1 : v : m
     if (fn && typeof fn === "function") fn(result)
     return el.value = result
 }
 
+/*
+    State class, exposes two functions, 'set' and 'get'.
+    
+    'set' takes a function as argument that sets the state to the
+    return value.
+
+    'get' returns the state from localStorage.
+
+ */
 class State {
     constructor() {
         this.__state = this.get()
+        this.__max = []
     }
 
-    add(item) {
-        this.__state.push(item)
-        this.update()
-        return this
+    set(fn) {
+        this.__state = fn(this.__state)
+        return this.update()
     }
 
-    update(items) {
-        if (items) this.__state = items
+    update() {
         localStorage.setItem('state', JSON.stringify(this.__state))
-        return this
-    }
-
-    remove(item) {
-        this.__state = this.__state.filter(i => i.id != item.id)
-        this.update()
         return this
     }
 
     get() {
         const storedState = localStorage.getItem('state')
         if (storedState) return JSON.parse(storedState)
-        return []
+        return { items: [] }
     }
 }
 
+// Singleton
 export const state = new State()
 
+// Element class
 export class Element {
     constructor(type, classes, attributes) {
         this.e = document.createElement(type)

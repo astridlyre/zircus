@@ -25,6 +25,13 @@
     color: var(--dark);
     @include easeOut();
   }
+
+  &:disabled {
+    background: var(--grey);
+    border-color: var(--dark) !important;
+    color: var(--dark) !important;
+    cursor: not-allowed;
+  }
 }
 
 .input {
@@ -39,6 +46,12 @@
   &:hover,
   &focus {
     border-color: var(--gold);
+  }
+
+  &:disabled {
+    background: var(--grey);
+    border-color: var(--dark) !important;
+    cursor: not-allowed;
   }
 }
 
