@@ -1,9 +1,12 @@
 .cart {
-  padding: var(--side-padding);
+  padding: 0 var(--side-padding) 10rem var(--side-padding);
 
   &__heading {
-    margin: 5rem 0 1rem 0;
-    font-size: 3rem;
+    margin: 5rem 0 2rem 0;
+    @include res("sm") {
+      font-size: 3rem;
+    }
+    font-size: 2.5rem;
   }
 
   &__product_description {
@@ -60,7 +63,7 @@
     width: 100%;
     display: flex;
     justify-content: flex-end;
-    padding: 1rem 0;
+    padding: 2rem 0;
 
     &_prices {
       text-align: right;

@@ -2,7 +2,19 @@
   <nav class="nav">
     <h2 class="nav__heading">ZIRCUS</h2>
     <div class="nav__mobile">
-      <button id="nav__button" class="nav__button" type="button">
+      <ul class="nav__mobile_items hidden" id="menu-mobile-list">
+        {% for item in site.data.nav %}
+        <li class="nav__mobile_item">
+          <a
+            href="{{ item.link }}"
+            id="{{ item.id }}-mobile"
+            class="nav__mobile_item_link"
+            >{{ item.name }}</a
+          >
+        </li>
+        {% endfor %}
+      </ul>
+      <button id="menu-mobile-btn" class="nav__button" type="button">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
@@ -18,13 +30,6 @@
           <line x1="3" y1="18" x2="21" y2="18"></line>
         </svg>
       </button>
-      <ul class="nav__mobile_items">
-        {% for item in site.data.nav %}
-        <li class="nav__mobile_item">
-          <a href="{{ item.link }}">{{ item.name }}</a>
-        </li>
-        {% endfor %}
-      </ul>
     </div>
     <div class="nav__desktop">
       <ul class="nav__desktop_items">

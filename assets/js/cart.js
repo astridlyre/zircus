@@ -13,6 +13,7 @@ export const cart = (function() {
     class Cart {
         constructor() {
             this.navLink = q('cart-link')
+            this.navLinkMobile = q('cart-link-mobile')
             this.cartSubTotal = q("cart-subtotal")
             this.cartTax = q("cart-tax")
             this.cartTotal = q("cart-total")
@@ -133,8 +134,10 @@ export const cart = (function() {
                     totalItems += item.quantity
                 })
                 this.navLink.innerText = `cart (${totalItems})`
+                this.navLinkMobile.innerText = `cart (${totalItems})`
             } else {
                 this.navLink.innerText = 'cart'
+                this.navLinkMobile.innerText = 'cart'
             }
             return this
         }

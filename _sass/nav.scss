@@ -3,12 +3,68 @@
   display: flex;
   background: var(--dark);
 
+  &__button {
+    position: fixed;
+    background-color: var(--dark);
+    border-radius: var(--radius);
+    outline: none;
+    border: 2px solid var(--dark);
+    top: 0.75rem;
+    right: 2rem;
+    cursor: pointer;
+
+    &:hover {
+      border-color: var(--gold);
+    }
+
+    &_bars {
+      color: var(--light);
+      fill: var(--light);
+      width: 2rem;
+      height: 2rem;
+    }
+  }
+
   &__mobile {
-    display: none;
+    @include res("md") {
+      display: none;
+    }
+    display: block;
+    z-index: 5;
+
+    &_items {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: var(--dark);
+      display: flex;
+      flex-flow: column nowrap;
+      justify-content: center;
+      align-items: center;
+    }
+
+    &_item {
+      font-size: 2rem;
+      display: flex;
+      justify-content: flex-end;
+      width: 100%;
+      padding: 0 2rem;
+
+      &_link {
+        display: block;
+        margin: 1rem 0;
+        padding: 2rem;
+      }
+    }
   }
 
   &__desktop {
-    display: flex;
+    @include res("md") {
+      display: flex;
+    }
+    display: none;
 
     &_items {
       padding: 2rem var(--side-padding);
@@ -33,7 +89,8 @@
       cursor: pointer;
       outline: none;
 
-      &:hover, &:focus {
+      &:hover,
+      &:focus {
         border-color: var(--gold);
         @include easeOut();
       }

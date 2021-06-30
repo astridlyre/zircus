@@ -6,9 +6,35 @@
   grid-template-columns: 1fr;
   grid-template-rows: auto;
   gap: var(--two-col-gap);
-  padding: 5rem var(--side-padding);
+  padding: 0 var(--side-padding) 10rem var(--side-padding);
 
   &__heading {
+    margin: 5rem 0 0.5rem 0;
+    width: 100%;
+    font-size: 3rem;
+    text-align: center;
+    @include res("md") {
+      text-align: left;
+    }
+
+    &_container {
+      @include res('md') {
+      padding: 0 var(--side-padding) 5rem var(--side-padding);
+
+      }
+      padding: 0 var(--side-padding);
+    }
+
+    &_description {
+      @include res('md') {
+        text-align: left;
+      }
+      text-align: center;
+    }
+  }
+
+  &__price {
+    text-align: right;
     margin-bottom: 1rem;
   }
 
@@ -17,30 +43,62 @@
     max-width: 100%;
     padding: 2rem;
     cursor: pointer;
-    @include fadeIn(1s);
+    @include fadeIn(0.5s);
   }
 
   &__details {
+    width: 100%;
     display: flex;
     flex-flow: column nowrap;
-    align-items: flex-end;
-    justify-content: flex-end;
-  }
-
-  & p {
-    text-align: right;
+    align-items: center;
+    @include res("md") {
+      align-items: flex-end;
+    }
   }
 
   &__inputs {
     display: grid;
+    @include res("sm") {
+      grid-template-columns: repeat(3, 1fr);
+    }
     grid-template-columns: 1fr 1fr;
     grid-template-rows: auto;
     gap: 1rem;
+
+    &_buttons {
+      display: grid;
+      @include res("sm") {
+        margin-top: 0;
+        grid-template-columns: repeat(2, 1fr);
+      }
+      margin-top: 1rem;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
   }
 
   &__form {
-    margin-top: 5rem;
     display: flex;
     flex-flow: column nowrap;
+    width: 100%;
+    max-width: 25rem;
   }
+
+  &__description {
+    margin-top: 2rem;
+    grid-column-end: 2;
+    text-align: justify;
+    max-width: 25rem;
+  }
+}
+
+.full {
+  display: none;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--light);
+  z-index: 20;
 }

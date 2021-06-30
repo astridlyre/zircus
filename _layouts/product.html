@@ -4,7 +4,21 @@ layout: default
 
 <main class="main">
   <div class="container">
+    <div class="product__heading_container">
+      <h1 class="product__heading">
+        <span id="product-name">{{ page.name }}</span>
+      </h1>
+      <p class="product__heading_description">{{ page.description }}</p>
+    </div>
     <div class="product">
+      <div class="full" id="product-image-full">
+        <img
+          src="/assets/img/products/masked/ff-yellow-a-1920.png"
+          alt="{{ page.name }}"
+          class="product__img"
+          id="product-image-full-image"
+        />
+      </div>
       <img
         src=""
         alt="{{ page.name }}"
@@ -12,16 +26,13 @@ layout: default
         id="product-image"
       />
       <div class="product__details">
-        <h3 class="product__heading">
-          <span id="product-price-text"></span> -
-          <span id="product-name">{{ page.name }}</span>
-        </h3>
-        {{ content }}
+        <h2 class="product__price">
+          <span id="product-price-text"></span>
+        </h2>
         <div class="product__form">
           <div class="product__inputs">
             <input type="hidden" id="product-type" value="{{ page.type }}" />
             <input type="hidden" id="product-price" value="{{ page.price }}" />
-            <div class="product__inputs_padding"></div>
             <input
               id="product-quantity"
               class="input"
@@ -49,23 +60,26 @@ layout: default
               <option value="black" name="black">black</option>
             </select>
           </div>
-          <button
-            class="btn btn__secondary mt-1"
-            type="button"
-            id="add-to-cart"
-            accesskey="a"
-          >
-            <span class="underline">a</span>dd to cart
-          </button>
-          <button
-            class="btn btn__primary mt-1"
-            type="button"
-            id="quick-purchase"
-            accesskey="b"
-          >
-            <span class="underline">b</span>uy now
-          </button>
+          <div class="product__inputs_buttons">
+            <button
+              class="btn btn__secondary mt-1"
+              type="button"
+              id="add-to-cart"
+              accesskey="a"
+            >
+              <span class="underline">a</span>dd to cart
+            </button>
+            <button
+              class="btn btn__primary mt-1"
+              type="button"
+              id="quick-purchase"
+              accesskey="b"
+            >
+              <span class="underline">b</span>uy now
+            </button>
+          </div>
         </div>
+        <div class="product__description">{{ content }}</div>
       </div>
     </div>
   </div>

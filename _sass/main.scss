@@ -74,8 +74,14 @@
   text-decoration: underline;
 }
 
+.hidden {
+  display: none !important;
+}
+
 .mt-1 {
-  margin-top: 1rem;
+  @include res("sm") {
+    margin-top: 1rem;
+  }
 }
 
 .grid-2 {
@@ -113,3 +119,4 @@
 @import "product";
 @import "button";
 @import "cart";
+@import "about";

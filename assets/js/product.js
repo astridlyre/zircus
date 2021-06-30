@@ -25,6 +25,8 @@ import { cart } from './cart.js'
             this.priceText = q('product-price-text')
             this.size = q('product-size')
             this.image = q('product-image')
+            this.bigImageEl = q('product-image-full')
+            this.bigImage = q('product-image-full-image')
             this.quantity = q('product-quantity')
             this.color = q('product-color')
             this.type = q('product-type')
@@ -48,8 +50,10 @@ import { cart } from './cart.js'
             this.quantity.addEventListener('input',
                 () => numberInputHandler(this.quantity, p => this.updatePrice(p * this.getPrice()))
             )
-            this.image.addEventListener('pointerover', () => this.hover(this.color.value))
-            this.image.addEventListener('pointerleave', () => this.hover(this.color.value))
+            this.image.addEventListener('pointerover', () => this.hover())
+            this.image.addEventListener('pointerleave', () => this.hover())
+            this.image.addEventListener('click', () => this.viewFull())
+            this.bigImageEl.addEventListener('click', () => this.hideFull())
             this.addToCart.addEventListener('click', () => this.add())
 
             this.setImage(0)
@@ -88,6 +92,15 @@ import { cart } from './cart.js'
                 this.setImage(0)
                 return this.hovered = false
             }
+        }
+
+        viewFull() {
+            this.bigImageEl.style.display = 'block';
+        }
+
+        hideFull() {
+            this.bigImage.src = this.images[this.color.value][0]
+            this.bigImageEl.style.display = 'none';
         }
 
         setImage(n) {
