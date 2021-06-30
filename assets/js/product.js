@@ -47,7 +47,7 @@ import { cart } from './cart.js'
             this.updatePrice(Number(this.price.value) * Number(this.quantity.value))
             // Add event listeners
             this.color.addEventListener('change', () => this.setImage(0))
-            this.quantity.addEventListener('input',
+            this.quantity.addEventListener('blur',
                 () => numberInputHandler(this.quantity, p => this.updatePrice(p * this.getPrice()))
             )
             this.image.addEventListener('pointerover', () => this.hover())

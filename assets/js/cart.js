@@ -75,7 +75,7 @@ export const cart = (function() {
                 min: 0,
                 max: 100,
                 step: 1
-            }).event('input', () => this.updateQuantity(item, quant.e, header.e))
+            }).event('blur', () => this.updateQuantity(item, quant.e, header.e))
             const removeBtn = new Element("button", ["btn", "btn__secondary"], {
                 type: "button",
                 id: `${item.id}-removeBtn`,
