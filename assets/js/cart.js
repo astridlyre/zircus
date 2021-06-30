@@ -88,7 +88,11 @@ export const cart = (function() {
         }
 
         updateQuantity(item, el, p) {
-            const n = numberInputHandler(el)
+            const n = numberInputHandler(
+                el,
+                null,
+                () => state.get().maxQuantities.find(i => i.id === item.id).quantity
+            )
             state.set(state => ({
                 ...state,
                 items: state.items.map(i => {
