@@ -8,4 +8,46 @@
     font-size: 2.5rem;
     margin-bottom: 2rem;
   }
+
+  &__sizing {
+    @include res("sm") {
+      font-size: 2.25rem;
+    }
+    font-size: 1.75rem;
+    margin: 5rem 0 2rem 0;
+  }
+
+  &__measurement {
+    @include res("sm") {
+      font-size: 2.25rem;
+    }
+    width: 100%;
+    font-size: 1.75rem;
+    margin: 5rem 0 2rem 0;
+    text-align: center;
+  }
+
+  &__measurements {
+    margin: 0 auto;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
+    max-width: 300px;
+    background: var(--grey);
+    padding: 2rem;
+    border-radius: var(--big-radius);
+
+    li {
+      padding: 0.5rem 0;
+      width: 100%;
+      margin-top: 0.5rem;
+      display: flex;
+      border-bottom: 1px solid var(--dark);
+
+      span {
+        flex-grow: 1;
+      }
+    }
+  }
 }
