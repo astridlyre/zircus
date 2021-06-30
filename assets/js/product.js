@@ -100,7 +100,7 @@ import { cart } from './cart.js'
 
         viewFull() {
             this.bigImage.src = this.images[this.color.value][0]
-            this.bigImageEl.style.display = 'block';
+            this.bigImageEl.style.display = 'flex';
         }
 
         hideFull() {
