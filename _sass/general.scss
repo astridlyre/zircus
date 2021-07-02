@@ -23,6 +23,7 @@ p {
 }
 
 .container {
+  padding: 0 var(--side-padding);
   width: 100%;
   @include res("sm") {
     width: 95%;

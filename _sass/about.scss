@@ -1,5 +1,5 @@
 .about {
-  padding: 0 var(--side-padding) 5rem var(--side-padding);
+  padding-bottom: 10rem;
 
   &__sizing {
     @include res("sm") {

@@ -6,7 +6,7 @@
   grid-template-columns: 1fr;
   grid-template-rows: auto;
   gap: var(--two-col-gap);
-  padding: 0 var(--side-padding) 10rem var(--side-padding);
+  padding-bottom: 10rem;
 
   &__heading {
     margin: 5rem 0 0.5rem 0;
@@ -40,7 +40,8 @@
 
   &__img {
     object-fit: contain;
-    max-width: 100%;
+    margin: auto;
+    width: 100%;
     padding: 2rem;
     cursor: pointer;
     @include fadeIn(0.5s);
