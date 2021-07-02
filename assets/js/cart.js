@@ -136,7 +136,7 @@ export const cart = (function() {
                     .addChild(
                         new Element("div", ["cart__product_description"]).addChild(
                             new Element("p").addChild(
-                                `${item.name} - ${item.size} - x${item.quantity}`
+                                `${item.name} - ${item.size} - ${item.quantity}`
                             )
                         )
                     )

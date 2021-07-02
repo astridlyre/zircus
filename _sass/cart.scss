@@ -1,6 +1,5 @@
 .cart {
   padding-top: var(--top-padding);
-  padding-bottom: 10rem;
 
   &__product_description {
     padding: 0 2rem;
@@ -73,4 +72,8 @@
       }
     }
   }
+}
+
+.cart-padding {
+  padding-top: 8rem;
 }
