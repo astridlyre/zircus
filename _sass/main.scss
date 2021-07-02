@@ -16,7 +16,8 @@
   --radius: 0.3rem;
   --big-radius: 1rem;
   --two-col-gap: 4rem;
-  --btn-padding: 0.5rem 1rem;
+  --btn-padding: 0.5rem 2rem;
+  --input-padding: 0.5rem;
   box-sizing: border-box;
 }
 
@@ -84,6 +85,13 @@
   }
 }
 
+.grid-1 {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto;
+  gap: 1rem;
+}
+
 .grid-2 {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -95,9 +103,9 @@
   width: 4rem;
 }
 
-.w-30 {
+.res-sm-full {
   @include res("sm") {
-    max-width: 40vw;
+    width: unset;
   }
   width: 100%;
 }
