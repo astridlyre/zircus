@@ -20,6 +20,11 @@ p {
   font-size: 1.1rem;
   line-height: 1.2;
   margin-bottom: 1rem;
+
+  &::after {
+    content: " • ";
+    color: var(--teal);
+  }
 }
 
 .container {
@@ -77,7 +82,7 @@ p {
 }
 
 .products {
-  @include res('lg') {
+  @include res("lg") {
   }
   padding-bottom: var(--top-padding);
   display: flex;
@@ -96,7 +101,7 @@ p {
 
   &__product {
     flex-basis: 16rem;
-    @include res('md') {
+    @include res("md") {
       flex-basis: unset;
     }
     display: flex;
