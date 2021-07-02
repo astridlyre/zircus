@@ -125,11 +125,13 @@ import { cart } from "./cart.js"
         viewFull() {
             this.bigImage.src = this.item.images[2]
             this.bigImageEl.style.display = "flex"
+            document.body.classList.add('hide-y')
         }
 
         // Hide fullsize pic
         hideFull() {
             this.bigImageEl.style.display = "none"
+            document.body.classList.remove('hide-y')
         }
 
         // Change product image
