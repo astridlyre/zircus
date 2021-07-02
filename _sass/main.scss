@@ -22,8 +22,11 @@
 }
 
 html {
+  @include res('lg') {
+    font-size: 18px;
+  }
   @include res('xl') {
-    font-size: 22px;
+    font-size: 24px;
   }
 }
 
