@@ -31,7 +31,6 @@ import { cart } from "./cart.js"
             this.type = q("product-type")
             this.addToCart = q("add-to-cart")
             this.checkout = q("checkout")
-            this.images = {}
             this.hovered = false
 
             // Check available inventory
@@ -115,7 +114,8 @@ import { cart } from "./cart.js"
 
         // Change product image
         setImage(n) {
-            this.image.src = this.item.images[n]
+            if (this.item.images.length > 0)
+                this.image.src = this.item.images[n]
             return this
         }
 
@@ -139,7 +139,7 @@ import { cart } from "./cart.js"
         get item() {
             const item = state.get().inv.find((item) => item.type === this.id)
             if (item) return item
-            return { price: 30, quantity: 0 }
+            return { price: 30, quantity: 0, images: [] }
         }
 
         // Get Inventory to set max quantities of items

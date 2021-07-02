@@ -3,7 +3,7 @@ name: pouch front
 type: pf
 key: p
 price: 30
-img: assets/img/products/masked/pf-teal-a-1920.png
+image: /assets/img/products/masked/pf-teal-a-1920.png
 description: a little extra space in the front
 ---
 
