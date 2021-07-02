@@ -1,14 +1,6 @@
 .cart {
   padding: 0 var(--side-padding) 10rem var(--side-padding);
 
-  &__heading {
-    margin: 5rem 0 2rem 0;
-    @include res("sm") {
-      font-size: 3rem;
-    }
-    font-size: 2.5rem;
-  }
-
   &__product_description {
     padding: 0 2rem;
   }
@@ -17,7 +9,7 @@
     @include fadeIn(0.25s);
     padding: 1rem 0;
     display: flex;
-    @include res("sm") {
+    @include res("md") {
       flex-flow: row nowrap;
     }
     flex-flow: row wrap;
@@ -30,7 +22,7 @@
     &_image {
       object-fit: contain;
       display: block;
-      max-height: 5rem;
+      max-height: 4rem;
     }
 
     &_inputs {

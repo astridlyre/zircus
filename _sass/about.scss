@@ -1,13 +1,5 @@
 .about {
-  padding: 5rem var(--side-padding);
-
-  &__heading {
-    @include res("sm") {
-      font-size: 3rem;
-    }
-    font-size: 2.5rem;
-    margin-bottom: 2rem;
-  }
+  padding: 0 var(--side-padding) 5rem var(--side-padding);
 
   &__sizing {
     @include res("sm") {

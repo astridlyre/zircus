@@ -14,10 +14,7 @@ import { cart } from "./cart.js"
     const type = q("product-type")
     if (!type) return
 
-    const INVENTORY_URL = "http://localhost:3000/prices"
-    const IMAGE_PATH = "/assets/img/products/masked/"
-    const VIEWS = ["a", "b"]
-    const COLORS = ["yellow", "purple", "teal", "black", "stripe"]
+    const INVENTORY_URL = "http://localhost:3000/api/inv"
 
     class Underwear {
         constructor() {
@@ -38,18 +35,8 @@ import { cart } from "./cart.js"
 
             // Check available inventory
             this.status = "IN_STOCK"
-            this.quantities = []
             this.getInventory()
             this.updatePrice(Number(this.price.value) * Number(this.quantity.value))
-
-            // Initialize the images
-            for (const color of COLORS) {
-                const arr = []
-                for (const view of VIEWS) {
-                    arr.push(`${IMAGE_PATH}${this.type.value}-${color}-${view}-1920.png`)
-                }
-                this.images[color] = arr
-            }
 
             // Add event listeners
             this.color.addEventListener("change", () => {
@@ -57,9 +44,11 @@ import { cart } from "./cart.js"
                 this.updateStatus()
             })
             this.quantity.addEventListener("blur", () =>
-                numberInputHandler(this.quantity, (p) =>
-                    this.updatePrice(p * this.getPrice()),
-                    () => this.inventory.quantity)
+                numberInputHandler(
+                    this.quantity,
+                    (p) => this.updatePrice(p * this.item.price),
+                    () => this.item.quantity
+                )
             )
             this.size.addEventListener("input", () => this.updateStatus())
             this.image.addEventListener("pointerover", () => this.hover())
@@ -68,7 +57,6 @@ import { cart } from "./cart.js"
             this.bigImageEl.addEventListener("click", () => this.hideFull())
             this.addToCart.addEventListener("click", () => this.add())
             this.checkout.addEventListener("click", () => location.assign("/cart"))
-            this.setImage(0)
         }
 
         get id() {
@@ -77,16 +65,11 @@ import { cart } from "./cart.js"
 
         // Add a new underwear item to cart
         add() {
-            state.set((state) => ({
-                ...state,
-                items: state.items.concat({
-                    id: `${this.type.value}-${this.color.value}-${this.size.value}`,
-                    name: this.name.innerText,
-                    color: this.color.value,
-                    image: this.images[this.color.value][0],
-                    size: this.size.value,
+            state.set((s) => ({
+                ...s,
+                cart: s.cart.concat({
+                    ...state.get().inv.find((item) => item.type === this.id),
                     quantity: Number(this.quantity.value),
-                    type: this.type.value,
                 }),
             }))
 
@@ -107,11 +90,6 @@ import { cart } from "./cart.js"
             this.priceText.innerText = `$${p}`
         }
 
-        // Hard-coded for now
-        getPrice() {
-            return this.inventory.price
-        }
-
         // Change pic on hover
         hover() {
             if (!this.hovered) {
@@ -125,7 +103,7 @@ import { cart } from "./cart.js"
 
         // Show fullsize pic
         viewFull() {
-            this.bigImage.src = this.images[this.color.value][0]
+            this.bigImage.src = this.item.images[0]
             this.bigImageEl.style.display = "flex"
         }
 
@@ -136,13 +114,13 @@ import { cart } from "./cart.js"
 
         // Change product image
         setImage(n) {
-            this.image.src = this.images[this.color.value][n]
+            this.image.src = this.item.images[n]
             return this
         }
 
         // Update status depending on if inventory is available
         updateStatus() {
-            if (this.inventory.quantity > 0) {
+            if (this.item.quantity > 0) {
                 this.quantity.removeAttribute("disabled")
                 this.addToCart.removeAttribute("disabled")
                 this.addToCart.innerText = "add to cart"
@@ -151,12 +129,14 @@ import { cart } from "./cart.js"
                 this.addToCart.setAttribute("disabled", true)
                 this.addToCart.innerText = "out of stock"
             }
+            this.me = state.get().inv.find(item => item.type === this.id)
+            this.setImage(0)
             return this
         }
 
         // Return item object with quantity and price
-        get inventory() {
-            const item = this.quantities.find((item) => item.id === this.id)
+        get item() {
+            const item = state.get().inv.find((item) => item.type === this.id)
             if (item) return item
             return { price: 30, quantity: 0 }
         }
@@ -168,18 +148,13 @@ import { cart } from "./cart.js"
                 .then((data) => {
                     state.set((state) => ({
                         ...state,
-                        maxQuantities: data,
+                        inv: data,
                     }))
                     // update quantities
-                    this.quantities = state.get().maxQuantities
                     this.updateStatus()
                 })
                 .catch((_) => {
-                    state.set(state => ({
-                        ...state,
-                        maxQuantities: [{ id: 'ff-yellow-sm', price: 30, quantity: 3 }]
-                    }))
-                    this.quantities = state.get().maxQuantities
+                    console.error("Unable to get inventory")
                     this.updateStatus()
                 })
         }

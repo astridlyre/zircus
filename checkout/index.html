@@ -1,0 +1,116 @@
+---
+layout: default
+title: zircus | checkout
+---
+
+<main class="main checkout">
+  <div class="container">
+    <h1 class="page__heading">checkout</h1>
+    <form
+      id="checkout-client-details"
+      class="form"
+      action="http://localhost:3000/api/order"
+      method="POST"
+    >
+      <div id="checkout-products" class="checkout__products"></div>
+      <div class="checkout__address">
+        <h2>send undies pls</h2>
+        <label for="name"
+          ><span>Name</span
+          ><input
+            type="text"
+            name="name"
+            value=""
+            class="input"
+            required
+            id="checkout-name"
+        /></label>
+        <label for="email"
+          ><span>Email</span
+          ><input
+            type="email"
+            name="email"
+            value=""
+            class="input"
+            required
+            id="checkout-email"
+        /></label>
+        <label for="street-address"
+          ><span>Street</span
+          ><input
+            type="text"
+            name="street-address"
+            value=""
+            class="input min-w-15"
+            required
+            id="checkout-street"
+        /></label>
+        <label for="city"
+          ><span>City</span
+          ><input
+            type="text"
+            name="city"
+            value=""
+            class="input"
+            required
+            id="checkout-city"
+        /></label>
+        <label for="state"
+          ><span>State</span
+          ><input
+            type="text"
+            name="state"
+            value=""
+            class="input"
+            required
+            id="checkout-state"
+        /></label>
+        <label for="country"
+          ><span>Country</span
+          ><input
+            type="text"
+            name="country"
+            value=""
+            class="input"
+            required
+            id="checkout-country"
+        /></label>
+        <label for="zip"
+          ><span>Zip</span
+          ><input
+            type="text"
+            name="zip"
+            value=""
+            class="input min-w-10"
+            required
+            id="checkout-zip"
+        /></label>
+      </div>
+    </form>
+    <div class="cart__total">
+      <ul class="cart__total_prices">
+        <li class="cart__total_price">
+          Subtotal:<span class="cart__total_price_item" id="cart-subtotal"
+            >$30</span
+          >
+        </li>
+        <li class="cart__total_price">
+          Tax:<span class="cart__total_price_item" id="cart-tax">$1.24</span>
+        </li>
+        <li class="cart__total_price bold">
+          Total:<span class="cart__total_price_item" id="cart-total">$31</span>
+        </li>
+      </ul>
+    </div>
+    <div class="cart__product_checkout">
+      <button
+        class="btn btn__primary w-30"
+        type="button"
+        id="place-order"
+        accesskey="o"
+      >
+        <span class="underline">p</span>lace order
+      </button>
+    </div>
+  </div>
+</main>

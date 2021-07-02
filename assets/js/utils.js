@@ -22,7 +22,6 @@ export const numberInputHandler = (el, fn, max) => {
 class State {
     constructor() {
         this.__state = this.get()
-        this.__max = []
     }
 
     set(fn) {
@@ -38,7 +37,7 @@ class State {
     get() {
         const storedState = localStorage.getItem('state')
         if (storedState) return JSON.parse(storedState)
-        return { items: [] }
+        return { cart: [], inv: [] }
     }
 }
 
