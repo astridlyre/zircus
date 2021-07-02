@@ -103,7 +103,7 @@ import { cart } from "./cart.js"
 
         // Show fullsize pic
         viewFull() {
-            this.bigImage.src = this.item.images[3]
+            this.bigImage.src = this.item.images[2]
             this.bigImageEl.style.display = "flex"
         }
 
