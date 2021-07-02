@@ -19,10 +19,8 @@
 
     &_container {
       @include res('md') {
-      padding: 0 var(--side-padding) 5rem var(--side-padding);
-
+        padding-bottom: 5rem;
       }
-      padding: 0 var(--side-padding);
     }
 
     &_description {
