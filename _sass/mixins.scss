@@ -1,23 +1,23 @@
 @mixin res($breakpoint) {
   @if $breakpoint == sm {
-    @media only screen and (min-width: 37.5em) {
+    @media only screen and (min-width: 601px) {
       @content;
     } //600px
   }
   @if $breakpoint == md {
-    @media only screen and (min-width: 56.25em) {
+    @media only screen and (min-width: 901px) {
       @content;
     } //900px
   }
   @if $breakpoint == lg {
-    @media only screen and (min-width: 75em) {
+    @media only screen and (min-width: 1201px) {
       @content;
     } //1200px
   }
   @if $breakpoint == xl {
-    @media only screen and (min-width: 112.5em) {
+    @media only screen and (min-width: 1921px) {
       @content;
-    } //1800
+    } //1920
   }
 }
 
