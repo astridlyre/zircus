@@ -3,7 +3,7 @@ name: flat front
 type: ff
 key: f
 price: 30
-image: /assets/img/products/masked/ff-yellow-a-1920.png
+image: /assets/img/products/masked/ff-yellow-a-400.png
 description: close & comfortable
 ---
 

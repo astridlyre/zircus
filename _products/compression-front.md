@@ -3,7 +3,7 @@ name: compression front
 type: cf
 key: m
 price: 38
-image: /assets/img/products/masked/cf-purple-a-1920.png
+image: /assets/img/products/masked/cf-purple-a-400.png
 description: a smooth, compressed fit in the front
 ---
 
