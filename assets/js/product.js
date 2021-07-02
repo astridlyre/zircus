@@ -14,9 +14,6 @@ import { cart } from "./cart.js"
     const type = q("product-type")
     if (!type) return
 
-    // const INVENTORY_URL = "http://localhost:3000/api/inv"
-    const INVENTORY_URL = "https://remembrance-backbacon-09587.herokuapp.com/api/inv"
-
     class Underwear {
         constructor() {
             this.name = q("product-name")
@@ -28,14 +25,18 @@ import { cart } from "./cart.js"
             this.bigImage = q("product-image-full-image")
             this.quantity = q("product-quantity")
             this.color = q("product-color")
+            this.defaultColor = q('product-default-color')
             this.type = q("product-type")
             this.addToCart = q("add-to-cart")
             this.checkout = q("checkout")
             this.hovered = false
 
+            for (const child of this.color.children)
+                if (child.value === this.defaultColor.value)
+                    child.setAttribute('selected', true)
+
             // Check available inventory
             this.status = "IN_STOCK"
-            this.getInventory()
             this.updatePrice(Number(this.price.value) * Number(this.quantity.value))
 
             // Add event listeners
@@ -57,6 +58,7 @@ import { cart } from "./cart.js"
             this.bigImageEl.addEventListener("click", () => this.hideFull())
             this.addToCart.addEventListener("click", () => this.add())
             this.checkout.addEventListener("click", () => location.assign("/cart"))
+            state.addHook(() => this.updateStatus())
         }
 
         get id() {
@@ -142,23 +144,6 @@ import { cart } from "./cart.js"
             return { price: 30, quantity: 0, images: [] }
         }
 
-        // Get Inventory to set max quantities of items
-        async getInventory() {
-            return await fetch(INVENTORY_URL)
-                .then((data) => data.json())
-                .then((data) => {
-                    state.set((state) => ({
-                        ...state,
-                        inv: data,
-                    }))
-                    // update quantities
-                    this.updateStatus()
-                })
-                .catch((_) => {
-                    console.error("Unable to get inventory")
-                    this.updateStatus()
-                })
-        }
     }
 
     return new Underwear()

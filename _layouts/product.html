@@ -34,6 +34,11 @@ layout: default
             <input type="hidden" id="product-type" value="{{ page.type }}" />
             <input type="hidden" id="product-price" value="{{ page.price }}" />
             <input
+              type="hidden"
+              id="product-default-color"
+              value="{{ page.default_color }}"
+            />
+            <input
               id="product-quantity"
               class="input"
               max="10"
@@ -54,7 +59,7 @@ layout: default
               <option value="4xl" name="4xl">4xl</option>
             </select>
             <select id="product-color" accesskey="c" class="input">
-              <option selected value="yellow" name="yellow">yellow</option>
+              <option value="yellow" name="yellow">yellow</option>
               <option value="teal" name="teal">teal</option>
               <option value="purple" name="purple">purple</option>
               <option value="stripe" name="striped">striped</option>

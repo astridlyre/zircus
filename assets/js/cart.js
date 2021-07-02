@@ -8,6 +8,7 @@ import { q, Element, numberInputHandler, state } from "./utils.js"
 
 export const cart = (function() {
     const TAX_RATE = 0.12
+
     // const API_ENDPOINT = "http://localhost:3000/api/orders"
     const API_ENDPOINT =
         "https://remembrance-backbacon-09587.herokuapp.com/api/orders"
@@ -27,9 +28,9 @@ export const cart = (function() {
             this.render().setTotals()
 
             this.checkoutBtn &&
-                this.checkoutBtn.addEventListener("click", () =>
-                    location.assign("/checkout")
-                )
+                this.checkoutBtn.addEventListener("click", () => {
+                    if (this.items.length > 0) location.assign("/checkout")
+                })
 
             this.placeOrderBtn &&
                 this.placeOrderBtn.addEventListener("click", () => this.placeOrder())
