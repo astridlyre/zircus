@@ -4,13 +4,16 @@
 
 .form {
   display: grid;
-  @include res('md') {
+  @include res("md") {
     grid-template-columns: repeat(2, 1fr);
   }
   grid-template-columns: 1fr;
   gap: var(--two-col-gap);
 
   label {
+    @media screen and (max-width: 445px) {
+      flex-flow: column nowrap;
+    }
     display: flex;
     align-items: center;
     justify-content: flex-end;
@@ -25,17 +28,23 @@
       font-weight: 600;
       letter-spacing: 0.1rem;
       font-size: 0.9rem;
+      @media screen and (max-width: 445px) {
+        display: none;
+      }
     }
 
     input {
+      @media screen and (max-width: 445px) {
+        width: 100%;
+      }
       flex-grow: 1;
-      @include res('sm') {
+      @include res("sm") {
         flex-grow: unset;
       }
     }
 
     .min-w-15 {
-      @include res('sm') {
+      @include res("sm") {
         min-width: 15rem;
       }
     }
@@ -47,7 +56,6 @@
 }
 
 .checkout {
-
   &__button {
     padding-top: 2rem;
     display: flex;
@@ -63,7 +71,7 @@
     background: var(--dark);
     border-radius: var(--big-radius);
     color: var(--light);
-    @include res('sm') {
+    @include res("sm") {
       padding: 4rem;
     }
     padding: 2rem;
