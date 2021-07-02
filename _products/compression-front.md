@@ -4,6 +4,7 @@ type: cf
 key: m
 price: 38
 image: /assets/img/products/masked/cf-purple-a-400.png
+bottom_image: /assets/img/products/1920/closeup-e-1920.jpg
 default_color: purple
 description: a smooth, compressed fit in the front
 ---

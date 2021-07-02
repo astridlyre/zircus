@@ -4,6 +4,7 @@ type: pf
 key: p
 price: 30
 image: /assets/img/products/masked/pf-teal-a-400.png
+bottom_image: /assets/img/products/1920/closeup-c-1920.jpg
 default_color: teal
 description: a little extra space in the front
 ---

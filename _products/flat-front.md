@@ -4,6 +4,7 @@ type: ff
 key: f
 price: 30
 image: /assets/img/products/masked/ff-yellow-a-400.png
+bottom_image: /assets/img/products/1920/closeup-d-1920.jpg
 default_color: yellow
 description: close & comfortable
 ---
