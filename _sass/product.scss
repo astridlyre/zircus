@@ -12,6 +12,9 @@
     margin: 5rem 0 0.5rem 0;
     width: 100%;
     font-size: 3rem;
+    font-weight: 300;
+    letter-spacing: 0.1rem;
+    color: var(--dark);
     text-align: center;
     @include res("md") {
       text-align: left;
@@ -24,6 +27,9 @@
     }
 
     &_description {
+      font-size: 1.1rem;
+      font-weight: 300;
+      letter-spacing: 0.1rem;
       @include res('md') {
         text-align: left;
       }

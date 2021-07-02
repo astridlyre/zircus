@@ -22,9 +22,9 @@
 }
 
 @mixin fadeIn($time) {
-  animation: $time ease-in forwards fadeIn;
+  animation: $time ease-in 0s forwards fadeIn;
 }
 
 @mixin easeOut {
-  transition: all 0.075s ease-out;
+  transition: all 0.1s ease-out;
 }

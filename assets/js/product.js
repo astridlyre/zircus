@@ -25,7 +25,7 @@ import { cart } from "./cart.js"
             this.bigImage = q("product-image-full-image")
             this.quantity = q("product-quantity")
             this.color = q("product-color")
-            this.defaultColor = q('product-default-color')
+            this.defaultColor = q("product-default-color")
             this.type = q("product-type")
             this.addToCart = q("add-to-cart")
             this.checkout = q("checkout")
@@ -33,7 +33,7 @@ import { cart } from "./cart.js"
 
             for (const child of this.color.children)
                 if (child.value === this.defaultColor.value)
-                    child.setAttribute('selected', true)
+                    child.setAttribute("selected", true)
 
             // Check available inventory
             this.status = "IN_STOCK"
@@ -67,13 +67,31 @@ import { cart } from "./cart.js"
 
         // Add a new underwear item to cart
         add() {
-            state.set((s) => ({
-                ...s,
-                cart: s.cart.concat({
-                    ...state.get().inv.find((item) => item.type === this.id),
-                    quantity: Number(this.quantity.value),
-                }),
-            }))
+            if (
+                this.item.quantity - Number(this.quantity.value) < 0 &&
+                !this.item.quantity
+            ) {
+                return this
+            }
+
+            if (state.get().cart.find((item) => item.type === this.id)) {
+                state.set((s) => ({
+                    ...s,
+                    cart: s.cart.map((i) =>
+                        i.type === this.id
+                            ? { ...i, quantity: i.quantity + Number(this.quantity.value) }
+                            : i
+                    ),
+                }))
+            } else {
+                state.set((s) => ({
+                    ...s,
+                    cart: s.cart.concat({
+                        ...state.get().inv.find((item) => item.type === this.id),
+                        quantity: Number(this.quantity.value),
+                    }),
+                }))
+            }
 
             // visual feedback
             this.addToCart.classList.add("added")
@@ -116,8 +134,7 @@ import { cart } from "./cart.js"
 
         // Change product image
         setImage(n) {
-            if (this.item.images.length > 0)
-                this.image.src = this.item.images[n]
+            if (this.item.images.length > 0) this.image.src = this.item.images[n]
             return this
         }
 
@@ -132,7 +149,7 @@ import { cart } from "./cart.js"
                 this.addToCart.setAttribute("disabled", true)
                 this.addToCart.innerText = "out of stock"
             }
-            this.me = state.get().inv.find(item => item.type === this.id)
+            this.me = state.get().inv.find((item) => item.type === this.id)
             this.setImage(0)
             return this
         }
@@ -143,7 +160,6 @@ import { cart } from "./cart.js"
             if (item) return item
             return { price: 30, quantity: 0, images: [] }
         }
-
     }
 
     return new Underwear()

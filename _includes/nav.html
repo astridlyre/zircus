@@ -1,6 +1,8 @@
 <div class="container">
   <nav class="nav">
-    <h2 class="nav__heading"><a href="/">ZIRCUS</a></h2>
+    <h2 class="nav__heading">
+      <a class="nav__heading_link" href="/">ZIRCUS</a>
+    </h2>
     <div class="nav__mobile">
       <ul class="nav__mobile_items hidden" id="menu-mobile-list">
         {% for item in site.data.nav %}
@@ -36,6 +38,7 @@
         {% for item in site.data.nav %}
         <li class="nav__desktop_item">
           <a
+            class="nav__desktop_link"
             accesskey="{{ item.key }}"
             tabindex="{{ item.index }}"
             href="{{ item.link }}"

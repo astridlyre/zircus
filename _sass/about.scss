@@ -1,4 +1,5 @@
 .about {
+  padding-top: var(--top-padding);
   padding-bottom: 10rem;
 
   &__sizing {
@@ -26,7 +27,7 @@
     align-items: center;
     justify-content: center;
     max-width: 300px;
-    background: var(--grey);
+    background: var(--lgrey);
     padding: 2rem;
     border-radius: var(--big-radius);
 

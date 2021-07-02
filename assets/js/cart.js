@@ -23,6 +23,7 @@ export const cart = (function() {
             this.list = q("cart-products")
             this.checkoutList = q("checkout-products")
             this.checkoutBtn = q("cart-checkout")
+            this.payPalBtn = q('cart-paypal')
             this.placeOrderBtn = q("place-order")
             this.subtotal = 0
             this.render().setTotals()
@@ -38,6 +39,16 @@ export const cart = (function() {
 
         get items() {
             return state.get().cart
+        }
+
+        enableButtons() {
+            if (this.items.length > 0) {
+                this.checkoutBtn.removeAttribute('disabled')
+                this.payPalBtn.removeAttribute('disabled')
+            } else {
+                this.checkoutBtn.setAttribute('disabled', true)
+                this.payPalBtn.setAttribute('disabled', true)
+            }
         }
 
         setTotals() {
@@ -62,6 +73,7 @@ export const cart = (function() {
             ).toFixed(2)}`
 
             // Update navLink
+            this.enableButtons()
             return this.updateNavLink()
         }
 

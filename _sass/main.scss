@@ -4,12 +4,13 @@
 @import "animations";
 
 :root {
-  --teal: #58dea4;
+  --teal: #47ddc3;
   --gold: #fbce47;
   --purple: #7c3b98;
   --light: #f0f5f2;
   --dark: #1a171b;
-  --grey: #d4d2d5;
+  --grey: #7a757d;
+  --lgrey: #e4e6e4;
   --af: "Virgo 01", sans-serif;
   --mf: "Nunito", sans-serif;
   @include res('sm') {
@@ -25,8 +26,19 @@
     --side-padding: 6rem;
   }
   --side-padding: 2rem;
-  --radius: 0.3rem;
-  --big-radius: 1rem;
+  @include res('md') {
+    --top-padding: 8rem;
+  }
+  --top-padding: 6rem;
+  @include res('sm') {
+    --top-margin: 6rem;
+  }
+  @include res('md') {
+    --top-margin: 8rem;
+  }
+  --top-margin: 4rem;
+  --radius: 0.325rem;
+  --big-radius: 1.25rem;
   --two-col-gap: 4rem;
   --btn-padding: 0.5rem 2rem;
   --input-padding: 0.5rem;
@@ -97,7 +109,8 @@ html {
 }
 
 .hidden {
-  display: none !important;
+  transform: translateX(100%) !important;
+  transition: transform 0.2s ease-out;
 }
 
 .mt-1 {
@@ -135,6 +148,12 @@ html {
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
+}
+
+.flex-col {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-end;
 }
 
 .flex-grow {

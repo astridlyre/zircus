@@ -40,6 +40,7 @@ p {
 }
 
 .main {
+  margin-top: var(--top-margin);
   border-radius: var(--big-radius);
   background: var(--light);
   color: var(--dark);
@@ -50,8 +51,10 @@ p {
   align-items: center;
 
   &__heading {
+    padding-top: var(--top-padding);
+    padding-bottom: 2rem;
     @include res("sm") {
-      padding: 5rem;
+      padding-bottom: var(--top-padding);
       text-align: left;
     }
     box-sizing: border-box;
@@ -74,16 +77,28 @@ p {
 }
 
 .products {
-  padding: 5rem;
-  display: grid;
-  grid-template-columns: 1fr;
-  @include res("md") {
-    grid-template-columns: repeat(3, 1fr);
+  @include res('lg') {
   }
-  grid-template-rows: auto;
-  gap: var(--two-col-gap);
+  padding-bottom: var(--top-padding);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow: row wrap;
+  @include res("md") {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto;
+    align-items: unset;
+    justify-content: unset;
+    flex-flow: unset;
+  }
+  gap: 1rem;
 
   &__product {
+    flex-basis: 16rem;
+    @include res('md') {
+      flex-basis: unset;
+    }
     display: flex;
     font-family: var(--mf);
     letter-spacing: 0.1rem;
@@ -96,11 +111,11 @@ p {
       padding: 2rem;
       outline: none;
       border-radius: 1rem;
-      border: 2px solid var(--light);
+      border: 0.2rem solid var(--light);
       &:hover,
       &:focus {
         @include easeOut();
-        border-color: var(--gold);
+        border-color: var(--teal);
       }
     }
 

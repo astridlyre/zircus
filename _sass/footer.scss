@@ -54,7 +54,7 @@
 
       &:hover,
       &:focus {
-        border-color: var(--gold);
+        border-color: var(--teal);
         @include easeOut();
       }
     }
