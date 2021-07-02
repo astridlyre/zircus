@@ -14,7 +14,8 @@ import { cart } from "./cart.js"
     const type = q("product-type")
     if (!type) return
 
-    const INVENTORY_URL = "http://localhost:3000/api/inv"
+    // const INVENTORY_URL = "http://localhost:3000/api/inv"
+    const INVENTORY_URL = "https://remembrance-backbacon-09587.herokuapp.com/api/inv"
 
     class Underwear {
         constructor() {

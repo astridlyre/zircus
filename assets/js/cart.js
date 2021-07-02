@@ -8,6 +8,9 @@ import { q, Element, numberInputHandler, state } from "./utils.js"
 
 export const cart = (function() {
     const TAX_RATE = 0.12
+    // const API_ENDPOINT = "http://localhost:3000/api/orders"
+    const API_ENDPOINT =
+        "https://remembrance-backbacon-09587.herokuapp.com/api/orders"
 
     class Cart {
         constructor() {
@@ -19,7 +22,7 @@ export const cart = (function() {
             this.list = q("cart-products")
             this.checkoutList = q("checkout-products")
             this.checkoutBtn = q("cart-checkout")
-            this.placeOrderBtn = q('place-order')
+            this.placeOrderBtn = q("place-order")
             this.subtotal = 0
             this.render().setTotals()
 
@@ -29,9 +32,7 @@ export const cart = (function() {
                 )
 
             this.placeOrderBtn &&
-                this.placeOrderBtn.addEventListener('click', () =>
-                    this.placeOrder()
-                )
+                this.placeOrderBtn.addEventListener("click", () => this.placeOrder())
         }
 
         get items() {
@@ -110,9 +111,7 @@ export const cart = (function() {
                     .addChild(inputs)
 
                 return root.render()
-
             } else {
-
                 // Image and description
                 const flexCon = new Element("div", ["flex-row", "flex-grow"])
                     .addChild(
@@ -123,13 +122,16 @@ export const cart = (function() {
                     )
                     .addChild(
                         new Element("div", ["cart__product_description"]).addChild(
-                            new Element("p").addChild(`${item.name} - ${item.size} - x${item.quantity}`)
+                            new Element("p").addChild(
+                                `${item.name} - ${item.size} - x${item.quantity}`
+                            )
                         )
                     )
 
                 // Root of product item
-                const root = new Element("div", ["cart__product"], { id: item.id })
-                    .addChild(flexCon)
+                const root = new Element("div", ["cart__product"], {
+                    id: item.id,
+                }).addChild(flexCon)
 
                 return root.render()
             }
@@ -168,10 +170,8 @@ export const cart = (function() {
                     )
                 })
 
-                if (this.list)
-                    this.list.appendChild(fragment)
-                else
-                    this.checkoutList.appendChild(fragment)
+                if (this.list) this.list.appendChild(fragment)
+                else this.checkoutList.appendChild(fragment)
                 return this.setTotals()
             }
         }
@@ -203,29 +203,38 @@ export const cart = (function() {
 
         async placeOrder() {
             const cart = {
-                name: q('checkout-name').value,
-                email: q('checkout-email').value,
-                streetAddress: q('checkout-street').value,
-                city: q('checkout-city').value,
-                state: q('checkout-state').value,
-                country: q('checkout-country').value,
-                zip: q('checkout-zip').value,
-                items: this.items.map(item => ({
+                name: q("checkout-name").value,
+                email: q("checkout-email").value,
+                streetAddress: q("checkout-street").value,
+                city: q("checkout-city").value,
+                state: q("checkout-state").value,
+                country: q("checkout-country").value,
+                zip: q("checkout-zip").value,
+                items: this.items.map((item) => ({
                     type: item.type,
                     prefix: item.prefix,
                     size: item.size,
                     name: item.name,
                     color: item.color,
-                    quantity: item.quantity
-                }))
+                    quantity: item.quantity,
+                })),
             }
-            const res = fetch("http://localhost:3000/api/orders", {
-                method: 'POST',
+            fetch(API_ENDPOINT, {
+                method: "POST",
                 headers: {
-                    'Content-Type': 'application/json'
+                    "Content-Type": "application/json",
                 },
-                body: await JSON.stringify(cart)
-            }).then(data => data.json()).then(data => console.log(data))
+                body: JSON.stringify(cart),
+            })
+                .then((data) => data.json())
+                .then((data) => {
+                    console.log(data)
+                    state.set((state) => ({
+                        ...state,
+                        cart: [],
+                    }))
+                    location.assign("/")
+                })
         }
 
         static getPrice(type) {
