@@ -229,10 +229,7 @@ export const cart = (function() {
                 .then((data) => data.json())
                 .then((data) => {
                     console.log(data)
-                    state.set((state) => ({
-                        ...state,
-                        cart: [],
-                    }))
+                    state.clear()
                     location.assign("/")
                 })
         }

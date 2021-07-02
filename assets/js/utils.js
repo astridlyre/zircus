@@ -39,6 +39,11 @@ class State {
         if (storedState) return JSON.parse(storedState)
         return { cart: [], inv: [] }
     }
+
+    clear() {
+        localStorage.removeItem('state')
+        this.__state = this.get()
+    }
 }
 
 // Singleton
