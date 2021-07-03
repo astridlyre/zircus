@@ -24,12 +24,12 @@ import { q, state } from './utils.js'
 
         hide() {
             this.hidden = true
-            this.menu.classList.add('hidden')
+            this.menu.classList.add('hide')
         }
 
         show() {
             this.hidden = false
-            this.menu.classList.remove('hidden')
+            this.menu.classList.remove('hide')
         }
 
         // Updates the nav link when cart items change

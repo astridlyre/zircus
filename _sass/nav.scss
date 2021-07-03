@@ -158,7 +158,7 @@
 }
 
 // Class for hiding and showing mobile menu
-.hidden {
+.hide {
   transform: translateX(100%) !important;
   transition: transform 0.2s ease-out;
 }

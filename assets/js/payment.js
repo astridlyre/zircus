@@ -1,0 +1,231 @@
+import { q, API_ENDPOINT, state, Element } from "./utils.js"
+const stripe = Stripe("pk_test_51J93KzDIzwSFHzdzCZtyRcjMvw8em0bhnMrVmkBHaMFHuc2nkJ156oJGNxuz0G7W4Jx0R6OCy2nBXYTt6U8bSYew00PIAPcntP");
+
+export const checkout = (() => {
+    const placeOrder = q("place-order")
+    if (!placeOrder) return
+    if (state.get().cart.length === 0) location.assign('/')
+
+    class Checkout {
+        constructor() {
+            this.name = q("checkout-name")
+            this.email = q("checkout-email")
+            this.streetAddress = q("checkout-street")
+            this.city = q("checkout-city")
+            this.state = q("checkout-state")
+            this.country = q("checkout-country")
+            this.zip = q("checkout-zip")
+            this.nav = q("nav")
+            this.blur = q("blur")
+            this.paymentModal = q("stripe-payment-modal")
+            this.paymentForm = q("stripe-payment-form")
+            this.payBtn = q("pay-button")
+            this.cardError = q("card-error")
+            this.spinner = q("spinner")
+            this.btnText = q("button-text")
+            this.countriesDatalist = q("checkout-countries")
+            this.statesDatalist = q("checkout-states")
+            this.citiesDatalist = q("checkout-cities")
+            this.placeOrder = q('place-order')
+            this.cancel = q('cancel')
+            this.placeOrder.addEventListener("click", () => this.createPaymentIntent())
+            this.cancel.addEventListener('click', () => this.showModal(false))
+            // Add functionality for Countries States and Cities
+            state.addHook((s) =>
+                this.populateDatalist(
+                    this.countriesDatalist,
+                    s.countries,
+                    (item) => item
+                )
+            )
+            this.country.addEventListener("blur", () => this.handleCountry())
+            this.state.addEventListener("input", () => this.handleState())
+        }
+
+        get items() {
+            return state.get().cart
+        }
+
+        showModal(show) {
+            if (show) {
+                document.body.classList.add('hide-y')
+                this.nav.classList.add("blur")
+                this.blur.classList.add("blur")
+                this.paymentModal.style.display = "flex"
+                this.payBtn.disabled = true
+                q('payment-price').innerText = q('cart-total').innerText
+            } else {
+                document.body.classList.remove('hide-y')
+                this.nav.classList.remove("blur")
+                this.blur.classList.remove("blur")
+                this.paymentModal.style.display = "none"
+                if (state.get().cart.length === 0)
+                    location.assign('/')
+            }
+        }
+
+        async createPaymentIntent() {
+            this.showModal(true)
+
+            const cart = {
+                name: this.name.value,
+                email: this.email.value,
+                streetAddress: this.streetAddress.value,
+                city: this.city.value,
+                state: this.state.value,
+                country: this.country.value,
+                zip: this.zip.value,
+                items: this.items.map((item) => ({
+                    type: item.type,
+                    prefix: item.prefix,
+                    size: item.size,
+                    name: item.name,
+                    color: item.color,
+                    quantity: item.quantity,
+                })),
+            }
+
+            fetch(`${API_ENDPOINT}/orders/create-payment-intent`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(cart),
+            })
+                .then((data) => data.json())
+                .then((data) => this.loadStripe(data))
+        }
+
+        loadStripe(data) {
+            const elements = stripe.elements()
+            const style = {
+                base: {
+                    color: "#1a171b",
+                    fontFamily: "Nunito, sans-serif",
+                    fontSmoothing: "antialiased",
+                    fontSize: "16px",
+                    "::placeholder": {
+                        color: "#1a171b",
+                    },
+                },
+                invalid: {
+                    fontFamily: "Nunito, sans-serif",
+                    color: "#fa755a",
+                    iconColor: "#fa755a",
+                },
+            }
+
+            const card = elements.create("card", { style: style })
+            card.mount("#card-element")
+            card.on("change", (event) => {
+                this.payBtn.disabled = event.empty
+                this.cardError.textContent = event.error ? event.error.message : ""
+            })
+
+            this.paymentForm.addEventListener("submit", (event) => {
+                event.preventDefault()
+                this.payWithCard(stripe, card, data.clientSecret)
+            })
+        }
+
+        payWithCard(stripe, card, clientSecret) {
+            this.loading(true)
+            stripe
+                .confirmCardPayment(clientSecret, {
+                    payment_method: { card },
+                })
+                .then((result) => {
+                    if (result.error) return this.showError(result.error.message)
+                    return this.orderComplete(result.paymentIntent.id)
+                })
+        }
+
+        showError(msg) {
+            this.loading(false)
+            this.cardError.textContent = msg
+            setTimeout(() => {
+                this.cardError.textContent = ""
+            }, 4000)
+        }
+
+        loading(isLoading) {
+            if (isLoading) {
+                this.payBtn.disabled = true
+                this.spinner.classList.remove("hidden")
+                this.btnText.classList.add("hidden")
+            } else {
+                this.payBtn.disabled = false
+                this.spinner.classList.add("hidden")
+                this.btnText.classList.remove("hidden")
+            }
+        }
+
+        async orderComplete(id) {
+            this.loading(false)
+            return await fetch(`${API_ENDPOINT}/orders`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ id }),
+            })
+                .then((res) => res.json())
+                .then(() => {
+                    state.clear()
+                    q('result-message').classList.remove('hidden')
+                    this.payBtn.disabled = true
+                    this.cancel.innerText = 'close'
+                    this.cancel.classList.add('btn__primary')
+                    this.cancel.classList.remove('btn__secondary')
+                })
+        }
+
+        populateDatalist(datalist, data = [], fn) {
+            data.forEach((item) => {
+                datalist.appendChild(
+                    new Element("option", null, {
+                        value: fn(item),
+                    }).render()
+                )
+            })
+        }
+
+        async handleCountry() {
+            if (!state.get().countries.includes(this.country.value)) return
+            this.statesDatalist.textContent = ""
+            this.state.setAttribute("disabled", true)
+            this.state.value = ""
+            this.city.value = ""
+            return fetch(`${API_ENDPOINT}/countries/${this.country.value}`)
+                .then((data) => data.json())
+                .then((countryData) => {
+                    state.set((s) => ({
+                        ...s,
+                        countryData,
+                    }))
+                    this.populateDatalist(
+                        this.statesDatalist,
+                        countryData.states,
+                        (item) => item.name
+                    )
+                    this.state.removeAttribute("disabled")
+                })
+        }
+
+        handleState() {
+            const foundState = state
+                .get()
+                .countryData.states.find((s) => s.name === this.state.value)
+            if (!foundState) return
+            this.citiesDatalist.textContent = ""
+            this.city.value = ""
+            this.populateDatalist(
+                this.citiesDatalist,
+                foundState.cities,
+                (item) => item.name
+            )
+        }
+    }
+
+    return new Checkout()
+})()

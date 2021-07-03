@@ -1,5 +1,8 @@
 // Get an element
 export const q = (x) => document.getElementById(x)
+/* export const API_ENDPOINT =
+    "https://remembrance-backbacon-09587.herokuapp.com/api" */
+export const API_ENDPOINT = 'http://localhost:3000/api'
 
 // Handle updating number fields
 export const numberInputHandler = (el, fn, max) => {
@@ -41,14 +44,14 @@ class State {
 
     update() {
         localStorage.setItem("state", JSON.stringify(this.__state))
-        this.hooks.forEach(hook => hook(state.get()))
+        this.hooks.forEach((hook) => hook(state.get()))
         return this
     }
 
     get() {
         const storedState = localStorage.getItem("state")
         if (storedState) return JSON.parse(storedState)
-        return { cart: [], inv: [] }
+        return { cart: [], inv: [], countries: [], countryData: { states: [] } }
     }
 
     clear() {
@@ -103,7 +106,7 @@ export class Element {
 // Get Inventory to set max quantities of items
 const getInventory = async () => {
     // const INVENTORY_URL = "http://localhost:3000/api/inv"
-    const INVENTORY_URL = "https://remembrance-backbacon-09587.herokuapp.com/api/inv"
+    const INVENTORY_URL = `${API_ENDPOINT}/inv`
 
     return await fetch(INVENTORY_URL)
         .then((data) => data.json())
@@ -113,25 +116,44 @@ const getInventory = async () => {
                 inv: data,
             }))
         })
-        .catch((_) => {
-            console.error("Unable to get inventory")
+        .catch((e) => {
+            console.error("Unable to get inventory", e.message)
         })
 }
 getInventory()
 
-const homeHeading = (() => {
-    const tagLines = [
-        'For your thunder down under',
-        'Guard the crown jewels',
-        "For your national treasure",
-        'A luxury condo for your privates',
-        'If you are here, you may be gay',
-        'Protect and serve your genitals',
-        'Contain your thunder in style',
-        'A stylish shape for your bits',
-        "One person's junk is another's treasure"
-    ]
-    const heading = q('home-heading')
-    if (heading)
-        heading.innerText = tagLines[Math.floor(Math.random() * tagLines.length)]
-})()
+// Get the list of countries
+const getCountries = async () => {
+    const endpoint = `${API_ENDPOINT}/countries`
+
+    return await fetch(endpoint)
+        .then((data) => data.json())
+        .then((countries) => {
+            state.set((state) => ({
+                ...state,
+                countries,
+            }))
+        })
+        .catch((e) => {
+            console.error("Unable to get countries", e.message)
+        })
+}
+getCountries()
+
+    // Randomly pick a heading for the homepage
+    ; (() => {
+        const tagLines = [
+            "For your thunder down under",
+            "Guard the crown jewels",
+            "For your national treasure",
+            "A luxury condo for your privates",
+            "If you are here, you may be gay",
+            "Protect and serve your genitals",
+            "Contain your thunder in style",
+            "A stylish shape for your bits",
+            "One person's junk is another's treasure",
+        ]
+        const heading = q("home-heading")
+        if (heading)
+            heading.innerText = tagLines[Math.floor(Math.random() * tagLines.length)]
+    })()

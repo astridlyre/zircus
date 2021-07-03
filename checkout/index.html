@@ -4,133 +4,175 @@ title: zircus | checkout
 bottom_image: /assets/img/products/1920/closeup-d-1920.jpg
 ---
 
-<main class="page checkout">
+<div id="stripe-payment-modal" class="stripe-payment-modal">
   <div class="container">
-    <h1 class="page__heading">checkout</h1>
-    <form
-      id="checkout-client-details"
-      class="form"
-      action="http://localhost:3000/api/order"
-      method="POST"
-    >
-      <div class="flex-col">
-        <div id="checkout-products" class="checkout__products"></div>
-        <div class="flex-grow flex-col">
-          <div class="checkout__total">
-            <ul class="cart__total_prices">
-              <li class="cart__total_price">
-                Subtotal:<span class="cart__total_price_item" id="cart-subtotal"
-                  >$30</span
-                >
-              </li>
-              <li class="cart__total_price">
-                Tax:<span class="cart__total_price_item" id="cart-tax"
-                  >$1.24</span
-                >
-              </li>
-              <li class="cart__total_price bold">
-                Total:<span class="cart__total_price_item" id="cart-total"
-                  >$31</span
-                >
-              </li>
-            </ul>
-          </div>
-        </div>
+    <form id="stripe-payment-form" class="stripe-payment-form">
+      <div class="stripe-payment-form-heading-container">
+        <p class="stripe-payment-form-heading">Enter card details</p>
+        <span
+          class="stripe-payment-form-heading-price"
+          id="payment-price"
+        ></span>
       </div>
-      <div class="checkout__address">
-        <h2 class="checkout__address_heading">send undies pls</h2>
-        <label for="name"
-          ><span>Name</span
-          ><input
-            type="text"
-            name="name"
-            value=""
-            class="input"
-            required
-            id="checkout-name"
-            placeholder="your name"
-        /></label>
-        <label for="email"
-          ><span>Email</span
-          ><input
-            type="email"
-            name="email"
-            value=""
-            class="input min-w-15"
-            required
-            id="checkout-email"
-            placeholder="you@cool.com"
-        /></label>
-        <label for="street-address"
-          ><span>Street</span
-          ><input
-            type="text"
-            name="street-address"
-            value=""
-            class="input min-w-15"
-            required
-            id="checkout-street"
-            placeholder="street address"
-        /></label>
-        <label for="city"
-          ><span>City</span
-          ><input
-            type="text"
-            name="city"
-            value=""
-            class="input"
-            required
-            id="checkout-city"
-            placeholder="city"
-        /></label>
-        <label for="state"
-          ><span>State</span
-          ><input
-            type="text"
-            name="state"
-            value=""
-            class="input"
-            required
-            id="checkout-state"
-            placeholder="state"
-        /></label>
-        <label for="country"
-          ><span>Country</span
-          ><input
-            type="text"
-            name="country"
-            value=""
-            class="input"
-            required
-            placeholder="country"
-            id="checkout-country"
-        /></label>
-        <label for="zip"
-          ><span>Zip</span
-          ><input
-            type="text"
-            name="zip"
-            value=""
-            class="input min-w-10"
-            required
-            placeholder="zip"
-            id="checkout-zip"
-        /></label>
+      <div id="card-element" class="stripe-payment-form-card">
+        <!--Stripe.js injects the Card Element-->
+      </div>
+      <div class="stripe-payment-form-buttons">
+        <button id="pay-button" class="btn__primary btn">
+          <div class="spinner hidden" id="spinner"></div>
+          <span id="button-text">Pay now</span>
+        </button>
+        <button id="cancel" class="btn btn__secondary">cancel</button>
+        <p id="card-error" class="error hidden" role="alert">Payment failed</p>
+        <p id="result-message" class="result-message hidden">
+          Payment succeeded
+        </p>
       </div>
     </form>
-    <div class="checkout__button">
-      <button
-        class="btn btn__primary"
-        type="button"
-        id="place-order"
-        accesskey="o"
+  </div>
+</div>
+<div class="" id="blur">
+  <main class="page checkout">
+    <div class="container">
+      <h1 class="page__heading">checkout</h1>
+      <form
+        id="checkout-client-details"
+        class="form"
+        action="http://localhost:3000/api/order"
+        method="POST"
       >
-        <span class="underline">p</span>lace order
-      </button>
+        <div class="flex-col">
+          <div id="checkout-products" class="checkout__products"></div>
+          <div class="flex-grow flex-col">
+            <div class="checkout__total">
+              <ul class="cart__total_prices">
+                <li class="cart__total_price">
+                  Subtotal:<span
+                    class="cart__total_price_item"
+                    id="cart-subtotal"
+                  ></span>
+                </li>
+                <li class="cart__total_price">
+                  Tax:<span class="cart__total_price_item" id="cart-tax"></span>
+                </li>
+                <li class="cart__total_price bold">
+                  Total:<span
+                    class="cart__total_price_item"
+                    id="cart-total"
+                  ></span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="checkout__address">
+          <h2 class="checkout__address_heading">send undies pls</h2>
+          <label for="name"
+            ><span>Name</span
+            ><input
+              type="text"
+              name="name"
+              value=""
+              class="input"
+              required
+              id="checkout-name"
+              placeholder="your name"
+              autocomplete="on"
+          /></label>
+          <label for="email"
+            ><span>Email</span
+            ><input
+              type="email"
+              name="email"
+              value=""
+              class="input min-w-15"
+              required
+              id="checkout-email"
+              placeholder="you@cool.com"
+              autocomplete="on"
+          /></label>
+          <label for="street-address"
+            ><span>Address</span
+            ><input
+              type="text"
+              name="street-address"
+              value=""
+              class="input min-w-15"
+              required
+              id="checkout-street"
+              placeholder="street address"
+              autocomplete="on"
+          /></label>
+          <label for="country"
+            ><span>Country</span>
+            <input
+              autocomplete="off"
+              class="input"
+              list="checkout-countries"
+              name="country"
+              id="checkout-country"
+              required
+              placeholder="country"
+              value=""
+            />
+            <datalist id="checkout-countries"></datalist>
+          </label>
+          <label for="state"
+            ><span>State</span
+            ><input
+              autocomplete="off"
+              list="checkout-states"
+              name="state"
+              value=""
+              class="input"
+              required
+              id="checkout-state"
+              placeholder="state"
+            />
+            <datalist id="checkout-states"></datalist>
+          </label>
+          <label for="city"
+            ><span>City</span
+            ><input
+              list="checkout-cities"
+              name="city"
+              value=""
+              class="input"
+              required
+              id="checkout-city"
+              placeholder="city"
+              autocomplete="off"
+            />
+            <datalist id="checkout-cities"></datalist>
+          </label>
+          <label for="zip"
+            ><span>Zip</span
+            ><input
+              type="text"
+              name="zip"
+              value=""
+              class="input min-w-10"
+              required
+              placeholder="zip"
+              id="checkout-zip"
+              autocomplete="on"
+          /></label>
+        </div>
+      </form>
+      <div class="checkout__button">
+        <button
+          class="btn btn__primary"
+          type="button"
+          id="place-order"
+          accesskey="o"
+        >
+          <span class="underline">p</span>lace order
+        </button>
+      </div>
     </div>
-  </div>
-  <div class="page__bottom_image">
-    <div class="bg-light rounded-big-bottom absolute t-0 l-0"></div>
-    <img src="{{ page.bottom_image }}" alt="Zircus Underwear" />
-  </div>
-</main>
+    <div class="page__bottom_image">
+      <div class="bg-light rounded-big-bottom absolute t-0 l-0"></div>
+      <img src="{{ page.bottom_image }}" alt="Zircus Underwear" />
+    </div>
+  </main>
+</div>

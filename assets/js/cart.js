@@ -1,4 +1,4 @@
-import { q, Element, numberInputHandler, state } from "./utils.js"
+import { q, Element, API_ENDPOINT, numberInputHandler, state } from "./utils.js"
 
 /*
     Cart performs the functions manage the shopping cart.
@@ -8,10 +8,6 @@ import { q, Element, numberInputHandler, state } from "./utils.js"
 
 export const cart = (function() {
     const TAX_RATE = 0.12
-
-    // const API_ENDPOINT = "http://localhost:3000/api/orders"
-    const API_ENDPOINT =
-        "https://remembrance-backbacon-09587.herokuapp.com/api/orders"
 
     class Cart {
         constructor() {
@@ -23,6 +19,9 @@ export const cart = (function() {
             this.checkoutBtn = q("cart-checkout")
             this.payPalBtn = q("cart-paypal")
             this.placeOrderBtn = q("place-order")
+            this.country = q("checkout-country")
+            this.state = q("checkout-state")
+            this.city = q("checkout-city")
             this.subtotal = 0
             this.render().setTotals()
 
@@ -31,8 +30,6 @@ export const cart = (function() {
                     if (this.items.length > 0) location.assign("/checkout")
                 })
 
-            this.placeOrderBtn &&
-                this.placeOrderBtn.addEventListener("click", () => this.placeOrder())
         }
 
         get items() {
@@ -58,7 +55,7 @@ export const cart = (function() {
 
             // Tally up
             this.items.forEach((item) => {
-                this.subtotal += Cart.getPrice(item.type) * item.quantity
+                this.subtotal += item.price * item.quantity
             })
             this.tax = this.subtotal * TAX_RATE
             this.total = this.subtotal + this.tax
@@ -77,14 +74,14 @@ export const cart = (function() {
 
         // Hard coded for now
         getItemType(item) {
-            return item.name.toLowerCase().split(' ').join('-')
+            return item.name.toLowerCase().split(" ").join("-")
         }
 
         renderItem(item, renderMinimal) {
             if (!renderMinimal) {
                 // Image and description
                 const flexCon = new Element("a", ["cart__product_flexcon"], {
-                    href: `/products/${this.getItemType(item)}.html`
+                    href: `/products/${this.getItemType(item)}.html`,
                 })
                     .addChild(
                         new Element("img", ["cart__product_image"], {
@@ -99,7 +96,7 @@ export const cart = (function() {
                     )
                 // Inputs
                 const header = new Element("h3", ["cart__product_quantity"]).addChild(
-                    `$${Cart.getPrice(item.type) * item.quantity}`
+                    `$${item.price * item.quantity}`
                 )
 
                 const quant = new Element("input", ["input", "w-4"], {
@@ -132,7 +129,7 @@ export const cart = (function() {
             } else {
                 // Image and description
                 const flexCon = new Element("a", ["cart__product_flexcon"], {
-                    href: `/products/${this.getItemType(item)}.html`
+                    href: `/products/${this.getItemType(item)}.html`,
                 })
                     .addChild(
                         new Element("img", ["cart__product_image"], {
@@ -169,7 +166,7 @@ export const cart = (function() {
                     return i.id === item.id ? { ...i, quantity: n } : i
                 }),
             }))
-            p.innerText = `$${Cart.getPrice(item.type) * n}`
+            p.innerText = `$${item.price * n}`
             return this.setTotals()
         }
 
@@ -204,46 +201,6 @@ export const cart = (function() {
             q(item.id).remove()
             if (!this.items.length) return this.render().setTotals()
             return this.setTotals()
-        }
-
-        async placeOrder() {
-            const cart = {
-                name: q("checkout-name").value,
-                email: q("checkout-email").value,
-                streetAddress: q("checkout-street").value,
-                city: q("checkout-city").value,
-                state: q("checkout-state").value,
-                country: q("checkout-country").value,
-                zip: q("checkout-zip").value,
-                items: this.items.map((item) => ({
-                    type: item.type,
-                    prefix: item.prefix,
-                    size: item.size,
-                    name: item.name,
-                    color: item.color,
-                    quantity: item.quantity,
-                })),
-            }
-            fetch(API_ENDPOINT, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(cart),
-            })
-                .then((data) => data.json())
-                .then((data) => {
-                    console.log(data)
-                    state.clear()
-                    location.assign("/")
-                })
-        }
-
-        static getPrice(type) {
-            if (type === "cf") {
-                return 38
-            }
-            return 30
         }
     }
 
