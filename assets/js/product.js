@@ -11,6 +11,7 @@ import { cart } from "./cart.js"
   and size is the image size 400, 600 or 1000
 */
 (function() {
+    // Don't do anything on pages other than product page
     const type = q("product-type")
     if (!type) return
 
@@ -101,7 +102,6 @@ import { cart } from "./cart.js"
                 this.addToCart.innerText = "add to cart"
             }, 1000)
             this.addToCart.blur()
-            cart.updateNavLink()
             return this
         }
 

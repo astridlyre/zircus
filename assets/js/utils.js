@@ -41,6 +41,7 @@ class State {
 
     update() {
         localStorage.setItem("state", JSON.stringify(this.__state))
+        this.hooks.forEach(hook => hook(state.get()))
         return this
     }
 
@@ -111,8 +112,6 @@ const getInventory = async () => {
                 ...state,
                 inv: data,
             }))
-            // update quantities
-            state.hooks.forEach(h => h())
         })
         .catch((_) => {
             console.error("Unable to get inventory")

@@ -15,8 +15,6 @@ export const cart = (function() {
 
     class Cart {
         constructor() {
-            this.navLink = q("cart-link")
-            this.navLinkMobile = q("cart-link-mobile")
             this.cartSubTotal = q("cart-subtotal")
             this.cartTax = q("cart-tax")
             this.cartTotal = q("cart-total")
@@ -52,7 +50,7 @@ export const cart = (function() {
         }
 
         setTotals() {
-            if (!this.list) return this.updateNavLink()
+            if (!this.list) return this
             // Clear prices
             this.total = 0
             this.subtotal = 0
@@ -74,7 +72,7 @@ export const cart = (function() {
 
             // Update navLink
             this.enableButtons()
-            return this.updateNavLink()
+            return this
         }
 
         // Hard coded for now
@@ -163,7 +161,7 @@ export const cart = (function() {
             const n = numberInputHandler(
                 el,
                 null,
-                () => state.get().maxQuantities.find((i) => i.id === item.id).quantity
+                () => state.get().inv.find((i) => i.id === item.id).quantity
             )
             state.set((state) => ({
                 ...state,
@@ -206,21 +204,6 @@ export const cart = (function() {
             q(item.id).remove()
             if (!this.items.length) return this.render().setTotals()
             return this.setTotals()
-        }
-
-        updateNavLink() {
-            if (this.items.length) {
-                let totalItems = 0
-                this.items.forEach((item) => {
-                    totalItems += item.quantity
-                })
-                this.navLink.innerText = `cart (${totalItems})`
-                this.navLinkMobile.innerText = `cart (${totalItems})`
-            } else {
-                this.navLink.innerText = "cart"
-                this.navLinkMobile.innerText = "cart"
-            }
-            return this
         }
 
         async placeOrder() {
