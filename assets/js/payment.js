@@ -27,8 +27,12 @@ export const checkout = (() => {
             this.statesDatalist = q("checkout-states")
             this.citiesDatalist = q("checkout-cities")
             this.placeOrder = q('place-order')
+            this.checkoutForm = q('checkout-form')
             this.cancel = q('cancel')
-            this.placeOrder.addEventListener("click", () => this.createPaymentIntent())
+            this.checkoutForm.addEventListener("submit", event => {
+                event.preventDefault()
+                this.createPaymentIntent()
+            })
             this.cancel.addEventListener('click', () => this.showModal(false))
             // Add functionality for Countries States and Cities
             state.addHook((s) =>
@@ -47,6 +51,7 @@ export const checkout = (() => {
         }
 
         showModal(show) {
+            this.loading(false)
             if (show) {
                 document.body.classList.add('hide-y')
                 this.nav.classList.add("blur")

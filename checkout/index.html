@@ -35,12 +35,7 @@ bottom_image: /assets/img/products/1920/closeup-d-1920.jpg
   <main class="page checkout">
     <div class="container">
       <h1 class="page__heading">checkout</h1>
-      <form
-        id="checkout-client-details"
-        class="form"
-        action="http://localhost:3000/api/order"
-        method="POST"
-      >
+      <form id="checkout-form" class="form">
         <div class="flex-col">
           <div id="checkout-products" class="checkout__products"></div>
           <div class="flex-grow flex-col">
@@ -158,17 +153,18 @@ bottom_image: /assets/img/products/1920/closeup-d-1920.jpg
               autocomplete="on"
           /></label>
         </div>
+        <div></div>
+        <div class="checkout__button">
+          <button
+            class="btn btn__primary"
+            type="submit"
+            id="place-order"
+            accesskey="o"
+          >
+            <span class="underline">p</span>lace order
+          </button>
+        </div>
       </form>
-      <div class="checkout__button">
-        <button
-          class="btn btn__primary"
-          type="button"
-          id="place-order"
-          accesskey="o"
-        >
-          <span class="underline">p</span>lace order
-        </button>
-      </div>
     </div>
     <div class="page__bottom_image">
       <div class="bg-light rounded-big-bottom absolute t-0 l-0"></div>
