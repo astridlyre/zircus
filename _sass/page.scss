@@ -1,0 +1,47 @@
+.page {
+  @include flexCol();
+  margin-top: var(--nav-height);
+  padding: var(--y-padding) 0;
+  border-radius: var(--big-radius);
+  background: var(--light);
+  color: var(--dark);
+  width: 100%;
+  justify-content: flex-start;
+  align-items: center;
+  flex-grow: 1;
+
+  &__heading {
+    width: 100%;
+    margin-bottom: 1.25rem;
+    @include res("sm") {
+      font-size: 3rem;
+      text-align: left;
+    }
+    font-size: 2.5rem;
+    box-sizing: border-box;
+    text-align: center;
+  }
+
+  &__bottom_image {
+    @include flexCol();
+      @include res('xl') {
+        max-height: 35vh;
+      }
+    min-height: 25vh;
+    flex-grow: 1;
+    flex-shrink: 1;
+    position: relative;
+    width: 100%;
+    background: var(--light);
+    border-bottom-left-radius: var(--big-radius);
+    border-bottom-right-radius: var(--big-radius);
+    overflow: hidden;
+
+    img {
+      flex-grow: 1;
+      width: 100%;
+      object-fit: cover;
+      vertical-align: middle;
+    }
+  }
+}

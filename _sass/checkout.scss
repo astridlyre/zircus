@@ -1,61 +1,57 @@
 .checkout {
-  padding-top: var(--top-padding);
-}
-
-.form {
-  display: grid;
-  @include res("md") {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  grid-template-columns: 1fr;
-  gap: var(--two-col-gap);
-
-  label {
-    @media screen and (max-width: 445px) {
-      flex-flow: column nowrap;
+  .form {
+    display: grid;
+    @include res("md") {
+      grid-template-columns: repeat(2, 1fr);
     }
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    width: 100%;
+    grid-template-columns: 1fr;
+    gap: var(--two-col-gap);
 
-    span {
-      background: var(--teal);
-      padding: var(--btn-padding);
-      border-top-left-radius: var(--radius);
-      border-bottom-left-radius: var(--radius);
-      color: var(--dark);
-      font-weight: 600;
-      letter-spacing: 0.1rem;
-      font-size: 0.9rem;
+    label {
       @media screen and (max-width: 445px) {
-        display: none;
+        flex-flow: column nowrap;
       }
-    }
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      width: 100%;
 
-    input {
-      @media screen and (max-width: 445px) {
-        width: 100%;
+      span {
+        background: var(--teal);
+        padding: var(--btn-padding);
+        border-top-left-radius: var(--radius);
+        border-bottom-left-radius: var(--radius);
+        color: var(--dark);
+        font-weight: 600;
+        letter-spacing: 0.1rem;
+        font-size: 0.9rem;
+        @media screen and (max-width: 445px) {
+          display: none;
+        }
       }
-      flex-grow: 1;
-      @include res("sm") {
-        flex-grow: unset;
-      }
-    }
 
-    .min-w-15 {
-      @include res("sm") {
-        min-width: 15rem;
+      input {
+        @media screen and (max-width: 445px) {
+          width: 100%;
+        }
+        flex-grow: 1;
+        @include res("sm") {
+          flex-grow: unset;
+        }
       }
-    }
 
-    .min-w-10 {
-      max-width: 7rem;
+      .min-w-15 {
+        @include res("sm") {
+          min-width: 15rem;
+        }
+      }
+
+      .min-w-10 {
+        max-width: 7rem;
+      }
     }
   }
-}
 
-.checkout {
   &__button {
     padding-top: 2rem;
     display: flex;
@@ -79,5 +75,9 @@
     flex-flow: column nowrap;
     align-items: flex-end;
     gap: 1rem;
+
+    &_heading {
+      font-size: 2rem;
+    }
   }
 }

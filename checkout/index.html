@@ -4,7 +4,7 @@ title: zircus | checkout
 bottom_image: /assets/img/products/1920/closeup-d-1920.jpg
 ---
 
-<main class="main checkout">
+<main class="page checkout">
   <div class="container">
     <h1 class="page__heading">checkout</h1>
     <form
@@ -38,7 +38,7 @@ bottom_image: /assets/img/products/1920/closeup-d-1920.jpg
         </div>
       </div>
       <div class="checkout__address">
-        <h2>send undies pls</h2>
+        <h2 class="checkout__address_heading">send undies pls</h2>
         <label for="name"
           ><span>Name</span
           ><input
@@ -119,20 +119,18 @@ bottom_image: /assets/img/products/1920/closeup-d-1920.jpg
       </div>
     </form>
     <div class="checkout__button">
-      <div class="res-sm-full grid-1">
-        <button
-          class="btn btn__primary"
-          type="button"
-          id="place-order"
-          accesskey="o"
-        >
-          <span class="underline">p</span>lace order
-        </button>
-      </div>
+      <button
+        class="btn btn__primary"
+        type="button"
+        id="place-order"
+        accesskey="o"
+      >
+        <span class="underline">p</span>lace order
+      </button>
     </div>
   </div>
-  <div class="cart-padding"></div>
-  <div class="product__bottom_image">
+  <div class="page__bottom_image">
+    <div class="bg-light rounded-big-bottom absolute t-0 l-0"></div>
     <img src="{{ page.bottom_image }}" alt="Zircus Underwear" />
   </div>
 </main>

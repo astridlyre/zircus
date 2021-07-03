@@ -23,7 +23,7 @@ export const cart = (function() {
             this.list = q("cart-products")
             this.checkoutList = q("checkout-products")
             this.checkoutBtn = q("cart-checkout")
-            this.payPalBtn = q('cart-paypal')
+            this.payPalBtn = q("cart-paypal")
             this.placeOrderBtn = q("place-order")
             this.subtotal = 0
             this.render().setTotals()
@@ -43,11 +43,11 @@ export const cart = (function() {
 
         enableButtons() {
             if (this.items.length > 0) {
-                this.checkoutBtn.removeAttribute('disabled')
-                this.payPalBtn.removeAttribute('disabled')
+                this.checkoutBtn.removeAttribute("disabled")
+                this.payPalBtn.removeAttribute("disabled")
             } else {
-                this.checkoutBtn.setAttribute('disabled', true)
-                this.payPalBtn.setAttribute('disabled', true)
+                this.checkoutBtn.setAttribute("disabled", true)
+                this.payPalBtn.setAttribute("disabled", true)
             }
         }
 
@@ -77,10 +77,17 @@ export const cart = (function() {
             return this.updateNavLink()
         }
 
+        // Hard coded for now
+        getItemType(item) {
+            return item.name.toLowerCase().split(' ').join('-')
+        }
+
         renderItem(item, renderMinimal) {
             if (!renderMinimal) {
                 // Image and description
-                const flexCon = new Element("div", ["flex-row", "flex-grow"])
+                const flexCon = new Element("a", ["cart__product_flexcon"], {
+                    href: `/products/${this.getItemType(item)}.html`
+                })
                     .addChild(
                         new Element("img", ["cart__product_image"], {
                             src: item.images[0],
@@ -126,7 +133,9 @@ export const cart = (function() {
                 return root.render()
             } else {
                 // Image and description
-                const flexCon = new Element("div", ["flex-row", "flex-grow"])
+                const flexCon = new Element("a", ["cart__product_flexcon"], {
+                    href: `/products/${this.getItemType(item)}.html`
+                })
                     .addChild(
                         new Element("img", ["cart__product_image"], {
                             src: item.images[0],

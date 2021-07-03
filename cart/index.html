@@ -4,7 +4,7 @@ title: zircus | cart
 bottom_image: /assets/img/products/1920/group-a-1920.jpg
 ---
 
-<main class="main cart">
+<main class="page">
   <div class="container">
     <h1 class="page__heading">shopping cart</h1>
     <div id="cart-products"></div>
@@ -23,31 +23,29 @@ bottom_image: /assets/img/products/1920/group-a-1920.jpg
         </li>
       </ul>
     </div>
-    <div class="cart__product_checkout">
-      <div class="grid-2 res-sm-full">
-        <button
-          class="btn btn__secondary"
-          type="button"
-          id="cart-paypal"
-          accesskey="o"
-          disabled
-        >
-          <span class="underline">p</span>aypal
-        </button>
-        <button
-          class="btn btn__primary"
-          type="button"
-          id="cart-checkout"
-          accesskey="o"
-          disabled
-        >
-          check<span class="underline">o</span>ut
-        </button>
-      </div>
+    <div class="cart__buttons">
+      <button
+        class="btn btn__secondary"
+        type="button"
+        id="cart-paypal"
+        accesskey="o"
+        disabled
+      >
+        <span class="underline">p</span>aypal
+      </button>
+      <button
+        class="btn btn__primary"
+        type="button"
+        id="cart-checkout"
+        accesskey="o"
+        disabled
+      >
+        check<span class="underline">o</span>ut
+      </button>
     </div>
   </div>
-  <div class="cart-padding"></div>
-  <div class="product__bottom_image">
+  <div class="page__bottom_image">
+    <div class="bg-light rounded-big-bottom absolute t-0 l-0"></div>
     <img src="{{ page.bottom_image }}" alt="Zircus Underwear" />
   </div>
 </main>

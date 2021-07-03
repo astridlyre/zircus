@@ -1,22 +1,28 @@
 .nav {
-  align-items: center;
+  height: var(--nav-height);
   position: fixed;
-  padding: 0 var(--side-padding);
   top: 0;
   left: 0;
-  display: flex;
   background: var(--dark);
   width: 100vw;
   z-index: 10;
+
+  &__nav {
+    display: flex;
+    align-items: center;
+  }
 
   &__button {
     position: fixed;
     background-color: var(--dark);
     border-radius: var(--radius);
-    outline: none;
     border: 0.2rem solid var(--teal);
-    top: 0.7rem;
-    right: 2rem;
+    outline: none;
+    top: 0.5rem;
+    height: 3rem;
+    width: 4rem;
+    padding: 0.5rem;
+    right: var(--x-padding);
     cursor: pointer;
 
     &:hover {
@@ -27,8 +33,8 @@
     &_bars {
       color: var(--light);
       fill: var(--light);
-      width: 2rem;
-      height: 2rem;
+      height: 100%;
+      width: 100%;
     }
   }
 
@@ -85,14 +91,15 @@
 
     &_items {
       padding: 2rem 0;
+      width: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
     &_link {
+      margin-right: -2rem;
       margin-left: 2rem;
-      margin-right: -1rem;
       padding: var(--btn-padding);
       border: 2px solid var(--dark);
       border-radius: var(--radius);
@@ -118,8 +125,8 @@
   &__heading {
     color: var(--light);
     padding: 1rem 0;
-    flex-grow: 1;
     letter-spacing: 0;
+    flex-grow: 1;
     font-family: var(--af);
     font-size: 2rem;
     font-style: normal;
@@ -127,9 +134,9 @@
     &_link {
       z-index: 0;
       position: relative;
-      
+
       &::after {
-        content: '';
+        content: "";
         position: absolute;
         right: -2rem;
         top: 0.43rem;
@@ -143,10 +150,15 @@
       }
 
       &:hover::after {
-        transform: scale(1.75);
+        animation: 0.2s ease-out forwards circleGrowOne;
         @include easeOut();
       }
-
     }
   }
+}
+
+// Class for hiding and showing mobile menu
+.hidden {
+  transform: translateX(100%) !important;
+  transition: transform 0.2s ease-out;
 }

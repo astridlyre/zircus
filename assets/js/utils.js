@@ -119,3 +119,20 @@ const getInventory = async () => {
         })
 }
 getInventory()
+
+const homeHeading = (() => {
+    const tagLines = [
+        'For your thunder down under',
+        'Guard the crown jewels',
+        "For your national treasure",
+        'A luxury condo for your privates',
+        'If you are here, you may be gay',
+        'Protect and serve your genitals',
+        'Contain your thunder in style',
+        'A stylish shape for your bits',
+        "One person's junk is another's treasure"
+    ]
+    const heading = q('home-heading')
+    if (heading)
+        heading.innerText = tagLines[Math.floor(Math.random() * tagLines.length)]
+})()

@@ -28,3 +28,32 @@
 @mixin easeOut {
   transition: all 0.1s ease-out;
 }
+
+@mixin grid1 {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto;
+  gap: var(--grid-gap);
+}
+
+@mixin grid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  gap: var(--grid-gap);
+}
+
+@mixin flexRow {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+@mixin flexCol {
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+@mixin flexCenter {
+  justify-content: center;
+  align-items: center;
+}

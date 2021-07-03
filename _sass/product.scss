@@ -48,7 +48,7 @@
     width: 100%;
     padding: 2rem;
     cursor: pointer;
-    @include fadeIn(0.5s);
+    @include fadeIn(0.2s);
   }
 
   &__details {
@@ -73,7 +73,6 @@
     &_buttons {
       display: grid;
       @include res("sm") {
-        margin-top: 0;
         grid-template-columns: repeat(2, 1fr);
       }
       margin-top: 1rem;
@@ -96,19 +95,6 @@
     max-width: 25rem;
   }
 
-  &__bottom_image {
-    background: var(--light);
-    padding-bottom: 4rem;
-    border-bottom-left-radius: var(--big-radius);
-    border-bottom-right-radius: var(--big-radius);
-
-    img {
-      width: 100%;
-      object-fit: cover;
-      vertical-align: middle;
-      border-radius: var(--big-radius);
-    }
-  }
 }
 
 .full {

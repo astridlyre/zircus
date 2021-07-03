@@ -3,6 +3,7 @@
 @import "mixins";
 @import "animations";
 
+// Root variables
 :root {
   --teal: #47ddc3;
   --gold: #fbce47;
@@ -13,166 +14,55 @@
   --lgrey: #e4e6e4;
   --af: "Virgo 01", sans-serif;
   --mf: "Nunito", sans-serif;
-  @include res('sm') {
-    --side-padding: 3rem;
+
+  // Side padding for general alignment
+  // Negative margin for nav bar
+  // Side margin for nav bar items
+  @include res("sm") {
+    --y-padding: 5rem;
+    --x-padding: 3rem;
   }
-  @include res('md') {
-    --side-padding: 4rem;
+  @include res("md") {
+    --y-padding: 6rem;
+    --x-padding: 4rem;
   }
-  @include res('lg') {
-    --side-padding: 5rem;
+  @include res("lg") {
+    --y-padding: 7rem;
+    --x-padding: 5rem;
   }
-  @include res('xl') {
-    --side-padding: 6rem;
+  @include res("xl") {
+    --y-padding: 8rem;
+    --x-padding: 6rem;
   }
-  --side-padding: 2rem;
-  @include res('md') {
-    --top-padding: 8rem;
+  --y-padding: 4rem;
+  --x-padding: 2rem;
+
+  // Nav height for page alignment
+  @include res("md") {
+    --nav-height: 6rem;
   }
-  --top-padding: 6rem;
-  @include res('sm') {
-    --top-margin: 6rem;
-  }
-  @include res('md') {
-    --top-margin: 8rem;
-  }
-  --top-margin: 4rem;
-  --radius: 0.325rem;
+  --nav-height: 4rem;
+
+  // Radius for page and sections
   --big-radius: 1.25rem;
-  --two-col-gap: 4rem;
+
+  // Small radius for inputs and buttons
+  // Padding for inputs and buttons
+  --radius: 0.325rem;
   --btn-padding: 0.5rem 2rem;
   --input-padding: 0.5rem;
+
+  // Gap for two-col layouts
+  // Gap for generic grid
+  --two-col-gap: 4rem;
+  --grid-gap: 1rem;
   box-sizing: border-box;
 }
 
-html {
-  @include res('lg') {
-    font-size: 16px;
-  }
-  @include res('xl') {
-    font-size: 22px;
-  }
-}
-
-* {
-  box-sizing: inherit;
-}
-
-.bold {
-  font-weight: 600;
-}
-
-.grey {
-  color: var(--grey);
-}
-.bg-grey {
-  background-color: var(--grey);
-}
-
-.light {
-  color: var(--light);
-}
-.bg-light {
-  background-color: var(--light);
-}
-
-.dark {
-  color: var(--dark);
-}
-.bg-dark {
-  background-color: var(--dark);
-}
-
-.gold {
-  color: var(--gold);
-}
-.bg-gold {
-  background-color: var(--gold);
-}
-
-.teal {
-  color: var(--teal);
-}
-.bg-teal {
-  background-color: var(--teal);
-}
-
-.purple {
-  color: var(--purple);
-}
-.bg-purple {
-  background-color: var(--purple);
-}
-
-.underline {
-  text-decoration: underline;
-}
-
-.hidden {
-  transform: translateX(100%) !important;
-  transition: transform 0.2s ease-out;
-}
-
-.mt-1 {
-  @include res("sm") {
-    margin-top: 1rem;
-  }
-}
-
-.grid-1 {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: auto;
-  gap: 1rem;
-}
-
-.grid-2 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto;
-  gap: 1rem;
-}
-
-.w-4 {
-  width: 4rem;
-}
-
-.res-sm-full {
-  @include res("sm") {
-    width: unset;
-  }
-  width: 100%;
-}
-
-.flex-row {
-  display: flex;
-  flex-flow: row nowrap;
-  align-items: center;
-}
-
-.flex-col {
-  display: flex;
-  flex-flow: column nowrap;
-  justify-content: flex-end;
-}
-
-.flex-grow {
-  flex-grow: 1;
-}
-
-.hide-y {
-  overflow-y: hidden;
-}
-
-.rounded-big {
-  width: 100%;
-  height: 4rem;
-  border-top-left-radius: var(--big-radius);
-  border-top-right-radius: var(--big-radius);
-}
-
+@import "helpers";
+@import "page";
+@import "home";
 @import "general";
-@import "headings";
 @import "nav";
 @import "footer";
 @import "product";
