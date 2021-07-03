@@ -60,6 +60,26 @@
   flex-grow: 1;
 }
 
+.black-before::before {
+  background: var(--dark);
+}
+
+.teal-before::before {
+  background: var(--teal);
+}
+
+.yellow-before::before {
+  background: var(--gold);
+}
+
+.purple-before::before {
+  background: var(--purple);
+}
+
+.stripe-before::before {
+  background-image: repeating-linear-gradient(45deg, #1a171b, #1a171b 3rem, #f0f5f2 3rem, #f0f5f2 6rem);
+}
+
 .flex-col {
   @include flexCol();
   justify-content: flex-end;

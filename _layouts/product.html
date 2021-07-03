@@ -25,68 +25,77 @@ layout: default
         class="product__img"
         id="product-image"
       />
-      <div class="product__details">
-        <h2 class="product__price">
-          <span id="product-price-text"></span>
-        </h2>
-        <div class="product__form">
-          <div class="product__inputs">
-            <input type="hidden" id="product-type" value="{{ page.type }}" />
-            <input type="hidden" id="product-price" value="{{ page.price }}" />
-            <input
-              type="hidden"
-              id="product-default-color"
-              value="{{ page.default_color }}"
-            />
-            <input
-              id="product-quantity"
-              class="input"
-              max="10"
-              min="1"
-              name="product-quantity"
-              type="number"
-              value="1"
-              disabled
-              accesskey="q"
-            />
-            <select id="product-size" accesskey="z" class="input">
-              <option value="sm" name="sm">sm</option>
-              <option selected value="md" name="md">md</option>
-              <option value="lg" name="lg">lg</option>
-              <option value="xl" name="xl">xl</option>
-              <option value="2xl" name="2xl">2xl</option>
-              <option value="3xl" name="3xl">3xl</option>
-              <option value="4xl" name="4xl">4xl</option>
-            </select>
-            <select id="product-color" accesskey="c" class="input">
-              <option value="yellow" name="yellow">yellow</option>
-              <option value="teal" name="teal">teal</option>
-              <option value="purple" name="purple">purple</option>
-              <option value="stripe" name="striped">striped</option>
-              <option value="black" name="black">black</option>
-            </select>
+      <div id="product-accent" class="product__details">
+        <div class="product__details_container">
+          <h2 class="product__price">
+            <span id="product-price-text"></span>
+          </h2>
+          <div class="product__form">
+            <div class="product__inputs">
+              <input type="hidden" id="product-type" value="{{ page.type }}" />
+              <p id="product-stock" class="product__inputs_stock out-stock">
+                None available
+              </p>
+              <input
+                type="hidden"
+                id="product-price"
+                value="{{ page.price }}"
+              />
+              <input
+                type="hidden"
+                id="product-default-color"
+                value="{{ page.default_color }}"
+              />
+              <input
+                id="product-quantity"
+                class="input"
+                max="10"
+                min="1"
+                name="product-quantity"
+                type="number"
+                value="1"
+                disabled
+                accesskey="q"
+              />
+              <select id="product-size" accesskey="z" class="input">
+                <option value="sm" name="sm">sm</option>
+                <option selected value="md" name="md">md</option>
+                <option value="lg" name="lg">lg</option>
+                <option value="xl" name="xl">xl</option>
+                <option value="2xl" name="2xl">2xl</option>
+                <option value="3xl" name="3xl">3xl</option>
+                <option value="4xl" name="4xl">4xl</option>
+              </select>
+              <select id="product-color" accesskey="c" class="input">
+                <option value="yellow" name="yellow">yellow</option>
+                <option value="teal" name="teal">teal</option>
+                <option value="purple" name="purple">purple</option>
+                <option value="stripe" name="striped">striped</option>
+                <option value="black" name="black">black</option>
+              </select>
+            </div>
+            <div class="product__inputs_buttons">
+              <button
+                class="btn btn__primary"
+                type="button"
+                id="add-to-cart"
+                accesskey="a"
+                disabled
+              >
+                out of stock
+              </button>
+              <button
+                class="btn btn__secondary"
+                type="button"
+                id="checkout"
+                accesskey="b"
+              >
+                <span class="underline">c</span>heckout
+              </button>
+            </div>
           </div>
-          <div class="product__inputs_buttons">
-            <button
-              class="btn btn__primary"
-              type="button"
-              id="add-to-cart"
-              accesskey="a"
-              disabled
-            >
-              out of stock
-            </button>
-            <button
-              class="btn btn__secondary"
-              type="button"
-              id="checkout"
-              accesskey="b"
-            >
-              <span class="underline">c</span>heckout
-            </button>
-          </div>
+          <div class="product__description">{{ content }}</div>
         </div>
-        <div class="product__description">{{ content }}</div>
       </div>
     </div>
   </div>

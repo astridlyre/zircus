@@ -16,7 +16,7 @@
     letter-spacing: 0.1rem;
     color: var(--dark);
     text-align: center;
-    @include res("md") {
+    @include res("sm") {
       text-align: left;
     }
 
@@ -30,7 +30,7 @@
       font-size: 1.1rem;
       font-weight: 300;
       letter-spacing: 0.1rem;
-      @include res("md") {
+      @include res("sm") {
         text-align: left;
       }
       text-align: center;
@@ -38,8 +38,16 @@
   }
 
   &__price {
-    text-align: right;
+    @include res("sm") {
+      text-align: right;
+    }
+    text-align: center;
+    font-size: 3rem;
     margin-bottom: 1rem;
+    width: 100%;
+    max-width: 30rem;
+    z-index: 5;
+    font-weight: 600;
   }
 
   &__img {
@@ -56,23 +64,79 @@
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
-    @include res("md") {
+    position: relative;
+    z-index: 0;
+    @include res("sm") {
       align-items: flex-end;
     }
+
+    &::before {
+      @include res("sm") {
+        content: "";
+      }
+      @include res("md") {
+        top: -6rem;
+        right: -6rem;
+        left: unset;
+      }
+      @include res("lg") {
+        top: -8rem;
+        right: -8rem;
+        width: 35rem;
+        height: 35rem;
+      }
+      top: calc(50% - 8rem);
+      left: 0;
+      width: 25rem;
+      height: 25rem;
+      border-radius: 100%;
+      position: absolute;
+      z-index: -1;
+    }
+  }
+
+  &__details_container {
+    width: 100%;
+    max-width: 30rem;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    @include res("sm") {
+      border-radius: var(--big-radius);
+      background: var(--light);
+      padding: 2rem;
+      border: 2px solid var(--dark);
+    }
+    padding: 0;
   }
 
   &__inputs {
     display: grid;
-    @include res("sm") {
-      grid-template-columns: repeat(3, 1fr);
-    }
     grid-template-columns: 1fr 1fr;
     grid-template-rows: auto;
     gap: 1rem;
 
+    &_stock {
+      font-size: 1.1rem;
+      font-weight: 300;
+      margin: auto 0;
+    }
+
+    &_stock.in-stock {
+      color: var(--dark);
+    }
+
+    &_stock.out-stock {
+      color: var(--grey);
+
+      &::after {
+        content: '';
+      }
+    }
+
     &_buttons {
       display: grid;
-      @include res("sm") {
+      @include res("lg") {
         grid-template-columns: repeat(2, 1fr);
       }
       margin-top: 1rem;
@@ -85,16 +149,19 @@
     display: flex;
     flex-flow: column nowrap;
     width: 100%;
-    max-width: 25rem;
+    max-width: 30rem;
   }
 
   &__description {
     margin-top: 2rem;
     grid-column-end: 2;
     text-align: justify;
-    max-width: 25rem;
-  }
+    max-width: 30rem;
 
+    p {
+      margin-bottom: 0;
+    }
+  }
 }
 
 .full {

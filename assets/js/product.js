@@ -30,7 +30,11 @@ import { cart } from "./cart.js"
             this.type = q("product-type")
             this.addToCart = q("add-to-cart")
             this.checkout = q("checkout")
+            this.productAccent = q('product-accent')
+            this.stock = q('product-stock')
             this.hovered = false
+            this.currentColor = this.color.value
+            this.productAccent.classList.add(`${this.currentColor}-before`)
 
             for (const child of this.color.children)
                 if (child.value === this.defaultColor.value)
@@ -44,6 +48,9 @@ import { cart } from "./cart.js"
             this.color.addEventListener("change", () => {
                 this.setImage(0)
                 this.updateStatus()
+                this.productAccent.classList.add(`${this.color.value}-before`)
+                this.productAccent.classList.remove(`${this.currentColor}-before`)
+                this.currentColor = this.color.value
             })
             this.quantity.addEventListener("blur", () =>
                 numberInputHandler(
@@ -143,10 +150,16 @@ import { cart } from "./cart.js"
         // Update status depending on if inventory is available
         updateStatus() {
             if (this.item.quantity > 0) {
+                this.stock.innerText = `${this.item.quantity > 5 ? 'In stock' : `Only ${this.item.quantity} left`}`
+                this.stock.classList.add('in-stock')
+                this.stock.classList.remove('out-stock')
                 this.quantity.removeAttribute("disabled")
                 this.addToCart.removeAttribute("disabled")
                 this.addToCart.innerText = "add to cart"
             } else {
+                this.stock.innerText = 'None available'
+                this.stock.classList.add('out-stock')
+                this.stock.classList.remove('in-stock')
                 this.quantity.setAttribute("disabled", true)
                 this.addToCart.setAttribute("disabled", true)
                 this.addToCart.innerText = "out of stock"
