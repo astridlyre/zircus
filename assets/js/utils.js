@@ -1,8 +1,8 @@
 // Get an element
 export const q = (x) => document.getElementById(x)
-/* export const API_ENDPOINT =
-    "https://remembrance-backbacon-09587.herokuapp.com/api" */
-export const API_ENDPOINT = 'http://localhost:3000/api'
+export const API_ENDPOINT =
+    "https://remembrance-backbacon-09587.herokuapp.com/api"
+// export const API_ENDPOINT = 'http://localhost:3000/api'
 
 // Handle updating number fields
 export const numberInputHandler = (el, fn, max) => {
