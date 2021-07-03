@@ -47,7 +47,7 @@ export const cart = (function() {
         }
 
         setTotals() {
-            if (!this.list) return this
+            if (!this.list || !this.checkoutList) return this
             // Clear prices
             this.total = 0
             this.subtotal = 0
