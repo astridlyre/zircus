@@ -34,11 +34,13 @@ import { cart } from "./cart.js"
             this.stock = q('product-stock')
             this.hovered = false
             this.currentColor = this.color.value
-            this.productAccent.classList.add(`${this.currentColor}-before`)
 
             for (const child of this.color.children)
-                if (child.value === this.defaultColor.value)
+                if (child.value === this.defaultColor.value) {
                     child.setAttribute("selected", true)
+                    this.productAccent.classList.add(`${child.value}-before`)
+                    this.currentColor = child.value
+                }
 
             // Check available inventory
             this.status = "IN_STOCK"
