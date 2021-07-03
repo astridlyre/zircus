@@ -15,18 +15,17 @@
     margin-bottom: 1.25rem;
     @include res("sm") {
       font-size: 3rem;
-      text-align: left;
     }
+    text-align: left;
     font-size: 2.5rem;
     box-sizing: border-box;
-    text-align: center;
   }
 
   &__bottom_image {
     @include flexCol();
-      @include res('xl') {
-        max-height: 35vh;
-      }
+    @include res("xl") {
+      max-height: 35vh;
+    }
     min-height: 25vh;
     flex-grow: 1;
     flex-shrink: 1;
