@@ -47,7 +47,7 @@ export const cart = (function() {
         }
 
         setTotals() {
-            if (!this.list || !this.checkoutList) return this
+            if (!this.list && !this.checkoutList) return this
             // Clear prices
             this.total = 0
             this.subtotal = 0
@@ -68,7 +68,7 @@ export const cart = (function() {
             ).toFixed(2)}`
 
             // Update navLink
-            this.enableButtons()
+            this.list && this.enableButtons()
             return this
         }
 
