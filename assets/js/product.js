@@ -124,6 +124,7 @@ import { numberInputHandler, q, state, Element } from "./utils.js"
                     }),
                 }))
             }
+            this.addToCart.blur()
             return this
         }
 

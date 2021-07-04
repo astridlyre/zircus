@@ -29,7 +29,7 @@
       align-items: center;
       position: relative;
 
-        &:hover::before {
+        &::before {
           content: '';
           position: absolute;
           top: calc(50% - 0.75rem);
@@ -37,12 +37,20 @@
           left: -1.5rem;
           width: 1rem;
           height: 1rem;
+          background-color: var(--light);
+        }
+
+        &:hover::before {
           background-color: var(--teal);
-          animation: 0.2s ease-out forwards circleGrowZero;
+          @include easeOut();
         }
 
       p {
         margin-bottom: 0;
+
+        &::after {
+          content: '';
+        }
       }
     }
 

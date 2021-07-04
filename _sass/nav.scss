@@ -101,8 +101,6 @@
       margin-right: -2rem;
       margin-left: 2rem;
       padding: var(--btn-padding);
-      border: 2px solid var(--dark);
-      border-radius: var(--radius);
       background: none;
       display: block;
       color: var(--light);
@@ -113,6 +111,8 @@
       cursor: pointer;
       outline: none;
       position: relative;
+      border: 2px solid var(--dark);
+      border-radius: var(--radius);
 
       &:hover,
       &:focus {
@@ -123,30 +123,33 @@
   }
 
   &__heading {
+    @include res("md") {
+      margin-top: 0;
+    }
+    margin-top: 1rem;
     color: var(--light);
-    padding: 1rem 0;
     letter-spacing: 0;
     flex-grow: 1;
     font-family: var(--af);
     font-size: 2rem;
     font-style: normal;
+    position: relative;
 
     &_link {
-      border: 2px solid var(--dark);
-      border-radius: var(--radius);
-
-      &:focus {
-        outline: none;
-        border-color: var(--teal);
-      }
+      padding: 0.5rem;
+      margin-left: -0.5rem;
+      margin-bottom: 0;
+      outline: none;
       z-index: 0;
       position: relative;
+      border: 2px solid var(--dark);
+      border-radius: var(--radius);
 
       &::after {
         content: "";
         position: absolute;
         right: -2rem;
-        top: 0.43rem;
+        top: 0.88rem;
         color: var(--teal);
         background: var(--teal);
         width: 1.25rem;
@@ -156,9 +159,9 @@
         @include easeOut();
       }
 
-      &:hover::after,
-      &:focus::after {
-        animation: 0.2s ease-out forwards circleGrowOne;
+      &:hover,
+      &:focus {
+        border-color: var(--teal);
         @include easeOut();
       }
     }

@@ -57,3 +57,26 @@
   justify-content: center;
   align-items: center;
 }
+
+@mixin insetAbs {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+@mixin borderHoverBig {
+  @include insetAbs();
+  border: 0.2rem solid var(--teal);
+  border-radius: var(--big-radius);
+  content: "";
+  animation: 0.1s ease-out forwards borderGrowBig;
+}
+@mixin borderHover {
+  @include insetAbs();
+  border: 2px solid var(--teal);
+  border-radius: var(--radius);
+  content: "";
+  animation: 0.1s ease-out forwards borderGrow;
+}

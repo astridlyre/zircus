@@ -39,12 +39,14 @@
         justify-content: flex-start;
         padding: 2rem;
         outline: none;
-        border-radius: 1rem;
+        position: relative;
         border: 0.2rem solid var(--light);
+        border-radius: var(--big-radius);
+
         &:hover,
         &:focus {
-          @include easeOut();
           border-color: var(--teal);
+          @include easeOut();
         }
       }
       &_text {

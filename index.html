@@ -12,19 +12,19 @@ bottom_image: /assets/img/products/1920/closeup-a-1920.jpg
       </h1>
     </div>
     <ul class="home__products">
-      {% assign tab_count = 4 %} {% for product in site.products %}
+      {% for product in site.products %}
       <li class="home__products_product">
         <a
           accesskey="{{ product.key }}"
           class="home__products_product_link"
           href="{{ product.url }}"
-          tabindex="{{ tab_count }}"
+          tabindex="0"
         >
           <img src="{{ product.image }}" alt="Zircus Compression Front" />
           <p class="home__products_product_text">{{ product.name }}</p>
         </a>
       </li>
-      {% assign tab_count = tab_count | plus:1 %} {% endfor %}
+      {% endfor %}
     </ul>
   </div>
   <section class="section__hero">
