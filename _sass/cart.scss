@@ -4,7 +4,7 @@
   }
 
   &__product {
-    @include fadeIn(0.2s);
+    @include fadeIn(0.1s);
     padding: 1rem 0;
     @include res("md") {
       @include flexRow();
@@ -42,7 +42,6 @@
 
         &:hover::before {
           background-color: var(--teal);
-          @include easeOut();
         }
 
       p {

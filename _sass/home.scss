@@ -46,7 +46,6 @@
         &:hover,
         &:focus {
           border-color: var(--teal);
-          @include easeOut();
         }
       }
       &_text {

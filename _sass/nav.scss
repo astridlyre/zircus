@@ -117,7 +117,6 @@
       &:hover,
       &:focus {
         border-color: var(--teal);
-        @include easeOut();
       }
     }
   }
@@ -155,14 +154,11 @@
         width: 1.25rem;
         height: 1.25rem;
         border-radius: 100%;
-        transform: scale(1);
-        @include easeOut();
       }
 
       &:hover,
       &:focus {
         border-color: var(--teal);
-        @include easeOut();
       }
     }
   }
@@ -171,5 +167,4 @@
 // Class for hiding and showing mobile menu
 .hide {
   transform: translateX(100%) !important;
-  transition: transform 0.2s ease-out;
 }

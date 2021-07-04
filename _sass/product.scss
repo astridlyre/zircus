@@ -38,10 +38,7 @@
   }
 
   &__price {
-    @include res("sm") {
-      text-align: right;
-    }
-    text-align: center;
+    text-align: right;
     font-size: 3rem;
     margin: 2rem 0 1rem 0;
     width: 100%;
@@ -55,7 +52,6 @@
     width: 100%;
     padding: 2rem;
     cursor: pointer;
-    @include fadeIn(0.2s);
   }
 
   &__details {
@@ -122,6 +118,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: auto;
+
     gap: 1rem;
 
     &_stock {

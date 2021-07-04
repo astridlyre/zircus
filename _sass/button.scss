@@ -47,7 +47,7 @@
     background: var(--teal);
     border-color: var(--dark);
     color: var(--dark);
-    transition: width 0.35s ease-out;
+    transition: width 0.2s ease-out;
   }
 
   &:disabled {
@@ -80,7 +80,6 @@
   &:active,
   &:focus-within,
   &:focus-visible {
-    @include easeOut();
     border-color: var(--teal) !important;
   }
 
