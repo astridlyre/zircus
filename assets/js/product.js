@@ -1,5 +1,4 @@
-import { numberInputHandler, q, state } from "./utils.js"
-import { cart } from "./cart.js"
+import { numberInputHandler, q, state, Element } from "./utils.js"
 
 /* Path for masked product images. Images follow the convention:
  
@@ -38,12 +37,14 @@ import { cart } from "./cart.js"
             this.hovered = false
             this.currentColor = this.color.value
 
-            for (const child of this.color.children)
+            for (const child of this.color.children) {
+                this.preloadImages(child.value)
                 if (child.value === this.defaultColor.value) {
                     child.setAttribute("selected", true)
                     this.productAccent.classList.add(`${child.value}-before`)
                     this.currentColor = child.value
                 }
+            }
 
             // Check available inventory
             this.status = "IN_STOCK"
@@ -84,6 +85,17 @@ import { cart } from "./cart.js"
 
         get id() {
             return `${this.type.value}-${this.color.value}-${this.size.value}`
+        }
+
+        preloadImages(color) {
+            for (const image of ['a-400.png', 'b-400.png', 'a-1920.png', 'b-1920.png']) {
+                const preload = new Element('link', null, {
+                    href: `/assets/img/products/masked/${this.type.value}-${color}-${image}`,
+                    rel: 'prefetch',
+                    as: 'image'
+                })
+                document.head.appendChild(preload.render())
+            }
         }
 
         // Add a new underwear item to cart

@@ -1,4 +1,4 @@
-import { q } from './utils.js'
+import { q, Element } from './utils.js'
 
 (function heroImage(image) {
     if (!image) {
@@ -6,6 +6,15 @@ import { q } from './utils.js'
     }
 
     const imgPath = '/assets/img/people/'
+
+    for (let i = 0; i < 6; i++) {
+        const preload = new Element('link', null, {
+            href: `/assets/img/people/hero${i}.jpg`,
+            rel: 'prefetch',
+            as: 'image'
+        })
+        document.head.appendChild(preload.render())
+    }
 
     function setImage(n) {
         const path = `${imgPath}hero${n}.jpg`
