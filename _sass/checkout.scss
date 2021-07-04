@@ -7,6 +7,13 @@
     grid-template-columns: 1fr;
     gap: var(--two-col-gap);
 
+    .hide-sm {
+      display: none;
+      @include res('md') {
+        display: block;
+      }
+    }
+
     label {
       @media screen and (max-width: 445px) {
         flex-flow: column nowrap;
@@ -17,8 +24,11 @@
       width: 100%;
 
       span {
+        @include res('sm') {
+          padding: var(--btn-padding);
+        }
         background: var(--teal);
-        padding: var(--btn-padding);
+        padding: 0.5rem;
         border-top-left-radius: var(--radius);
         border-bottom-left-radius: var(--radius);
         color: var(--dark);
@@ -26,13 +36,21 @@
         letter-spacing: 0.1rem;
         font-size: 0.9rem;
         @media screen and (max-width: 445px) {
-          display: none;
+          width: 100%;
+          border-top-left-radius: var(--radius);
+          border-top-right-radius: var(--radius);
+          border-left: 2px solid var(--dark);
+          border-right: 2px solid var(--dark);
+          border-bottom-left-radius: 0;
+          border-bottom-width: 0;
         }
       }
 
       input {
         @media screen and (max-width: 445px) {
           width: 100%;
+          border-top-left-radius: 0 !important;
+          border-top-right-radius: 0 !important;
         }
         flex-grow: 1;
         @include res("sm") {
@@ -43,6 +61,12 @@
       .min-w-15 {
         @include res("sm") {
           min-width: 15rem;
+        }
+      }
+
+      .min-w-18 {
+        @include res('sm') {
+          min-width: 18rem;
         }
       }
 

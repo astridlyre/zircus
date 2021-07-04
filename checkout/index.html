@@ -73,6 +73,8 @@ bottom_image: /assets/img/products/1920/closeup-d-1920.jpg
               id="checkout-name"
               placeholder="your name"
               autocomplete="on"
+              minlength="2"
+              maxlength="140"
           /></label>
           <label for="email"
             ><span>Email</span
@@ -85,6 +87,8 @@ bottom_image: /assets/img/products/1920/closeup-d-1920.jpg
               id="checkout-email"
               placeholder="you@cool.com"
               autocomplete="on"
+              minlength="5"
+              maxlength="140"
           /></label>
           <label for="street-address"
             ><span>Address</span
@@ -97,6 +101,8 @@ bottom_image: /assets/img/products/1920/closeup-d-1920.jpg
               id="checkout-street"
               placeholder="street address"
               autocomplete="on"
+              minlength="0"
+              maxlength="140"
           /></label>
           <label for="country"
             ><span>Country</span>
@@ -141,7 +147,7 @@ bottom_image: /assets/img/products/1920/closeup-d-1920.jpg
             <datalist id="checkout-cities"></datalist>
           </label>
           <label for="zip"
-            ><span>Zip</span
+            ><span class="min-w-10">Zip</span
             ><input
               type="text"
               name="zip"
@@ -153,7 +159,7 @@ bottom_image: /assets/img/products/1920/closeup-d-1920.jpg
               autocomplete="on"
           /></label>
         </div>
-        <div></div>
+        <div class="hide-sm"></div>
         <div class="checkout__button">
           <button
             class="btn btn__primary"
