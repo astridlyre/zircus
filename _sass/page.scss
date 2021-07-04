@@ -24,9 +24,9 @@
   &__bottom_image {
     @include flexCol();
     @include res("xl") {
-      max-height: 40vh;
+      max-height: 35vh;
     }
-    min-height: 35vh;
+    min-height: 30vh;
     flex-grow: 1;
     flex-shrink: 1;
     position: relative;
