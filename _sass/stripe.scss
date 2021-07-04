@@ -134,6 +134,10 @@
   animation: loading 2s infinite ease;
 }
 
+.spinner-primary::after, .spinner-primary::before {
+  background: var(--gold) !important;
+}
+
 .result-message {
   letter-spacing: 0.1rem;
   font-weight: 600;

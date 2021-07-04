@@ -132,6 +132,13 @@
     font-style: normal;
 
     &_link {
+      border: 2px solid var(--dark);
+      border-radius: var(--radius);
+
+      &:focus {
+        outline: none;
+        border-color: var(--teal);
+      }
       z-index: 0;
       position: relative;
 
@@ -149,7 +156,8 @@
         @include easeOut();
       }
 
-      &:hover::after {
+      &:hover::after,
+      &:focus::after {
         animation: 0.2s ease-out forwards circleGrowOne;
         @include easeOut();
       }

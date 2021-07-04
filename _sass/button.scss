@@ -38,12 +38,11 @@
     z-index: -1;
   }
 
-  &__primary:before{
+  &__primary:before {
     background: var(--gold);
   }
 
-  &:hover:after,
-  &:focus:after {
+  &:hover::after, &:focus::after {
     width: 200%;
     background: var(--teal);
     border-color: var(--dark);
@@ -77,9 +76,12 @@
   min-width: 4rem;
 
   &:hover,
-  &focus {
+  &:focus,
+  &:active,
+  &:focus-within,
+  &:focus-visible {
     @include easeOut();
-    border-color: var(--teal);
+    border-color: var(--teal) !important;
   }
 
   &:disabled {
@@ -96,7 +98,7 @@ input::-webkit-inner-spin-button {
 }
 
 input[type="number"] {
-  -moz-appearance: textfield;
+  -moz-appearance: none;
 }
 
 select {

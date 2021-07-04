@@ -29,7 +29,10 @@ import { cart } from "./cart.js"
             this.defaultColor = q("product-default-color")
             this.type = q("product-type")
             this.addToCart = q("add-to-cart")
-            this.checkout = q("checkout")
+            this.cartBtn = q('cart-quantity')
+            this.goToCart = q("go-to-cart")
+            this.goToCartQty = q('go-to-cart-qty')
+            this.cartSpinner = q('add-to-cart-spinner')
             this.productAccent = q('product-accent')
             this.stock = q('product-stock')
             this.hovered = false
@@ -67,8 +70,16 @@ import { cart } from "./cart.js"
             this.image.addEventListener("click", () => this.viewFull())
             this.bigImageEl.addEventListener("click", () => this.hideFull())
             this.addToCart.addEventListener("click", () => this.add())
-            this.checkout.addEventListener("click", () => location.assign("/cart"))
+            this.goToCart.addEventListener("click", () => location.assign("/cart"))
             state.addHook(() => this.updateStatus())
+            state.addHook(() => this.updateCartBtnQty())
+        }
+
+        updateCartBtnQty() {
+            let total = 0
+            for (const item of state.get().cart)
+                total += item.quantity
+            this.goToCartQty.innerText = `${total > 0 ? `(${total})` : ''}`
         }
 
         get id() {
@@ -83,7 +94,6 @@ import { cart } from "./cart.js"
             ) {
                 return this
             }
-
             if (state.get().cart.find((item) => item.type === this.id)) {
                 state.set((s) => ({
                     ...s,
@@ -102,15 +112,6 @@ import { cart } from "./cart.js"
                     }),
                 }))
             }
-
-            // visual feedback
-            this.addToCart.classList.add("added")
-            this.addToCart.innerText = "added!"
-            setTimeout(() => {
-                this.addToCart.classList.remove("added")
-                this.addToCart.innerText = "add to cart"
-            }, 1000)
-            this.addToCart.blur()
             return this
         }
 
@@ -157,7 +158,7 @@ import { cart } from "./cart.js"
                 this.stock.classList.remove('out-stock')
                 this.quantity.removeAttribute("disabled")
                 this.addToCart.removeAttribute("disabled")
-                this.addToCart.innerText = "add to cart"
+                this.addToCartText = "add to cart"
             } else {
                 this.stock.innerText = 'None available'
                 this.stock.classList.add('out-stock')

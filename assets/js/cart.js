@@ -39,10 +39,8 @@ export const cart = (function() {
         enableButtons() {
             if (this.items.length > 0) {
                 this.checkoutBtn.removeAttribute("disabled")
-                this.payPalBtn.removeAttribute("disabled")
             } else {
                 this.checkoutBtn.setAttribute("disabled", true)
-                this.payPalBtn.setAttribute("disabled", true)
             }
         }
 

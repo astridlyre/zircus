@@ -192,4 +192,8 @@
 .added {
   background-color: var(--gold) !important;
   color: var(--dark) !important;
+
+  &::after {
+  background-color: var(--gold) !important;
+  }
 }
