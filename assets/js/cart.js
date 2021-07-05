@@ -83,7 +83,7 @@ export const cart = (function() {
                 })
                     .addChild(
                         new Element("img", ["cart__product_image"], {
-                            src: item.images[0],
+                            src: item.images['sm_a'],
                             alt: item.name,
                         })
                     )
@@ -131,7 +131,7 @@ export const cart = (function() {
                 })
                     .addChild(
                         new Element("img", ["cart__product_image"], {
-                            src: item.images[0],
+                            src: item.images['sm_a'],
                             alt: item.name,
                         })
                     )

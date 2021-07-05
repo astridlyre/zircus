@@ -159,7 +159,7 @@ import { numberInputHandler, q, state, Element } from "./utils.js"
 
         // Change product image
         setImage(key) {
-            if (this.item.images.length > 0) this.image.src = this.item.images[key]
+            if (this.item.images[key]) this.image.src = this.item.images[key]
             return this
         }
 
@@ -189,7 +189,7 @@ import { numberInputHandler, q, state, Element } from "./utils.js"
         get item() {
             const item = state.get().inv.find((item) => item.type === this.id)
             if (item) return item
-            return { price: 30, quantity: 0, images: [] }
+            return { price: 30, quantity: 0, images: {} }
         }
     }
 
