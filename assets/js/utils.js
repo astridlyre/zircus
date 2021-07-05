@@ -113,7 +113,7 @@ const getInventory = async () => {
         .then((data) => {
             state.set((state) => ({
                 ...state,
-                inv: data,
+                inv: [data.cf, data.pf, data.ff],
             }))
         })
         .catch((e) => {
