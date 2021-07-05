@@ -52,7 +52,7 @@ import { numberInputHandler, q, state, Element } from "./utils.js"
 
             // Add event listeners
             this.color.addEventListener("change", () => {
-                this.setImage(0)
+                this.setImage('sm_a')
                 this.updateStatus()
                 this.productAccent.classList.add(`${this.color.value}-before`)
                 this.productAccent.classList.remove(`${this.currentColor}-before`)
@@ -136,17 +136,17 @@ import { numberInputHandler, q, state, Element } from "./utils.js"
         // Change pic on hover
         hover() {
             if (!this.hovered) {
-                this.setImage(1)
+                this.setImage('sm_b')
                 this.hovered = true
             } else {
-                this.setImage(0)
+                this.setImage('sm_a')
                 this.hovered = false
             }
         }
 
         // Show fullsize pic
         viewFull() {
-            this.bigImage.src = this.item.images[2]
+            this.bigImage.src = this.item.images['lg_a']
             this.bigImageEl.style.display = "flex"
             document.body.classList.add('hide-y')
         }
@@ -158,8 +158,8 @@ import { numberInputHandler, q, state, Element } from "./utils.js"
         }
 
         // Change product image
-        setImage(n) {
-            if (this.item.images.length > 0) this.image.src = this.item.images[n]
+        setImage(key) {
+            if (this.item.images.length > 0) this.image.src = this.item.images[key]
             return this
         }
 
