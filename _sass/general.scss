@@ -48,11 +48,8 @@ p {
   margin: 0 auto;
   padding: 0 var(--x-padding);
   width: 100%;
-  @include res("sm") {
-    width: 95%;
-  }
   @include res("md") {
-    width: 90%;
+    width: 95%;
   }
   @include res("lg") {
     width: 80%;

@@ -123,6 +123,22 @@ export class Element {
     }
 }
 
+const aboutPic = () => {
+    const aboutPic = q('about-pic')
+    let hovered = false
+    if (aboutPic)
+        aboutPic.addEventListener('hover', () => {
+            if (hovered) {
+                aboutPic.src = '/assets/img/people/atana-b.jpg'
+                hovered = true
+            } else {
+                aboutPic.src = '/assets/img/people/atana-a.jpg'
+                hovered = false
+            }
+        })
+}
+aboutPic()
+
 // Get Inventory to set max quantities of items
 const getInventory = async () => {
     // const INVENTORY_URL = "http://localhost:3000/api/inv"
