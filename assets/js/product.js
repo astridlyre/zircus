@@ -181,7 +181,7 @@ import { numberInputHandler, q, state, Element } from "./utils.js"
                 this.addToCart.innerText = "out of stock"
             }
             this.me = state.get().inv.find((item) => item.type === this.id)
-            this.setImage(0)
+            this.setImage('sm_a')
             return this
         }
 
