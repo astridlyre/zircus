@@ -24,6 +24,7 @@
     padding: 0.5rem;
     right: var(--x-padding);
     cursor: pointer;
+    z-index: 50;
 
     &:hover {
       @include easeOut();
@@ -43,7 +44,7 @@
       display: none;
     }
     display: flex;
-    z-index: 50;
+    z-index: 10;
 
     &_items {
       transform: translateX(0);
@@ -51,7 +52,7 @@
       opacity: 1;
       position: fixed;
       top: 0;
-      left: 0;
+      right: 0;
       width: 100vw;
       height: 100vh;
       background: var(--dark);
@@ -123,6 +124,7 @@
     @include res("md") {
       margin-top: 0;
     }
+    max-width: 50vw;
     margin-top: 1rem;
     color: var(--light);
     letter-spacing: 0;
@@ -130,6 +132,7 @@
     font-family: var(--af);
     font-size: 2rem;
     font-style: normal;
+    z-index: 20;
 
     &_link {
       padding: 0.5rem;

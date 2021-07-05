@@ -17,9 +17,7 @@ import { q, state } from './utils.js'
                 this.hidden ? this.show() : this.hide()
             })
 
-            this.menu.addEventListener('click', () => {
-                this.hide()
-            })
+            this.menu.addEventListener('click', () => this.hide())
         }
 
         hide() {
