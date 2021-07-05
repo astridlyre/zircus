@@ -23,9 +23,6 @@ export const checkout = (() => {
             this.cardError = q("card-error")
             this.spinner = q("spinner")
             this.btnText = q("button-text")
-            this.countriesDatalist = q("checkout-countries")
-            this.statesDatalist = q("checkout-states")
-            this.citiesDatalist = q("checkout-cities")
             this.placeOrder = q('place-order')
             this.checkoutForm = q('checkout-form')
             this.cancel = q('cancel')
@@ -35,15 +32,15 @@ export const checkout = (() => {
             })
             this.cancel.addEventListener('click', () => this.showModal(false))
             // Add functionality for Countries States and Cities
-            state.addHook((s) =>
-                this.populateDatalist(
-                    this.countriesDatalist,
-                    s.countries,
-                    (item) => item
+            state.addHook((s) => {
+                this.populateSelects(
+                    this.country,
+                    Object.keys(s.countries),
+                    item => item
                 )
-            )
-            this.country.addEventListener("blur", () => this.handleCountry())
-            this.state.addEventListener("input", () => this.handleState())
+                this.handleCountry()
+            })
+            this.country.addEventListener("input", () => this.handleCountry())
         }
 
         get items() {
@@ -185,36 +182,21 @@ export const checkout = (() => {
                 })
         }
 
-        populateDatalist(datalist, data = [], fn) {
+        populateSelects(select, data = [], fn) {
+            select.textContent = ''
             data.forEach((item) => {
-                datalist.appendChild(
+                select.appendChild(
                     new Element("option", null, {
                         value: fn(item),
-                    }).render()
+                    }).addChild(fn(item)).render()
                 )
             })
         }
 
-        async handleCountry() {
-            if (!state.get().countries.includes(this.country.value)) return
-            this.statesDatalist.textContent = ""
-            this.state.setAttribute("disabled", true)
-            this.state.value = ""
-            this.city.value = ""
-            return fetch(`${API_ENDPOINT}/countries/${this.country.value}`)
-                .then((data) => data.json())
-                .then((countryData) => {
-                    state.set((s) => ({
-                        ...s,
-                        countryData,
-                    }))
-                    this.populateDatalist(
-                        this.statesDatalist,
-                        countryData.states,
-                        (item) => item.name
-                    )
-                    this.state.removeAttribute("disabled")
-                })
+        handleCountry() {
+            const country = this.country.value
+            this.state.textContent = ''
+            this.populateSelects(this.state, state.get().countries[country].states, item => item.name)
         }
 
         handleState() {

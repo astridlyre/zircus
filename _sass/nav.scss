@@ -101,14 +101,12 @@
       margin-right: -1.8rem;
       margin-left: 2rem;
       padding: var(--btn-padding);
-      background: none;
       display: block;
       color: var(--light);
       font-size: 0.9rem;
       text-align: center;
       letter-spacing: 0.1rem;
       font-weight: 600;
-      cursor: pointer;
       outline: none;
       position: relative;
       border: 2px solid var(--dark);
@@ -132,7 +130,6 @@
     font-family: var(--af);
     font-size: 2rem;
     font-style: normal;
-    position: relative;
 
     &_link {
       padding: 0.5rem;

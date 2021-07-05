@@ -106,45 +106,38 @@ bottom_image: /assets/img/products/1920/closeup-d-1920.jpg
           /></label>
           <label for="country"
             ><span>Country</span>
-            <input
+            <select
               autocomplete="off"
               class="input"
-              list="checkout-countries"
               name="country"
               id="checkout-country"
               required
-              placeholder="country"
               value=""
-            />
-            <datalist id="checkout-countries"></datalist>
+            ></select>
           </label>
           <label for="state"
             ><span>State</span
-            ><input
+            ><select
               autocomplete="off"
-              list="checkout-states"
               name="state"
               value=""
               class="input"
               required
               id="checkout-state"
-              placeholder="state"
-            />
-            <datalist id="checkout-states"></datalist>
+            ></select>
           </label>
           <label for="city"
             ><span>City</span
             ><input
-              list="checkout-cities"
+              type="text"
               name="city"
               value=""
               class="input"
               required
               id="checkout-city"
               placeholder="city"
-              autocomplete="off"
+              autocomplete="on"
             />
-            <datalist id="checkout-cities"></datalist>
           </label>
           <label for="zip"
             ><span class="min-w-10">Zip</span

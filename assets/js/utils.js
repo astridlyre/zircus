@@ -51,7 +51,7 @@ class State {
     get() {
         const storedState = localStorage.getItem("state")
         if (storedState) return JSON.parse(storedState)
-        return { cart: [], inv: [], countries: [], countryData: { states: [] } }
+        return { cart: [], inv: [], countries: [] }
     }
 
     clear() {
