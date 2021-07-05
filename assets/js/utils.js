@@ -24,7 +24,6 @@ export const numberInputHandler = (el, fn, max) => {
  */
 class State {
     constructor() {
-        this.__state = this.get()
         this.__hooks = []
     }
 
@@ -37,21 +36,42 @@ class State {
         return this
     }
 
-    set(fn) {
-        this.__state = fn(this.__state)
+    get inv() {
+        const inv = localStorage.getItem('inv')
+        if (inv) return JSON.parse(inv)
+        return []
+    }
+
+    set inv(fn) {
+        localStorage.setItem('inv', JSON.stringify(fn(this.inv)))
         return this.update()
     }
 
-    update() {
-        localStorage.setItem("state", JSON.stringify(this.__state))
-        this.hooks.forEach((hook) => hook(state.get()))
-        return this
+    get countries() {
+        const countries = localStorage.getItem('countries')
+        if (countries) return JSON.parse(countries)
+        return []
     }
 
-    get() {
-        const storedState = localStorage.getItem("state")
-        if (storedState) return JSON.parse(storedState)
-        return { cart: [], inv: [], countries: [] }
+    set countries(fn) {
+        localStorage.setItem('countries', JSON.stringify(fn(this.countries)))
+        return this.update()
+    }
+
+    set cart(fn) {
+        localStorage.setItem('cart', JSON.stringify(fn(this.cart)))
+        return this.update()
+    }
+
+    get cart() {
+        const cart = localStorage.getItem('cart')
+        if (cart) return JSON.parse(cart)
+        return []
+    }
+
+    update() {
+        this.hooks.forEach((hook) => hook({ cart: this.cart, inv: this.inv, countries: this.countries }))
+        return this
     }
 
     clear() {
@@ -110,12 +130,7 @@ const getInventory = async () => {
 
     return await fetch(INVENTORY_URL)
         .then((data) => data.json())
-        .then((data) => {
-            state.set((state) => ({
-                ...state,
-                inv: [...data.cf, ...data.pf, ...data.ff],
-            }))
-        })
+        .then((data) => state.inv = () => [...data.cf, ...data.pf, ...data.ff])
         .catch((e) => {
             console.error("Unable to get inventory", e.message)
         })
@@ -128,12 +143,7 @@ const getCountries = async () => {
 
     return await fetch(endpoint)
         .then((data) => data.json())
-        .then((countries) => {
-            state.set((state) => ({
-                ...state,
-                countries,
-            }))
-        })
+        .then((countries) => state.countries = () => countries)
         .catch((e) => {
             console.error("Unable to get countries", e.message)
         })

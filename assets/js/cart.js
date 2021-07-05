@@ -27,17 +27,13 @@ export const cart = (function() {
 
             this.checkoutBtn &&
                 this.checkoutBtn.addEventListener("click", () => {
-                    if (this.items.length > 0) location.assign("/checkout")
+                    if (state.cart.length > 0) location.assign("/checkout")
                 })
 
         }
 
-        get items() {
-            return state.get().cart
-        }
-
         enableButtons() {
-            if (this.items.length > 0) {
+            if (state.cart.length > 0) {
                 this.checkoutBtn.removeAttribute("disabled")
             } else {
                 this.checkoutBtn.setAttribute("disabled", true)
@@ -52,7 +48,7 @@ export const cart = (function() {
             this.tax = 0
 
             // Tally up
-            this.items.forEach((item) => {
+            state.cart.forEach((item) => {
                 this.subtotal += item.price * item.quantity
             })
             this.tax = this.subtotal * TAX_RATE
@@ -156,21 +152,16 @@ export const cart = (function() {
             const n = numberInputHandler(
                 el,
                 null,
-                () => state.get().inv.find((i) => i.id === item.id).quantity
+                () => state.inv.find((i) => i.id === item.id).quantity
             )
-            state.set((state) => ({
-                ...state,
-                cart: state.cart.map((i) => {
-                    return i.id === item.id ? { ...i, quantity: n } : i
-                }),
-            }))
+            state.cart = cart => cart.map(i => i.id === item.id ? { ...i, quantity: n } : i)
             p.innerText = `$${item.price * n}`
             return this.setTotals()
         }
 
         render() {
             if (!this.list && !this.checkoutList) return this
-            if (!this.items.length && !this.checkoutList) {
+            if (!state.cart.length && !this.checkoutList) {
                 this.list.appendChild(
                     new Element("p", ["cart__empty"])
                         .addChild("No items in cart")
@@ -179,7 +170,7 @@ export const cart = (function() {
                 return this
             } else {
                 const fragment = new DocumentFragment()
-                this.items.forEach((item) => {
+                state.cart.forEach((item) => {
                     fragment.appendChild(
                         this.renderItem(item, this.checkoutList ? true : false)
                     )
@@ -192,12 +183,9 @@ export const cart = (function() {
         }
 
         removeItem(item) {
-            state.set((state) => ({
-                ...state,
-                cart: state.cart.filter((i) => i.id != item.id),
-            }))
+            state.cart = cart => cart.filter(i => i.id != item.id)
             q(item.id).remove()
-            if (!this.items.length) return this.render().setTotals()
+            if (!state.cart.length) return this.render().setTotals()
             return this.setTotals()
         }
     }

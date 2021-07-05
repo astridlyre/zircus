@@ -34,9 +34,9 @@ import { q, state } from './utils.js'
 
         // Updates the nav link when cart items change
         updateNavLink() {
-            if (state.get().cart.length > 0) {
+            if (state.cart.length > 0) {
                 let totalItems = 0
-                state.get().cart.forEach((item) => {
+                state.cart.forEach((item) => {
                     totalItems += item.quantity
                 })
                 this.navLink.innerText = `cart (${totalItems})`

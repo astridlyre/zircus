@@ -9,7 +9,7 @@
 
     .hide-sm {
       display: none;
-      @include res('md') {
+      @include res("md") {
         display: block;
       }
     }
@@ -24,7 +24,7 @@
       width: 100%;
 
       span {
-        @include res('sm') {
+        @include res("sm") {
           padding: var(--btn-padding);
         }
         background: var(--teal);
@@ -39,6 +39,7 @@
           width: 100%;
           border-top-left-radius: var(--radius);
           border-top-right-radius: var(--radius);
+          border-top: 2px solid var(--dark);
           border-left: 2px solid var(--dark);
           border-right: 2px solid var(--dark);
           border-bottom-left-radius: 0;
@@ -46,7 +47,7 @@
         }
       }
 
-      input {
+      input, select {
         @media screen and (max-width: 445px) {
           width: 100%;
           border-top-left-radius: 0 !important;
@@ -56,22 +57,6 @@
         @include res("sm") {
           flex-grow: unset;
         }
-      }
-
-      .min-w-15 {
-        @include res("sm") {
-          min-width: 15rem;
-        }
-      }
-
-      .min-w-18 {
-        @include res('sm') {
-          min-width: 18rem;
-        }
-      }
-
-      .min-w-10 {
-        max-width: 7rem;
       }
     }
   }
@@ -87,6 +72,10 @@
   }
 
   &__address {
+    @media screen and (max-width: 445px) {
+      background: none;
+      padding: 0;
+    }
     background: var(--dark);
     border-radius: var(--big-radius);
     color: var(--light);
@@ -107,4 +96,20 @@
 
 datalist {
   max-height: 20rem;
+}
+
+.min-w-15 {
+  @include res("sm") {
+    min-width: 15rem;
+  }
+}
+
+.min-w-18 {
+  @include res("sm") {
+    min-width: 18rem;
+  }
+}
+
+.max-w-10 {
+  max-width: 12rem;
 }

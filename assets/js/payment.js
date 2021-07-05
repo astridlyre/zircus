@@ -4,7 +4,7 @@ const stripe = Stripe("pk_test_51J93KzDIzwSFHzdzCZtyRcjMvw8em0bhnMrVmkBHaMFHuc2n
 export const checkout = (() => {
     const placeOrder = q("place-order")
     if (!placeOrder) return
-    if (state.get().cart.length === 0) location.assign('/')
+    if (state.cart.length === 0) location.assign('/')
 
     class Checkout {
         constructor() {
@@ -13,8 +13,10 @@ export const checkout = (() => {
             this.streetAddress = q("checkout-street")
             this.city = q("checkout-city")
             this.state = q("checkout-state")
+            this.stateText = q("checkout-state-text")
             this.country = q("checkout-country")
             this.zip = q("checkout-zip")
+            this.zipText = q('checkout-zip-text')
             this.nav = q("nav")
             this.blur = q("blur")
             this.paymentModal = q("stripe-payment-modal")
@@ -43,10 +45,6 @@ export const checkout = (() => {
             this.country.addEventListener("input", () => this.handleCountry())
         }
 
-        get items() {
-            return state.get().cart
-        }
-
         showModal(show) {
             this.loading(false)
             if (show) {
@@ -61,7 +59,7 @@ export const checkout = (() => {
                 this.nav.classList.remove("blur")
                 this.blur.classList.remove("blur")
                 this.paymentModal.style.display = "none"
-                if (state.get().cart.length === 0)
+                if (state.cart.length === 0)
                     location.assign('/')
             }
         }
@@ -196,21 +194,9 @@ export const checkout = (() => {
         handleCountry() {
             const country = this.country.value
             this.state.textContent = ''
-            this.populateSelects(this.state, state.get().countries[country].states, item => item.name)
-        }
-
-        handleState() {
-            const foundState = state
-                .get()
-                .countryData.states.find((s) => s.name === this.state.value)
-            if (!foundState) return
-            this.citiesDatalist.textContent = ""
-            this.city.value = ""
-            this.populateDatalist(
-                this.citiesDatalist,
-                foundState.cities,
-                (item) => item.name
-            )
+            this.populateSelects(this.state, state.countries[country].states, item => item.name)
+            this.stateText.innerText = this.country.value === 'Canada' ? 'Province' : 'State'
+            this.zipText.innerText = this.country.value === 'Canada' ? 'Postal Code' : 'Zip'
         }
     }
 

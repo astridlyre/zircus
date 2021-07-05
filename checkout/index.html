@@ -71,7 +71,6 @@ bottom_image: /assets/img/products/1920/closeup-d-1920.jpg
               class="input"
               required
               id="checkout-name"
-              placeholder="your name"
               autocomplete="on"
               minlength="2"
               maxlength="140"
@@ -85,7 +84,6 @@ bottom_image: /assets/img/products/1920/closeup-d-1920.jpg
               class="input min-w-15"
               required
               id="checkout-email"
-              placeholder="you@cool.com"
               autocomplete="on"
               minlength="5"
               maxlength="140"
@@ -99,33 +97,10 @@ bottom_image: /assets/img/products/1920/closeup-d-1920.jpg
               class="input min-w-15"
               required
               id="checkout-street"
-              placeholder="street address"
               autocomplete="on"
               minlength="0"
               maxlength="140"
           /></label>
-          <label for="country"
-            ><span>Country</span>
-            <select
-              autocomplete="off"
-              class="input"
-              name="country"
-              id="checkout-country"
-              required
-              value=""
-            ></select>
-          </label>
-          <label for="state"
-            ><span>State</span
-            ><select
-              autocomplete="off"
-              name="state"
-              value=""
-              class="input"
-              required
-              id="checkout-state"
-            ></select>
-          </label>
           <label for="city"
             ><span>City</span
             ><input
@@ -135,19 +110,39 @@ bottom_image: /assets/img/products/1920/closeup-d-1920.jpg
               class="input"
               required
               id="checkout-city"
-              placeholder="city"
               autocomplete="on"
             />
           </label>
+          <label for="country"
+            ><span>Country</span>
+            <select
+              autocomplete="on"
+              class="input"
+              name="country"
+              id="checkout-country"
+              required
+              value=""
+            ></select>
+          </label>
+          <label for="state"
+            ><span id="checkout-state-text">State</span
+            ><select
+              autocomplete="on"
+              name="state"
+              value=""
+              class="input"
+              required
+              id="checkout-state"
+            ></select>
+          </label>
           <label for="zip"
-            ><span class="min-w-10">Zip</span
+            ><span id="checkout-zip-text" class="max-w-10">Zip</span
             ><input
               type="text"
               name="zip"
               value=""
-              class="input min-w-10"
+              class="input max-w-10"
               required
-              placeholder="zip"
               id="checkout-zip"
               autocomplete="on"
           /></label>

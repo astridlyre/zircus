@@ -34,7 +34,11 @@
     --y-padding: 8rem;
     --x-padding: 6rem;
   }
-  --y-padding: 4rem;
+  @media screen and (max-width: 445px) {
+    --y-padding: 2rem;
+    --x-padding: 1rem;
+  }
+  --y-padding: 3rem;
   --x-padding: 2rem;
 
   // Nav height for page alignment
@@ -54,7 +58,13 @@
 
   // Gap for two-col layouts
   // Gap for generic grid
-  --two-col-gap: 4rem;
+  @include res('sm') {
+    --two-col-gap: 3rem;
+  }
+  @include res('sm') {
+    --two-col-gap: 4rem;
+  }
+  --two-col-gap: 2rem;
   --grid-gap: 1rem;
   box-sizing: border-box;
 }
