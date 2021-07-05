@@ -28,7 +28,7 @@
     padding: 4rem;
 
     &_grid {
-      margin: 5rem 0 4rem 0;
+      margin-top: var(--y-padding);
       display: grid;
       @include res("sm") {
         grid-template-columns: repeat(2, 1fr);
