@@ -80,3 +80,7 @@
   content: "";
   animation: 0.1s ease-out forwards borderGrow;
 }
+
+@mixin moveDown {
+  animation: 0.2s ease-out forwards moveDown;
+}

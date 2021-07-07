@@ -73,11 +73,6 @@ class State {
         this.hooks.forEach((hook) => hook({ cart: this.cart, inv: this.inv, countries: this.countries }))
         return this
     }
-
-    clear() {
-        localStorage.removeItem("state")
-        this.__state = this.get()
-    }
 }
 
 // Singleton
@@ -122,22 +117,6 @@ export class Element {
         return this
     }
 }
-
-const aboutPic = () => {
-    const aboutPic = q('about-pic')
-    let hovered = false
-    if (aboutPic)
-        aboutPic.addEventListener('hover', () => {
-            if (hovered) {
-                aboutPic.src = '/assets/img/people/atana-b.jpg'
-                hovered = true
-            } else {
-                aboutPic.src = '/assets/img/people/atana-a.jpg'
-                hovered = false
-            }
-        })
-}
-aboutPic()
 
 // Get Inventory to set max quantities of items
 const getInventory = async () => {

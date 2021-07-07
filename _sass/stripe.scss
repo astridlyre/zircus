@@ -1,6 +1,7 @@
 .stripe-payment {
   &-modal {
-    display: none;
+    transform: translateY(-100%);
+    display: flex;
     position: fixed;
     top: 0;
     bottom: 0;
@@ -21,6 +22,7 @@
     border-radius: var(--big-radius);
     border: 0.2rem solid var(--dark);
     max-width: 40rem;
+    @include moveDown();
 
     &-buttons {
       display: grid;
@@ -147,4 +149,8 @@
   left: 0;
   z-index: 5;
   position: absolute;
+}
+
+.show-modal {
+  transform: translateY(0);
 }

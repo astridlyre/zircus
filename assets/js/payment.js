@@ -51,14 +51,14 @@ export const checkout = (() => {
                 document.body.classList.add('hide-y')
                 this.nav.classList.add("blur")
                 this.blur.classList.add("blur")
-                this.paymentModal.style.display = "flex"
+                this.paymentModal.classList.add("show-modal")
                 this.payBtn.disabled = true
                 q('payment-price').innerText = q('cart-total').innerText
             } else {
                 document.body.classList.remove('hide-y')
                 this.nav.classList.remove("blur")
                 this.blur.classList.remove("blur")
-                this.paymentModal.style.display = "none"
+                this.paymentModal.classList.remove("show-modal")
                 if (state.cart.length === 0)
                     location.assign('/')
             }
@@ -75,7 +75,7 @@ export const checkout = (() => {
                 state: this.state.value,
                 country: this.country.value,
                 zip: this.zip.value,
-                items: this.items.map((item) => ({
+                items: state.cart.map((item) => ({
                     type: item.type,
                     prefix: item.prefix,
                     size: item.size,
@@ -171,7 +171,7 @@ export const checkout = (() => {
             })
                 .then((res) => res.json())
                 .then(() => {
-                    state.clear()
+                    state.cart = () => []
                     q('result-message').classList.remove('hidden')
                     this.payBtn.disabled = true
                     this.cancel.innerText = 'close'
