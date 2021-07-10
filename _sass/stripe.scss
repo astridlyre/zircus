@@ -40,7 +40,7 @@
 
     &-card {
       margin-bottom: 1rem;
-      min-height: 2.5rem;
+      height: var(--btn-height);
       border: 2px solid var(--dark);
       border-radius: var(--radius);
       padding: var(--input-padding);

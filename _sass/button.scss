@@ -2,7 +2,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: var(--btn-padding);
+  padding: 0 var(--btn-padding);
+  height: var(--btn-height);
   background: var(--light);
   border-radius: var(--radius);
   border: 2px solid var(--dark);
@@ -67,7 +68,8 @@
 }
 
 .input {
-  padding: var(--input-padding);
+  height: var(--btn-height);
+  padding: 0 var(--input-padding);
   border-radius: var(--radius);
   border: 2px solid var(--dark);
   background-color: var(--light);
