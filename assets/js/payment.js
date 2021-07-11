@@ -30,6 +30,7 @@ export const checkout = (() => {
             this.placeOrder = q('place-order')
             this.checkoutForm = q('checkout-form')
             this.cancel = q('cancel')
+            this.isLoaded = false
             this.checkoutForm.addEventListener('submit', event => {
                 event.preventDefault()
                 this.createPaymentIntent()
@@ -68,13 +69,14 @@ export const checkout = (() => {
         async createPaymentIntent() {
             this.showModal(true)
 
-            const cart = {
+            const req = {
+                update: state.secret,
                 name: this.name.value,
                 email: this.email.value,
                 streetAddress: this.streetAddress.value,
                 city: this.city.value,
-                state: this.state.value,
                 country: this.country.value,
+                state: this.state.value,
                 zip: this.zip.value,
                 items: state.cart.map(item => ({
                     type: item.type,
@@ -86,18 +88,25 @@ export const checkout = (() => {
                 })),
             }
 
+            console.log(req)
+
             fetch(`${API_ENDPOINT}/orders/create-payment-intent`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(cart),
+                body: JSON.stringify(req),
             })
                 .then(data => data.json())
-                .then(data => this.loadStripe(data))
+                .then(data => {
+                    state.secret = data
+                    this.loadStripe(data)
+                })
         }
 
         loadStripe(data) {
+            if (this.isLoaded) return
+            this.isLoaded = true
             const elements = stripe.elements()
             const style = {
                 base: {
@@ -176,6 +185,7 @@ export const checkout = (() => {
                 .then(res => res.json())
                 .then(() => {
                     state.cart = () => []
+                    state.secret = null
                     q('result-message').classList.remove('hidden')
                     this.payBtn.disabled = true
                     this.cancel.innerText = 'close'

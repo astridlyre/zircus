@@ -1,7 +1,6 @@
 // Get an element
-export const q = (x) => document.getElementById(x)
-export const API_ENDPOINT =
-    "https://zircus.herokuapp.com/api"
+export const q = x => document.getElementById(x)
+export const API_ENDPOINT = 'https://zircus.herokuapp.com/api'
 // export const API_ENDPOINT = 'http://localhost:3000/api'
 
 // Handle updating number fields
@@ -9,7 +8,7 @@ export const numberInputHandler = (el, fn, max) => {
     const v = Math.round(Number(el.value))
     const m = max()
     const result = v < m ? (v <= 0 ? 1 : v) : m
-    if (fn && typeof fn === "function") fn(result)
+    if (fn && typeof fn === 'function') fn(result)
     return (el.value = result)
 }
 
@@ -69,8 +68,19 @@ class State {
         return []
     }
 
+    get secret() {
+        const sec = localStorage.getItem('clientSecret')
+        return sec ? JSON.parse(sec) : null
+    }
+
+    set secret(sec) {
+        localStorage.setItem('clientSecret', JSON.stringify(sec))
+    }
+
     update() {
-        this.hooks.forEach((hook) => hook({ cart: this.cart, inv: this.inv, countries: this.countries }))
+        this.hooks.forEach(hook =>
+            hook({ cart: this.cart, inv: this.inv, countries: this.countries })
+        )
         return this
     }
 }
@@ -85,7 +95,7 @@ export class Element {
         this.children = []
 
         if (classes) {
-            classes.forEach((c) => {
+            classes.forEach(c => {
                 this.e.classList.add(c)
             })
         }
@@ -97,7 +107,7 @@ export class Element {
         }
     }
     render() {
-        this.children.forEach((child) => {
+        this.children.forEach(child => {
             if (child instanceof Element) {
                 this.e.appendChild(child.render())
             } else {
@@ -124,10 +134,10 @@ const getInventory = async () => {
     const INVENTORY_URL = `${API_ENDPOINT}/inv`
 
     return await fetch(INVENTORY_URL)
-        .then((data) => data.json())
-        .then((data) => state.inv = () => [...data.cf, ...data.pf, ...data.ff])
-        .catch((e) => {
-            console.error("Unable to get inventory", e.message)
+        .then(data => data.json())
+        .then(data => (state.inv = () => [...data.cf, ...data.pf, ...data.ff]))
+        .catch(e => {
+            console.error('Unable to get inventory', e.message)
         })
 }
 getInventory()
@@ -137,28 +147,29 @@ const getCountries = async () => {
     const endpoint = `${API_ENDPOINT}/countries`
 
     return await fetch(endpoint)
-        .then((data) => data.json())
-        .then((countries) => state.countries = () => countries)
-        .catch((e) => {
-            console.error("Unable to get countries", e.message)
+        .then(data => data.json())
+        .then(countries => (state.countries = () => countries))
+        .catch(e => {
+            console.error('Unable to get countries', e.message)
         })
 }
 getCountries()
 
-    // Randomly pick a heading for the homepage
-    ; (() => {
-        const tagLines = [
-            "For your thunder down under",
-            "Guard the crown jewels",
-            "For your national treasure",
-            "A luxury condo for your privates",
-            "If you are here, you may be gay",
-            "Protect and serve your genitals",
-            "Contain your thunder in style",
-            "A stylish shape for your bits",
-            "One person's junk is another's treasure",
-        ]
-        const heading = q("home-heading")
-        if (heading)
-            heading.innerText = tagLines[Math.floor(Math.random() * tagLines.length)]
-    })()
+// Randomly pick a heading for the homepage
+;(() => {
+    const tagLines = [
+        'For your thunder down under',
+        'Guard the crown jewels',
+        'For your national treasure',
+        'A luxury condo for your privates',
+        'If you are here, you may be gay',
+        'Protect and serve your genitals',
+        'Contain your thunder in style',
+        'A stylish shape for your bits',
+        "One person's junk is another's treasure",
+    ]
+    const heading = q('home-heading')
+    if (heading)
+        heading.innerText =
+            tagLines[Math.floor(Math.random() * tagLines.length)]
+})()
