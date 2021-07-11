@@ -1,5 +1,6 @@
 .page {
   @include flexCol();
+  overflow-x: hidden;
   margin-top: var(--nav-height);
   padding: var(--y-padding) 0;
   border-radius: var(--big-radius);

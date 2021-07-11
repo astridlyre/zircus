@@ -99,7 +99,8 @@ export const checkout = (() => {
             })
                 .then(data => data.json())
                 .then(data => {
-                    state.secret = data
+                    state.secret = data.clientSecret
+                    q('payment-price').innerText = `$${data.total.toFixed(2)}`
                     this.loadStripe(data)
                 })
         }
