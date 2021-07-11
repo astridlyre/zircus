@@ -17,8 +17,7 @@ export const cart = (function () {
             this.checkoutBtn = q('cart-checkout')
             this.payPalBtn = q('cart-paypal')
             this.placeOrderBtn = q('place-order')
-            this.subtotal = 0
-            this.render().setTotals()
+            this.render()
 
             this.checkoutBtn &&
                 this.checkoutBtn.addEventListener('click', () => {
@@ -27,26 +26,20 @@ export const cart = (function () {
         }
 
         enableButtons() {
-            if (state.cart.length > 0) {
-                this.checkoutBtn.removeAttribute('disabled')
-            } else {
-                this.checkoutBtn.setAttribute('disabled', true)
-            }
+            if (state.cart.length > 0)
+                return this.checkoutBtn.removeAttribute('disabled')
+            return this.checkoutBtn.setAttribute('disabled', true)
         }
 
         setTotals() {
             if (!this.list) return this
-            // Clear prices
-            let subtotal = 0
-
             // Tally up
-            state.cart.forEach(item => {
-                subtotal += item.price * item.quantity
-            })
-
+            this.subtotal = state.cart.reduce(
+                (acc, item) => (acc += item.price * item.quantity),
+                0
+            )
             // Set text
-            this.cartSubTotal.innerText = `$${subtotal.toFixed(2)}`
-
+            this.cartSubTotal.innerText = `$${this.subtotal.toFixed(2)}`
             // Update navLink
             this.list && this.enableButtons()
             return this
@@ -168,19 +161,19 @@ export const cart = (function () {
                         .addChild('No items in cart')
                         .render()
                 )
-                return this
-            } else {
-                const fragment = new DocumentFragment()
-                state.cart.forEach(item => {
-                    fragment.appendChild(
-                        this.renderItem(item, this.checkoutList ? true : false)
-                    )
-                })
-
-                if (this.list) this.list.appendChild(fragment)
-                else this.checkoutList.appendChild(fragment)
                 return this.setTotals()
             }
+
+            const fragment = new DocumentFragment()
+            state.cart.forEach(item => {
+                fragment.appendChild(
+                    this.renderItem(item, this.checkoutList ? true : false)
+                )
+            })
+
+            if (this.list) this.list.appendChild(fragment)
+            else this.checkoutList.appendChild(fragment)
+            return this.setTotals()
         }
 
         removeItem(item) {

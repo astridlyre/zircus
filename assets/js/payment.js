@@ -3,7 +3,7 @@ const stripe = Stripe(
     'pk_test_51J93KzDIzwSFHzdzCZtyRcjMvw8em0bhnMrVmkBHaMFHuc2nkJ156oJGNxuz0G7W4Jx0R6OCy2nBXYTt6U8bSYew00PIAPcntP'
 )
 
-export const checkout = (() => {
+;(() => {
     const placeOrder = q('place-order')
     if (!placeOrder) return
     if (state.cart.length === 0) location.assign('/')
@@ -54,17 +54,14 @@ export const checkout = (() => {
         }
 
         setTotals() {
-            // Clear prices
-            this.subtotal = 0
-            this.total = 0
-            this.tax = 0
-            const taxRate = calculateTax(this.country.value, this.state.value)
-
             // Tally up
-            state.cart.forEach(item => {
-                this.subtotal += item.price * item.quantity
-            })
-            this.tax = this.subtotal * taxRate
+            this.subtotal = state.cart.reduce(
+                (acc, item) => acc + item.price * item.quantity,
+                0
+            )
+            this.tax =
+                this.subtotal *
+                calculateTax(this.country.value, this.state.value)
             this.total = this.subtotal + this.tax
 
             // Set text

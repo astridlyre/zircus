@@ -1,4 +1,4 @@
-import { numberInputHandler, q, state, Element } from "./utils.js"
+import { numberInputHandler, q, state, Element } from './utils.js'
 
 /* Path for masked product images. Images follow the convention:
  
@@ -9,76 +9,87 @@ import { numberInputHandler, q, state, Element } from "./utils.js"
   view is 'a' (front) or 'b' (folded)
   and size is the image size 400, 600 or 1000
 */
-(function() {
+;(function () {
     // Don't do anything on pages other than product page
-    const type = q("product-type")
+    const type = q('product-type')
     if (!type) return
 
-    class Underwear {
+    class Product {
         constructor() {
-            this.name = q("product-name")
-            this.price = q("product-price")
-            this.priceText = q("product-price-text")
-            this.size = q("product-size")
-            this.image = q("product-image")
-            this.bigImageEl = q("product-image-full")
-            this.bigImage = q("product-image-full-image")
-            this.quantity = q("product-quantity")
-            this.color = q("product-color")
-            this.defaultColor = q("product-default-color")
-            this.type = q("product-type")
-            this.addToCart = q("add-to-cart")
-            this.cartBtn = q("cart-quantity")
-            this.goToCart = q("go-to-cart")
-            this.goToCartQty = q("go-to-cart-qty")
-            this.cartSpinner = q("add-to-cart-spinner")
-            this.productAccent = q("product-accent")
-            this.stock = q("product-stock")
+            this.name = q('product-name')
+            this.price = q('product-price')
+            this.priceText = q('product-price-text')
+            this.size = q('product-size')
+            this.image = q('product-image')
+            this.bigImageEl = q('product-image-full')
+            this.bigImage = q('product-image-full-image')
+            this.quantity = q('product-quantity')
+            this.color = q('product-color')
+            this.defaultColor = q('product-default-color')
+            this.type = q('product-type')
+            this.addToCart = q('add-to-cart')
+            this.cartBtn = q('cart-quantity')
+            this.goToCart = q('go-to-cart')
+            this.goToCartQty = q('go-to-cart-qty')
+            this.cartSpinner = q('add-to-cart-spinner')
+            this.productAccent = q('product-accent')
+            this.stock = q('product-stock')
             this.hovered = false
             this.currentColor = this.color.value
 
+            // Preload images and set default color
             for (const child of this.color.children) {
                 this.preloadImages(child.value)
                 if (child.value === this.defaultColor.value) {
-                    child.setAttribute("selected", true)
+                    child.setAttribute('selected', true)
                     this.productAccent.classList.add(`${child.value}-before`)
                     this.currentColor = child.value
                 }
             }
 
             // Check available inventory
-            this.updatePrice(Number(this.price.value) * Number(this.quantity.value))
+            this.updatePrice(
+                Number(this.price.value) * Number(this.quantity.value)
+            )
 
             // Add event listeners
-            this.color.addEventListener("change", () => {
-                this.setImage("sm_a")
+            this.color.addEventListener('change', () => {
+                this.setImage('sm_a')
                 this.updateStatus()
                 this.productAccent.classList.add(`${this.color.value}-before`)
-                this.productAccent.classList.remove(`${this.currentColor}-before`)
+                this.productAccent.classList.remove(
+                    `${this.currentColor}-before`
+                )
                 this.currentColor = this.color.value
             })
-            this.quantity.addEventListener("blur", () =>
+            this.quantity.addEventListener('blur', () =>
                 numberInputHandler(
                     this.quantity,
-                    (p) => this.updatePrice(p * this.item.price),
+                    p => this.updatePrice(p * this.item.price),
                     () => this.item.quantity
                 )
             )
-            this.size.addEventListener("input", () => this.updateStatus())
-            this.image.addEventListener("pointerover", () => this.hover())
-            this.image.addEventListener("pointerleave", () => this.hover())
-            this.image.addEventListener("click", () => this.viewFull())
-            this.bigImageEl.addEventListener("click", () => this.hideFull())
-            this.addToCart.addEventListener("click", () => this.add())
-            this.goToCart.addEventListener("click", () => location.assign("/cart"))
+            this.size.addEventListener('input', () => this.updateStatus())
+            this.image.addEventListener('pointerover', () => this.hover())
+            this.image.addEventListener('pointerleave', () => this.hover())
+            this.image.addEventListener('click', () => this.viewFull())
+            this.bigImageEl.addEventListener('click', () => this.hideFull())
+            this.addToCart.addEventListener('click', () => this.add())
+            this.goToCart.addEventListener('click', () =>
+                location.assign('/cart')
+            )
             state.addHook(() => this.updateStatus())
             state.addHook(() => this.updateCartBtnQty())
         }
 
         updateCartBtnQty() {
-            let total = 0
-            for (const item of state.cart) total += item.quantity
-            this.goToCartQty.innerText = `${total > 0 ? `(${total})` : ""}`
+            const totalItems = state.cart.reduce(
+                (acc, item) => acc + item.quantity,
+                0
+            )
+            this.goToCartQty.innerText = `${
+                totalItems > 0 ? `(${totalItems})` : ''
+            }`
         }
 
         get id() {
@@ -87,15 +98,15 @@ import { numberInputHandler, q, state, Element } from "./utils.js"
 
         preloadImages(color) {
             for (const image of [
-                "a-400.png",
-                "b-400.png",
-                "a-1920.png",
-                "b-1920.png",
+                'a-400.png',
+                'b-400.png',
+                'a-1920.png',
+                'b-1920.png',
             ]) {
-                const preload = new Element("link", null, {
+                const preload = new Element('link', null, {
                     href: `/assets/img/products/masked/${this.type.value}-${color}-${image}`,
-                    rel: "prefetch",
-                    as: "image",
+                    rel: 'prefetch',
+                    as: 'image',
                 })
                 document.head.appendChild(preload.render())
             }
@@ -103,23 +114,30 @@ import { numberInputHandler, q, state, Element } from "./utils.js"
 
         // Add a new underwear item to cart
         add() {
+            // If not enough items in stock
             if (
-                this.item.quantity - Number(this.quantity.value) < 0 &&
+                this.item.quantity - Number(this.quantity.value) < 0 ||
                 !this.item.quantity
-            ) {
+            )
                 return this
-            }
-            if (state.cart.find((item) => item.type === this.id)) {
-                state.cart = (cart) =>
-                    cart.map((i) =>
+
+            // Update quantity of current cart items
+            if (state.cart.find(item => item.type === this.id)) {
+                state.cart = cart =>
+                    cart.map(i =>
                         i.type === this.id
-                            ? { ...i, quantity: i.quantity + Number(this.quantity.value) }
+                            ? {
+                                  ...i,
+                                  quantity:
+                                      i.quantity + Number(this.quantity.value),
+                              }
                             : i
                     )
             } else {
-                state.cart = (cart) =>
+                // Otherwise add new item to cart
+                state.cart = cart =>
                     cart.concat({
-                        ...state.inv.find((item) => item.type === this.id),
+                        ...state.inv.find(item => item.type === this.id),
                         quantity: Number(this.quantity.value),
                     })
             }
@@ -135,25 +153,25 @@ import { numberInputHandler, q, state, Element } from "./utils.js"
         // Change pic on hover
         hover() {
             if (!this.hovered) {
-                this.setImage("sm_b")
+                this.setImage('sm_b')
                 this.hovered = true
             } else {
-                this.setImage("sm_a")
+                this.setImage('sm_a')
                 this.hovered = false
             }
         }
 
         // Show fullsize pic
         viewFull() {
-            this.bigImage.src = this.item.images["lg_a"]
-            this.bigImageEl.style.display = "flex"
-            document.body.classList.add("hide-y")
+            this.bigImage.src = this.item.images['lg_a']
+            this.bigImageEl.style.display = 'flex'
+            document.body.classList.add('hide-y')
         }
 
         // Hide fullsize pic
         hideFull() {
-            this.bigImageEl.style.display = "none"
-            document.body.classList.remove("hide-y")
+            this.bigImageEl.style.display = 'none'
+            document.body.classList.remove('hide-y')
         }
 
         // Change product image
@@ -165,34 +183,35 @@ import { numberInputHandler, q, state, Element } from "./utils.js"
         // Update status depending on if inventory is available
         updateStatus() {
             if (this.item.quantity > 0) {
-                this.stock.innerText = `${this.item.quantity > 5
-                    ? "In stock"
-                    : `Only ${this.item.quantity} left`
-                    }`
-                this.stock.classList.add("in-stock")
-                this.stock.classList.remove("out-stock")
-                this.quantity.removeAttribute("disabled")
-                this.addToCart.removeAttribute("disabled")
-                this.addToCartText = "add to cart"
+                this.stock.innerText = `${
+                    this.item.quantity > 5
+                        ? 'In stock'
+                        : `Only ${this.item.quantity} left`
+                }`
+                this.stock.classList.add('in-stock')
+                this.stock.classList.remove('out-stock')
+                this.quantity.removeAttribute('disabled')
+                this.addToCart.removeAttribute('disabled')
+                this.addToCartText = 'add to cart'
             } else {
-                this.stock.innerText = "None available"
-                this.stock.classList.add("out-stock")
-                this.stock.classList.remove("in-stock")
-                this.quantity.setAttribute("disabled", true)
-                this.addToCart.setAttribute("disabled", true)
-                this.addToCart.innerText = "out of stock"
+                this.stock.innerText = 'None available'
+                this.stock.classList.add('out-stock')
+                this.stock.classList.remove('in-stock')
+                this.quantity.setAttribute('disabled', true)
+                this.addToCart.setAttribute('disabled', true)
+                this.addToCart.innerText = 'out of stock'
             }
-            this.setImage("sm_a")
+            this.setImage('sm_a')
             return this
         }
 
         // Return item object with quantity and price
         get item() {
-            const item = state.inv.find((item) => item.type === this.id)
+            const item = state.inv.find(item => item.type === this.id)
             if (item) return item
             return { price: 30, quantity: 0, images: {} }
         }
     }
 
-    return new Underwear()
+    return new Product()
 })()

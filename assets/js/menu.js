@@ -1,10 +1,10 @@
 import { q, state } from './utils.js'
 
-(function() {
+;(function () {
     class Menu {
         constructor() {
-            this.navLink = q("cart-link")
-            this.navLinkMobile = q("cart-link-mobile")
+            this.navLink = q('cart-link')
+            this.navLinkMobile = q('cart-link-mobile')
             this.menu = q('menu-mobile-list')
             this.btn = q('menu-mobile-btn')
             this.hidden = true
@@ -33,15 +33,15 @@ import { q, state } from './utils.js'
         // Updates the nav link when cart items change
         updateNavLink() {
             if (state.cart.length > 0) {
-                let totalItems = 0
-                state.cart.forEach((item) => {
-                    totalItems += item.quantity
-                })
+                const totalItems = state.cart.reduce(
+                    (acc, item) => acc + item.quantity,
+                    0
+                )
                 this.navLink.innerText = `cart (${totalItems})`
                 this.navLinkMobile.innerText = `cart (${totalItems})`
             } else {
-                this.navLink.innerText = "cart"
-                this.navLinkMobile.innerText = "cart"
+                this.navLink.innerText = 'cart'
+                this.navLinkMobile.innerText = 'cart'
             }
             return this
         }
