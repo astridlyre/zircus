@@ -149,7 +149,7 @@ export const checkout = (() => {
                 .then(result => {
                     if (result.error)
                         return this.showError(result.error.message)
-                    return this.orderComplete(result.paymentIntent.id)
+                    return this.orderComplete()
                 })
         }
 
@@ -173,25 +173,15 @@ export const checkout = (() => {
             }
         }
 
-        async orderComplete(id) {
+        orderComplete() {
             this.loading(false)
-            return await fetch(`${API_ENDPOINT}/orders`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ id }),
-            })
-                .then(res => res.json())
-                .then(() => {
-                    state.cart = () => []
-                    state.secret = null
-                    q('result-message').classList.remove('hidden')
-                    this.payBtn.disabled = true
-                    this.cancel.innerText = 'close'
-                    this.cancel.classList.add('btn__primary')
-                    this.cancel.classList.remove('btn__secondary')
-                })
+            state.cart = () => []
+            state.secret = null
+            q('result-message').classList.remove('hidden')
+            this.payBtn.disabled = true
+            this.cancel.innerText = 'close'
+            this.cancel.classList.add('btn__primary')
+            this.cancel.classList.remove('btn__secondary')
         }
 
         populateSelects(select, data = [], fn) {
