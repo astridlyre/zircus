@@ -1,7 +1,7 @@
 // Get an element
 export const q = x => document.getElementById(x)
-// export const API_ENDPOINT = 'https://zircus.herokuapp.com/api'
-export const API_ENDPOINT = 'http://localhost:3000/api'
+export const API_ENDPOINT = 'https://zircus.herokuapp.com/api'
+// export const API_ENDPOINT = 'http://localhost:3000/api'
 
 // Handle updating number fields
 export const numberInputHandler = (el, fn, max) => {
