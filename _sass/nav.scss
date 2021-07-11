@@ -101,7 +101,10 @@
 
     &_link {
       margin-right: -1.8rem;
-      margin-left: 2rem;
+      margin-left: 2.2rem;
+      @include res('lg') {
+        margin-left: 3rem;
+      }
       padding: 0 var(--btn-padding);
       height: var(--btn-height);
       display: flex;
@@ -136,7 +139,6 @@
     &_link {
       padding: 0.5rem;
       margin-left: -0.5rem;
-      margin-bottom: 0;
       outline: none;
       z-index: 0;
       position: relative;
