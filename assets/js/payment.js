@@ -1,4 +1,4 @@
-import { q, API_ENDPOINT, state, Element } from './utils.js'
+import { q, API_ENDPOINT, state, Element, calculateTax } from './utils.js'
 const stripe = Stripe(
     'pk_test_51J93KzDIzwSFHzdzCZtyRcjMvw8em0bhnMrVmkBHaMFHuc2nkJ156oJGNxuz0G7W4Jx0R6OCy2nBXYTt6U8bSYew00PIAPcntP'
 )
@@ -30,6 +30,9 @@ export const checkout = (() => {
             this.placeOrder = q('place-order')
             this.checkoutForm = q('checkout-form')
             this.cancel = q('cancel')
+            this.checkoutSubtotal = q('checkout-subtotal')
+            this.checkoutTax = q('checkout-tax')
+            this.checkoutTotal = q('checkout-total')
             this.isLoaded = false
             this.checkoutForm.addEventListener('submit', event => {
                 event.preventDefault()
@@ -46,6 +49,30 @@ export const checkout = (() => {
                 this.handleCountry()
             })
             this.country.addEventListener('input', () => this.handleCountry())
+            this.state.addEventListener('input', () => this.setTotals())
+            this.setTotals()
+        }
+
+        setTotals() {
+            // Clear prices
+            this.subtotal = 0
+            this.total = 0
+            this.tax = 0
+            const taxRate = calculateTax(this.country.value, this.state.value)
+
+            // Tally up
+            state.cart.forEach(item => {
+                this.subtotal += item.price * item.quantity
+            })
+            this.tax = this.subtotal * taxRate
+            this.total = this.subtotal + this.tax
+
+            // Set text
+            this.checkoutSubtotal.innerText = `$${this.subtotal.toFixed(2)}`
+            this.checkoutTax.innerText = `$${this.tax.toFixed(2)}`
+            this.checkoutTotal.innerText = `$${this.total.toFixed(2)}`
+
+            return this
         }
 
         showModal(show) {
@@ -56,7 +83,7 @@ export const checkout = (() => {
                 this.blur.classList.add('blur')
                 this.paymentModal.classList.add('show-modal')
                 this.payBtn.disabled = true
-                q('payment-price').innerText = q('cart-total').innerText
+                q('payment-price').innerText = `$${this.total.toFixed(2)}`
             } else {
                 document.body.classList.remove('hide-y')
                 this.nav.classList.remove('blur')
@@ -87,8 +114,6 @@ export const checkout = (() => {
                     quantity: item.quantity,
                 })),
             }
-
-            console.log(req)
 
             fetch(`${API_ENDPOINT}/orders/create-payment-intent`, {
                 method: 'POST',
@@ -210,6 +235,7 @@ export const checkout = (() => {
                 this.country.value === 'Canada' ? 'Province' : 'State'
             this.zipText.innerText =
                 this.country.value === 'Canada' ? 'Postal Code' : 'Zip'
+            this.setTotals()
         }
     }
 

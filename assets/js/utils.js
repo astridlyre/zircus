@@ -128,6 +128,24 @@ export class Element {
     }
 }
 
+export const calculateTax = (country, state) => {
+    if (country === 'Canada') {
+        switch (state) {
+            case 'New Brunswick':
+            case 'Newfoundland and Labrador':
+            case 'Nova Scotia':
+            case 'Prince Edward Island':
+                return 0.15
+            case 'Ontario':
+                return 0.13
+            default:
+                return 0.05
+        }
+    } else {
+        return 0.05
+    }
+}
+
 // Get Inventory to set max quantities of items
 const getInventory = async () => {
     // const INVENTORY_URL = "http://localhost:3000/api/inv"
