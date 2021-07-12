@@ -170,13 +170,21 @@ import { numberInputHandler, q, state, Element } from './utils.js'
 
         // Change product image
         setImage(key) {
+            if (!this.item) return
             if (this.item.images[key]) this.image.src = this.item.images[key]
             return this
         }
 
         // Update status depending on if inventory is available
         updateStatus() {
-            if (this.item.quantity > 0) {
+            if (!this.item || this.item.quantity === 0) {
+                this.stock.innerText = 'None available'
+                this.stock.classList.add('out-stock')
+                this.stock.classList.remove('in-stock')
+                this.quantity.setAttribute('disabled', true)
+                this.addToCart.setAttribute('disabled', true)
+                this.addToCart.innerText = 'out of stock'
+            } else {
                 this.stock.innerText = `${
                     this.item.quantity > 5
                         ? 'In stock'
@@ -186,14 +194,7 @@ import { numberInputHandler, q, state, Element } from './utils.js'
                 this.stock.classList.remove('out-stock')
                 this.quantity.removeAttribute('disabled')
                 this.addToCart.removeAttribute('disabled')
-                this.addToCartText = 'add to cart'
-            } else {
-                this.stock.innerText = 'None available'
-                this.stock.classList.add('out-stock')
-                this.stock.classList.remove('in-stock')
-                this.quantity.setAttribute('disabled', true)
-                this.addToCart.setAttribute('disabled', true)
-                this.addToCart.innerText = 'out of stock'
+                this.addToCart.innerText = 'add to cart'
             }
             this.setImage('sm_a')
             return this
@@ -201,12 +202,7 @@ import { numberInputHandler, q, state, Element } from './utils.js'
 
         // Return item object with quantity and price
         get item() {
-            return (
-                state.inv.find(item => item.type === this.type) || {
-                    quantity: 0,
-                    price: 30,
-                }
-            )
+            return state.inv.find(item => item.type === this.type)
         }
     }
 
