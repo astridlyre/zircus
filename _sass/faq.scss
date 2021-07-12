@@ -1,0 +1,43 @@
+.faq__list {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 1rem;
+
+  a {
+    color: var(--purple);
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  ul {
+    margin-bottom: 1rem;
+  }
+  li {
+    margin-bottom: 0.5rem;
+  }
+}
+
+details {
+  border: 2px solid var(--lgrey);
+  border-radius: var(--radius);
+  padding: 1rem 1rem 0;
+}
+
+details[open] {
+  padding: 1rem;
+}
+
+details[open] summary {
+  border-bottom: 2px solid var(--lgrey);
+  margin-bottom: 1rem;
+}
+
+summary {
+  font-weight: 600;
+  letter-spacing: 0.1rem;
+  margin: -1rem -1rem 0;
+  padding: .5em;
+  cursor: pointer;
+}

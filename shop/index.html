@@ -1,0 +1,25 @@
+---
+layout: default
+title: shop · zircus
+bottom_image: /assets/img/products/1920/closeup-a-1920.jpg
+---
+
+<div class="container">
+  <h1 class="page__heading">shop</h1>
+  <p class="page__subheading">find the perfect pair</p>
+  <ul class="home__products">
+    {% for product in site.products %}
+    <li class="home__products_product">
+      <a
+        accesskey="{{ product.key }}"
+        class="home__products_product_link"
+        href="{{ product.url }}"
+        tabindex="0"
+      >
+        <img src="{{ product.image }}" alt="{{ product.name }}" />
+        <p class="home__products_product_text">{{ product.name }}</p>
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+</div>

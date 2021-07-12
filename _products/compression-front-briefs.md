@@ -1,4 +1,5 @@
 ---
+title: compression front · zircus
 name: compression front
 type: cf
 key: m

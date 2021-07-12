@@ -16,11 +16,24 @@
     width: 100%;
     margin-bottom: 1.25rem;
     @include res("sm") {
+      text-align: left;
       font-size: 3rem;
     }
-    text-align: left;
+    text-align: center;
     font-size: 2.5rem;
     box-sizing: border-box;
+    letter-spacing: 0.1rem;
+  }
+
+  &__subheading {
+    text-align: center;
+    @include res('sm') {
+      text-align: left;
+    }
+    margin-top: -0.5rem;
+    font-size: 1.1rem;
+    font-weight: 300;
+    letter-spacing: 0.1rem;
   }
 
   &__bottom_image {

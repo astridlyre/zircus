@@ -1,0 +1,6 @@
+- name: about
+  link: /about
+- name: faq
+  link: /faq
+- name: sizing
+  link: /sizing

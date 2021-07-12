@@ -36,15 +36,42 @@
     align-items: flex-end;
   }
 
+  &__links {
+    display: flex;
+    gap: 1rem;
+    margin-right: -0.5rem;
+
+    &_link {
+      text-align: right;
+
+      a {
+        outline: none;
+        padding: 0.5rem;
+        border: 2px solid var(--dark);
+        border-radius: var(--radius);
+
+        &:hover,
+        &:focus {
+          outline: none;
+          border-color: var(--teal);
+        }
+      }
+    }
+  }
+
   &__social {
     display: flex;
     font-size: 0.9rem;
     font-weight: 600;
     line-height: 1.2;
     margin-right: -0.5rem;
+    margin-top: 1.5rem;
     margin-bottom: -0.5rem;
 
     &_button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
       outline: none;
       margin-left: 0.75rem;
       padding: 0.5rem;
@@ -63,12 +90,6 @@
 
     &_icon {
       width: 1.2rem;
-    }
-
-    &_heading {
-      font-size: 0.9rem;
-      margin-bottom: 0.5rem;
-      display: block;
     }
   }
 }

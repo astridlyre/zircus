@@ -1,5 +1,5 @@
 - name: shop
-  link: /
+  link: /shop
   key: s
   id: shop-link
   tab: 1

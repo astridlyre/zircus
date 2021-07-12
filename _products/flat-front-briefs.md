@@ -1,4 +1,5 @@
 ---
+title: flat front · zircus
 name: flat front
 type: ff
 key: f
