@@ -1,4 +1,6 @@
 .checkout {
+  width: 100%;
+
   .form {
     display: grid;
     @include res("md") {
