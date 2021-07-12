@@ -32,7 +32,11 @@ layout: default
           </h2>
           <div class="product__form">
             <div class="product__inputs">
-              <input type="hidden" id="product-type" value="{{ page.type }}" />
+              <input
+                type="hidden"
+                id="product-prefix"
+                value="{{ page.type }}"
+              />
               <p id="product-stock" class="product__inputs_stock out-stock">
                 None available
               </p>

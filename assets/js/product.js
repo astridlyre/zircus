@@ -11,14 +11,15 @@ import { numberInputHandler, q, state, Element } from './utils.js'
 */
 ;(function () {
     // Don't do anything on pages other than product page
-    const type = q('product-type')
-    if (!type) return
+    const prefix = q('product-prefix')
+    if (!prefix) return
 
     class Product {
         constructor() {
             this.name = q('product-name')
             this.price = q('product-price')
             this.priceText = q('product-price-text')
+            this.prefix = q('product-prefix')
             this.size = q('product-size')
             this.image = q('product-image')
             this.bigImageEl = q('product-image-full')
@@ -26,7 +27,6 @@ import { numberInputHandler, q, state, Element } from './utils.js'
             this.quantity = q('product-quantity')
             this.color = q('product-color')
             this.defaultColor = q('product-default-color')
-            this.type = q('product-type')
             this.addToCart = q('add-to-cart')
             this.cartBtn = q('cart-quantity')
             this.goToCart = q('go-to-cart')
@@ -47,10 +47,9 @@ import { numberInputHandler, q, state, Element } from './utils.js'
                 }
             }
 
-            // Check available inventory
-            this.updatePrice(
+            this.priceText.textContent = `$${
                 Number(this.price.value) * Number(this.quantity.value)
-            )
+            }`
 
             // Add event listeners
             this.color.addEventListener('change', () => {
@@ -62,13 +61,13 @@ import { numberInputHandler, q, state, Element } from './utils.js'
                 )
                 this.currentColor = this.color.value
             })
-            this.quantity.addEventListener('blur', () =>
-                numberInputHandler(
-                    this.quantity,
-                    p => this.updatePrice(p * this.item.price),
-                    () => this.item.quantity
-                )
-            )
+            this.quantity.addEventListener('input', () => {
+                const max = state.inv.find(i => i.type === this.type).quantity
+                if (Number(this.quantity.value) > max) this.quantity.value = max
+                this.priceText.textContent = `$${
+                    Number(this.quantity.value) * Number(this.price.value)
+                }`
+            })
             this.size.addEventListener('input', () => this.updateStatus())
             this.image.addEventListener('pointerover', () => this.hover())
             this.image.addEventListener('pointerleave', () => this.hover())
@@ -92,8 +91,8 @@ import { numberInputHandler, q, state, Element } from './utils.js'
             }`
         }
 
-        get id() {
-            return `${this.type.value}-${this.color.value}-${this.size.value}`
+        get type() {
+            return `${this.prefix.value}-${this.color.value}-${this.size.value}`
         }
 
         preloadImages(color) {
@@ -104,7 +103,7 @@ import { numberInputHandler, q, state, Element } from './utils.js'
                 'b-1920.png',
             ]) {
                 const preload = new Element('link', null, {
-                    href: `/assets/img/products/masked/${this.type.value}-${color}-${image}`,
+                    href: `/assets/img/products/masked/${this.prefix.value}-${color}-${image}`,
                     rel: 'prefetch',
                     as: 'image',
                 })
@@ -122,10 +121,10 @@ import { numberInputHandler, q, state, Element } from './utils.js'
                 return this
 
             // Update quantity of current cart items
-            if (state.cart.find(item => item.type === this.id)) {
+            if (state.cart.find(item => item.type === this.type)) {
                 state.cart = cart =>
                     cart.map(i =>
-                        i.type === this.id
+                        i.type === this.type
                             ? {
                                   ...i,
                                   quantity:
@@ -137,17 +136,12 @@ import { numberInputHandler, q, state, Element } from './utils.js'
                 // Otherwise add new item to cart
                 state.cart = cart =>
                     cart.concat({
-                        ...state.inv.find(item => item.type === this.id),
+                        ...state.inv.find(item => item.type === this.type),
                         quantity: Number(this.quantity.value),
                     })
             }
             this.addToCart.blur()
             return this
-        }
-
-        // Set the price text
-        updatePrice(p) {
-            this.priceText.innerText = `$${p}`
         }
 
         // Change pic on hover
@@ -207,9 +201,12 @@ import { numberInputHandler, q, state, Element } from './utils.js'
 
         // Return item object with quantity and price
         get item() {
-            const item = state.inv.find(item => item.type === this.id)
-            if (item) return item
-            return { price: 30, quantity: 0, images: {} }
+            return (
+                state.inv.find(item => item.type === this.type) || {
+                    quantity: 0,
+                    price: 30,
+                }
+            )
         }
     }
 

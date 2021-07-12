@@ -7,7 +7,33 @@ bottom_image: /assets/img/products/1920/group-a-1920.jpg
 <main class="page">
   <div class="container">
     <h1 class="page__heading">shopping cart</h1>
-    <div id="cart-products"></div>
+    <template id="cart-product-template">
+      <div class="cart__product">
+        <a href="" class="cart__product_flexcon">
+          <img src="" alt="" class="cart__product_image" />
+          <div class="cart__product_description">
+            <p></p>
+          </div>
+        </a>
+        <div class="cart__product_inputs">
+          <span class="cart__product_price"></span>
+          <input
+            type="number"
+            name=""
+            value=""
+            min="1"
+            max="100"
+            step="1"
+            class="input w-4"
+          />
+          <input type="hidden" name="type" value="" />
+          <button type="button" class="btn btn__secondary">remove</button>
+        </div>
+      </div>
+    </template>
+    <div id="cart-products">
+      <p id="cart-products-none">No items in cart</p>
+    </div>
     <div class="cart__total">
       <ul class="cart__total_prices">
         <li class="cart__total_price bold">

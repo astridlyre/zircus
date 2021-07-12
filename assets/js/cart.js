@@ -1,4 +1,4 @@
-import { q, Element, numberInputHandler, state } from './utils.js'
+import { q, state } from './utils.js'
 
 /*
     Cart performs the functions manage the shopping cart.
@@ -17,6 +17,8 @@ export const cart = (function () {
             this.checkoutBtn = q('cart-checkout')
             this.payPalBtn = q('cart-paypal')
             this.placeOrderBtn = q('place-order')
+            this.template = q('cart-product-template')
+            this.noItems = q('cart-products-none')
             this.render()
 
             this.checkoutBtn &&
@@ -45,141 +47,55 @@ export const cart = (function () {
             return this
         }
 
-        // Hard coded for now
-        getItemType(item) {
-            return item.name.toLowerCase().split(' ').join('-')
-        }
-
-        renderItem(item, renderMinimal) {
-            if (!renderMinimal) {
-                // Image and description
-                const flexCon = new Element('a', ['cart__product_flexcon'], {
-                    href: `/products/${this.getItemType(item)}.html`,
-                })
-                    .addChild(
-                        new Element('img', ['cart__product_image'], {
-                            src: item.images['sm_a'],
-                            alt: item.name,
-                        })
-                    )
-                    .addChild(
-                        new Element('div', [
-                            'cart__product_description',
-                        ]).addChild(
-                            new Element('p').addChild(
-                                `${item.name} - ${item.size}`
-                            )
-                        )
-                    )
-                // Inputs
-                const header = new Element('h3', [
-                    'cart__product_quantity',
-                ]).addChild(`$${item.price * item.quantity}`)
-
-                const quant = new Element('input', ['input', 'w-4'], {
-                    type: 'number',
-                    name: `${item.id}-product-quantity`,
-                    value: item.quantity,
-                    min: 0,
-                    max: 100,
-                    step: 1,
-                }).event('blur', () =>
-                    this.updateQuantity(item, quant.e, header.e)
-                )
-
-                const removeBtn = new Element(
-                    'button',
-                    ['btn', 'btn__secondary'],
-                    {
-                        type: 'button',
-                        id: `${item.id}-removeBtn`,
-                    }
-                )
-                    .addChild('remove')
-                    .event('click', () => this.removeItem(item))
-
-                const inputs = new Element('div', ['cart__product_inputs'])
-                    .addChild(header)
-                    .addChild(quant)
-                    .addChild(removeBtn)
-
-                // Root of product item
-                const root = new Element('div', ['cart__product'], {
-                    id: item.id,
-                })
-                    .addChild(flexCon)
-                    .addChild(inputs)
-
-                return root.render()
-            } else {
-                // Image and description
-                const flexCon = new Element('a', ['cart__product_flexcon'], {
-                    href: `/products/${this.getItemType(item)}.html`,
-                })
-                    .addChild(
-                        new Element('img', ['cart__product_image'], {
-                            src: item.images['sm_a'],
-                            alt: item.name,
-                        })
-                    )
-                    .addChild(
-                        new Element('div', [
-                            'cart__product_description',
-                        ]).addChild(
-                            new Element('p').addChild(
-                                `${item.name} - ${item.size} - ${item.quantity}`
-                            )
-                        )
-                    )
-
-                // Root of product item
-                const root = new Element('div', ['cart__product'], {
-                    id: item.id,
-                }).addChild(flexCon)
-
-                return root.render()
-            }
-        }
-
-        updateQuantity(item, el, p) {
-            const n = numberInputHandler(
-                el,
-                null,
-                () => state.inv.find(i => i.id === item.id).quantity
-            )
-            state.cart = cart =>
-                cart.map(i => (i.id === item.id ? { ...i, quantity: n } : i))
-            p.innerText = `$${item.price * n}`
-            return this.setTotals()
-        }
-
         render() {
-            if (!this.list && !this.checkoutList) return this
-            if (!state.cart.length && !this.checkoutList) {
-                this.list.appendChild(
-                    new Element('p', ['cart__empty'])
-                        .addChild('No items in cart')
-                        .render()
-                )
+            if (!this.list) return this
+            if (!state.cart.length) {
+                this.noItems.style.display = 'block'
                 return this.setTotals()
             }
-
+            this.noItems.style.display = 'none'
             const fragment = new DocumentFragment()
             state.cart.forEach(item => {
-                fragment.appendChild(
-                    this.renderItem(item, this.checkoutList ? true : false)
-                )
+                const template = this.template.content.cloneNode(true)
+                const product = template.querySelector('.cart__product')
+                const link = template.querySelector('a')
+                const img = template.querySelector('img')
+                const desc = template.querySelector('p')
+                const price = template.querySelector('span')
+                const qty = template.querySelector('.input')
+                const removeBtn = template.querySelector('button')
+
+                link.href = `/products/${item.name
+                    .toLowerCase()
+                    .split(' ')
+                    .join('-')}.html`
+                img.src = item.images.sm_a
+                img.alt = item.name
+                desc.textContent = `${item.name} - ${item.size}`
+                price.textContent = `$${item.price}`
+                qty.value = item.quantity
+                qty.addEventListener('input', () => {
+                    const max = state.inv.find(i => i.id === item.id).quantity
+                    if (Number(qty.value) > max) qty.value = max
+                    state.cart = cart =>
+                        cart.map(i =>
+                            i.id === item.id
+                                ? { ...i, quantity: Number(qty.value) }
+                                : i
+                        )
+                    this.setTotals()
+                })
+                removeBtn.addEventListener('click', () => {
+                    state.cart = cart => cart.filter(i => i.id !== item.id)
+                    this.setTotals()
+                    product.remove()
+                    !state.cart.length && this.render()
+                })
+
+                return fragment.appendChild(template)
             })
 
-            if (this.list) this.list.appendChild(fragment)
-            else this.checkoutList.appendChild(fragment)
-            return this.setTotals()
-        }
-
-        removeItem(item) {
-            state.cart = cart => cart.filter(i => i.id != item.id)
-            q(item.id).remove()
-            if (!state.cart.length) return this.render().setTotals()
+            this.list.appendChild(fragment)
             return this.setTotals()
         }
     }

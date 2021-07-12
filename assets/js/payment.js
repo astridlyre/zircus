@@ -19,8 +19,6 @@ const stripe = Stripe(
             this.country = q('checkout-country')
             this.zip = q('checkout-zip')
             this.zipText = q('checkout-zip-text')
-            this.nav = q('nav')
-            this.blur = q('blur')
             this.paymentModal = q('stripe-payment-modal')
             this.paymentForm = q('stripe-payment-form')
             this.payBtn = q('pay-button')
@@ -33,6 +31,8 @@ const stripe = Stripe(
             this.checkoutSubtotal = q('checkout-subtotal')
             this.checkoutTax = q('checkout-tax')
             this.checkoutTotal = q('checkout-total')
+            this.template = q('checkout-product-template')
+            this.checkoutList = q('checkout-products')
             this.isLoaded = false
             this.checkoutForm.addEventListener('submit', event => {
                 event.preventDefault()
@@ -51,6 +51,30 @@ const stripe = Stripe(
             this.country.addEventListener('input', () => this.handleCountry())
             this.state.addEventListener('input', () => this.setTotals())
             this.setTotals()
+            this.render()
+        }
+
+        render() {
+            const fragment = new DocumentFragment()
+            state.cart.forEach(item => {
+                const template = this.template.content.cloneNode(true)
+                const link = template.querySelector('a')
+                const img = template.querySelector('img')
+                const desc = template.querySelector('p')
+
+                link.setAttribute(
+                    'href',
+                    `/products/${item.name
+                        .toLowerCase()
+                        .split(' ')
+                        .join('-')}.html`
+                )
+                img.src = item.images.sm_a
+                desc.textContent = `${item.name} (${item.size}) - ${item.quantity} x $${item.price}`
+
+                return fragment.appendChild(template)
+            })
+            this.checkoutList.appendChild(fragment)
         }
 
         setTotals() {
@@ -76,15 +100,15 @@ const stripe = Stripe(
             this.loading(false)
             if (show) {
                 document.body.classList.add('hide-y')
-                this.nav.classList.add('blur')
-                this.blur.classList.add('blur')
+                q('nav').classList.add('blur')
+                q('blur').classList.add('blur')
                 this.paymentModal.classList.add('show-modal')
                 this.payBtn.disabled = true
                 q('payment-price').innerText = `$${this.total.toFixed(2)}`
             } else {
                 document.body.classList.remove('hide-y')
-                this.nav.classList.remove('blur')
-                this.blur.classList.remove('blur')
+                q('nav').classList.remove('blur')
+                q('blur').classList.remove('blur')
                 this.paymentModal.classList.remove('show-modal')
                 if (state.cart.length === 0) location.assign('/')
             }
