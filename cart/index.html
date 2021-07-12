@@ -4,60 +4,51 @@ title: zircus | cart
 bottom_image: /assets/img/products/1920/group-a-1920.jpg
 ---
 
-<main class="page">
-  <div class="container">
-    <h1 class="page__heading">shopping cart</h1>
-    <template id="cart-product-template">
-      <div class="cart__product">
-        <a href="" class="cart__product_flexcon">
-          <img src="" alt="" class="cart__product_image" />
-          <div class="cart__product_description">
-            <p></p>
-          </div>
-        </a>
-        <div class="cart__product_inputs">
-          <span class="cart__product_price"></span>
-          <input
-            type="number"
-            name=""
-            value=""
-            min="1"
-            max="100"
-            step="1"
-            class="input w-4"
-          />
-          <input type="hidden" name="type" value="" />
-          <button type="button" class="btn btn__secondary">remove</button>
+<div class="container">
+  <h1 class="page__heading">shopping cart</h1>
+  <template id="cart-product-template">
+    <div class="cart__product">
+      <a href="" class="cart__product_flexcon">
+        <img src="" alt="" class="cart__product_image" />
+        <div class="cart__product_description">
+          <p></p>
         </div>
+      </a>
+      <div class="cart__product_inputs">
+        <span class="cart__product_price"></span>
+        <input
+          type="number"
+          name=""
+          value=""
+          min="1"
+          max="100"
+          step="1"
+          class="input w-4"
+        />
+        <input type="hidden" name="type" value="" />
+        <button type="button" class="btn btn__secondary">remove</button>
       </div>
-    </template>
-    <div id="cart-products">
-      <p id="cart-products-none">No items in cart</p>
     </div>
-    <div class="cart__total">
-      <ul class="cart__total_prices">
-        <li class="cart__total_price bold">
-          Subtotal:<span
-            class="cart__total_price_item"
-            id="cart-subtotal"
-          ></span>
-        </li>
-      </ul>
-    </div>
-    <div class="cart__buttons">
-      <button
-        class="btn btn__primary"
-        type="button"
-        id="cart-checkout"
-        accesskey="o"
-        disabled
-      >
-        check<span class="underline">o</span>ut
-      </button>
-    </div>
+  </template>
+  <div id="cart-products">
+    <p id="cart-products-none">No items in cart</p>
   </div>
-  <div class="page__bottom_image">
-    <div class="bg-light rounded-big-bottom absolute t-0 l-0"></div>
-    <img src="{{ page.bottom_image }}" alt="Zircus Underwear" />
+  <div class="cart__total">
+    <ul class="cart__total_prices">
+      <li class="cart__total_price bold">
+        Subtotal:<span class="cart__total_price_item" id="cart-subtotal"></span>
+      </li>
+    </ul>
   </div>
-</main>
+  <div class="cart__buttons">
+    <button
+      class="btn btn__primary"
+      type="button"
+      id="cart-checkout"
+      accesskey="o"
+      disabled
+    >
+      check<span class="underline">o</span>ut
+    </button>
+  </div>
+</div>

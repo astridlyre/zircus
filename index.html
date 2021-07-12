@@ -4,51 +4,41 @@ title: zircus
 bottom_image: /assets/img/products/1920/closeup-a-1920.jpg
 ---
 
-<main class="page home">
+<div class="container">
+  <div class="home__heading_container">
+    <h1 class="home__heading">
+      <span id="home-heading"></span><span class="teal">.</span>
+    </h1>
+  </div>
+  <ul class="home__products">
+    {% for product in site.products %}
+    <li class="home__products_product">
+      <a
+        accesskey="{{ product.key }}"
+        class="home__products_product_link"
+        href="{{ product.url }}"
+        tabindex="0"
+      >
+        <img src="{{ product.image }}" alt="Zircus Compression Front" />
+        <p class="home__products_product_text">{{ product.name }}</p>
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+<section class="section__hero">
+  <img id="hero-image" class="section__hero_image" />
+  <div class="bg-light rounded-big-top absolute b-0 l-0"></div>
+</section>
+<section class="section__text">
   <div class="container">
-    <div class="home__heading_container">
-      <h1 class="home__heading">
-        <span id="home-heading"></span><span class="teal">.</span>
-      </h1>
-    </div>
-    <ul class="home__products">
-      {% for product in site.products %}
-      <li class="home__products_product">
-        <a
-          accesskey="{{ product.key }}"
-          class="home__products_product_link"
-          href="{{ product.url }}"
-          tabindex="0"
-        >
-          <img src="{{ product.image }}" alt="Zircus Compression Front" />
-          <p class="home__products_product_text">{{ product.name }}</p>
-        </a>
-      </li>
-      {% endfor %}
-    </ul>
+    <h2 class="section__text_heading">queer owned & sewn</h2>
+    <p class="section__text_text">
+      Zircus Apparel is Queer owned and sewn with material that has the Oeko-Tex
+      certification. I hand make each pair in my home shop on Vancouver Island.
+      In this shop you won't see Women's or Men's used as descriptions but
+      instead each style of underwear is available in a flat front, pouch front,
+      or compression front.
+    </p>
   </div>
-  <section class="section__hero">
-    <img id="hero-image" class="section__hero_image" />
-    <div class="bg-light rounded-big-top absolute b-0 l-0"></div>
-  </section>
-  <section class="section__text">
-    <div class="container">
-      <h2 class="section__text_heading">queer owned & sewn</h2>
-      <p class="section__text_text">
-        Zircus Apparel is Queer owned and sewn with material that has the
-        Oeko-Tex certification. I hand make each pair in my home shop on
-        Vancouver Island. In this shop you won't see Women's or Men's used as
-        descriptions but instead each style of underwear is available in a flat
-        front, pouch front, or compression front.
-      </p>
-    </div>
-  </section>
-  <div class="page__bottom_image">
-    <div class="rounded"></div>
-    <img
-      src="{{ page.bottom_image }}"
-      alt="Zircus Underwear"
-      class="rounded-big-top"
-    />
-  </div>
-</main>
+</section>

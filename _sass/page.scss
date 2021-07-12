@@ -2,8 +2,9 @@
   @include flexCol();
   overflow-x: hidden;
   margin-top: var(--nav-height);
-  padding: var(--y-padding) 0;
-  border-radius: var(--big-radius);
+  padding-top: var(--y-padding);
+  border-top-left-radius: var(--big-radius);
+  border-top-right-radius: var(--big-radius);
   background: var(--light);
   color: var(--dark);
   width: 100%;
@@ -25,9 +26,9 @@
   &__bottom_image {
     @include flexCol();
     @include res("xl") {
-      max-height: 35vh;
+      max-height: calc(35vh + var(--y-padding));
     }
-    min-height: 35vh;
+    min-height: calc(35vh + var(--y-padding));
     flex-grow: 1;
     flex-shrink: 1;
     position: relative;
@@ -54,6 +55,9 @@
       object-fit: cover;
       vertical-align: middle;
       max-height: 50vh;
+      margin-bottom: var(--y-padding);
+      border-bottom-left-radius: var(--big-radius);
+      border-bottom-right-radius: var(--big-radius);
     }
   }
 }

@@ -1,181 +1,148 @@
 ---
-layout: default
+layout: checkout
 title: zircus | checkout
 bottom_image: /assets/img/products/1920/closeup-d-1920.jpg
 ---
 
-<div id="stripe-payment-modal" class="stripe-payment-modal">
+<div class="checkout">
   <div class="container">
-    <form id="stripe-payment-form" class="stripe-payment-form">
-      <div class="stripe-payment-form-heading-container">
-        <p class="stripe-payment-form-heading">Enter card details</p>
-        <span
-          class="stripe-payment-form-heading-price"
-          id="payment-price"
-        ></span>
+    <h1 class="page__heading">checkout</h1>
+    <form id="checkout-form" class="form">
+      <div class="flex-col">
+        <template id="checkout-product-template">
+          <div class="cart__product">
+            <a href="" class="cart__product_flexcon">
+              <img src="" alt="" class="cart__product_image" />
+              <div class="cart__product_description">
+                <p></p>
+              </div>
+            </a>
+          </div>
+        </template>
+        <div id="checkout-products" class="checkout__products"></div>
+        <div class="flex-grow flex-col">
+          <div class="checkout__total">
+            <ul class="cart__total_prices">
+              <li class="cart__total_price">
+                Subtotal:<span
+                  class="cart__total_price_item"
+                  id="checkout-subtotal"
+                ></span>
+              </li>
+              <li class="cart__total_price">
+                Estimated Tax:<span
+                  class="cart__total_price_item"
+                  id="checkout-tax"
+                ></span>
+              </li>
+              <li class="cart__total_price bold">
+                Total:<span
+                  class="cart__total_price_item"
+                  id="checkout-total"
+                ></span>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
-      <div id="card-element" class="stripe-payment-form-card">
-        <!--Stripe.js injects the Card Element-->
+      <div class="checkout__address">
+        <h2 class="checkout__address_heading">send undies pls</h2>
+        <label for="name"
+          ><span>Name</span
+          ><input
+            type="text"
+            name="name"
+            value=""
+            class="input"
+            required
+            id="checkout-name"
+            autocomplete="on"
+            minlength="2"
+            maxlength="140"
+        /></label>
+        <label for="email"
+          ><span>Email</span
+          ><input
+            type="email"
+            name="email"
+            value=""
+            class="input min-w-15"
+            required
+            id="checkout-email"
+            autocomplete="on"
+            minlength="5"
+            maxlength="140"
+        /></label>
+        <label for="street-address"
+          ><span>Address</span
+          ><input
+            type="text"
+            name="street-address"
+            value=""
+            class="input min-w-15"
+            required
+            id="checkout-street"
+            autocomplete="on"
+            minlength="0"
+            maxlength="140"
+        /></label>
+        <label for="city"
+          ><span>City</span
+          ><input
+            type="text"
+            name="city"
+            value=""
+            class="input"
+            required
+            id="checkout-city"
+            autocomplete="on"
+          />
+        </label>
+        <label for="country"
+          ><span>Country</span>
+          <select
+            autocomplete="on"
+            class="input"
+            name="country"
+            id="checkout-country"
+            required
+            value=""
+          ></select>
+        </label>
+        <label for="state"
+          ><span id="checkout-state-text">State</span
+          ><select
+            autocomplete="on"
+            name="state"
+            value=""
+            class="input"
+            required
+            id="checkout-state"
+          ></select>
+        </label>
+        <label for="zip"
+          ><span id="checkout-zip-text" class="max-w-10">Zip</span
+          ><input
+            type="text"
+            name="zip"
+            value=""
+            class="input max-w-10"
+            required
+            id="checkout-zip"
+            autocomplete="on"
+        /></label>
       </div>
-      <div class="stripe-payment-form-buttons">
-        <button id="pay-button" class="btn__primary btn">
-          <div class="spinner hidden" id="spinner"></div>
-          <span id="button-text">Pay now</span>
+      <div class="hide-sm"></div>
+      <div class="checkout__button">
+        <button
+          class="btn btn__primary"
+          type="submit"
+          id="place-order"
+          accesskey="o"
+        >
+          <span class="underline">p</span>ay with card
         </button>
-        <button id="cancel" class="btn btn__secondary">cancel</button>
-        <p id="card-error" class="error hidden" role="alert">Payment failed</p>
-        <p id="result-message" class="result-message hidden">
-          Payment succeeded - check your email
-        </p>
       </div>
     </form>
   </div>
-</div>
-<div id="blur">
-  <main class="page checkout">
-    <div class="container">
-      <h1 class="page__heading">checkout</h1>
-      <form id="checkout-form" class="form">
-        <div class="flex-col">
-          <template id="checkout-product-template">
-            <div class="cart__product">
-              <a href="" class="cart__product_flexcon">
-                <img src="" alt="" class="cart__product_image" />
-                <div class="cart__product_description">
-                  <p></p>
-                </div>
-              </a>
-            </div>
-          </template>
-          <div id="checkout-products" class="checkout__products"></div>
-          <div class="flex-grow flex-col">
-            <div class="checkout__total">
-              <ul class="cart__total_prices">
-                <li class="cart__total_price">
-                  Subtotal:<span
-                    class="cart__total_price_item"
-                    id="checkout-subtotal"
-                  ></span>
-                </li>
-                <li class="cart__total_price">
-                  Estimated Tax:<span
-                    class="cart__total_price_item"
-                    id="checkout-tax"
-                  ></span>
-                </li>
-                <li class="cart__total_price bold">
-                  Total:<span
-                    class="cart__total_price_item"
-                    id="checkout-total"
-                  ></span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="checkout__address">
-          <h2 class="checkout__address_heading">send undies pls</h2>
-          <label for="name"
-            ><span>Name</span
-            ><input
-              type="text"
-              name="name"
-              value=""
-              class="input"
-              required
-              id="checkout-name"
-              autocomplete="on"
-              minlength="2"
-              maxlength="140"
-          /></label>
-          <label for="email"
-            ><span>Email</span
-            ><input
-              type="email"
-              name="email"
-              value=""
-              class="input min-w-15"
-              required
-              id="checkout-email"
-              autocomplete="on"
-              minlength="5"
-              maxlength="140"
-          /></label>
-          <label for="street-address"
-            ><span>Address</span
-            ><input
-              type="text"
-              name="street-address"
-              value=""
-              class="input min-w-15"
-              required
-              id="checkout-street"
-              autocomplete="on"
-              minlength="0"
-              maxlength="140"
-          /></label>
-          <label for="city"
-            ><span>City</span
-            ><input
-              type="text"
-              name="city"
-              value=""
-              class="input"
-              required
-              id="checkout-city"
-              autocomplete="on"
-            />
-          </label>
-          <label for="country"
-            ><span>Country</span>
-            <select
-              autocomplete="on"
-              class="input"
-              name="country"
-              id="checkout-country"
-              required
-              value=""
-            ></select>
-          </label>
-          <label for="state"
-            ><span id="checkout-state-text">State</span
-            ><select
-              autocomplete="on"
-              name="state"
-              value=""
-              class="input"
-              required
-              id="checkout-state"
-            ></select>
-          </label>
-          <label for="zip"
-            ><span id="checkout-zip-text" class="max-w-10">Zip</span
-            ><input
-              type="text"
-              name="zip"
-              value=""
-              class="input max-w-10"
-              required
-              id="checkout-zip"
-              autocomplete="on"
-          /></label>
-        </div>
-        <div class="hide-sm"></div>
-        <div class="checkout__button">
-          <button
-            class="btn btn__primary"
-            type="submit"
-            id="place-order"
-            accesskey="o"
-          >
-            <span class="underline">p</span>lace order
-          </button>
-        </div>
-      </form>
-    </div>
-    <div class="page__bottom_image">
-      <div class="bg-light rounded-big-bottom absolute t-0 l-0"></div>
-      <img src="{{ page.bottom_image }}" alt="Zircus Underwear" />
-    </div>
-  </main>
 </div>

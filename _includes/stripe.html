@@ -1,0 +1,27 @@
+<div id="stripe-payment-modal" class="stripe-payment-modal">
+  <div class="container">
+    <form id="stripe-payment-form" class="stripe-payment-form">
+      <div class="stripe-payment-form-heading-container">
+        <p class="stripe-payment-form-heading">Enter card details</p>
+        <span
+          class="stripe-payment-form-heading-price"
+          id="payment-price"
+        ></span>
+      </div>
+      <div id="card-element" class="stripe-payment-form-card">
+        <!--Stripe.js injects the Card Element-->
+      </div>
+      <div class="stripe-payment-form-buttons">
+        <button id="pay-button" class="btn__primary btn">
+          <div class="spinner hidden" id="spinner"></div>
+          <span id="button-text">Pay now</span>
+        </button>
+        <button id="cancel" class="btn btn__secondary">cancel</button>
+        <p id="card-error" class="error hidden" role="alert">Payment failed</p>
+        <p id="result-message" class="result-message hidden">
+          Payment succeeded - check your email
+        </p>
+      </div>
+    </form>
+  </div>
+</div>

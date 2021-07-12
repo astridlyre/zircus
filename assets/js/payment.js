@@ -100,14 +100,12 @@ const stripe = Stripe(
             this.loading(false)
             if (show) {
                 document.body.classList.add('hide-y')
-                q('nav').classList.add('blur')
                 q('blur').classList.add('blur')
                 this.paymentModal.classList.add('show-modal')
                 this.payBtn.disabled = true
                 q('payment-price').innerText = `$${this.total.toFixed(2)}`
             } else {
                 document.body.classList.remove('hide-y')
-                q('nav').classList.remove('blur')
                 q('blur').classList.remove('blur')
                 this.paymentModal.classList.remove('show-modal')
                 if (state.cart.length === 0) location.assign('/')
