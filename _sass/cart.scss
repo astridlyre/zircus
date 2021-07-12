@@ -25,6 +25,7 @@
       gap: 1rem;
       align-items: center;
       position: relative;
+      outline: none;
 
       &::before {
         content: "";
@@ -37,8 +38,12 @@
         background-color: var(--light);
       }
 
-      &:hover::before {
+      &:hover::before, &:focus::before {
         background-color: var(--teal);
+      }
+
+      &:focus p {
+        outline: 2px solid var(--teal);
       }
 
       p {

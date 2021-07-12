@@ -8,12 +8,12 @@
   border-radius: var(--radius);
   border: 2px solid var(--dark);
   color: var(--dark);
+  outline: none;
   font-family: var(--mf);
   font-size: 0.9rem;
   font-weight: 600;
   letter-spacing: 0.1rem;
   cursor: pointer;
-  outline: none;
   position: relative;
   z-index: 1;
   overflow: hidden;
@@ -41,6 +41,10 @@
 
   &__primary:before {
     background: var(--gold);
+  }
+
+  &:hover, &:focus {
+    border-color: var(--teal);
   }
 
   &:hover::after, &:focus::after {
@@ -83,6 +87,7 @@
   &:focus-within,
   &:focus-visible {
     border-color: var(--teal) !important;
+    outline: none;
   }
 
   &:disabled {
