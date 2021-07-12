@@ -3,14 +3,6 @@
   flex-flow: column nowrap;
   gap: 1rem;
 
-  a {
-    color: var(--purple);
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-
   ul {
     margin-bottom: 1rem;
   }
@@ -35,9 +27,19 @@ details[open] summary {
 }
 
 summary {
-  font-weight: 600;
-  letter-spacing: 0.1rem;
   margin: -1rem -1rem 0;
-  padding: .5em;
-  cursor: pointer;
+  padding: 0.5em;
+  color: var(--dark);
+
+  &:hover {
+    color: var(--teal);
+  }
+
+  span {
+    font-weight: 600;
+    letter-spacing: 0.1rem;
+    line-height: 1.2;
+    cursor: pointer;
+    color: var(--dark);
+  }
 }

@@ -26,6 +26,11 @@
       align-items: center;
       position: relative;
       outline: none;
+      color: var(--dark);
+
+      &:hover {
+        text-decoration: none;
+      }
 
       &::before {
         content: "";

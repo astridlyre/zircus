@@ -36,6 +36,7 @@
 
       &_link {
         display: flex;
+        color: var(--dark);
         flex-flow: column nowrap;
         align-items: center;
         justify-content: flex-start;
@@ -48,6 +49,7 @@
         &:hover,
         &:focus {
           border-color: var(--teal);
+          text-decoration: none;
         }
       }
       &_text {

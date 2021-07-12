@@ -9,28 +9,27 @@
 
   &__nav {
     display: flex;
-  height: var(--nav-height);
+    height: var(--nav-height);
     align-items: center;
     justify-content: space-between;
   }
 
   &__button {
     position: fixed;
-    background-color: var(--dark);
+    background: none;
+    border: 2px solid transparent;
     border-radius: var(--radius);
-    border: 0.2rem solid var(--teal);
     outline: none;
     top: 0.5rem;
     height: 3rem;
     width: 4rem;
     padding: 0.5rem;
-    right: var(--x-padding);
+    right: calc(var(--x-padding) - 1rem);
     cursor: pointer;
     z-index: 50;
 
     &:hover {
-      @include easeOut();
-      border-color: var(--gold);
+      border-color: var(--teal);
     }
 
     &_bars {
@@ -77,11 +76,16 @@
       }
 
       &_link {
+        color: var(--light);
         letter-spacing: 0.1rem;
         font-weight: 300;
         display: block;
         margin: 1rem 0;
         padding: 2rem;
+
+        &:hover {
+          text-decoration: none;
+        }
       }
     }
   }
@@ -102,7 +106,7 @@
     &_link {
       margin-right: -1.8rem;
       margin-left: 2.2rem;
-      @include res('lg') {
+      @include res("lg") {
         margin-left: 3rem;
       }
       padding: 0 var(--btn-padding);
@@ -117,18 +121,18 @@
       font-weight: 600;
       outline: none;
       position: relative;
-      border: 2px solid var(--dark);
+      border: 2px solid transparent;
       border-radius: var(--radius);
 
       &:hover,
       &:focus {
         border-color: var(--teal);
+        text-decoration: none;
       }
     }
   }
 
   &__heading {
-    color: var(--light);
     letter-spacing: 0;
     font-family: var(--af);
     font-size: 2rem;
@@ -137,19 +141,20 @@
     z-index: 20;
 
     &_link {
-      padding: 0.5rem;
+      color: var(--light);
+      padding: 0.25rem 0.5rem;
       margin-left: -0.5rem;
       outline: none;
       z-index: 0;
       position: relative;
-      border: 2px solid var(--dark);
+      border: 2px solid transparent;
       border-radius: var(--radius);
 
       &::after {
         content: "";
         position: absolute;
         right: -2rem;
-        top: 0.88rem;
+        top: 0.7rem;
         color: var(--teal);
         background: var(--teal);
         width: 1.25rem;
@@ -160,6 +165,7 @@
       &:hover,
       &:focus {
         border-color: var(--teal);
+        text-decoration: none;
       }
     }
   }

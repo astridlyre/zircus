@@ -38,22 +38,25 @@
 
   &__links {
     display: flex;
+    flex-flow: column nowrap;
     gap: 1rem;
-    margin-right: -0.5rem;
+    margin-right: -0.25rem;
 
     &_link {
       text-align: right;
 
       a {
         outline: none;
-        padding: 0.5rem;
-        border: 2px solid var(--dark);
+        padding: 0.25rem;
+        border: 2px solid transparent;
         border-radius: var(--radius);
+        color: var(--light);
 
         &:hover,
         &:focus {
           outline: none;
           border-color: var(--teal);
+          text-decoration: none;
         }
       }
     }

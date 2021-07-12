@@ -16,7 +16,11 @@ html {
 // Links inherit color by default, no underline
 a {
   text-decoration: none;
-  color: inherit;
+  color: var(--purple);
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 // Body always full width and min full height
@@ -33,6 +37,14 @@ body {
   scrollbar-color: var(--grey) var(--lgrey);
 }
 
+blockquote {
+  padding-left: 1rem;
+  border-left: 0.5rem solid var(--lgrey);
+  line-height: 1.2;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
 p {
   font-size: 1.1rem;
   line-height: 1.2;
@@ -41,6 +53,10 @@ p {
   &::after {
     content: " • ";
     color: var(--teal);
+  }
+
+  &.no-dot::after {
+    content: "";
   }
 }
 
@@ -72,4 +88,16 @@ p {
 
 ::-webkit-scrollbar-thumb {
   background-color: var(--grey);
+}
+
+.roman-list {
+  list-style: lower-roman outside;
+  margin-left: 2rem;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+
+  li {
+    margin-top: 0.5rem;
+    line-height: 1.2rem;
+  }
 }

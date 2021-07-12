@@ -59,10 +59,10 @@
 
   // Gap for two-col layouts
   // Gap for generic grid
-  @include res('sm') {
+  @include res("sm") {
     --two-col-gap: 3rem;
   }
-  @include res('sm') {
+  @include res("sm") {
     --two-col-gap: 4rem;
   }
   --two-col-gap: 2rem;
@@ -82,4 +82,5 @@
 @import "checkout";
 @import "about";
 @import "stripe";
-@import 'faq';
+@import "faq";
+@import "sizing";
