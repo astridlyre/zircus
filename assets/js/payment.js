@@ -114,6 +114,7 @@ const stripe = Stripe(
 
         async createPaymentIntent() {
             this.showModal(true)
+            this.loading(true)
 
             const req = {
                 update: state.secret,
@@ -146,6 +147,7 @@ const stripe = Stripe(
                     state.secret = data.clientSecret
                     q('payment-price').innerText = `$${data.total.toFixed(2)}`
                     this.loadStripe(data)
+                    this.loading(false)
                 })
         }
 
