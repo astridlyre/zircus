@@ -9,7 +9,7 @@
   border: 2px solid var(--dark);
   color: var(--dark);
   outline: none;
-  font-family: var(--mf);
+  font-family: var(--site-font-family);
   font-size: var(--small-font-size);
   font-weight: 600;
   letter-spacing: var(--letter-spacing);
@@ -78,6 +78,7 @@
   border: 2px solid var(--dark);
   background-color: var(--light);
   font-size: var(--small-font-size);
+  font-family: var(--site-font-family);
   letter-spacing: var(--letter-spacing);
   min-width: 4rem;
 

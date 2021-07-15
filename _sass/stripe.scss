@@ -47,18 +47,16 @@
     }
 
     &-heading {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
       color: var(--dark);
-      font-size: 2rem;
+      width: 100%;
 
       &-container {
         @include flexRow();
         justify-content: space-between;
         margin-bottom: 2rem;
-      }
-
-      &-price {
-        font-size: 2rem;
-        color: var(--dark);
       }
     }
 
