@@ -1,4 +1,4 @@
-import { numberInputHandler, q, state, Element } from './utils.js'
+import { q, state, Element, toggler } from './utils.js'
 
 /* Path for masked product images. Images follow the convention:
  
@@ -10,201 +10,180 @@ import { numberInputHandler, q, state, Element } from './utils.js'
   and size is the image size 400, 600 or 1000
 */
 ;(function () {
-    // Don't do anything on pages other than product page
     const prefix = q('product-prefix')
-    if (!prefix) return
+    if (!prefix) return // Don't do anything unless on product page
+    const price = q('product-price')
+    const priceText = q('product-price-text')
+    const size = q('product-size')
+    const image = q('product-image')
+    const bigImageEl = q('product-image-full')
+    const bigImage = q('product-image-full-image')
+    const quantity = q('product-quantity')
+    const color = q('product-color')
+    const defaultColor = q('product-default-color')
+    const addToCart = q('add-to-cart')
+    const goToCart = q('go-to-cart')
+    const goToCartQty = q('go-to-cart-qty')
+    const productAccent = q('product-accent')
+    const stock = q('product-stock')
+    let currentColor = color.value
 
-    class Product {
-        constructor() {
-            this.name = q('product-name')
-            this.price = q('product-price')
-            this.priceText = q('product-price-text')
-            this.prefix = q('product-prefix')
-            this.size = q('product-size')
-            this.image = q('product-image')
-            this.bigImageEl = q('product-image-full')
-            this.bigImage = q('product-image-full-image')
-            this.quantity = q('product-quantity')
-            this.color = q('product-color')
-            this.defaultColor = q('product-default-color')
-            this.addToCart = q('add-to-cart')
-            this.cartBtn = q('cart-quantity')
-            this.goToCart = q('go-to-cart')
-            this.goToCartQty = q('go-to-cart-qty')
-            this.cartSpinner = q('add-to-cart-spinner')
-            this.productAccent = q('product-accent')
-            this.stock = q('product-stock')
-            this.hovered = false
-            this.currentColor = this.color.value
+    // Sets product image
+    function setImage(key) {
+        return item.get() && (image.src = item.get().images[key])
+    }
 
-            // Preload images and set default color
-            for (const child of this.color.children) {
-                this.preloadImages(child.value)
-                if (child.value === this.defaultColor.value) {
-                    child.setAttribute('selected', true)
-                    this.productAccent.classList.add(`${child.value}-before`)
-                    this.currentColor = child.value
-                }
-            }
+    // Image hover handler
+    const handleHoverImage = toggler(false, hovered =>
+        hovered ? setImage('sm_b') : setImage('sm_a')
+    )
 
-            this.priceText.textContent = `$${
-                Number(this.price.value) * Number(this.quantity.value)
-            }`
-
-            // Add event listeners
-            this.color.addEventListener('change', () => {
-                this.setImage('sm_a')
-                this.updateStatus()
-                this.productAccent.classList.add(`${this.color.value}-before`)
-                this.productAccent.classList.remove(
-                    `${this.currentColor}-before`
-                )
-                this.currentColor = this.color.value
-            })
-            this.quantity.addEventListener('input', () => {
-                const max = state.inv.find(i => i.type === this.type).quantity
-                if (Number(this.quantity.value) > max) this.quantity.value = max
-                this.priceText.textContent = `$${
-                    Number(this.quantity.value) * Number(this.price.value)
-                }`
-            })
-            this.size.addEventListener('input', () => this.updateStatus())
-            this.image.addEventListener('pointerover', () => this.hover())
-            this.image.addEventListener('pointerleave', () => this.hover())
-            this.image.addEventListener('click', () => this.viewFull())
-            this.bigImageEl.addEventListener('click', () => this.hideFull())
-            this.addToCart.addEventListener('click', () => this.add())
-            this.goToCart.addEventListener('click', () =>
-                location.assign('/cart')
-            )
-            state.addHook(() => this.updateStatus())
-            state.addHook(() => this.updateCartBtnQty())
-        }
-
-        updateCartBtnQty() {
-            const totalItems = state.cart.reduce(
-                (acc, item) => acc + item.quantity,
-                0
-            )
-            this.goToCartQty.innerText = `${
-                totalItems > 0 ? `(${totalItems})` : ''
-            }`
-        }
-
-        get type() {
-            return `${this.prefix.value}-${this.color.value}-${this.size.value}`
-        }
-
-        preloadImages(color) {
-            for (const image of [
-                'a-400.png',
-                'b-400.png',
-                'a-1920.png',
-                'b-1920.png',
-            ]) {
-                const preload = new Element('link', null, {
-                    href: `/assets/img/products/masked/${this.prefix.value}-${color}-${image}`,
-                    rel: 'prefetch',
-                    as: 'image',
-                })
-                document.head.appendChild(preload.render())
-            }
-        }
-
-        // Add a new underwear item to cart
-        add() {
-            // If not enough items in stock
-            if (
-                this.item.quantity - Number(this.quantity.value) < 0 ||
-                !this.item.quantity
-            )
-                return this
-
-            // Update quantity of current cart items
-            if (state.cart.find(item => item.type === this.type)) {
-                state.cart = cart =>
-                    cart.map(i =>
-                        i.type === this.type
-                            ? {
-                                  ...i,
-                                  quantity:
-                                      i.quantity + Number(this.quantity.value),
-                              }
-                            : i
-                    )
-            } else {
-                // Otherwise add new item to cart
-                state.cart = cart =>
-                    cart.concat({
-                        ...state.inv.find(item => item.type === this.type),
-                        quantity: Number(this.quantity.value),
-                    })
-            }
-            this.addToCart.blur()
-            return this
-        }
-
-        // Change pic on hover
-        hover() {
-            if (!this.hovered) {
-                this.setImage('sm_b')
-                this.hovered = true
-            } else {
-                this.setImage('sm_a')
-                this.hovered = false
-            }
-        }
-
-        // Show fullsize pic
-        viewFull() {
-            this.bigImage.src = this.item.images['lg_a']
-            this.bigImageEl.style.display = 'flex'
+    // Full image view handler
+    const handleViewFull = toggler(false, showFull => {
+        if (showFull) {
+            bigImage.src = item.get().images['lg_a']
+            bigImageEl.style.display = 'flex'
             document.body.classList.add('hide-y')
-        }
-
-        // Hide fullsize pic
-        hideFull() {
-            this.bigImageEl.style.display = 'none'
+        } else {
+            bigImageEl.style.display = 'none'
             document.body.classList.remove('hide-y')
         }
+    })
 
-        // Change product image
-        setImage(key) {
-            if (!this.item) return
-            if (this.item.images[key]) this.image.src = this.item.images[key]
-            return this
+    // Get and set item
+    const item = (() => {
+        let currentItem = null
+        return {
+            set: () =>
+                (currentItem = state.inv.find(
+                    item =>
+                        item.type ===
+                        `${prefix.value}-${color.value}-${size.value}`
+                )),
+            get: () => currentItem,
         }
+    })()
+    item.set()
 
-        // Update status depending on if inventory is available
-        updateStatus() {
-            if (!this.item || this.item.quantity === 0) {
-                this.stock.innerText = 'None available'
-                this.stock.classList.add('out-stock')
-                this.stock.classList.remove('in-stock')
-                this.quantity.setAttribute('disabled', true)
-                this.addToCart.setAttribute('disabled', true)
-                this.addToCart.innerText = 'out of stock'
-            } else {
-                this.stock.innerText = `${
-                    this.item.quantity > 5
-                        ? 'In stock'
-                        : `Only ${this.item.quantity} left`
-                }`
-                this.stock.classList.add('in-stock')
-                this.stock.classList.remove('out-stock')
-                this.quantity.removeAttribute('disabled')
-                this.addToCart.removeAttribute('disabled')
-                this.addToCart.innerText = 'add to cart'
-            }
-            this.setImage('sm_a')
-            return this
-        }
+    // Set price of product
+    priceText.textContent = `$${Number(price.value) * Number(quantity.value)}`
 
-        // Return item object with quantity and price
-        get item() {
-            return state.inv.find(item => item.type === this.type)
+    // Preload images and set default color
+    function preloadImages(color) {
+        for (const image of [
+            'a-400.png',
+            'b-400.png',
+            'a-1920.png',
+            'b-1920.png',
+        ]) {
+            const preload = new Element('link', null, {
+                href: `/assets/img/products/masked/${prefix.value}-${color}-${image}`,
+                rel: 'prefetch',
+                as: 'image',
+            })
+            document.head.appendChild(preload.render())
         }
     }
 
-    return new Product()
+    for (const child of color.children) {
+        preloadImages(child.value)
+        if (child.value === defaultColor.value) {
+            child.setAttribute('selected', true)
+            productAccent.classList.add(`${child.value}-before`)
+            currentColor = child.value // set currentColor
+        }
+    }
+
+    // addItemToCart adds the currentItem (item.get()) to the cart, or updates
+    // an exisiting item's quantity
+    function addItemToCart() {
+        const currentItem = item.get()
+
+        // If not enough items in stock
+        if (
+            currentItem.quantity - Number(quantity.value) < 0 ||
+            !currentItem.quantity
+        )
+            return
+
+        // Update quantity of current cart items
+        if (state.cart.find(item => item.type === currentItem.type)) {
+            state.cart = cart =>
+                cart.map(i =>
+                    i.type === currentItem.type
+                        ? {
+                              ...i,
+                              quantity: i.quantity + Number(quantity.value),
+                          }
+                        : i
+                )
+        } else {
+            // Otherwise add new item to cart
+            state.cart = cart =>
+                cart.concat({
+                    ...currentItem,
+                    quantity: Number(quantity.value),
+                })
+        }
+        addToCart.blur()
+    }
+
+    // updateCartBtnQty updates the number of items shows in the cart button
+    function updateCartBtnQty() {
+        const totalItems = state.cart.reduce(
+            (acc, item) => acc + item.quantity,
+            0
+        )
+        goToCartQty.innerText = `${totalItems > 0 ? `(${totalItems})` : ''}`
+    }
+
+    // updateStatus updates the currentItem
+    function updateStatus() {
+        const updatedItem = item.set()
+        if (!updatedItem || updatedItem.quantity === 0) {
+            stock.innerText = 'None available'
+            stock.classList.add('out-stock')
+            stock.classList.remove('in-stock')
+            quantity.setAttribute('disabled', true)
+            addToCart.setAttribute('disabled', true)
+            addToCart.innerText = 'out of stock'
+        } else {
+            stock.innerText = `${
+                updatedItem.quantity > 5
+                    ? 'In stock'
+                    : `Only ${updatedItem.quantity} left`
+            }`
+            stock.classList.add('in-stock')
+            stock.classList.remove('out-stock')
+            quantity.removeAttribute('disabled')
+            addToCart.removeAttribute('disabled')
+            addToCart.innerText = 'add to cart'
+        }
+        setImage('sm_a')
+    }
+
+    // Add event listeners
+    color.addEventListener('change', () => {
+        setImage('sm_a')
+        updateStatus()
+        productAccent.classList.add(`${color.value}-before`)
+        productAccent.classList.remove(`${currentColor}-before`)
+        currentColor = color.value
+    })
+    quantity.addEventListener('input', () => {
+        const max = item.get().quantity
+        if (Number(quantity.value) > max) quantity.value = max
+        priceText.textContent = `$${
+            Number(quantity.value) * Number(price.value)
+        }`
+    })
+    size.addEventListener('input', updateStatus)
+    image.addEventListener('pointerover', () => handleHoverImage.next())
+    image.addEventListener('pointerleave', () => handleHoverImage.next())
+    image.addEventListener('click', () => handleViewFull.next())
+    bigImageEl.addEventListener('click', () => handleViewFull.next())
+    addToCart.addEventListener('click', addItemToCart)
+    goToCart.addEventListener('click', () => location.assign('/cart'))
+    state.addHook(updateStatus)
+    state.addHook(updateCartBtnQty)
 })()

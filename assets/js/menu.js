@@ -1,51 +1,44 @@
 import { q, state } from './utils.js'
 
-;(function () {
-    class Menu {
-        constructor() {
-            this.navLink = q('cart-link')
-            this.navLinkMobile = q('cart-link-mobile')
-            this.menu = q('menu-mobile-list')
-            this.btn = q('menu-mobile-btn')
-            this.hidden = true
-
-            // Register the update function hook
-            state.addHook(() => this.updateNavLink())
-            this.updateNavLink()
-
-            this.btn.addEventListener('click', () => {
-                this.hidden ? this.show() : this.hide()
-            })
-
-            this.menu.addEventListener('click', () => this.hide())
-        }
-
-        hide() {
-            this.hidden = true
-            this.menu.classList.add('hide')
-        }
-
-        show() {
-            this.hidden = false
-            this.menu.classList.remove('hide')
-        }
-
-        // Updates the nav link when cart items change
-        updateNavLink() {
-            if (state.cart.length > 0) {
-                const totalItems = state.cart.reduce(
-                    (acc, item) => acc + item.quantity,
-                    0
-                )
-                this.navLink.innerText = `cart (${totalItems})`
-                this.navLinkMobile.innerText = `cart (${totalItems})`
-            } else {
-                this.navLink.innerText = 'cart'
-                this.navLinkMobile.innerText = 'cart'
-            }
-            return this
-        }
+/*
+ *   Menu for Zircus
+ *
+ *   createMenuFunc() creates the mobile menu functionality,
+ *   toggling state from hidden to not hidden.
+ *
+ *   updateNavLink() sets the textContent of the Desktop and
+ *   Mobile 'cart' nav link to the number of cart items.
+ */
+const navLink = q('cart-link')
+const navLinkMobile = q('cart-link-mobile')
+const menu = q('menu-mobile-list')
+const btn = q('menu-mobile-btn')
+const menuFunc = (initial => {
+    let hidden = initial
+    return () => {
+        hidden = !hidden
+        return hidden
+            ? menu.classList.add('hide')
+            : menu.classList.remove('hide')
     }
+})(true)
 
-    return new Menu()
-})()
+function updateNavLink() {
+    if (state.cart.length > 0) {
+        const totalItems = `cart (${state.cart.reduce(
+            (acc, item) => acc + item.quantity,
+            0
+        )})`
+        navLink.textContent = totalItems
+        navLinkMobile.textContent = totalItems
+    } else {
+        navLink.textContent = 'cart'
+        navLinkMobile.textContent = 'cart'
+    }
+}
+
+// add mobile button event listener
+btn.addEventListener('click', menuFunc)
+
+// register update function with state hooks
+state.addHook(() => updateNavLink())
