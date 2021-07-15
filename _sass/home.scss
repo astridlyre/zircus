@@ -27,7 +27,6 @@
       flex-basis: 16rem;
       @include res("md") {
         flex-basis: unset;
-        max-width: 20rem;
       }
       display: flex;
       justify-content: center;

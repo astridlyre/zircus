@@ -2,6 +2,10 @@ h1, h2, h3, h4, h5, h6 {
   font-family: var(--heading-font-family);
 }
 
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p {
+  margin-top: var(--base-unit);
+}
+
 h1,
 h2,
 h3,
