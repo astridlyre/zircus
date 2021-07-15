@@ -30,6 +30,7 @@ summary {
   margin: -1rem -1rem 0;
   padding: 0.5em;
   color: var(--dark);
+  user-select: none;
 
   &:hover {
     color: var(--teal);
