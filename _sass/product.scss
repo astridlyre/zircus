@@ -18,7 +18,10 @@
 
   &__price {
     text-align: right;
-    font-size: 3rem;
+    @include res('md') {
+      font-size: var(--xl-font-size);
+    }
+    font-size: var(--xl-font-size-mobile);
     margin: 2rem 0 1rem 0;
     width: 100%;
     max-width: 30rem;
@@ -101,13 +104,13 @@
     gap: 1rem;
 
     &_stock {
-      font-size: 1.1rem;
-      font-weight: 300;
+      font-size: var(--medium-font-size);
       margin: auto 0;
     }
 
     &_stock.in-stock {
       color: var(--dark);
+      @include dot();
     }
 
     &_stock.out-stock {

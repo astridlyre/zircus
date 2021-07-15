@@ -9,7 +9,7 @@
   }
 
   &__products {
-    padding: var(--y-padding) 0;
+    padding: var(--y-padding) 0 !important;
     display: flex;
     justify-content: center;
     flex-flow: row wrap;
@@ -36,7 +36,7 @@
 
       &_link {
         display: flex;
-        color: var(--dark);
+        color: var(--dark) !important;
         flex-flow: column nowrap;
         align-items: center;
         justify-content: flex-start;
@@ -49,7 +49,7 @@
         &:hover,
         &:focus {
           border-color: var(--teal);
-          text-decoration: none;
+          text-decoration: none !important;
         }
       }
       &_text {
@@ -103,9 +103,8 @@
   justify-content: center;
   align-items: center;
   flex-flow: column nowrap;
-  padding: var(--y-padding) 0;
+  padding: var(--x-padding) 0;
   &_heading {
-    font-size: 3rem;
     @include res("md") {
       text-align: left;
     }

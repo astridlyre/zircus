@@ -84,3 +84,162 @@
 @mixin moveDown {
   animation: 0.2s ease-out forwards moveDown;
 }
+
+@mixin set-heading-font-family() {
+  font-family: var(--heading-font-family);
+}
+
+@mixin set-site-font-family() {
+  font-family: var(--site-font-family);
+  letter-spacing: -0.0027777778rem;
+}
+
+@mixin headings-common-base() {
+  @include set-heading-font-family();
+  letter-spacing: 0.1rem;
+  font-weight: 500;
+  line-height: var(--heading-line-height);
+}
+
+@mixin heading-1() {
+  font-size: var(--xxl-font-size-mobile);
+
+  @media screen and (min-width: 901px) {
+    font-size: var(--xxl-font-size);
+  }
+}
+
+@mixin heading-2() {
+  font-size: var(--xl-font-size-mobile);
+
+  @media screen and (min-width: 901px) {
+    font-size: var(--xl-font-size);
+  }
+}
+
+@mixin heading-3() {
+  font-size: var(--lg-font-size-mobile);
+
+  @media screen and (min-width: 901px) {
+    font-size: var(--lg-font-size);
+  }
+}
+
+@mixin heading-4() {
+  font-size: var(--md-font-size-mobile);
+
+  @media screen and (min-width: 901px) {
+    font-size: var(--md-font-size);
+  }
+}
+
+@mixin heading-5() {
+  font-size: var(--sm-font-size-mobile);
+
+  @media screen and (min-width: 901px) {
+    font-size: var(--sm-font-size);
+  }
+}
+
+@mixin blockquote() {
+  @include readable-line-length();
+  font-size: var(--sm-font-size-mobile);
+
+  @media screen and (min-width: 901px) {
+    font-size: var(--sm-font-size);
+  }
+}
+
+@mixin font-smoothing() {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@mixin slab-highlight() {
+  background-color: var(--gray-90);
+  color: var(--gray-05);
+  font-family: var(--heading-font-family);
+  font-weight: normal;
+  max-width: max-content;
+  padding: 0 var(--base-unit);
+}
+
+/* Used with flexbox and grid. The new syntax is to use `gap`, but here
+   we also provide the fallback of `grid-gap`. This is also why we need
+   the stylelint-disable-line as the order is important */
+@mixin gap($width: $base-spacing) {
+  grid-gap: $width;
+  gap: $width; /* stylelint-disable-line order/properties-alphabetical-order */
+}
+
+/*
+ * A simply utility for setting a max width on an element that constrains its
+ * width to what is commonly known to be a readable line length for prose.
+ */
+@mixin readable-line-length() {
+  max-width: var(--max-line-length-fallback);
+  max-width: 85ch;
+}
+
+/* 
+ * Hide an element visually, but not from screen readers
+ * Use this mixin sparingly to avoid unnecessary code bloat
+ * Instead, use the class `visually-hidden` directly on the
+ * relevant element or component.
+ */
+@mixin visually-hidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  /* !important required to ensure element is hidden when mixin is applied */
+  position: absolute !important; /* stylelint-disable-line declaration-no-important */
+  width: 1px;
+}
+
+@mixin reset-visually-hidden {
+  border: inherit;
+  clip: inherit;
+  height: inherit;
+  margin: inherit;
+  overflow: inherit;
+  padding: inherit;
+  position: inherit !important; /* stylelint-disable-line declaration-no-important */
+  width: inherit;
+}
+
+/* A common reset for `ol` and `ul` elements  */
+@mixin reset-list() {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+@mixin caret-arrow($color, $direction: right, $size: 6px, $thickness: 2px) {
+  border: solid $color;
+  border-width: 0 $thickness $thickness 0;
+  content: "";
+  display: inline-block;
+  height: $size;
+  width: $size;
+
+  /* stylelint-disable block-closing-brace-newline-after */
+  @if ($direction == up) {
+    transform: rotate(-135deg);
+  } @else if ($direction == left) {
+    transform: rotate(135deg);
+  } @else if ($direction == down) {
+    transform: rotate(45deg);
+  } @else if ($direction == right) {
+    transform: rotate(-45deg);
+  }
+}
+
+@mixin dot() {
+  &::after {
+    content: " • ";
+    color: var(--teal);
+  }
+}

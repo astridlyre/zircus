@@ -26,10 +26,10 @@
       align-items: center;
       position: relative;
       outline: none;
-      color: var(--dark);
+      color: var(--dark) !important;
 
       &:hover {
-        text-decoration: none;
+        text-decoration: none !important;
       }
 
       &::before {

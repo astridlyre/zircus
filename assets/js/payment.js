@@ -2,6 +2,13 @@ import { q, API_ENDPOINT, state, Element, calculateTax } from './utils.js'
 const stripe = Stripe(
     'pk_test_51J93KzDIzwSFHzdzCZtyRcjMvw8em0bhnMrVmkBHaMFHuc2nkJ156oJGNxuz0G7W4Jx0R6OCy2nBXYTt6U8bSYew00PIAPcntP'
 )
+const withLogging =
+    fn =>
+    (...args) => {
+        const result = fn(...args)
+        console.log(result)
+        return result
+    }
 
 ;(() => {
     const placeOrder = q('place-order')
@@ -50,6 +57,12 @@ const stripe = Stripe(
             })
             this.country.addEventListener('input', () => this.handleCountry())
             this.state.addEventListener('input', () => this.setTotals())
+            this.zip.addEventListener('input', e => {
+                e.target.value = this.normalizeZip(
+                    e.target.value,
+                    this.country.value
+                )
+            })
             this.setTotals()
             this.render()
         }
@@ -256,7 +269,38 @@ const stripe = Stripe(
                 this.country.value === 'Canada' ? 'Province' : 'State'
             this.zipText.innerText =
                 this.country.value === 'Canada' ? 'Postal Code' : 'Zip'
+            this.zip.setAttribute(
+                'pattern',
+                this.country.value === 'Canada'
+                    ? this.canadaPostalCode.source
+                    : this.usZipCode.source
+            )
+            this.zip.setAttribute(
+                'maxlength',
+                this.country.value === 'Canada' ? '7' : '10'
+            )
             this.setTotals()
+        }
+
+        get canadaPostalCode() {
+            return /^[A-Za-z][0-9][A-Za-z] ?[0-9][A-Za-z][0-9]$/
+        }
+
+        get usZipCode() {
+            return /^[0-9]{5}(-[0-9]{4})?$/
+        }
+
+        normalizeZip(value) {
+            const val = value.toUpperCase()
+            if (this.country.value === 'Canada') {
+                if (val.length === 6 && this.canadaPostalCode.test(val))
+                    return val.substring(0, 3) + ' ' + val.substring(3, 6)
+                return val
+            } else {
+                if (val.length === 6 && val[5] !== '-')
+                    return val.substring(0, 5)
+                return val
+            }
         }
     }
 

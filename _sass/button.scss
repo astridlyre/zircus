@@ -10,9 +10,9 @@
   color: var(--dark);
   outline: none;
   font-family: var(--mf);
-  font-size: 0.9rem;
+  font-size: var(--small-font-size);
   font-weight: 600;
-  letter-spacing: 0.1rem;
+  letter-spacing: var(--letter-spacing);
   cursor: pointer;
   position: relative;
   z-index: 1;
@@ -77,8 +77,8 @@
   border-radius: var(--radius);
   border: 2px solid var(--dark);
   background-color: var(--light);
-  font-size: 0.9rem;
-  letter-spacing: 0.1rem;
+  font-size: var(--small-font-size);
+  letter-spacing: var(--letter-spacing);
   min-width: 4rem;
 
   &:hover,
@@ -94,6 +94,10 @@
     background: var(--lgrey);
     border-color: var(--grey) !important;
     cursor: not-allowed;
+  }
+
+  &:invalid {
+    border-color: var(--red);
   }
 }
 

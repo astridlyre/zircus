@@ -27,16 +27,16 @@
 
       span {
         @include res("sm") {
-          padding: 0.625rem var(--btn-padding);
+          padding: 0.325rem var(--btn-padding);
         }
         background: var(--teal);
-        padding: 0.625rem;
+        padding: 0.325rem;
         border-top-left-radius: var(--radius);
         border-bottom-left-radius: var(--radius);
         color: var(--dark);
         font-weight: 600;
         letter-spacing: 0.1rem;
-        font-size: 0.9rem;
+        font-size: var(--small-font-size);
         @media screen and (max-width: 445px) {
           width: 100%;
           border-top-left-radius: var(--radius);
@@ -80,7 +80,7 @@
     }
     background: var(--dark);
     border-radius: var(--big-radius);
-    color: var(--light);
+    color: var(--dark);
     @include res("sm") {
       padding: 4rem;
     }
@@ -92,6 +92,7 @@
 
     &_heading {
       font-size: 2rem;
+      color: var(--light);
     }
   }
 }

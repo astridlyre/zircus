@@ -6,35 +6,67 @@ html {
   @include res("xl") {
     font-size: 22px;
   }
+
+  box-sizing: border-box;
 }
 
-// box-sizing for all
-* {
-  box-sizing: inherit;
+address {
+  border-left: 0.5rem solid var(--gray-30);
+  padding-left: var(--base-unit);
 }
 
-// Links inherit color by default, no underline
-a {
-  text-decoration: none;
-  color: var(--purple);
-
-  &:hover {
-    text-decoration: underline;
+details {
+  max-width: 85ch;
+  p {
+    margin-bottom: 0;
   }
 }
 
-// Body always full width and min full height
 body {
+  @include set-site-font-family();
+  @include font-smoothing();
   @include flexCol();
+  font-size: var(--base-font-size);
+  line-height: var(--doc-line-height);
   justify-content: flex-start;
   align-items: center;
   max-width: 100vw;
   background: var(--dark);
   color: var(--light);
-  font-family: var(--mf);
+  font-family: var(--site-font-family);
   min-height: 100vh;
   scrollbar-width: thin;
   scrollbar-color: var(--grey) var(--lgrey);
+}
+
+img {
+  height: auto;
+}
+
+// Links inherit color by default, no underline
+a {
+  color: var(--link);
+  text-decoration: none;
+  font-weight: 500;
+
+  &:hover,
+  &:focus {
+    color: var(--link-hover);
+    text-decoration: underline;
+  }
+
+  &:visited {
+    color: var(--link-visited);
+
+    &:hover,
+    &:focus {
+      color: var(--link-visited--hover);
+    }
+  }
+
+  code {
+    text-decoration-skip-ink: none;
+  }
 }
 
 blockquote {
@@ -45,27 +77,12 @@ blockquote {
   font-size: 1.1rem;
 }
 
-p {
-  font-size: 1.1rem;
-  line-height: 1.2;
-  margin-bottom: 1rem;
-
-  &::after {
-    content: " • ";
-    color: var(--teal);
-  }
-
-  &.no-dot::after {
-    content: "";
-  }
-}
-
 .container {
   margin: 0 auto;
   padding: 0 var(--x-padding);
   width: 100%;
   @include res("md") {
-    width: 95%;
+    width: 90%;
   }
   @include res("lg") {
     width: 80%;
@@ -100,4 +117,8 @@ p {
     margin-top: 0.5rem;
     line-height: 1.2rem;
   }
+}
+
+.dot {
+  @include dot();
 }

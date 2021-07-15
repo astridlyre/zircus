@@ -5,40 +5,95 @@
 
 // Root variables
 :root {
+  --gray-05: #ffffff;
+  --gray-10: #f9f8fa;
+  --gray-20: #f3f0f4;
+  --gray-30: #e4e0e6;
+  --gray-40: #d6cfd8;
+  --gray-50: #c6bfc9;
+  --gray-60: #b8afba;
+  --gray-70: #b8afba;
+  --gray-80: #9a8f9e;
+  --gray-90: #8b808f;
+  --dgray-10: #5a525e;
+  --dgray-20: #514a55;
+  --dgray-30: #4b414d;
+  --dgray-40: #413944;
+  --dgray-50: #39313c;
+  --dgray-60: #302a33;
+  --dgray-70: #29222b;
+  --dgray-80: #211b22;
+  --dgray-90: #19141a;
+  --link: #45576e;
+  --link-hover: #283341;
+  --link-visited: #553a7b;
+  --link-visited-hover: #491845;
   --teal: #82dbd7;
   --gold: #f6cb5a;
   --purple: #553a7b;
-  --light: #f0f5f2;
-  --dark: #1a171b;
-  --grey: #a19ca3;
-  --lgrey: #e4e6e4;
-  --af: "Virgo 01", sans-serif;
-  --mf: "Nunito", sans-serif;
+  --light: #f9f8fa;
+  --dark: #19141a;
+  --grey: #8b808f;
+  --lgrey: #e4e0e6;
+  --red: #8f3342;
+  --heading-font-family: "Nunito", sans-serif;
+  --site-font-family: "Nunito Sans", sans-serif;
+  --accent-font-family: "Virgo 01", sans-serif;
+  --medium-font-size: 1.125rem;
+  --default-font-size: 1rem;
+  --small-font-size: 0.85rem;
+  --tiny-text: 0.75rem;
+  --letter-spacing: 0.1rem;
+  --doc-line-height: 1.75;
+  --code-line-height: 1.4;
+  --heading-line-height: 1.2;
+  --content-block-margin: 1.5rem;
+
+  // Desktop Typescale
+  --xxl-font-size: 3.052rem;
+  --xl-font-size: 2.441rem;
+  --lg-font-size: 1.953rem;
+  --md-font-size: 1.563rem;
+  --sm-font-size: 1.25rem;
+
+  // Mobile Typescale
+  --xxl-font-size-mobile: 2.202rem;
+  --xl-font-size-mobile: 1.802rem;
+  --lg-font-size-mobile: 1.624rem;
+  --md-font-size-mobile: 1.466rem;
+  --sm-font-size-mobile: 1.15rem;
+
+  // Layout
+  --base-unit: 6px;
+  --base-spacing: calc(var(--base-unit) * 4);
+  --md-spacing: calc(var(--base-spacing) * 2);
+  --lg-spacing: calc(var(--md-spacing) * 2);
+  --base-section-spacing: calc(var(--base-spacing) * 2) var(--base-spacing);
 
   // Side padding for general alignment
   // Negative margin for nav bar
   // Side margin for nav bar items
   @include res("sm") {
-    --y-padding: 5rem;
+    --y-padding: 4rem;
     --x-padding: 3rem;
   }
   @include res("md") {
-    --y-padding: 6rem;
+    --y-padding: 5rem;
     --x-padding: 2rem;
   }
   @include res("lg") {
-    --y-padding: 7rem;
+    --y-padding: 6rem;
     --x-padding: 5rem;
   }
   @include res("xl") {
-    --y-padding: 8rem;
+    --y-padding: 7rem;
     --x-padding: 6rem;
   }
   @media screen and (max-width: 445px) {
     --y-padding: 2rem;
     --x-padding: 1rem;
   }
-  --y-padding: 3rem;
+  --y-padding: 2.75rem;
   --x-padding: 2rem;
 
   // Nav height for page alignment
@@ -74,6 +129,7 @@
 @import "page";
 @import "home";
 @import "general";
+@import "typography";
 @import "nav";
 @import "footer";
 @import "product";
