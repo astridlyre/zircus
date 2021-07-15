@@ -37,6 +37,9 @@ function updateNavLink() {
     }
 }
 
+// set initial cart link state
+updateNavLink()
+
 // add mobile button event listener
 btn.addEventListener('click', menuFunc)
 

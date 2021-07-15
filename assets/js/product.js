@@ -139,6 +139,7 @@ import { q, state, Element, toggler } from './utils.js'
 
     // updateStatus updates the currentItem
     function updateStatus() {
+        if (!state.inv) return
         const updatedItem = item.set()
         if (!updatedItem || updatedItem.quantity === 0) {
             stock.innerText = 'None available'
@@ -161,6 +162,10 @@ import { q, state, Element, toggler } from './utils.js'
         }
         setImage('sm_a')
     }
+
+    // Set initial status
+    updateStatus()
+    updateCartBtnQty()
 
     // Add event listeners
     color.addEventListener('change', () => {
