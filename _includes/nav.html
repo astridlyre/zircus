@@ -2,7 +2,9 @@
   <div class="container">
     <header class="nav__nav">
       <h2 class="nav__heading">
-        <a class="nav__heading_link" href="/">ZIRCUS</a>
+        <a class="nav__heading_link" href="/" aria-label="Zircus Home Page"
+          >ZIRCUS</a
+        >
       </h2>
       <div class="nav__mobile">
         <ul class="nav__mobile_items hide" id="menu-mobile-list">
@@ -44,7 +46,7 @@
               tabindex="{{ item.index }}"
               href="{{ item.link }}"
               id="{{ item.id }}"
-              >{{ item.name }}</a
+              >{{ item.name_desktop }}</a
             >
           </li>
           {% endfor %}

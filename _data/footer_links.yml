@@ -1,6 +1,9 @@
-- name: faq
+- name: fa<span class="underline">q</span>
   link: /faq
-- name: sizing
+  key: q
+- name: si<span class="underline">z</span>ing
   link: /sizing
-- name: terms & conditions
+  key: z
+- name: <span class="underline">t</span>erms & conditions
   link: /terms
+  key: t

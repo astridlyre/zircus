@@ -61,6 +61,16 @@
     }
 
     &_inputs {
+      display: flex;
+
+      label {
+        span {
+          position: absolute;
+          height: 0;
+          width: 0;
+          visibility: hidden;
+        }
+      }
       @include res("md") {
         max-width: 25vw;
       }
@@ -72,7 +82,7 @@
     }
 
     &_price {
-      font-size: 0.9rem;
+      font-size: var(--medium-font-size);
       font-weight: 600;
       letter-spacing: 0.1rem;
       display: flex;

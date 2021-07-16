@@ -8,7 +8,94 @@ bottom_image: /assets/img/products/1920/closeup-d-1920.jpg
   <div class="container">
     <h1 class="page__heading">checkout</h1>
     <form id="checkout-form" class="form">
-      <div class="flex-col">
+      <div class="checkout__address">
+        <h2 class="checkout__address_heading">send undies pls</h2>
+        <label for="checkout-name"
+          ><span>Name</span
+          ><input
+            type="text"
+            name="Full Name"
+            value=""
+            class="input"
+            required
+            id="checkout-name"
+            autocomplete="on"
+            minlength="2"
+            maxlength="140"
+        /></label>
+        <label for="checkout-email"
+          ><span>Email</span
+          ><input
+            type="email"
+            name="Email Address"
+            value=""
+            class="input min-w-15"
+            required
+            id="checkout-email"
+            autocomplete="on"
+            minlength="5"
+            maxlength="140"
+        /></label>
+        <label for="checkout-street"
+          ><span>Address</span
+          ><input
+            type="text"
+            name="Street Address"
+            value=""
+            class="input min-w-15"
+            required
+            id="checkout-street"
+            autocomplete="on"
+            minlength="0"
+            maxlength="140"
+        /></label>
+        <label for="checkout-city"
+          ><span>City</span
+          ><input
+            type="text"
+            name="City"
+            value=""
+            class="input"
+            required
+            id="checkout-city"
+            autocomplete="on"
+          />
+        </label>
+        <label for="checkout-country"
+          ><span>Country</span>
+          <select
+            autocomplete="on"
+            class="input"
+            name="Country"
+            id="checkout-country"
+            required
+            value=""
+          ></select>
+        </label>
+        <label for="checkout-state"
+          ><span id="checkout-state-text">State</span
+          ><select
+            autocomplete="on"
+            name="State or Province"
+            value=""
+            class="input"
+            required
+            id="checkout-state"
+          ></select>
+        </label>
+        <label for="checkout-zip"
+          ><span id="checkout-zip-text" class="max-w-10">Zip</span
+          ><input
+            type="text"
+            name="Zip or Postal Code"
+            value=""
+            class="input max-w-10"
+            required
+            id="checkout-zip"
+            autocomplete="on"
+        /></label>
+      </div>
+      <div class="flex-col checkout__products__container">
         <template id="checkout-product-template">
           <div class="cart__product">
             <a href="" class="cart__product_flexcon">
@@ -43,105 +130,18 @@ bottom_image: /assets/img/products/1920/closeup-d-1920.jpg
               </li>
             </ul>
           </div>
+          <div class="checkout__button">
+            <button
+              class="btn btn__primary"
+              type="submit"
+              name="Pay with Card"
+              id="place-order"
+              accesskey="w"
+            >
+              pay <span class="underline">w</span>ith card
+            </button>
+          </div>
         </div>
-      </div>
-      <div class="checkout__address">
-        <h2 class="checkout__address_heading">send undies pls</h2>
-        <label for="name"
-          ><span>Name</span
-          ><input
-            type="text"
-            name="name"
-            value=""
-            class="input"
-            required
-            id="checkout-name"
-            autocomplete="on"
-            minlength="2"
-            maxlength="140"
-        /></label>
-        <label for="email"
-          ><span>Email</span
-          ><input
-            type="email"
-            name="email"
-            value=""
-            class="input min-w-15"
-            required
-            id="checkout-email"
-            autocomplete="on"
-            minlength="5"
-            maxlength="140"
-        /></label>
-        <label for="street-address"
-          ><span>Address</span
-          ><input
-            type="text"
-            name="street-address"
-            value=""
-            class="input min-w-15"
-            required
-            id="checkout-street"
-            autocomplete="on"
-            minlength="0"
-            maxlength="140"
-        /></label>
-        <label for="city"
-          ><span>City</span
-          ><input
-            type="text"
-            name="city"
-            value=""
-            class="input"
-            required
-            id="checkout-city"
-            autocomplete="on"
-          />
-        </label>
-        <label for="country"
-          ><span>Country</span>
-          <select
-            autocomplete="on"
-            class="input"
-            name="country"
-            id="checkout-country"
-            required
-            value=""
-          ></select>
-        </label>
-        <label for="state"
-          ><span id="checkout-state-text">State</span
-          ><select
-            autocomplete="on"
-            name="state"
-            value=""
-            class="input"
-            required
-            id="checkout-state"
-          ></select>
-        </label>
-        <label for="zip"
-          ><span id="checkout-zip-text" class="max-w-10">Zip</span
-          ><input
-            type="text"
-            name="zip"
-            value=""
-            class="input max-w-10"
-            required
-            id="checkout-zip"
-            autocomplete="on"
-        /></label>
-      </div>
-      <div class="hide-sm"></div>
-      <div class="checkout__button">
-        <button
-          class="btn btn__primary"
-          type="submit"
-          id="place-order"
-          accesskey="o"
-        >
-          <span class="underline">p</span>ay with card
-        </button>
       </div>
     </form>
   </div>

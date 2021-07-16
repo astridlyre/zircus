@@ -14,12 +14,16 @@ bottom_image: /assets/img/products/1920/closeup-a-1920.jpg
     {% for product in site.products %}
     <li class="home__products_product">
       <a
-        accesskey="{{ product.key }}"
         class="home__products_product_link"
         href="{{ product.url }}"
         tabindex="0"
+        aria-label="Link to {{ product.image_alt }}"
       >
-        <img src="{{ product.image }}" alt="{{ product.name }}" />
+        <img
+          src="{{ product.image }}"
+          alt="{{ product.image_alt }}"
+          title="{{ product.name }}"
+        />
         <p class="home__products_product_text">{{ product.name }}</p>
       </a>
     </li>
@@ -27,7 +31,12 @@ bottom_image: /assets/img/products/1920/closeup-a-1920.jpg
   </ul>
 </div>
 <section class="section__hero">
-  <img id="hero-image" class="section__hero_image" />
+  <img
+    id="hero-image"
+    class="section__hero_image"
+    alt="Colourful photos of Zircus underwear, worn by several different models of varying gender and presentation."
+    title="Zircus models showing off their colourful underwear."
+  />
   <div class="bg-light rounded-big-top absolute b-0 l-0"></div>
 </section>
 <section class="section__text">

@@ -158,7 +158,7 @@ import { q, state, Element, toggler } from './utils.js'
             stock.classList.remove('out-stock')
             quantity.removeAttribute('disabled')
             addToCart.removeAttribute('disabled')
-            addToCart.innerText = 'add to cart'
+            addToCart.innerHTML = `<span class="underline">a</span>dd to cart`
         }
         setImage('sm_a')
     }

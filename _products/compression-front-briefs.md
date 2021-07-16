@@ -2,12 +2,13 @@
 title: compression front · zircus
 name: compression front
 type: cf
-key: m
 price: 38
 image: /assets/img/products/masked/cf-purple-a-400.png
 bottom_image: /assets/img/products/1920/closeup-e-1920.jpg
 default_color: purple
 description: a smooth, compressed fit in the front
+image_alt: "Compression front briefs: A smooth, compressed fit in the front to
+keep things in place. Excellent for tucking."
 ---
 
 Our compression front briefs offer a layer of power-net, in-between 2 layers of

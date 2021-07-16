@@ -36,6 +36,7 @@ import { q, state } from './utils.js'
         const desc = template.querySelector('p')
         const price = template.querySelector('span')
         const qty = template.querySelector('.input')
+        const label = template.querySelector('label')
         const removeBtn = template.querySelector('button')
 
         link.href = `/products/${item.name
@@ -43,21 +44,30 @@ import { q, state } from './utils.js'
             .split(' ')
             .join('-')}.html`
         img.src = item.images.sm_a
-        img.alt = item.name
+        img.alt = `${item.name} ${item.size} ${item.color} underwear`
         desc.textContent = `${item.name} (${item.size})`
         price.textContent = `$${item.price}`
         qty.value = item.quantity
+        qty.id = item.type
+        qty.setAttribute('name', `${item.name} ${item.size} ${item.color}`)
+        label.setAttribute('for', item.type)
         qty.addEventListener('input', () => {
+            if (!qty.value) qty.value = 1
             const max = state.inv.find(i => i.id === item.id).quantity
             if (Number(qty.value) > max) qty.value = max
             state.cart = cart =>
                 cart.map(i =>
                     i.id === item.id ? { ...i, quantity: Number(qty.value) } : i
                 )
+            price.textContent = `$${item.price * Number(qty.value)}`
             setSubtotal()
         })
 
         // Add remove button functionality
+        removeBtn.setAttribute(
+            'aria-label',
+            `Remove ${item.name} size ${item.size} color ${item.color} from cart`
+        )
         removeBtn.addEventListener('click', () => {
             state.cart = cart => cart.filter(i => i.id !== item.id)
             product.remove()

@@ -25,12 +25,12 @@ const menuFunc = (initial => {
 
 function updateNavLink() {
     if (state.cart.length > 0) {
-        const totalItems = `cart (${state.cart.reduce(
+        const totalItems = state.cart.reduce(
             (acc, item) => acc + item.quantity,
             0
-        )})`
-        navLink.textContent = totalItems
-        navLinkMobile.textContent = totalItems
+        )
+        navLink.innerHTML = `<span class="underline">c</span>art (${totalItems})`
+        navLinkMobile.textContent = `cart (${totalItems})`
     } else {
         navLink.textContent = 'cart'
         navLinkMobile.textContent = 'cart'

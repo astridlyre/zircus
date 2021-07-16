@@ -1,12 +1,15 @@
 .checkout {
   width: 100%;
 
+  &__products__container {
+    flex-basis: 16rem;
+    flex-grow: 1;
+    flex-shrink: 1;
+  }
+
   .form {
-    display: grid;
-    @include res("md") {
-      grid-template-columns: repeat(2, 1fr);
-    }
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-flow: row wrap;
     gap: var(--two-col-gap);
 
     .hide-sm {
@@ -26,11 +29,8 @@
       width: 100%;
 
       span {
-        @include res("sm") {
-          padding: 0.325rem var(--btn-padding);
-        }
+        padding: 0.325rem var(--btn-padding);
         background: var(--teal);
-        padding: 0.325rem;
         border-top-left-radius: var(--radius);
         border-bottom-left-radius: var(--radius);
         color: var(--dark);
@@ -38,6 +38,7 @@
         letter-spacing: 0.1rem;
         font-size: var(--small-font-size);
         @media screen and (max-width: 445px) {
+          padding-left: 0.5rem;
           width: 100%;
           border-top-left-radius: var(--radius);
           border-top-right-radius: var(--radius);
@@ -49,7 +50,8 @@
         }
       }
 
-      input, select {
+      input,
+      select {
         @media screen and (max-width: 445px) {
           width: 100%;
           border-top-left-radius: 0 !important;
@@ -64,6 +66,7 @@
   }
 
   &__button {
+    margin-top: 1rem;
     display: flex;
     justify-content: flex-end;
   }
@@ -74,6 +77,8 @@
   }
 
   &__address {
+    flex-shrink: 1;
+    flex-grow: 1;
     @media screen and (max-width: 445px) {
       background: none;
       padding: 0;
@@ -81,9 +86,6 @@
     background: var(--dark);
     border-radius: var(--big-radius);
     color: var(--dark);
-    @include res("sm") {
-      padding: 4rem;
-    }
     padding: 2rem;
     display: flex;
     flex-flow: column nowrap;

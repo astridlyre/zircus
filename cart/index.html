@@ -16,17 +16,21 @@ bottom_image: /assets/img/products/1920/group-a-1920.jpg
       </a>
       <div class="cart__product_inputs">
         <span class="cart__product_price"></span>
-        <input
-          type="number"
-          name=""
-          value=""
-          min="1"
-          max="100"
-          step="1"
-          class="input w-4"
-        />
+        <label for=""
+          ><span>quantity</span>
+          <input
+            type="number"
+            name=""
+            value=""
+            min="1"
+            max="100"
+            step="1"
+            class="input w-4"
+        /></label>
         <input type="hidden" name="type" value="" />
-        <button type="button" class="btn btn__secondary">remove</button>
+        <button type="button" class="btn btn__secondary" aria-label="">
+          remove
+        </button>
       </div>
     </div>
   </template>
