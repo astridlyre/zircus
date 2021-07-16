@@ -66,7 +66,11 @@ import { q, state, Element, toggler } from './utils.js'
     })
 
     // Set price of product
-    priceText.textContent = `$${Number(price.value) * Number(quantity.value)}`
+    function updatePrice() {
+        priceText.textContent = `$${
+            Number(price.value) * Number(quantity.value)
+        }`
+    }
 
     // Preload images and set default color
     function preloadImages(color) {
@@ -148,6 +152,8 @@ import { q, state, Element, toggler } from './utils.js'
                 ? 'In stock'
                 : `Only ${updatedItem.quantity} left`
         }`
+        if (updatedItem.quantity < Number(quantity.value))
+            quantity.value = updatedItem.quantity
         stock.classList.add('in-stock')
         stock.classList.remove('out-stock')
         quantity.removeAttribute('disabled')
@@ -162,6 +168,7 @@ import { q, state, Element, toggler } from './utils.js'
         if (!updatedItem || updatedItem.quantity === 0) outOfStock()
         else inStock(updatedItem)
         setImage('sm_a')
+        updatePrice()
     }
 
     // Set initial status

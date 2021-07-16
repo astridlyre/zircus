@@ -12,7 +12,7 @@
 }
 
 details {
-  border: 2px solid var(--lgrey);
+  border: 2px solid var(--gray-30);
   border-radius: var(--radius);
   padding: 1rem 1rem 0;
 }
@@ -22,7 +22,7 @@ details[open] {
 }
 
 details[open] summary {
-  border-bottom: 2px solid var(--lgrey);
+  border-bottom: 2px solid var(--gray-30);
   margin-bottom: 1rem;
 }
 
@@ -34,6 +34,10 @@ summary {
 
   &:hover {
     color: var(--teal);
+  }
+
+  &:focus {
+    outline-color: var(--dark);
   }
 
   span {

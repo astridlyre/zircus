@@ -31,6 +31,10 @@
       &:hover,
       &:focus {
         text-decoration: none !important;
+
+        p {
+          border-color: var(--teal);
+        }
       }
 
       &::before {
@@ -41,7 +45,7 @@
         left: -1.5rem;
         width: 1rem;
         height: 1rem;
-        background-color: var(--light);
+        background-color: transparent;
       }
 
       &:hover::before,
@@ -49,19 +53,11 @@
         background-color: var(--teal);
       }
 
-      &:focus p, &:hover p {
-        border-color: var(--teal);
-      }
-
       p {
         margin-bottom: 0;
         padding: var(--base-unit);
         border: 2px solid transparent;
         border-radius: var(--radius);
-
-        &::after {
-          content: "";
-        }
       }
     }
 

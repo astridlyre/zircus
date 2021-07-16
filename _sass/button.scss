@@ -56,9 +56,9 @@
   }
 
   &:disabled {
-    background: var(--lgrey);
-    border-color: var(--grey) !important;
-    color: var(--grey) !important;
+    background: var(--gray-30);
+    border-color: var(--gray-50) !important;
+    color: var(--dgray-60) !important;
     cursor: not-allowed;
   }
 

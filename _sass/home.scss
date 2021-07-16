@@ -40,16 +40,7 @@
         align-items: center;
         justify-content: flex-start;
         padding: 2rem;
-        outline: none;
-        position: relative;
-        border: 0.2rem solid var(--light);
-        border-radius: var(--big-radius);
-
-        &:hover,
-        &:focus {
-          border-color: var(--teal);
-          text-decoration: none !important;
-        }
+        @include borderHoverBig();
       }
       &_text {
         margin-top: 2rem;

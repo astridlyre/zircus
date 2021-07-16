@@ -67,18 +67,27 @@
 }
 
 @mixin borderHoverBig {
-  @include insetAbs();
-  border: 0.2rem solid var(--teal);
+  outline: none;
+  border: 0.2rem solid transparent;
   border-radius: var(--big-radius);
-  content: "";
-  animation: 0.1s ease-out forwards borderGrowBig;
+  text-decoration: none !important;
+
+  &:hover,
+  &:focus {
+    border-color: var(--teal);
+  }
 }
+
 @mixin borderHover {
-  @include insetAbs();
-  border: 2px solid var(--teal);
+  outline: none;
+  border: 2px solid transparent;
   border-radius: var(--radius);
-  content: "";
-  animation: 0.1s ease-out forwards borderGrow;
+  text-decoration: none !important;
+
+  &:hover,
+  &:focus {
+    border-color: var(--teal);
+  }
 }
 
 @mixin moveDown {

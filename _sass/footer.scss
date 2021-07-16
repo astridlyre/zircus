@@ -38,24 +38,16 @@
     display: flex;
     flex-flow: column nowrap;
     gap: 1rem;
-    margin-right: -0.25rem;
+    margin-right: -0.5rem;
 
     &_link {
       text-align: right;
 
       a {
-        outline: none;
-        padding: 0.25rem;
-        border: 2px solid transparent;
-        border-radius: var(--radius);
+        padding: 0.25rem 0.5rem;
         color: var(--light);
+        @include borderHover();
 
-        &:hover,
-        &:focus {
-          outline: none;
-          border-color: var(--teal);
-          text-decoration: none;
-        }
       }
     }
   }
@@ -73,20 +65,12 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      outline: none;
       margin-left: 0.75rem;
       padding: 0.5rem;
-      border: 2px solid var(--dark);
-      border-radius: var(--radius);
       background: none;
       color: var(--light);
       cursor: pointer;
-      position: relative;
-
-      &:hover,
-      &:focus {
-        border-color: var(--teal);
-      }
+      @include borderHover();
     }
 
     &_icon {

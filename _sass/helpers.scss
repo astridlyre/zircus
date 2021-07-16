@@ -133,3 +133,13 @@
 .hidden {
   display: none;
 }
+
+.bordered-image {
+  padding: var(--base-unit);
+  border: 0.2rem solid var(--dark);
+  border-radius: calc(var(--big-radius) + var(--base-unit));
+
+  img {
+    border-radius: var(--big-radius);
+  }
+}

@@ -121,16 +121,7 @@
       text-align: center;
       letter-spacing: var(--letter-spacing);
       font-weight: 600;
-      outline: none;
-      position: relative;
-      border: 2px solid transparent;
-      border-radius: var(--radius);
-
-      &:hover,
-      &:focus {
-        border-color: var(--teal);
-        text-decoration: none !important;
-      }
+      @include borderHover();
     }
   }
 
@@ -146,13 +137,11 @@
       color: var(--light) !important;
       padding: 0.25rem 0.5rem;
       margin-left: -0.5rem;
-      outline: none;
       z-index: 0;
       position: relative;
-      border: 2px solid transparent;
-      border-radius: var(--radius);
+      @include borderHover();
 
-      &::after {
+      &::before {
         content: "";
         position: absolute;
         right: -2rem;
@@ -162,12 +151,6 @@
         width: 1.25rem;
         height: 1.25rem;
         border-radius: 100%;
-      }
-
-      &:hover,
-      &:focus {
-        border-color: var(--teal);
-        text-decoration: none !important;
       }
     }
   }
