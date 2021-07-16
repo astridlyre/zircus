@@ -258,6 +258,8 @@ const US_ZIP_CODE = /^[0-9]{5}(-[0-9]{4})?$/
 
     // Render Items
     renderCartItems()
+    populateSelects(countryEl, Object.keys(state.countries), item => item)
+    handleCountry()
 
     // Add event listeners
     checkoutForm.addEventListener('submit', event => {
@@ -265,10 +267,6 @@ const US_ZIP_CODE = /^[0-9]{5}(-[0-9]{4})?$/
         createPaymentIntent()
     })
     cancel.addEventListener('click', () => showModal(false))
-    state.addHook(s => {
-        populateSelects(countryEl, Object.keys(s.countries), item => item)
-        handleCountry()
-    })
     countryEl.addEventListener('input', () => handleCountry())
     stateEl.addEventListener('input', () => setTotals())
     zip.addEventListener('input', e => {

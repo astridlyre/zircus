@@ -44,7 +44,7 @@ import { q, state } from './utils.js'
             .join('-')}.html`
         img.src = item.images.sm_a
         img.alt = item.name
-        desc.textContent = `${item.name} - ${item.size}`
+        desc.textContent = `${item.name} (${item.size})`
         price.textContent = `$${item.price}`
         qty.value = item.quantity
         qty.addEventListener('input', () => {
