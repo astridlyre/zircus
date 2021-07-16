@@ -28,9 +28,24 @@ import { q, state, Element, toggler } from './utils.js'
     const stock = q('product-stock')
     let currentColor = color.value
 
+    // Get and set item
+    const [currentItem, setItem] = (() => {
+        let currentItem = null
+        return [
+            () => currentItem,
+            () =>
+                (currentItem = state.inv.find(
+                    item =>
+                        item.type ===
+                        `${prefix.value}-${color.value}-${size.value}`
+                )),
+        ]
+    })()
+    setItem()
+
     // Sets product image
     function setImage(key) {
-        return item.get() && (image.src = item.get().images[key])
+        return currentItem() && (image.src = currentItem().images[key])
     }
 
     // Image hover handler
@@ -41,7 +56,7 @@ import { q, state, Element, toggler } from './utils.js'
     // Full image view handler
     const handleViewFull = toggler(false, showFull => {
         if (showFull) {
-            bigImage.src = item.get().images['lg_a']
+            bigImage.src = currentItem().images['lg_a']
             bigImageEl.style.display = 'flex'
             document.body.classList.add('hide-y')
         } else {
@@ -50,32 +65,12 @@ import { q, state, Element, toggler } from './utils.js'
         }
     })
 
-    // Get and set item
-    const item = (() => {
-        let currentItem = null
-        return {
-            set: () =>
-                (currentItem = state.inv.find(
-                    item =>
-                        item.type ===
-                        `${prefix.value}-${color.value}-${size.value}`
-                )),
-            get: () => currentItem,
-        }
-    })()
-    item.set()
-
     // Set price of product
     priceText.textContent = `$${Number(price.value) * Number(quantity.value)}`
 
     // Preload images and set default color
     function preloadImages(color) {
-        for (const image of [
-            'a-400.png',
-            'b-400.png',
-            'a-1920.png',
-            'b-1920.png',
-        ]) {
+        for (const image of ['a-400.png', 'b-400.png', 'a-1920.png']) {
             const preload = new Element('link', null, {
                 href: `/assets/img/products/masked/${prefix.value}-${color}-${image}`,
                 rel: 'prefetch',
@@ -96,36 +91,35 @@ import { q, state, Element, toggler } from './utils.js'
 
     // addItemToCart adds the currentItem (item.get()) to the cart, or updates
     // an exisiting item's quantity
-    function addItemToCart() {
-        const currentItem = item.get()
-
+    function handleAddToCart() {
+        const item = currentItem()
         // If not enough items in stock
-        if (
-            currentItem.quantity - Number(quantity.value) < 0 ||
-            !currentItem.quantity
-        )
-            return
-
-        // Update quantity of current cart items
-        if (state.cart.find(item => item.type === currentItem.type)) {
-            state.cart = cart =>
-                cart.map(i =>
-                    i.type === currentItem.type
-                        ? {
-                              ...i,
-                              quantity: i.quantity + Number(quantity.value),
-                          }
-                        : i
-                )
-        } else {
-            // Otherwise add new item to cart
-            state.cart = cart =>
-                cart.concat({
-                    ...currentItem,
-                    quantity: Number(quantity.value),
-                })
-        }
+        if (item.quantity - Number(quantity.value) < 0 || !item.quantity) return
+        if (state.cart.find(i => i.type === item.type)) updateCartItem(item)
+        else addNewCartItem(item)
         addToCart.blur()
+    }
+
+    // updateCartItem updates an existing cart item's quantity
+    function updateCartItem(item) {
+        return (state.cart = cart =>
+            cart.map(i =>
+                i.type === item.type
+                    ? {
+                          ...i,
+                          quantity: i.quantity + Number(quantity.value),
+                      }
+                    : i
+            ))
+    }
+
+    // addNewCartItem adds a new item to cart
+    function addNewCartItem(item) {
+        return (state.cart = cart =>
+            cart.concat({
+                ...item,
+                quantity: Number(quantity.value),
+            }))
     }
 
     // updateCartBtnQty updates the number of items shows in the cart button
@@ -137,29 +131,36 @@ import { q, state, Element, toggler } from './utils.js'
         goToCartQty.innerText = `${totalItems > 0 ? `(${totalItems})` : ''}`
     }
 
+    // outOfStock sets out-of-stock status
+    function outOfStock() {
+        stock.innerText = 'None available'
+        stock.classList.add('out-stock')
+        stock.classList.remove('in-stock')
+        quantity.setAttribute('disabled', true)
+        addToCart.setAttribute('disabled', true)
+        addToCart.innerText = 'out of stock'
+    }
+
+    // inStock sets in-stock status
+    function inStock(updatedItem) {
+        stock.innerText = `${
+            updatedItem.quantity > 5
+                ? 'In stock'
+                : `Only ${updatedItem.quantity} left`
+        }`
+        stock.classList.add('in-stock')
+        stock.classList.remove('out-stock')
+        quantity.removeAttribute('disabled')
+        addToCart.removeAttribute('disabled')
+        addToCart.textContent = 'add to cart'
+    }
+
     // updateStatus updates the currentItem
     function updateStatus() {
         if (!state.inv) return
-        const updatedItem = item.set()
-        if (!updatedItem || updatedItem.quantity === 0) {
-            stock.innerText = 'None available'
-            stock.classList.add('out-stock')
-            stock.classList.remove('in-stock')
-            quantity.setAttribute('disabled', true)
-            addToCart.setAttribute('disabled', true)
-            addToCart.innerText = 'out of stock'
-        } else {
-            stock.innerText = `${
-                updatedItem.quantity > 5
-                    ? 'In stock'
-                    : `Only ${updatedItem.quantity} left`
-            }`
-            stock.classList.add('in-stock')
-            stock.classList.remove('out-stock')
-            quantity.removeAttribute('disabled')
-            addToCart.removeAttribute('disabled')
-            addToCart.innerHTML = `<span class="underline">a</span>dd to cart`
-        }
+        const updatedItem = setItem() // Update current item
+        if (!updatedItem || updatedItem.quantity === 0) outOfStock()
+        else inStock(updatedItem)
         setImage('sm_a')
     }
 
@@ -176,19 +177,21 @@ import { q, state, Element, toggler } from './utils.js'
         currentColor = color.value
     })
     quantity.addEventListener('input', () => {
-        const max = item.get().quantity
+        const max = currentItem().quantity
         if (Number(quantity.value) > max) quantity.value = max
         priceText.textContent = `$${
             Number(quantity.value) * Number(price.value)
         }`
     })
     size.addEventListener('input', updateStatus)
-    image.addEventListener('pointerover', () => handleHoverImage.next())
-    image.addEventListener('pointerleave', () => handleHoverImage.next())
-    image.addEventListener('click', () => handleViewFull.next())
-    bigImageEl.addEventListener('click', () => handleViewFull.next())
-    addToCart.addEventListener('click', addItemToCart)
+    image.addEventListener('pointerover', () => handleHoverImage())
+    image.addEventListener('pointerleave', () => handleHoverImage())
+    image.addEventListener('click', () => handleViewFull())
+    bigImageEl.addEventListener('click', () => handleViewFull())
+    addToCart.addEventListener('click', handleAddToCart)
     goToCart.addEventListener('click', () => location.assign('/cart'))
+
+    // Register hooks
     state.addHook(updateStatus)
     state.addHook(updateCartBtnQty)
 })()

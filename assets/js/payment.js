@@ -1,11 +1,4 @@
-import {
-    q,
-    API_ENDPOINT,
-    state,
-    Element,
-    calculateTax,
-    toggler,
-} from './utils.js'
+import { q, API_ENDPOINT, state, Element, calculateTax } from './utils.js'
 const stripe = Stripe(
     'pk_test_51J93KzDIzwSFHzdzCZtyRcjMvw8em0bhnMrVmkBHaMFHuc2nkJ156oJGNxuz0G7W4Jx0R6OCy2nBXYTt6U8bSYew00PIAPcntP'
 )
@@ -238,6 +231,7 @@ const US_ZIP_CODE = /^[0-9]{5}(-[0-9]{4})?$/
                 : US_ZIP_CODE.source
         )
         zip.setAttribute('maxlength', country === 'Canada' ? '7' : '10')
+        zip.setAttribute('size', country === 'Canada' ? '7' : '10')
         setTotals()
     }
 

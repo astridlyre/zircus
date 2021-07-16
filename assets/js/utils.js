@@ -129,12 +129,9 @@ export class Element {
 }
 
 // Simple toggler generator
-export function* toggler(initialState, func) {
+export function toggler(initialState, func) {
     let value = initialState
-    while (true) {
-        value = !value
-        yield func(value)
-    }
+    return () => func((value = !value))
 }
 
 // Simple tax rate calculator - IMPROVE THIS!!

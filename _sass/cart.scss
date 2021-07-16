@@ -28,7 +28,8 @@
       outline: none;
       color: var(--dark) !important;
 
-      &:hover {
+      &:hover,
+      &:focus {
         text-decoration: none !important;
       }
 
@@ -43,16 +44,20 @@
         background-color: var(--light);
       }
 
-      &:hover::before, &:focus::before {
+      &:hover::before,
+      &:focus::before {
         background-color: var(--teal);
       }
 
-      &:focus p {
-        outline: 2px solid var(--teal);
+      &:focus p, &:hover p {
+        border-color: var(--teal);
       }
 
       p {
         margin-bottom: 0;
+        padding: var(--base-unit);
+        border: 2px solid transparent;
+        border-radius: var(--radius);
 
         &::after {
           content: "";
