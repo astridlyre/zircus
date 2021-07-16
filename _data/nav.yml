@@ -1,18 +1,9 @@
 - name: shop
-  name_desktop: <span class="underline">s</span>hop
   link: /shop
-  key: s
   id: shop-link
-  tab: 1
 - name: about
-  name_desktop: a<span class="underline">b</span>out
   link: /about
-  key: b
-  tab: 2
   id: about-link
 - name: cart
-  name_desktop: <span class="underline">c</span>art
   link: /cart
-  key: c
-  tab: 3
   id: cart-link

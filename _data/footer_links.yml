@@ -1,9 +1,9 @@
-- name: fa<span class="underline">q</span>
+- name: faq
   link: /faq
-  key: q
-- name: si<span class="underline">z</span>ing
+  label: View Frequently Asked Questions
+- name: sizing
   link: /sizing
-  key: z
-- name: <span class="underline">t</span>erms & conditions
+  label: View underwear sizing information
+- name: terms & conditions
   link: /terms
-  key: t
+  label: View site terms and conditions

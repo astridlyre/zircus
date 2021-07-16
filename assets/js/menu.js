@@ -29,7 +29,7 @@ function updateNavLink() {
             (acc, item) => acc + item.quantity,
             0
         )
-        navLink.innerHTML = `<span class="underline">c</span>art (${totalItems})`
+        navLink.textContent = `cart (${totalItems})`
         navLinkMobile.textContent = `cart (${totalItems})`
     } else {
         navLink.textContent = 'cart'

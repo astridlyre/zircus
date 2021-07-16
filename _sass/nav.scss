@@ -64,7 +64,10 @@
     }
 
     &_item {
-      font-size: 2rem;
+      font-size: var(--md-font-size);
+      @include res('sm') {
+        font-size: var(--lg-font-size);
+      }
       display: flex;
       justify-content: flex-end;
       width: 100%;
@@ -77,10 +80,10 @@
 
       &_link {
         color: var(--light) !important;
-        letter-spacing: 0.1rem;
+        letter-spacing: var(--letter-spacing);
         display: block;
         margin: 1rem 0;
-        padding: 2rem;
+        padding: 1rem;
 
         &:hover {
           text-decoration: none !important;
@@ -116,7 +119,7 @@
       color: var(--light) !important;
       font-size: 0.9rem;
       text-align: center;
-      letter-spacing: 0.15rem;
+      letter-spacing: var(--letter-spacing);
       font-weight: 600;
       outline: none;
       position: relative;

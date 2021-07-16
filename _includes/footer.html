@@ -11,7 +11,7 @@
         <ul class="footer__links">
           {% for item in site.data.footer_links %}
           <li class="footer__links_link">
-            <a accesskey="{{ item.key }}" href="{{ item.link }}"
+            <a href="{{ item.link }}" aria-label="{{ item.label }}"
               >{{ item.name }}</a
             >
           </li>
