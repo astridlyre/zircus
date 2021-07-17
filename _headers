@@ -2,4 +2,4 @@
 	X-Frame-Options: DENY
 	X-XSS-Protection: 1; mode=block
 	X-Content-Type-Options: nosniff
-	Content-Security-Policy: default-src 'self' https://fonts.gstatic.com https://js.stripe.com https://zircus.herokuapp.com *.cloudfront.net img-src 'self' data:image/png;
+	Content-Security-Policy: default-src 'self' https://fonts.gstatic.com https://js.stripe.com https://zircus.herokuapp.com *.cloudfront.net; img-src 'self' data:;
