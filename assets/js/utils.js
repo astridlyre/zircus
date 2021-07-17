@@ -71,6 +71,15 @@ class State {
         localStorage.setItem('clientSecret', JSON.stringify(sec))
     }
 
+    set currentItem(item) {
+        localStorage.setItem('currentItem', JSON.stringify(item))
+    }
+
+    get currentItem() {
+        const currentItem = localStorage.getItem('currentItem')
+        return currentItem ? JSON.parse(currentItem) : null
+    }
+
     update() {
         this.hooks.forEach(hook =>
             hook({ cart: this.cart, inv: this.inv, countries: this.countries })

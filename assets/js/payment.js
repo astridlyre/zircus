@@ -77,9 +77,18 @@ export default function payment() {
             const img = template.querySelector('img')
             const desc = template.querySelector('p')
 
-            link.setAttribute(
-                'href',
-                `/products/${item.name.toLowerCase().split(' ').join('-')}.html`
+            link.href = `/products/${item.name
+                .toLowerCase()
+                .split(' ')
+                .join('-')}.html`
+            link.addEventListener(
+                'click',
+                () =>
+                    (state.currentItem = {
+                        type: item.type,
+                        color: item.color,
+                        size: item.size,
+                    })
             )
             img.src = item.images.sm_a
             desc.textContent = `${item.name} (${item.size}) - ${item.quantity} x $${item.price}`

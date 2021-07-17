@@ -43,6 +43,15 @@ export default function cart() {
             .toLowerCase()
             .split(' ')
             .join('-')}.html`
+        link.addEventListener(
+            'click',
+            () =>
+                (state.currentItem = {
+                    type: item.type,
+                    color: item.color,
+                    size: item.size,
+                })
+        )
         img.src = item.images.sm_a
         img.alt = `${item.name} ${item.size} ${item.color} underwear`
         desc.textContent = `${item.name} (${item.size})`

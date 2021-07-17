@@ -33,15 +33,15 @@ export default function product() {
         let currentItem = null
         return [
             () => currentItem,
-            () =>
-                (currentItem = state.inv.find(
-                    item =>
-                        item.type ===
-                        `${prefix.value}-${color.value}-${size.value}`
+            prevItem =>
+                (currentItem = state.inv.find(item =>
+                    prevItem
+                        ? item.type === prevItem.type
+                        : item.type ===
+                          `${prefix.value}-${color.value}-${size.value}`
                 )),
         ]
     })()
-    setItem()
 
     // Sets product image
     function setImage(key) {
@@ -162,9 +162,17 @@ export default function product() {
     }
 
     // updateStatus updates the currentItem
-    function updateStatus() {
+    function updateStatus(prevItem) {
         if (!state.inv) return
-        const updatedItem = setItem() // Update current item
+        const updatedItem = setItem(prevItem) // Update current item
+        if (prevItem) {
+            size.value = prevItem.size
+            color.value = prevItem.color
+            state.currentItem = null
+        }
+        if (!prevItem) productAccent.classList.remove(`${currentColor}-before`)
+        productAccent.classList.add(`${color.value}-before`)
+        currentColor = color.value
         if (!updatedItem || updatedItem.quantity === 0) outOfStock()
         else inStock(updatedItem)
         setImage('sm_a')
@@ -172,16 +180,13 @@ export default function product() {
     }
 
     // Set initial status
-    updateStatus()
+    updateStatus(state.currentItem)
     updateCartBtnQty()
 
     // Add event listeners
     color.addEventListener('change', () => {
         setImage('sm_a')
         updateStatus()
-        productAccent.classList.add(`${color.value}-before`)
-        productAccent.classList.remove(`${currentColor}-before`)
-        currentColor = color.value
     })
     quantity.addEventListener('input', () => {
         const max = currentItem().quantity
@@ -190,7 +195,7 @@ export default function product() {
             Number(quantity.value) * Number(price.value)
         }`
     })
-    size.addEventListener('input', updateStatus)
+    size.addEventListener('input', () => updateStatus())
     image.addEventListener('pointerover', () => handleHoverImage())
     image.addEventListener('pointerleave', () => handleHoverImage())
     image.addEventListener('click', () => handleViewFull())
@@ -199,6 +204,6 @@ export default function product() {
     goToCart.addEventListener('click', () => location.assign('/cart'))
 
     // Register hooks
-    state.addHook(updateStatus)
-    state.addHook(updateCartBtnQty)
+    state.addHook(() => updateStatus())
+    state.addHook(() => updateCartBtnQty())
 }
