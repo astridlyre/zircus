@@ -74,7 +74,7 @@ import { q, state, Element, toggler } from './utils.js'
 
     // Preload images and set default color
     function preloadImages(color) {
-        for (const image of ['a-400.png', 'b-400.png', 'a-1920.png']) {
+        for (const image of ['a-400.png', 'b-400.png', 'a-1920.jpg']) {
             const preload = new Element('link', null, {
                 href: `/assets/img/products/masked/${prefix.value}-${color}-${image}`,
                 rel: 'prefetch',
