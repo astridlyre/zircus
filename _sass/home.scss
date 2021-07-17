@@ -2,32 +2,23 @@
 .home {
   &__heading {
     padding: var(--y-padding) 0;
-    @include res("md") {
-      text-align: center;
-    }
-    font-size: 4rem;
+    text-align: center;
   }
 
   &__products {
     padding: var(--y-padding) 0 !important;
+    margin-left: auto;
+    margin-right: auto;
     display: flex;
-    justify-content: center;
     flex-flow: row wrap;
-    @include res("md") {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: auto;
-      align-items: unset;
-      justify-content: unset;
-      flex-flow: unset;
+    justify-content: center;
+    @include res("lg") {
+      justify-content: space-evenly;
     }
 
     &_product {
-      margin: 0 auto;
-      flex-basis: 16rem;
-      @include res("md") {
-        flex-basis: unset;
-      }
+      flex-basis: 18rem;
+      flex-shrink: 1;
       display: flex;
       justify-content: center;
       font-family: var(--heading-font-family);
