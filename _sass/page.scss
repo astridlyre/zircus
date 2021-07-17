@@ -36,9 +36,9 @@
   &__bottom_image {
     @include flexCol();
     @include res("xl") {
-      max-height: calc(35vh + var(--y-padding));
+      max-height: calc(40vh + var(--y-padding));
     }
-    min-height: calc(35vh + var(--y-padding));
+    min-height: calc(40vh + var(--y-padding));
     flex-grow: 1;
     flex-shrink: 1;
     position: relative;

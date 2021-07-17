@@ -55,14 +55,14 @@ export default function cart() {
         img.src = item.images.sm_a
         img.alt = `${item.name} ${item.size} ${item.color} underwear`
         desc.textContent = `${item.name} (${item.size})`
-        price.textContent = `$${item.price}`
+        price.textContent = `$${item.price * item.quantity}`
         qty.value = item.quantity
         qty.id = item.type
         qty.setAttribute('name', `${item.name} ${item.size} ${item.color}`)
         label.setAttribute('for', item.type)
         qty.addEventListener('input', () => {
             if (!qty.value) qty.value = 1
-            const max = state.inv.find(i => i.id === item.id).quantity
+            const max = state.inv.find(i => i.type === item.type).quantity
             if (Number(qty.value) > max) qty.value = max
             state.cart = cart =>
                 cart.map(i =>

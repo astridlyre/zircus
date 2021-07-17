@@ -6,25 +6,18 @@
     }
     text-align: center;
     width: 100%;
-    font-size: 1.75rem;
     margin-bottom: 2rem;
+    margin-top: auto;
   }
 
   &__measurements {
-    display: flex;
-    flex-flow: column nowrap;
-    align-items: center;
-    justify-content: center;
-    flex-basis: 20rem;
-    flex-grow: 1;
+    flex-basis: 16rem;
 
     &_grid {
       margin-top: var(--y-padding);
       display: flex;
       flex-flow: row wrap;
       gap: var(--two-col-gap);
-      border-radius: var(--big-radius);
-      overflow: hidden;
     }
 
     &_image {
@@ -34,6 +27,7 @@
 
       &_container {
         flex-shrink: 1;
+        max-height: 75vh;
         flex-grow: 1;
         flex-basis: 18rem;
       }
@@ -41,17 +35,17 @@
 
     &_list {
       width: 100%;
-      background-color: var(--gray-20);
-      padding: var(--base-spacing) !important;
-      border-radius: var(--big-radius);
     }
 
     li {
-      padding: 0.5rem 0;
       width: 100%;
-      margin-top: 0.5rem;
       display: flex;
-      border-bottom: 1px solid var(--grey);
+      border-bottom: 2px solid var(--gray-30);
+      padding: var(--input-padding);
+
+      &:hover {
+        background: var(--gray-20);
+      }
 
       span {
         flex-grow: 1;

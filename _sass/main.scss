@@ -64,7 +64,7 @@
   --sm-font-size-mobile: 1.15rem;
 
   // Layout
-  --base-unit: 6px;
+  --base-unit: 0.325rem;
   --base-spacing: calc(var(--base-unit) * 4);
   --md-spacing: calc(var(--base-spacing) * 2);
   --lg-spacing: calc(var(--md-spacing) * 2);
@@ -117,7 +117,7 @@
   @include res("sm") {
     --two-col-gap: 3rem;
   }
-  @include res("sm") {
+  @include res("md") {
     --two-col-gap: 4rem;
   }
   --two-col-gap: 2rem;

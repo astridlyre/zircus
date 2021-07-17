@@ -3,6 +3,13 @@
   &__heading {
     padding: var(--y-padding) 0;
     text-align: center;
+
+    span {
+      &::after {
+        content: ".";
+        color: var(--teal);
+      }
+    }
   }
 
   &__products {
