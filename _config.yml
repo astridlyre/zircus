@@ -1,3 +1,5 @@
+include: [_headers]
+
 collections:
   products:
     output: true
