@@ -1,12 +1,8 @@
 // Set default font-size
 html {
-  @include res("lg") {
-    font-size: 16px;
-  }
   @include res("xl") {
     font-size: 22px;
   }
-
   box-sizing: border-box;
 }
 
@@ -26,7 +22,7 @@ body {
   @include set-site-font-family();
   @include font-smoothing();
   @include flexCol();
-  font-size: var(--base-font-size);
+  font-size: var(--default-font-size);
   line-height: var(--doc-line-height);
   justify-content: flex-start;
   align-items: center;

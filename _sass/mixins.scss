@@ -252,3 +252,13 @@
     color: var(--teal);
   }
 }
+
+@mixin roundedBigTop() {
+  border-top-left-radius: var(--big-radius);
+  border-top-right-radius: var(--big-radius);
+}
+
+@mixin roundedBigBottom() {
+  border-bottom-left-radius: var(--big-radius);
+  border-bottom-right-radius: var(--big-radius);
+}

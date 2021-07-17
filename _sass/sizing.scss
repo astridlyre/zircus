@@ -11,40 +11,24 @@
   }
 
   &__measurements {
-    flex-basis: 16rem;
-
-    &_grid {
-      margin-top: var(--y-padding);
-      display: flex;
-      flex-flow: row wrap;
-      gap: var(--two-col-gap);
-    }
-
-    &_image {
-      object-fit: cover;
-      height: 100%;
-      width: 100%;
-
-      &_container {
-        flex-shrink: 1;
-        max-height: 75vh;
-        flex-grow: 1;
-        flex-basis: 18rem;
-      }
-    }
+    margin-top: var(--y-padding);
+    background-color: var(--gray-20);
+    padding: var(--base-spacing) !important;
+    @include roundedBigTop();
+    @include roundedBigBottom();
+    max-width: 36rem;
 
     &_list {
       width: 100%;
     }
 
     li {
-      width: 100%;
       display: flex;
       border-bottom: 2px solid var(--gray-30);
       padding: var(--input-padding);
 
       &:hover {
-        background: var(--gray-20);
+        background: var(--gray-30);
       }
 
       span {

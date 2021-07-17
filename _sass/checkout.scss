@@ -81,6 +81,7 @@
   &__address {
     flex-shrink: 1;
     flex-grow: 1;
+    flex-basis: 18rem;
     @media screen and (max-width: 445px) {
       background: none;
       padding: 0;
@@ -89,7 +90,7 @@
     border-radius: var(--big-radius);
     color: var(--dark);
     @include res('sm') {
-      padding: 2rem;
+      padding: var(--md-spacing);
     }
     padding: 1rem;
     display: flex;

@@ -1,40 +1,53 @@
 .page {
   @include flexCol();
+  @include roundedBigTop();
   overflow-x: hidden;
   margin-top: var(--nav-height);
   padding-top: var(--y-padding);
-  border-top-left-radius: var(--big-radius);
-  border-top-right-radius: var(--big-radius);
   background: var(--light);
   color: var(--dark);
   width: 100%;
   justify-content: flex-start;
   align-items: center;
   flex-grow: 1;
+  position: relative;
+  z-index: 0;
+
+  &__image {
+    display: none;
+    @include res('md') {
+      display: block;
+    }
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: calc(100% - (var(--y-padding) / 2));
+    object-fit: cover;
+    width: 60vw;
+    opacity: 0.125;
+    border-bottom-left-radius: var(--big-radius);
+    z-index: -1;
+  }
 
   &__heading {
     width: 100%;
-    margin-bottom: var(--content-block-margin);
-    @include res("sm") {
-      text-align: left;
-    }
-    text-align: center;
-    box-sizing: border-box;
+    margin-bottom: var(--md-spacing);
+    font-family: var(--accent-font-family);
+    letter-spacing: unset;
   }
 
   &__subheading {
-    text-align: center;
     @include res("sm") {
-      text-align: left;
       font-size: var(--medium-font-size);
     }
-    margin-top: -0.5rem;
-    letter-spacing: 0.1rem;
+    margin-top: -1rem;
+    @include headings-common-base();
     @include dot();
   }
 
   &__bottom_image {
     @include flexCol();
+    @include roundedBigBottom();
     @include res("xl") {
       max-height: calc(40vh + var(--y-padding));
     }
@@ -44,30 +57,25 @@
     position: relative;
     width: 100%;
     background: var(--light);
-    border-bottom-left-radius: var(--big-radius);
-    border-bottom-right-radius: var(--big-radius);
-    overflow: hidden;
 
     .rounded {
+      @include roundedBigBottom();
       top: 0;
       left: 0;
       width: 100%;
       height: var(--y-padding);
-      border-bottom-left-radius: var(--big-radius);
-      border-bottom-right-radius: var(--big-radius);
       background: var(--light);
       position: absolute;
     }
 
     img {
+      @include roundedBigBottom();
       flex-grow: 1;
       width: 100%;
       object-fit: cover;
       vertical-align: middle;
       max-height: 50vh;
       margin-bottom: var(--y-padding);
-      border-bottom-left-radius: var(--big-radius);
-      border-bottom-right-radius: var(--big-radius);
     }
   }
 }
