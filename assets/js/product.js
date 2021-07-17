@@ -9,7 +9,7 @@ import { q, state, Element, toggler } from './utils.js'
   view is 'a' (front) or 'b' (folded)
   and size is the image size 400, 600 or 1000
 */
-;(function () {
+export default function product() {
     const prefix = q('product-prefix')
     if (!prefix) return // Don't do anything unless on product page
     const price = q('product-price')
@@ -201,4 +201,4 @@ import { q, state, Element, toggler } from './utils.js'
     // Register hooks
     state.addHook(updateStatus)
     state.addHook(updateCartBtnQty)
-})()
+}

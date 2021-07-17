@@ -6,7 +6,7 @@ const stripe = Stripe(
 const CANADA_POSTAL_CODE = /^[A-Za-z][0-9][A-Za-z] ?[0-9][A-Za-z][0-9]$/
 const US_ZIP_CODE = /^[0-9]{5}(-[0-9]{4})?$/
 
-;(() => {
+export default function payment() {
     const placeOrder = q('place-order')
     if (!placeOrder) return // if not on checkout page don't do anything
     if (state.cart.length === 0) location.assign('/')
@@ -266,4 +266,4 @@ const US_ZIP_CODE = /^[0-9]{5}(-[0-9]{4})?$/
     zip.addEventListener('input', e => {
         e.target.value = normalizeZip(e.target.value, countryEl.value)
     })
-})()
+}

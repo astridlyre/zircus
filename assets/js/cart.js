@@ -5,7 +5,7 @@ import { q, state } from './utils.js'
     Uses the 'state' object to store state in localStorage
     and updates the 'cart' nav-link upon changes.
 */
-;(function () {
+export default function cart() {
     const checkoutBtn = q('cart-checkout')
     if (!checkoutBtn) return // Don't do anything unless on cart page
     const cartSubTotal = q('cart-subtotal')
@@ -97,4 +97,4 @@ import { q, state } from './utils.js'
     checkoutBtn.addEventListener('click', () => {
         if (state.cart.length > 0) location.assign('/checkout')
     })
-})()
+}

@@ -2,3 +2,4 @@ vendor
 .bundle
 .jekyll-cache
 _site
+node_modules

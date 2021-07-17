@@ -1,6 +1,8 @@
 import { q, Element } from './utils.js'
-;(function heroImage(image) {
+
+export default function hero() {
     // If no hero image, don't do anything
+    const image = q('hero-image')
     if (!image) return
 
     // 6 images
@@ -37,4 +39,4 @@ import { q, Element } from './utils.js'
     setInterval(() => {
         setImage(counter.next().value)
     }, 5000)
-})(q('hero-image'))
+}

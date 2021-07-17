@@ -1,0 +1,25 @@
+{
+  "name": "zircus",
+  "version": "1.0.0",
+  "description": "Zircus website",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "webpack --watch",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/astridlyre/zircus.git"
+  },
+  "author": "Erin Burton",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/astridlyre/zircus/issues"
+  },
+  "homepage": "https://github.com/astridlyre/zircus#readme",
+  "devDependencies": {
+    "webpack-cli": "^4.7.2",
+    "webpack": "^5.45.1"
+  }
+}
