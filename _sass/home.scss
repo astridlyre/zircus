@@ -5,6 +5,7 @@
     padding: var(--base-spacing) 0;
     text-align: center;
     font-family: var(--accent-font-family);
+    font-style: normal;
     word-break: break-word;
     @include res('md') {
       font-size: calc(var(--xxl-font-size) * 1.25);

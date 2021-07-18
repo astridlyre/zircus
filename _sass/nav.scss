@@ -10,6 +10,7 @@
   &.slide-up {
     transform: translateY(-100%);
     transition: all 0.125s ease-out;
+    opacity: 0;
   }
 
   &__nav {
@@ -72,9 +73,9 @@
     }
 
     &_item {
-      font-size: var(--md-font-size);
+      font-size: var(--lg-font-size);
       @include res('sm') {
-        font-size: var(--lg-font-size);
+        font-size: var(--xl-font-size);
       }
       display: flex;
       justify-content: flex-end;

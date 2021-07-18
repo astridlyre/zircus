@@ -36,6 +36,7 @@
     margin-bottom: var(--md-spacing);
     font-family: var(--accent-font-family);
     line-height: 0.95;
+    font-style: normal;
     @include res("md") {
       font-size: calc(var(--xxl-font-size) * 1.25);
       word-break: unset;
