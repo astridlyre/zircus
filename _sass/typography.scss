@@ -53,11 +53,15 @@ h5 {
 
 p {
   margin-bottom: var(--content-block-margin);
-  max-width: 85ch;
+  @include readable-line-length();
 }
 
-li {
-  max-width: 80ch;
+ul, ol {
+  @include readable-line-length();
+}
+
+ul[class], ol[class] {
+  max-width: unset;
 }
 
 .smaller-text {

@@ -14,9 +14,9 @@ layout: default
       <img
         src="{{ page.image }}"
         alt="{{ page.image_alt }}"
-        class="product__img"
+        class="product__full__img"
         id="product-image-full-image"
-        title="{{ page.name }}"
+        title="Click to close"
       />
     </div>
     <img
@@ -28,13 +28,13 @@ layout: default
     />
     <div id="product-accent" class="product__details">
       <div class="product__details_container">
-        <h2 class="product__price">
-          <p id="product-stock" class="product__inputs_stock out-stock">
-            None available
-          </p>
-          <span id="product-price-text"></span>
-        </h2>
         <form class="product__form">
+          <h2 class="product__price">
+            <span id="product-price-text"></span>
+            <p id="product-stock" class="product__inputs_stock out-stock">
+              None available
+            </p>
+          </h2>
           <div class="product__inputs">
             <span></span>
             <input type="hidden" id="product-prefix" value="{{ page.type }}" />

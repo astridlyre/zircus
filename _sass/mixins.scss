@@ -100,12 +100,11 @@
 
 @mixin set-site-font-family() {
   font-family: var(--site-font-family);
-  letter-spacing: -0.0027777778rem;
 }
 
 @mixin headings-common-base() {
   @include set-heading-font-family();
-  letter-spacing: 0.1rem;
+  letter-spacing: var(--letter-spacing);
   font-weight: 500;
   line-height: var(--heading-line-height);
 }
@@ -187,7 +186,7 @@
  */
 @mixin readable-line-length() {
   max-width: var(--max-line-length-fallback);
-  max-width: 85ch;
+  max-width: 75ch;
 }
 
 /* 

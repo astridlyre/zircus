@@ -7,6 +7,11 @@
   width: 100vw;
   z-index: 10;
 
+  &.slide-up {
+    transform: translateY(-100%);
+    transition: all 0.125s ease-out;
+  }
+
   &__nav {
     display: flex;
     height: var(--nav-height);

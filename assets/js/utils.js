@@ -184,7 +184,6 @@ setInterval(getInventory, 300_000) // Check every 5 minutes
         'For your national treasure',
         'A luxury condo for your privates',
         'If you are here, you may be gay',
-        'Protect and serve your genitals',
         'Contain your thunder in style',
         'A stylish shape for your bits',
         "One person's junk is another's treasure",

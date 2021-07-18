@@ -58,9 +58,11 @@ export default function product() {
         if (showFull) {
             bigImage.src = currentItem().images['lg_a']
             bigImageEl.style.display = 'flex'
+            q('nav').classList.add('slide-up')
             document.body.classList.add('hide-y')
         } else {
             bigImageEl.style.display = 'none'
+            q('nav').classList.remove('slide-up')
             document.body.classList.remove('hide-y')
         }
     })

@@ -1,9 +1,17 @@
 // Home page styling
 .home {
   &__heading {
-    padding: var(--y-padding) 0;
+    margin: auto;
+    padding: var(--base-spacing) 0;
     text-align: center;
-    font-weight: 600;
+    font-family: var(--accent-font-family);
+    word-break: break-word;
+    @include res('md') {
+      font-size: calc(var(--xxl-font-size) * 1.25);
+      max-width: 50vw;
+    }
+    font-size: calc(var(--xxl-font-size-mobile) * 1.25);
+    letter-spacing: -0.25rem;
   }
 
   &__products {

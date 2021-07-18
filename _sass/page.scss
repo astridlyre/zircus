@@ -15,7 +15,7 @@
 
   &__image {
     display: none;
-    @include res('md') {
+    @include res("md") {
       display: block;
     }
     position: absolute;
@@ -24,16 +24,25 @@
     height: calc(100% - (var(--y-padding) / 2));
     object-fit: cover;
     width: 60vw;
-    opacity: 0.125;
+    opacity: 0.1;
     border-bottom-left-radius: var(--big-radius);
     z-index: -1;
   }
 
   &__heading {
-    width: 100%;
     margin-bottom: var(--md-spacing);
     font-family: var(--accent-font-family);
-    letter-spacing: unset;
+    letter-spacing: -0.25rem;
+    line-height: 1;
+    @include res("md") {
+      font-size: calc(var(--xxl-font-size) * 1.25);
+      word-break: unset;
+      max-width: 50vw;
+    }
+    font-size: calc(var(--xxl-font-size-mobile) * 1.125);
+    @media screen and (max-width: 420px) {
+      word-break: break-word;
+    }
   }
 
   &__subheading {
