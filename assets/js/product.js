@@ -49,23 +49,29 @@ export default function product() {
     }
 
     // Image hover handler
-    const handleHoverImage = toggler(false, hovered =>
-        hovered ? setImage('sm_b') : setImage('sm_a')
+    const handleHoverImage = toggler(
+        false,
+        x => !x,
+        hovered => (hovered ? setImage('sm_b') : setImage('sm_a'))
     )
 
     // Full image view handler
-    const handleViewFull = toggler(false, showFull => {
-        if (showFull) {
-            bigImage.src = currentItem().images['lg_a']
-            bigImageEl.style.display = 'flex'
-            q('nav').classList.add('slide-up')
-            document.body.classList.add('hide-y')
-        } else {
-            bigImageEl.style.display = 'none'
-            q('nav').classList.remove('slide-up')
-            document.body.classList.remove('hide-y')
+    const handleViewFull = toggler(
+        false,
+        x => !x,
+        showFull => {
+            if (showFull) {
+                bigImage.src = currentItem().images['lg_a']
+                bigImageEl.style.display = 'flex'
+                q('nav').classList.add('slide-up')
+                document.body.classList.add('hide-y')
+            } else {
+                bigImageEl.style.display = 'none'
+                q('nav').classList.remove('slide-up')
+                document.body.classList.remove('hide-y')
+            }
         }
-    })
+    )
 
     // Set price of product
     function updatePrice() {

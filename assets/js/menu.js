@@ -1,4 +1,4 @@
-import { q, state } from './utils.js'
+import { q, state, toggler } from './utils.js'
 
 /*
  *   Menu for Zircus
@@ -10,6 +10,7 @@ import { q, state } from './utils.js'
  *   Mobile 'cart' nav link to the number of cart items.
  */
 export default function menu() {
+    const nav = q('nav')
     const navLink = q('cart-link')
     const navLinkMobile = q('cart-link-mobile')
     const menu = q('menu-mobile-list')
@@ -23,6 +24,46 @@ export default function menu() {
                 : menu.classList.remove('hide')
         }
     })(true)
+
+    function* scrollState() {
+        let prevPos = 0
+        let currentPos = 0
+        while (true) {
+            ;[prevPos, currentPos] = [currentPos, window.scrollY]
+            yield prevPos - currentPos
+        }
+    }
+
+    const setMenuShown = (() => {
+        const scrollingUp = scrollState()
+        let menuThrottled = false
+        let menuHidden = false
+        return toggler(
+            true,
+            () =>
+                window.scrollY < 100 || scrollingUp.next().value >= 0
+                    ? true
+                    : false,
+            isScrollingUp => {
+                if (!menuThrottled) {
+                    setTimeout(() => {
+                        if (isScrollingUp && menuHidden) {
+                            nav.classList.add('slide-down')
+                            nav.classList.remove('slide-up')
+                            menuHidden = false
+                        } else if (!isScrollingUp && !menuHidden) {
+                            nav.classList.remove('slide-down')
+                            nav.classList.add('slide-up')
+                            menuHidden = true
+                        }
+                        menuThrottled = false
+                    }, 100)
+                } else {
+                    menuThrottled = true
+                }
+            }
+        )
+    })()
 
     function updateNavLink() {
         if (state.cart.length > 0) {
@@ -46,4 +87,5 @@ export default function menu() {
 
     // register update function with state hooks
     state.addHook(() => updateNavLink())
+    document.addEventListener('scroll', () => setMenuShown())
 }

@@ -9,8 +9,12 @@
 
   &.slide-up {
     transform: translateY(-100%);
-    transition: all 0.125s ease-out;
-    opacity: 0;
+    transition: all 0.2s ease-in;
+  }
+
+  &.slide-down {
+    transform: translateY(0);
+    transition: all 0.1s ease-out;
   }
 
   &__nav {
@@ -22,7 +26,7 @@
 
   &__button {
     position: fixed;
-    background: none;
+    background: var(--dark);
     border: 2px solid transparent;
     border-radius: var(--radius);
     outline: none;
