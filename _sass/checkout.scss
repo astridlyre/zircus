@@ -30,9 +30,9 @@
 
       span {
         @include res("sm") {
-          padding: 0.325rem var(--btn-padding);
+          padding: 0.45rem var(--btn-padding);
         }
-        padding: 0.325rem 0.5rem;
+        padding: 0.45rem 0.75rem;
         background: var(--teal);
         border-top-left-radius: var(--radius);
         border-bottom-left-radius: var(--radius);

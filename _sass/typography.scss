@@ -90,6 +90,15 @@ a:visited {
   &:focus,
   &:active {
     text-decoration: underline;
+    color: var(--link-hover);
+  }
+
+  &:visited {
+    color: var(--link-visited);
+
+    &:hover {
+      color: var(--link-visited-hover);
+    }
   }
 }
 

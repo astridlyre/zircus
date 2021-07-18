@@ -1,11 +1,9 @@
 .product {
-  display: flex;
-  flex-flow: row wrap;
-  @include res('md') {
-    justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr;
+  @include res("md") {
+    grid-template-columns: 1fr 1fr;
   }
-  justify-content: flex-end;
-  align-items: flex-start;
   gap: var(--two-col-gap);
   padding-bottom: 8rem;
   width: 100%;
@@ -19,7 +17,7 @@
   }
 
   &__price {
-    @include res('md') {
+    @include res("md") {
       font-size: var(--xl-font-size);
     }
     font-size: var(--xl-font-size-mobile);
@@ -32,25 +30,18 @@
   &__img {
     object-fit: contain;
     cursor: pointer;
-    flex-basis: 18rem;
-    flex-shrink: 1;
-    flex-grow: 1;
+    margin-left: auto;
     @include res('md') {
-      max-width: 18rem;
+      margin-left: 0;
     }
     @include res('lg') {
-      max-width: 33vw;
-    }
-    @include res('xl') {
+      width: 30vw;
     }
   }
 
   &__details {
     margin-left: auto;
-    flex-basis: 32rem;
-    flex-shrink: 1;
-    flex-grow: 1;
-    @include res('lg') {
+    @include res("md") {
       max-width: 32rem;
     }
     width: 100%;
@@ -64,12 +55,12 @@
       @include res("sm") {
         content: "";
       }
-      @include res('md') {
-        top: -6rem;
+      @include res("md") {
+        top: -8rem;
+        right: -12rem;
+        left: unset;
       }
       @include res("lg") {
-        top: -8rem;
-        right: -8rem;
         width: 40rem;
         height: 40rem;
       }
@@ -80,7 +71,7 @@
         height: 45rem;
       }
       top: 2rem;
-      right: -12rem;
+      left: -12rem;
       width: 35rem;
       height: 35rem;
       border-radius: 100%;
@@ -121,6 +112,12 @@
 
       span {
         height: 1.5rem;
+        font-size: var(--small-font-size);
+        letter-spacing: var(--letter-spacing);
+      }
+
+      &:hover span {
+        color: var(--teal);
       }
     }
 
@@ -135,7 +132,7 @@
     }
 
     &_stock.out-stock {
-      color: var(--grey);
+      color: var(--gray-80);
 
       &::after {
         content: "";

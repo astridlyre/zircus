@@ -16,7 +16,7 @@
     padding: var(--base-spacing) !important;
     @include roundedBigTop();
     @include roundedBigBottom();
-    max-width: 36rem;
+    max-width: 75ch;
 
     &_list {
       width: 100%;
