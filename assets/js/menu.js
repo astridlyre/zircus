@@ -15,6 +15,8 @@ export default function menu() {
     const navLinkMobile = q('cart-link-mobile')
     const menu = q('menu-mobile-list')
     const btn = q('menu-mobile-btn')
+
+    // Mobile menu functionality
     const menuFunc = (initial => {
         let hidden = initial
         return () => {
@@ -25,15 +27,19 @@ export default function menu() {
         }
     })(true)
 
+    // Returns a positive number for scrolling down and a negative for scrolling
+    // up the document.
     function* scrollState() {
         let prevPos = 0
         let currentPos = 0
         while (true) {
             ;[prevPos, currentPos] = [currentPos, window.scrollY]
-            yield prevPos - currentPos
+            yield currentPos - prevPos
         }
     }
 
+    // Manages the scroll state of the nav menu and throttles scroll events to
+    // not pelt the DOM with class adds and removes.
     const setMenuShown = (() => {
         const scrollingUp = scrollState()
         let menuThrottled = false
@@ -41,7 +47,7 @@ export default function menu() {
         return toggler(
             true,
             () =>
-                window.scrollY < 100 || scrollingUp.next().value >= 0
+                window.scrollY < 100 || scrollingUp.next().value <= 0
                     ? true
                     : false,
             isScrollingUp => {
