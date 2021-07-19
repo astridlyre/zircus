@@ -42,7 +42,7 @@
   &__details {
     margin-left: auto;
     @include res("md") {
-      max-width: 32rem;
+      max-width: 36rem;
     }
     width: 100%;
     display: flex;
@@ -149,7 +149,7 @@
       button {
         flex-grow: 1;
         flex-shrink: 1;
-        flex-basis: 10rem;
+        flex-basis: 14rem;
       }
     }
   }

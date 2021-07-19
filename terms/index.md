@@ -1,4 +1,5 @@
 ---
+lang: en
 layout: generic
 title: terms · zircus
 bottom_image: /assets/img/products/1920/group-d-1920.jpg
@@ -154,8 +155,7 @@ according to the rules of the delivery company.
 
 If the contents of an order that you received does not match the items that you
 ordered, or if your order is incomplete, please contact our customer service
-team within 48 hours of receipt by email at:
-[support@zircus.com"](mailto:support@zircus.com).
+team within 48 hours of receipt by email at: [support@zircus.com](mailto:support@zircus.com).
 
 ## responsibility
 

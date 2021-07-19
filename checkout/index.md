@@ -1,4 +1,5 @@
 ---
+lang: en
 layout: checkout
 title: checkout · zircus
 bottom_image: /assets/img/products/1920/closeup-d-1920.jpg
@@ -14,5 +15,10 @@ label_form_zip: Zip
 label_subtotal: Subtotal
 label_estimated_tax: Estimated Tax
 label_total: Total
-pay_with_card: pay with card
+label_pay_with_card: pay with card
+label_card_details: Enter card details
+label_pay_now: pay now
+label_cancel: cancel
+label_failure_message: Payment failed
+label_success_message: Payment successful. Check your email!
 ---

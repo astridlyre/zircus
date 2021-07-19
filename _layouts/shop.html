@@ -6,7 +6,8 @@ layout: default
   <h1 class="page__heading">{{ page.heading }}</h1>
   <p class="page__subheading">{{ page.subheading }}</p>
   <ul class="home__products">
-    {% for product in site.products %}
+    {% assign products=site.products | where:"lang", page.lang %} {% for product
+    in products %}
     <li class="home__products_product">
       <a
         class="home__products_product_link"

@@ -183,11 +183,15 @@ const getInventory = async () => {
 getInventory() // Get initial inventory
 setInterval(getInventory, 300_000) // Check every 5 minutes
 
+export function lang() {
+    return document.documentElement.getAttribute('lang')
+}
+
 // Randomly pick a heading for the homepage, maybe get these from API at some
 // point?
 ;(heading => {
     if (!heading) return
-    const tagLines = [
+    const tagLinesEn = [
         'For your thunder down under',
         'Guard the crown jewels',
         'For your national treasure',
@@ -197,7 +201,21 @@ setInterval(getInventory, 300_000) // Check every 5 minutes
         'A stylish shape for your bits',
         "One person's junk is another's treasure",
     ]
-    heading.innerText = tagLines[Math.floor(Math.random() * tagLines.length)]
+    const tagLinesFr = [
+        'Pour votre tonnerre vers le bas sous',
+        'Garde les bijoux de la couronne',
+        'Pour votre tresor national',
+        'Un condo de luxe pour vos petit soldats',
+        "si vous l'etes, vous pourriez etre gai",
+        'Contenir votre tonnerre dans le style',
+        'Une forme elegante pour vos meches',
+        "La camelote d'une personne est le tresor d'une autre",
+    ]
+    const getRandomTagLine = lang =>
+        lang === 'en'
+            ? tagLinesEn[Math.floor(Math.random() * tagLinesEn.length)]
+            : tagLinesFr[Math.floor(Math.random() * tagLinesFr.length)]
+    heading.innerText = getRandomTagLine(lang())
 })(q('home-heading'))
 
 // This was an API call, but with just two countries it seems unnecessary, so

@@ -1,7 +1,5 @@
 ---
 layout: default
-title: zircus
-bottom_image: /assets/img/products/1920/closeup-a-1920.jpg
 ---
 
 <div class="container">
@@ -11,7 +9,8 @@ bottom_image: /assets/img/products/1920/closeup-a-1920.jpg
     </h1>
   </div>
   <ul class="home__products">
-    {% for product in site.products %}
+    {% assign products=site.products | where:"lang", page.lang %} {% for product
+    in products %}
     <li class="home__products_product">
       <a
         class="home__products_product_link"
@@ -34,21 +33,15 @@ bottom_image: /assets/img/products/1920/closeup-a-1920.jpg
   <img
     id="hero-image"
     class="section__hero_image"
-    alt="Colourful photos of Zircus underwear, worn by several different models of varying gender and presentation."
-    title="Zircus models showing off their colourful underwear."
+    alt="{{ page.hero_alt }}"
+    title="{{ page.hero_title }}"
   />
   <div class="bg-light rounded-big-top absolute b-0 l-0"></div>
 </section>
 <section class="section__text">
   <div class="section__text__circle"></div>
   <div class="container">
-    <h2>queer owned & sewn</h2>
-    <p class="dot">
-      Zircus Apparel is Queer owned and sewn with material that has the Oeko-Tex
-      certification. I hand make each pair in my home shop on Vancouver Island.
-      In this shop you won't see Women's or Men's used as descriptions but
-      instead each style of underwear is available in a flat front, pouch front,
-      or compression front.
-    </p>
+    <h2>{{ page.heading }}</h2>
+    {{ content }}
   </div>
 </section>

@@ -65,6 +65,11 @@
     }
   }
 
+  &__social_lang {
+    display: flex;
+    gap: var(--base-spacing);
+  }
+
   &__social {
     display: flex;
     font-size: 0.9rem;

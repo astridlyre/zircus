@@ -1,4 +1,5 @@
 ---
+lang: en
 title: compression front · zircus
 name: compression front
 type: cf

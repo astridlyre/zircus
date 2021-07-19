@@ -17,11 +17,50 @@
     transition: all 0.1s ease-out;
   }
 
+  &__lang {
+    &_links {
+      padding-left: var(--base-spacing) !important;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    &_link {
+      padding: 1rem;
+      font-size: var(--lg-font-size);
+      margin: 1rem 0;
+      @include res('sm') {
+        font-size: var(--xl-font-size);
+      }
+      @include res('md') {
+        padding: 0;
+        font-size: var(--small-font-size);
+      }
+      & a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 var(--base-unit);
+        letter-spacing: var(--letter-spacing);
+        height: var(--btn-height);
+        color: var(--gray-90) !important;
+        font-weight: 600;
+        @include borderHover();
+
+        &.lang-active {
+          color: var(--light) !important;
+        }
+
+        &:visited,
+        &:visisted:hover {
+          color: var(--gray-50);
+        }
+      }
+    }
+  }
+
   &__nav {
     display: flex;
-    @include res('md') {
-      width: calc(100% - var(--md-spacing));
-    }
     margin: 0 auto;
     height: var(--nav-height);
     align-items: center;
@@ -61,6 +100,13 @@
     display: flex;
     z-index: 100;
 
+    &_lang {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      padding: 0 2rem;
+    }
+
     &_items {
       transform: translateX(0);
       transition: transform 0.1s ease-out;
@@ -82,7 +128,7 @@
 
     &_item {
       font-size: var(--lg-font-size);
-      @include res('sm') {
+      @include res("sm") {
         font-size: var(--xl-font-size);
       }
       display: flex;
@@ -111,7 +157,8 @@
           color: var(--light);
         }
 
-        &:visited, &:visited:hover {
+        &:visited,
+        &:visited:hover {
           color: var(--light);
         }
       }
@@ -129,15 +176,11 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      gap: var(--base-spacing);
     }
 
     &_link {
-      margin-right: -1.8rem;
-      margin-left: 2.2rem;
-      @include res("lg") {
-        margin-left: 3rem;
-      }
-      padding: 0 var(--btn-padding);
+      padding: 0 var(--base-spacing);
       height: var(--btn-height);
       display: flex;
       justify-content: center;
@@ -149,7 +192,9 @@
       font-weight: 600;
       @include borderHover();
 
-      &:hover, &:visited, &:visited:hover {
+      &:hover,
+      &:visited,
+      &:visited:hover {
         color: var(--light);
       }
     }
@@ -171,7 +216,9 @@
       position: relative;
       @include borderHover();
 
-      &:hover, &:visited, &:visited:hover {
+      &:hover,
+      &:visited,
+      &:visited:hover {
         color: var(--light);
       }
 

@@ -1,9 +1,20 @@
-- name: faq
-  link: /faq
-  label: View Frequently Asked Questions
-- name: sizing
-  link: /sizing
-  label: View underwear sizing information
-- name: terms & conditions
-  link: /terms
-  label: View site terms and conditions
+en:
+  - name: faq
+    link: /faq
+    label: View Frequently Asked Questions
+  - name: sizing
+    link: /sizing
+    label: View underwear sizing information
+  - name: terms & conditions
+    link: /terms
+    label: View site terms and conditions
+fr:
+  - name: faq
+    link: /fr/faq
+    label: Consulter la foire aux questions
+  - name: dimensionnement
+    link: /fr/dimensionnement
+    label: Voir les informations sur le dimensionnement des sous-vêtements
+  - name: conditions générales
+    link: /fr/conditions
+    label: Consulter les modalités du site

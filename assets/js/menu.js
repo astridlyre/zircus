@@ -1,4 +1,4 @@
-import { q, state, toggler } from './utils.js'
+import { q, state, toggler, lang } from './utils.js'
 
 /*
  *   Menu for Zircus
@@ -15,15 +15,25 @@ export default function menu() {
     const navLinkMobile = q('cart-link-mobile')
     const menu = q('menu-mobile-list')
     const btn = q('menu-mobile-btn')
+    const cartText = {
+        en: 'cart',
+        fr: 'panier',
+    }
 
     // Mobile menu functionality
     const menuFunc = (initial => {
         let hidden = initial
+        const show = () => {
+            menu.classList.add('hide')
+            document.body.classList.remove('hide-y')
+        }
+        const hide = () => {
+            menu.classList.remove('hide')
+            document.body.classList.add('hide-y')
+        }
         return () => {
             hidden = !hidden
-            return hidden
-                ? menu.classList.add('hide')
-                : menu.classList.remove('hide')
+            return hidden ? show() : hide()
         }
     })(true)
 
@@ -77,11 +87,11 @@ export default function menu() {
                 (acc, item) => acc + item.quantity,
                 0
             )
-            navLink.textContent = `cart (${totalItems})`
-            navLinkMobile.textContent = `cart (${totalItems})`
+            navLink.textContent = `${cartText[lang()]} (${totalItems})`
+            navLinkMobile.textContent = `${cartText[lang()]} (${totalItems})`
         } else {
-            navLink.textContent = 'cart'
-            navLinkMobile.textContent = 'cart'
+            navLink.textContent = cartText[lang()]
+            navLinkMobile.textContent = cartText[lang()]
         }
     }
 

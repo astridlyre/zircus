@@ -1,9 +1,21 @@
-- name: shop
-  link: /shop
-  id: shop-link
-- name: about
-  link: /about
-  id: about-link
-- name: cart
-  link: /cart
-  id: cart-link
+---
+en:
+  - name: shop
+    link: /shop
+    id: shop-link
+  - name: about
+    link: /about
+    id: about-link
+  - name: cart
+    link: /cart
+    id: cart-link
+fr:
+  - name: boutique
+    link: /fr/boutique
+    id: shop-link
+  - name: à propos
+    link: /fr/a-propos
+    id: about-link
+  - name: panier
+    link: /fr/panier
+    id: cart-link

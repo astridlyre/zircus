@@ -1,4 +1,4 @@
-import { q, state } from './utils.js'
+import { q, state, lang } from './utils.js'
 
 /*
     Cart performs the functions manage the shopping cart.
@@ -104,6 +104,9 @@ export default function cart() {
 
     // Add event listeners
     checkoutBtn.addEventListener('click', () => {
-        if (state.cart.length > 0) location.assign('/checkout')
+        if (state.cart.length > 0) {
+            if (lang() === 'fr') return location.assign('/fr/la-caisse')
+            return location.assign('/checkout')
+        }
     })
 }

@@ -4,14 +4,14 @@
       <h2 class="nav__heading">
         <a
           class="nav__heading_link"
-          href="{{ site.home_link_path }}"
-          aria-label="{{ site.home_link }}"
-          >ZIRCUS</a
+          href="{{ site.lang[page.lang]home_link_path }}"
+          aria-label="{{ site.lang[page.lang]home_link }}"
+          >{{ site.name }}</a
         >
       </h2>
       <div class="nav__desktop">
         <ul class="nav__desktop_items">
-          {% for item in site.data.nav %}
+          {% for item in site.data.nav[page.lang] %}
           <li class="nav__desktop_item">
             <a
               class="nav__desktop_link"
@@ -22,13 +22,24 @@
           </li>
           {% endfor %}
         </ul>
+        <ul class="nav__lang_links">
+          {% for lang in site.lang %}
+          <li class="nav__lang_link">
+            <a
+              href="{{ lang[1].home_link_path }}"
+              class="{% if page.lang == lang[1].name %} lang-active {% endif %}"
+              >{{ lang[1].name }}</a
+            >
+          </li>
+          {% endfor %}
+        </ul>
       </div>
     </header>
   </div>
 </nav>
 <div class="nav__mobile">
   <ul class="nav__mobile_items hide" id="menu-mobile-list">
-    {% for item in site.data.nav %}
+    {% for item in site.data.nav[page.lang] %}
     <li class="nav__mobile_item">
       <a
         href="{{ item.link }}"
@@ -38,6 +49,19 @@
       >
     </li>
     {% endfor %}
+    <li class="nav__mobile_lang">
+      <ul class="nav__lang_links">
+        {% for lang in site.lang %}
+        <li class="nav__lang_link">
+          <a
+            href="{{ lang[1].home_link_path }}"
+            class="{% if page.lang == lang[1].name %} lang-active {% endif %}"
+            >{{ lang[1].name }}</a
+          >
+        </li>
+        {% endfor %}
+      </ul>
+    </li>
   </ul>
   <button id="menu-mobile-btn" class="nav__button" type="button">
     <svg

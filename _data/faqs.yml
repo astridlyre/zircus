@@ -1,43 +1,80 @@
 ---
-- summary: 'What are your payment methods?'
-  content: 'Visa, Visa Debit, Mastercard, American Express (Canada Only), Shop Pay,
-    PayPal, Afterpay, Google Pay, and Apple Pay.'
-- summary: 'Do you ship internationally?'
-  content: 'Zircus ships to Canada and the United States. We hope to expand to
-    international shipping soon!'
-- summary: 'What is the processing time of each order?'
-  content: 'All orders placed Monday through Friday will begin processing the following
-    business day. Please note that orders placed on Friday will begin processing
-    on the following Monday. Zircus will ship within 2-4 business days after
-    processing has begun. Please expect 2-7 business days for shipping to arrive
-    within Canada and 3-6 business days for shipping to the US. Delivery times
-    do not include Saturday, Sunday or Holidays.'
-- summary: 'What is your return policy?'
-  content: 'Unfortunately, due to our minimal packaging we cannot accept returns since
-    there is no way to ensure the underwear has not been worn.'
-- summary: 'I just placed an order online but have not received an email confirmation yet, has by order been received?'
-  content: 'All orders placed Monday through Friday will begin processing the following day. You should receive an email confirming your order within 10-15 minutes of
-    placing an order online. In the unlikely case you have not received
-    a confirmation please email <a href="mailto:support@zircus.com">support@zircus.com</a>.'
-- summary: 'Can I change or cancel my order once placed?'
-  content: 'As we aim to ship your order as quickly as possible, we regret that it is
-    usually not possible for us to handle change or cancel requests once an
-    order has been submitted. Please ensure that you have verified your order
-    details prior to submission, especially the billing and shipping address.
-    Zircus can be contacted during business hours but if we are unable to
-    facilitate an order change or cancellation request, you may process a return
-    under our Comfort Guarantee policy.'
-- summary: 'How do I know when my order has shipped?'
-  content: 'An email will be sent to you once your order has shipped and will include
-    your tracking number. Please note, the package may not be trackable until
-    the shipment has been picked up and scanned by the carrier.'
-- summary: 'I mistakenly ordered the wrong item, what should I do?'
-  content: 'Please contact us at email
-    <a href="mailto:support@zircus.com">support@zircus.com</a> as soon as
-    possible.'
-- summary: 'How do I wash my Zircus underwear?'
-  content: 'Most garments can be machine washed with cold water and tumble dried with
-    low heat on a gentle cycle. Note: only iron (low heat), bleach (using
-    non-chlorine bleach), or dry clean when needed. These are general washing
-    instructions and individual product pages/labels/packaging should be
-    referenced for each style as washing instructions may vary slightly.'
+en:
+  - summary: 'What are your shipping rates?'
+    content: '<ul>
+        <li>Standard - $4.99 USD (5-7 business days)</li>
+        <li>Express - $24.99 USD (2-3 business days)</li>
+        <li>Next Day - $35.00 USD (1-2 business days)</li>
+      </ul>
+      <p>Orders over over $150 USD are eligible for free shipping.</p>'
+  - summary: 'What are your payment methods?'
+    content: 'Visa, Visa Debit, Mastercard, American Express (Canada Only), Shop Pay,
+      PayPal, Afterpay, Google Pay, and Apple Pay.'
+  - summary: 'Do you ship internationally?'
+    content: 'Zircus ships to Canada and the United States. We hope to expand to
+      international shipping soon!'
+  - summary: 'What is the processing time of each order?'
+    content: 'All orders placed Monday through Friday will begin processing the following
+      business day. Please note that orders placed on Friday will begin processing
+      on the following Monday. Zircus will ship within 2-4 business days after
+      processing has begun. Please expect 2-7 business days for shipping to arrive
+      within Canada and 3-6 business days for shipping to the US. Delivery times
+      do not include Saturday, Sunday or Holidays.'
+  - summary: 'What is your return policy?'
+    content: 'Unfortunately, due to our minimal packaging we cannot accept returns since
+      there is no way to ensure the underwear has not been worn.'
+  - summary: 'I just placed an order online but have not received an email 
+      confirmation yet, has by order been received?'
+    content: 'All orders placed Monday through Friday will begin processing the
+      following day. You should receive an email confirming your order within
+      10-15 minutes of placing an order online. In the unlikely case you have not
+      received a confirmation please email <a href="mailto:support@zircus.com">support@zircus.com</a>.'
+  - summary: 'Can I change or cancel my order once placed?'
+    content: 'As we aim to ship your order as quickly as possible, we regret that it is
+      usually not possible for us to handle change or cancel requests once an
+      order has been submitted. Please ensure that you have verified your order
+      details prior to submission, especially the billing and shipping address.
+      Zircus can be contacted during business hours but if we are unable to
+      facilitate an order change or cancellation request, you may process a return
+      under our Comfort Guarantee policy.'
+  - summary: 'How do I know when my order has shipped?'
+    content: 'An email will be sent to you once your order has shipped and will include
+      your tracking number. Please note, the package may not be trackable until
+      the shipment has been picked up and scanned by the carrier.'
+  - summary: 'I mistakenly ordered the wrong item, what should I do?'
+    content: 'Please contact us at email
+      <a href="mailto:support@zircus.com">support@zircus.com</a> as soon as
+      possible.'
+  - summary: 'How do I wash my Zircus underwear?'
+    content: 'Most garments can be machine washed with cold water and tumble dried with
+      low heat on a gentle cycle. Note: only iron (low heat), bleach (using
+      non-chlorine bleach), or dry clean when needed. These are general washing
+      instructions and individual product pages/labels/packaging should be
+      referenced for each style as washing instructions may vary slightly.'
+fr:
+  - summary: "Quels sont vos tarifs d'expédition?"
+    content: '<ul>
+        <li>Standard - $4.99 USD (5-7 business days)</li>
+        <li>Express - $24.99 USD (2-3 business days)</li>
+        <li>Next Day - $35.00 USD (1-2 business days)</li>
+      </ul>
+      <p>Les commandes de plus de 150 $ US sont admissibles à la livraison gratuite.</p>'
+  - summary: 'Quelles sont vos méthodes de paiement?'
+    content: 'Visa, Visa Debit, Mastercard, American Express (Canada Only), Shop Pay,
+      PayPal, Afterpay, Google Pay, and Apple Pay.'
+  - summary: "Expédiez-vous à l'échelle internationale?"
+    content: "Zircus expédie au Canada et aux États-Unis. Nous espérons étendre à l'expédition internationale bientôt !"
+  - summary: "Quel est le délai de traitement de chaque commande?"
+    content: "Toutes les commandes passées du lundi au vendredi commenceront à être traiter le jour ouvrable suivant. Veuillez noter que les commandes passées le vendredi commenceront à être traiter le lundi suivant. Zircus se transportera dans un délai de 2-4 Business Day après que le traitement ait commencé. Veuillez vous attendre à ce que 2-7 jours ouvrables pour l'expédition arrivent au Canada et 3-6 jours ouvrables pour l'expédition aux États-Unis. Les délais de livraison n'incluent pas le samedi, le dimanche ou les jours fériés."
+  - summary: 'Quelle est votre politique de retour?'
+    content: "Malheureusement, en raison de notre emballage minimal, nous ne pouvons pas accepter les retours, car il n'y a aucun moyen de s'assurer que les sous-vêtements n'ont pas été portés."
+  - summary: "Je viens de faire une commande en ligne, mais je n'ai pas encore reçu de confirmation par courriel, a-t-on reçu par commande?"
+    content: "Toutes les commandes passées du lundi au vendredi commenceront à être traiter le lendemain. Vous devriez recevoir un courriel confirmant votre commande dans les 10 à 15 minutes suivant la commande en ligne. Dans le cas peu probable où vous n'avez pas reçu de confirmation, veuillez envoyer un courriel: <a href='mailto:support@zircus.com'>support@zircus.com</a>."
+  - summary: "Puis-je modifier ou annuler ma commande une fois passée?"
+    content: "Comme nous visons à expédier votre commande le plus rapidement possible, nous regrettons qu'il ne soit généralement pas possible pour nous de traiter les demandes de modification ou d'annulation une fois qu'une commande a été soumise. Veuillez vous assurer d'avoir vérifié les détails de votre commande avant la soumission, en particulier l'adresse de facturation et d'expédition. Zircus peut être contacté pendant les heures d'ouverture, mais si nous ne sommes pas en mesure de faciliter un changement de commande ou une demande d'annulation, vous pouvez traiter un retour en vertu de notre politique de garantie de confort."
+  - summary: "Comment puis-je savoir quand ma commande a été expédiée?"
+    content: "Un courriel vous sera envoyé une fois que votre commande aura été expédiée et inclura votre numéro de suivi. Veuillez noter que le colis peut ne pas être traçable tant que l'envoi n'a pas été ramassé et scanné par le transporteur."
+  - summary: "J'ai commandé par erreur le mauvais article, que dois-je faire?"
+    content: "Veuillez nous contacter à l'adresse <a href='mailto:support@zircus.com'>support@zircus.com</a> dès que possible."
+  - summary: 'Comment laver mes sous-vêtements Zircus?'
+    content: "La plupart des vêtements peuvent être lavés à la machine à l'eau froide et séchés par culbutage à feu doux à cycle délicat. Remarque : seulement du fer (à feu doux), de l'eau de Javel (à l'aide d'un agent de blanchiment non chloré) ou nettoyer à sec au besoin. Il s'il s'est généralement indiqué des instructions de lavage et les pages/étiquettes/emballages de produits individuels doivent être référencés pour chaque style, car les instructions de lavage peuvent varier légèrement."

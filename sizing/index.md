@@ -1,4 +1,5 @@
 ---
+lang: en
 layout: generic
 title: sizing · zircus
 bottom_image: /assets/img/products/1920/group-d-1920.jpg

@@ -1,4 +1,4 @@
-import { q, state, Element, toggler } from './utils.js'
+import { q, state, Element, toggler, lang } from './utils.js'
 
 /* Path for masked product images. Images follow the convention:
  
@@ -26,7 +26,27 @@ export default function product() {
     const goToCartQty = q('go-to-cart-qty')
     const productAccent = q('product-accent')
     const stock = q('product-stock')
+    const addToCartText = {
+        en: ['out of stock', 'add to cart'],
+        fr: ['non disponible', 'ajouter'],
+    }
+
     let currentColor = color.value
+
+    function getStockText(qty, lang) {
+        switch (lang) {
+            case 'en':
+                return ['None available', `Only ${qty} left!`, 'In stock']
+            case 'fr':
+                return [
+                    'Non disponible',
+                    `Il n'en reste que ${qty}!`,
+                    'En stock',
+                ]
+            default:
+                return []
+        }
+    }
 
     // Get and set item
     const [currentItem, setItem] = (() => {
@@ -63,11 +83,13 @@ export default function product() {
             if (showFull) {
                 bigImage.src = currentItem().images['lg_a']
                 bigImageEl.style.display = 'flex'
-                q('nav').classList.add('slide-up')
+                q('nav').classList.add('hidden')
+                q('menu-mobile-btn').classList.add('hidden')
                 document.body.classList.add('hide-y')
             } else {
                 bigImageEl.style.display = 'none'
-                q('nav').classList.remove('slide-up')
+                q('nav').classList.remove('hidden')
+                q('menu-mobile-btn').classList.remove('hidden')
                 document.body.classList.remove('hide-y')
             }
         }
@@ -145,28 +167,25 @@ export default function product() {
 
     // outOfStock sets out-of-stock status
     function outOfStock() {
-        stock.innerText = 'None available'
+        stock.innerText = getStockText(0, lang())[0]
         stock.classList.add('out-stock')
         stock.classList.remove('in-stock')
         quantity.setAttribute('disabled', true)
         addToCart.setAttribute('disabled', true)
-        addToCart.innerText = 'out of stock'
+        addToCart.innerText = addToCartText[lang()][0]
     }
 
     // inStock sets in-stock status
     function inStock(updatedItem) {
-        stock.innerText = `${
-            updatedItem.quantity > 5
-                ? 'In stock'
-                : `Only ${updatedItem.quantity} left`
-        }`
+        const text = getStockText(updatedItem.quantity, lang())
+        stock.innerText = `${updatedItem.quantity > 5 ? text[2] : text[1]}`
         if (updatedItem.quantity < Number(quantity.value))
             quantity.value = updatedItem.quantity
         stock.classList.add('in-stock')
         stock.classList.remove('out-stock')
         quantity.removeAttribute('disabled')
         addToCart.removeAttribute('disabled')
-        addToCart.textContent = 'add to cart'
+        addToCart.textContent = addToCartText[lang()][1]
     }
 
     // updateStatus updates the currentItem

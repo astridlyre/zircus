@@ -3,7 +3,7 @@
     <form id="stripe-payment-form" class="stripe-payment-form">
       <div class="stripe-payment-form-heading-container">
         <h2 class="stripe-payment-form-heading">
-          <span>Enter card details</span>
+          <span>{{ page.label_card_details }}</span>
           <span id="payment-price"></span>
         </h2>
       </div>
@@ -13,12 +13,16 @@
       <div class="stripe-payment-form-buttons">
         <button id="pay-button" class="btn__primary btn">
           <div class="spinner hidden" id="spinner"></div>
-          <span id="button-text">Pay now</span>
+          <span id="button-text">{{ page.label_pay_now }}</span>
         </button>
-        <button id="cancel" class="btn btn__secondary">cancel</button>
-        <p id="card-error" class="error hidden" role="alert">Payment failed</p>
+        <button id="cancel" class="btn btn__secondary">
+          {{ page.label_cancel }}
+        </button>
+        <p id="card-error" class="error hidden" role="alert">
+          {{ page.failure_message }}
+        </p>
         <p id="result-message" class="result-message hidden">
-          Payment succeeded - check your email
+          {{ page.success_message }}
         </p>
       </div>
     </form>
