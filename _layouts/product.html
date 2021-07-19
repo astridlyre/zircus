@@ -16,7 +16,7 @@ layout: default
         alt="{{ page.image_alt }}"
         class="product__full__img"
         id="product-image-full-image"
-        title="Click to close"
+        title="{{ site.label_full_image_close }} "
       />
     </div>
     <img
@@ -32,7 +32,7 @@ layout: default
           <h2 class="product__price">
             <span id="product-price-text"></span>
             <p id="product-stock" class="product__inputs_stock out-stock">
-              None available
+              {{ page.out_of_stock }}
             </p>
           </h2>
           <div class="product__inputs">
@@ -51,7 +51,7 @@ layout: default
               value="{{ page.default_color }}"
             />
             <label for="product-quantity"
-              ><span>quantity</span>
+              ><span>{{ page.label_quantity }}</span>
               <input
                 id="product-quantity"
                 class="input"
@@ -63,7 +63,7 @@ layout: default
                 disabled
             /></label>
             <label for="product-size"
-              ><span>size</span>
+              ><span>{{ page.label_size }}</span>
               <select id="product-size" accesskey="z" class="input">
                 <option value="xs" name="xs">xs</option>
                 <option value="sm" name="sm">sm</option>
@@ -78,13 +78,23 @@ layout: default
               </select></label
             >
             <label for="product-color"
-              ><span>color</span>
+              ><span>{{ page.label_color }}</span>
               <select id="product-color" class="input" name="color">
-                <option value="yellow" name="yellow">yellow</option>
-                <option value="teal" name="teal">teal</option>
-                <option value="purple" name="purple">purple</option>
-                <option value="stripe" name="striped">striped</option>
-                <option value="black" name="black">black</option>
+                <option value="yellow" name="yellow">
+                  {{ page.label_color_yellow }}
+                </option>
+                <option value="teal" name="teal">
+                  {{ page.label_color_teal }}
+                </option>
+                <option value="purple" name="purple">
+                  {{ page.label_color_purple }}
+                </option>
+                <option value="stripe" name="striped">
+                  {{ page.label_color_stripe }}
+                </option>
+                <option value="black" name="black">
+                  {{ page.label_color_black}}
+                </option>
               </select></label
             >
           </div>
@@ -94,19 +104,19 @@ layout: default
               type="button"
               id="add-to-cart"
               accesskey="a"
-              aria-label="Add {{ page.name }} underwear to shopping cart."
+              aria-label="{{ page.label_add_to_cart_aria }}"
               disabled
             >
-              add to cart
+              {{ page.label_add_to_cart }}
             </button>
             <button
               class="btn btn__secondary"
               type="button"
               id="go-to-cart"
               name="Go to cart"
-              aria-label="Go to shopping cart"
+              aria-label="{{ page.label_go_to_cart_aria }}"
             >
-              cart<span id="go-to-cart-qty"></span>
+              {{ page.label_go_to_cart }}<span id="go-to-cart-qty"></span>
             </button>
           </div>
         </form>

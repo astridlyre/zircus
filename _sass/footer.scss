@@ -1,5 +1,7 @@
 .footer {
   margin-top: auto;
+  margin-left: auto;
+  margin-right: auto;
   width: 100%;
   @media screen and (min-width: 400px) {
     grid-template-columns: 1fr 1fr;
@@ -51,6 +53,10 @@
         padding: 0.25rem 0.5rem;
         color: var(--light);
         @include borderHover();
+
+        &:hover {
+          color: var(--light);
+        }
 
         &:visited, &:visited:hover {
           color: var(--light);

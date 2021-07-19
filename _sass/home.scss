@@ -7,7 +7,7 @@
     font-family: var(--accent-font-family);
     font-style: normal;
     word-break: break-word;
-    @include res('md') {
+    @include res("md") {
       font-size: calc(var(--xxl-font-size) * 1.25);
       max-width: 50vw;
     }
@@ -41,6 +41,7 @@
         padding: var(--base-spacing);
         @include borderHoverBig();
       }
+
       &_text {
         margin-top: var(--md-spacing);
         font-size: var(--medium-font-size);
@@ -92,7 +93,7 @@
 
   &__circle {
     display: none;
-    @include res('md') {
+    @include res("md") {
       display: block;
     }
     position: absolute;
@@ -107,7 +108,7 @@
 
     &::after {
       position: absolute;
-      content: '';
+      content: "";
       bottom: 0;
       right: -1rem;
       width: 8rem;

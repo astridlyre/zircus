@@ -5,7 +5,9 @@ export default function thanks() {
     if (!orderIdEl) return
     if (!state.order) location.assign('/')
     const userNameEl = q('user-name')
-
-    orderIdEl.textContent = state.order.id
-    userNameEl.textContent = state.order.name.split(' ')[0]
+    const userEmailEl = q('user-email')
+    const order = state.order
+    orderIdEl.textContent = order.id
+    userNameEl.textContent = order.name.split(' ')[0]
+    userEmailEl.textContent = order.email
 }

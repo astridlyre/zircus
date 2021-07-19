@@ -1,138 +1,22 @@
 ---
-layout: default
+layout: generic
 title: faq · zircus
 bottom_image: /assets/img/products/1920/group-d-1920.jpg
+heading: faq
 ---
 
-<div class="container">
-  <h1 class="page__heading">faq</h1>
-  <div class="faq__list">
-    <details>
-      <summary><span>What are your shipping rates?</span></summary>
-      <ul>
-        <li>Standard - $4.99 USD (5-7 business days)</li>
-        <li>Express - $24.99 USD (2-3 business days)</li>
-        <li>Next Day - $35.00 USD (1-2 business days)</li>
-      </ul>
-      <p>Orders over over $150 USD are eligible for free shipping.</p>
-    </details>
-    <details>
-      <summary><span>What are your payment methods?</span></summary>
-      <p>
-        Visa, Visa Debit, Mastercard, American Express (Canada Only), Shop Pay,
-        PayPal, Afterpay, Google Pay, and Apple Pay.
-      </p>
-    </details>
-    <details>
-      <summary><span>Do you ship internationally?</span></summary>
-      <p>
-        Zircus ships to Canada and the United States. We hope to expand to
-        international shipping soon!
-      </p>
-    </details>
-    <details>
-      <summary><span>What is the processing time of each order?</span></summary>
-      <p>
-        All orders placed Monday through Friday will begin processing the
-        following business day. Please note that orders placed on Friday will
-        begin processing on the following Monday. Zircus will ship within 2-4
-        business days after processing has begun. Please expect 2-7 business
-        days for shipping to arrive within Canada and 3-6 business days for
-        shipping to the US. Delivery times do not include Saturday, Sunday or
-        Holidays.
-      </p>
-    </details>
-    <details>
-      <summary><span>What is your return policy?</span></summary>
-      <p>
-        Unfortunately, due to our minimal packaging we cannot accept returns
-        since there is no way to ensure the underwear has not been worn.
-      </p>
-    </details>
-    <details>
-      <summary>
-        <span>
-          I just placed an order online but have not received an email
-          confirmation yet, has by order been received?
-        </span>
-      </summary>
-      <p>
-        You should receive an email confirming your order within 10-15 minutes
-        of placing an order online. In the unlikely case you have not received a
-        confirmation please email
-        <a href="mailto:support@zircus.com">support@zircus.com</a>.
-      </p>
-    </details>
-    <details>
-      <summary>
-        <span>Can I change or cancel my order once placed?</span>
-      </summary>
-      <p>
-        As we aim to ship your order as quickly as possible, we regret that it
-        is usually not possible for us to handle change or cancel requests once
-        an order has been submitted. Please ensure that you have verified your
-        order details prior to submission, especially the billing and shipping
-        address. Zircus can be contacted during business hours but if we are
-        unable to facilitate an order change or cancellation request, you may
-        process a return under our Comfort Guarantee policy.
-      </p>
-    </details>
-    <details>
-      <summary><span>How do I know when my order has shipped?</span></summary>
-      <p>
-        An email will be sent to you once your order has shipped and will
-        include your tracking number. Please note, the package may not be
-        trackable until the shipment has been picked up and scanned by the
-        carrier.
-      </p>
-    </details>
-    <details>
-      <summary>
-        <span>I mistakenly ordered the wrong item, what should I do?</span>
-      </summary>
-      <p>
-        Please contact us at email
-        <a href="mailto:support@zircus.com">support@zircus.com</a> as soon as
-        possible.
-      </p>
-    </details>
-    <details>
-      <summary>
-        <span>What if my order is lost or damaged in the mail?</span>
-      </summary>
-      <p>
-        Zircus is not liable for any damages incurred during transit; it lies
-        within the responsibility of the local carrier. All purchases are made
-        at the buyers’ own risk. Zircus does not assume any responsibility for
-        lost or damaged packages.
-      </p>
-    </details>
-    <details>
-      <summary>
-        <span>
-          My tracking information shows as "delivered" but I don't have the
-          package and no notice has been left at my residence, what should I do?
-        </span>
-      </summary>
-      <p>
-        Please contact your local carrier’s office to see if a parcel has been
-        left for you; In certain cases, a parcel will be left with a local
-        carrier’s office if the recipient is not available upon delivery. If you
-        have not been able to locate the parcel after doing this, please email
-        <a href="mailto:support@zircus.com">support@zircus.com</a> with your
-        order number and confirmed shipping address.
-      </p>
-    </details>
-    <details>
-      <summary><span>How do I wash my Zircus underwear?</span></summary>
-      <p>
-        Most garments can be machine washed with cold water and tumble dried
-        with low heat on a gentle cycle. Note: only iron (low heat), bleach
-        (using non-chlorine bleach), or dry clean when needed. These are general
-        washing instructions and individual product pages/labels/packaging
-        should be referenced for each style as washing instructions may vary
-        slightly.
-      </p>
-    </details>
-  </div>
-</div>
+<details>
+  <summary><span>What are your shipping rates?</span></summary>
+  <ul>
+    <li>Standard - $4.99 USD (5-7 business days)</li>
+    <li>Express - $24.99 USD (2-3 business days)</li>
+    <li>Next Day - $35.00 USD (1-2 business days)</li>
+  </ul>
+  <p>Orders over over $150 USD are eligible for free shipping.</p>
+</details>
+{% for item in site.data.faqs %}
+<details>
+  <summary><span>{{ item.summary }}</span></summary>
+  {{ item.content }}
+</details>
+{% endfor %}

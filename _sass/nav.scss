@@ -19,6 +19,10 @@
 
   &__nav {
     display: flex;
+    @include res('md') {
+      width: calc(100% - var(--md-spacing));
+    }
+    margin: 0 auto;
     height: var(--nav-height);
     align-items: center;
     justify-content: space-between;
@@ -55,7 +59,7 @@
       display: none;
     }
     display: flex;
-    z-index: 10;
+    z-index: 100;
 
     &_items {
       transform: translateX(0);
@@ -104,6 +108,11 @@
 
         &:hover {
           text-decoration: none !important;
+          color: var(--light);
+        }
+
+        &:visited, &:visited:hover {
+          color: var(--light);
         }
       }
     }
@@ -139,6 +148,10 @@
       letter-spacing: var(--letter-spacing);
       font-weight: 600;
       @include borderHover();
+
+      &:hover, &:visited, &:visited:hover {
+        color: var(--light);
+      }
     }
   }
 
@@ -157,6 +170,10 @@
       z-index: 0;
       position: relative;
       @include borderHover();
+
+      &:hover, &:visited, &:visited:hover {
+        color: var(--light);
+      }
 
       &::before {
         content: "";

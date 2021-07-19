@@ -1,5 +1,8 @@
 include: [_headers]
 
+home_link_path: '/'
+home_link: 'Zircus Home Page'
+
 collections:
   products:
     output: true

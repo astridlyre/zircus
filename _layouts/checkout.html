@@ -1,12 +1,149 @@
-<!DOCTYPE html>
-<html lang="en">
-  {% include head.html %}
-  <body>
-    {% include stripe.html %}
-    <div id="blur">
-      {% include nav.html %}
-      <main class="page">{{ content }}</main>
-      {% include bottom-image.html %} {% include footer.html %}
-    </div>
-  </body>
-</html>
+---
+layout: withModal
+---
+
+<div class="checkout">
+  <div class="container">
+    <h1 class="page__heading">{{ page.heading }}</h1>
+    <form id="checkout-form" class="form">
+      <div class="checkout__address">
+        <h2 class="checkout__address_heading">{{ page.form_heading }}</h2>
+        <label for="checkout-name"
+          ><span>{{ page.label_form_name }}</span
+          ><input
+            type="text"
+            name="{{ page.label_form_name }}"
+            value=""
+            class="input"
+            required
+            id="checkout-name"
+            autocomplete="on"
+            minlength="2"
+            maxlength="140"
+        /></label>
+        <label for="checkout-email"
+          ><span>{{ page.label_form_email }}</span
+          ><input
+            type="email"
+            name="{{ page.label_form_email }}"
+            value=""
+            class="input min-w-15"
+            required
+            id="checkout-email"
+            autocomplete="on"
+            minlength="5"
+            maxlength="80"
+            size="28"
+        /></label>
+        <label for="checkout-street"
+          ><span>{{ page.label_form_address }}</span
+          ><input
+            type="text"
+            name="{{ page.label_form_address }}"
+            value=""
+            class="input"
+            required
+            id="checkout-street"
+            autocomplete="on"
+            minlength="0"
+            maxlength="140"
+            size="28"
+        /></label>
+        <label for="checkout-city"
+          ><span>{{ page.label_form_city }}</span
+          ><input
+            type="text"
+            name="{{ page.label_form_city }}"
+            value=""
+            class="input"
+            required
+            size="20"
+            id="checkout-city"
+            autocomplete="on"
+          />
+        </label>
+        <label for="checkout-country"
+          ><span>{{ page.label_form_country }}</span>
+          <select
+            autocomplete="on"
+            class="input"
+            name="{{ page.label_form_country }}"
+            id="checkout-country"
+            required
+            value=""
+          ></select>
+        </label>
+        <label for="checkout-state"
+          ><span id="checkout-state-text">{{ page.label_form_state }}</span
+          ><select
+            autocomplete="on"
+            name="{{ page.label_form_state }}"
+            value=""
+            class="input"
+            required
+            id="checkout-state"
+          ></select>
+        </label>
+        <label for="checkout-zip"
+          ><span id="checkout-zip-text" class="max-w-10"
+            >{{ page.label_form_zip }}</span
+          ><input
+            type="text"
+            name="{{ page.label_form_zip }}"
+            value=""
+            class="input max-w-10"
+            required
+            id="checkout-zip"
+            autocomplete="on"
+        /></label>
+      </div>
+      <div class="flex-col checkout__products__container">
+        <template id="checkout-product-template">
+          <div class="cart__product">
+            <a href="" class="cart__product_flexcon">
+              <img src="" alt="" class="cart__product_image" />
+              <div class="cart__product_description">
+                <p></p>
+              </div>
+            </a>
+          </div>
+        </template>
+        <div id="checkout-products" class="checkout__products"></div>
+        <div class="flex-grow flex-col">
+          <div class="checkout__total">
+            <ul class="cart__total_prices">
+              <li class="cart__total_price">
+                {{ page.label_subtotal }}:<span
+                  class="cart__total_price_item"
+                  id="checkout-subtotal"
+                ></span>
+              </li>
+              <li class="cart__total_price">
+                {{ page.label_estimated_tax }}:<span
+                  class="cart__total_price_item"
+                  id="checkout-tax"
+                ></span>
+              </li>
+              <li class="cart__total_price bold">
+                {{ page.label_total }}:<span
+                  class="cart__total_price_item"
+                  id="checkout-total"
+                ></span>
+              </li>
+            </ul>
+          </div>
+          <div class="checkout__button">
+            <button
+              class="btn btn__primary"
+              type="submit"
+              name="Pay with Card"
+              id="place-order"
+            >
+              {{ page.pay_with_card }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

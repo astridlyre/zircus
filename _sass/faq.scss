@@ -1,14 +1,5 @@
-.faq__list {
-  display: flex;
-  flex-flow: column nowrap;
-  gap: 1rem;
-
-  ul {
-    margin-bottom: 1rem;
-  }
-  li {
-    margin-bottom: 0.5rem;
-  }
+details + details {
+  margin-top: var(--base-spacing);
 }
 
 details {

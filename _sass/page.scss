@@ -7,6 +7,9 @@
   background: var(--light);
   color: var(--dark);
   width: 100%;
+  @include res('md') {
+    width: calc(100vw - var(--md-spacing));
+  }
   justify-content: flex-start;
   align-items: center;
   flex-grow: 1;
@@ -70,6 +73,10 @@
     flex-shrink: 1;
     position: relative;
     width: 100%;
+    z-index: 0;
+    @include res('md') {
+      width: calc(100vw - var(--md-spacing));
+    }
     background: var(--light);
 
     .rounded {

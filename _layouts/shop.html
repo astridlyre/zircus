@@ -1,19 +1,17 @@
 ---
 layout: default
-title: shop · zircus
-bottom_image: /assets/img/products/1920/closeup-a-1920.jpg
 ---
 
 <div class="container">
-  <h1 class="page__heading">shop</h1>
-  <p class="page__subheading">find the perfect pair</p>
+  <h1 class="page__heading">{{ page.heading }}</h1>
+  <p class="page__subheading">{{ page.subheading }}</p>
   <ul class="home__products">
     {% for product in site.products %}
     <li class="home__products_product">
       <a
         class="home__products_product_link"
         href="{{ product.url }}"
-        aria-label="Link to {{ product.image_namealt }}"
+        aria-label="Link to {{ product.image_alt }}"
       >
         <img
           src="{{ product.image }}"

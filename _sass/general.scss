@@ -84,13 +84,13 @@ blockquote {
   padding: 0 var(--x-padding);
   width: 100%;
   @include res("md") {
-    width: 90%;
+    width: 95%;
   }
   @include res("lg") {
-    width: 80%;
+    width: 90%;
   }
   @include res("xl") {
-    width: 70%;
+    width: 85%;
   }
 }
 
