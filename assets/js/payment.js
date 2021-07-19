@@ -1,4 +1,4 @@
-import { q, API_ENDPOINT, state, Element, calculateTax } from './utils.js'
+import { q, API_ENDPOINT, state, Element, calculateTax, lang } from './utils.js'
 const stripe = Stripe(
     'pk_test_51J93KzDIzwSFHzdzCZtyRcjMvw8em0bhnMrVmkBHaMFHuc2nkJ156oJGNxuz0G7W4Jx0R6OCy2nBXYTt6U8bSYew00PIAPcntP'
 )
@@ -80,7 +80,7 @@ export default function payment() {
             link.href = `/products/${item.name
                 .toLowerCase()
                 .split(' ')
-                .join('-')}.html`
+                .join('-')}${lang() === 'fr' ? '-fr' : ''}.html`
             link.addEventListener(
                 'click',
                 () =>

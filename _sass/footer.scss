@@ -11,11 +11,16 @@
   gap: var(--two-col-gap);
   padding: 5rem 0;
 
+
   &__container {
     display: flex;
     align-items: flex-end;
     width: 100%;
     justify-content: center;
+
+  & .container {
+    padding: 0 calc((var(--md-spacing) / 2) + var(--x-padding));
+  }
   }
 
   &__heading {
@@ -43,7 +48,7 @@
   &__links {
     display: flex;
     flex-flow: column nowrap;
-    gap: 1rem;
+    gap: calc(var(--base-unit) + 0.25rem);
     margin-right: -0.5rem;
 
     &_link {
@@ -66,17 +71,41 @@
   }
 
   &__social_lang {
+    font-size: var(--small-font-size);
+    margin-top: 1rem;
     display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-end;
+    @include res('sm') {
+      flex-flow: row nowrap;
+    }
+    align-items: center;
     gap: var(--base-spacing);
+  }
+
+  &__lang_links {
+    display: flex;
+    align-items: center;
+    gap: var(--base-unit);
+  }
+
+  &__lang_link a {
+    padding: 0.5rem;
+    @include borderHover();
+    color: var(--gray-90) !important;
+
+    &.lang-active {
+      color: var(--light) !important;
+    }
   }
 
   &__social {
     display: flex;
+    align-items: center;
     font-size: 0.9rem;
     font-weight: 600;
     line-height: 1.2;
     margin-right: -0.5rem;
-    margin-top: 1rem !important;
     margin-bottom: -0.5rem;
 
     &_button {

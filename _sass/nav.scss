@@ -7,6 +7,10 @@
   width: 100vw;
   z-index: 10;
 
+  & .container {
+    padding: 0 calc((var(--md-spacing) / 2) + var(--x-padding));
+  }
+
   &.slide-up {
     transform: translateY(-100%);
     transition: all 0.2s ease-in;
@@ -25,7 +29,7 @@
       justify-content: flex-end;
     }
 
-    &_link {
+    &_nav_link {
       padding: 1rem;
       font-size: var(--lg-font-size);
       margin: 1rem 0;
@@ -35,6 +39,9 @@
       @include res('md') {
         padding: 0;
         font-size: var(--small-font-size);
+    }
+
+    &_link {
       }
       & a {
         display: flex;
@@ -75,9 +82,9 @@
     outline: none;
     top: 0.5rem;
     height: 3rem;
-    width: 4rem;
+    width: 3rem;
     padding: 0.5rem;
-    right: calc(var(--x-padding) - 1rem);
+    right: calc(var(--x-padding) - 0.5rem);
     cursor: pointer;
     z-index: 50;
 

@@ -16,28 +16,6 @@
           {% endfor %}
         </ul>
         <div class="footer__social_lang">
-          <ul class="nav__lang_links">
-            {% for lang in site.lang %}
-            <li class="nav__lang_link">
-              <a
-                href="{{ lang[1].home_link_path }}"
-                class="
-                  {%
-                  if
-                  page.lang
-                  ==
-                  lang[1].name
-                  %}
-                  lang-active
-                  {%
-                  endif
-                  %}
-                "
-                >{{ lang[1].name }}</a
-              >
-            </li>
-            {% endfor %}
-          </ul>
           <ul class="footer__social">
             <li class="footer__social_link">
               <a class="footer__social_button" href="mailto:support@zircus.com">
@@ -106,6 +84,28 @@
                 </svg>
               </a>
             </li>
+          </ul>
+          <ul class="footer__lang_links">
+            {% for lang in site.lang %}
+            <li class="footer__lang_link">
+              <a
+                href="{{ lang[1].home_link_path }}"
+                class="
+                  {%
+                  if
+                  page.lang
+                  ==
+                  lang[1].name
+                  %}
+                  lang-active
+                  {%
+                  endif
+                  %}
+                "
+                >{{ lang[1].name }}</a
+              >
+            </li>
+            {% endfor %}
           </ul>
         </div>
       </div>

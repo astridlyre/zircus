@@ -39,10 +39,9 @@ export default function cart() {
         const label = template.querySelector('label')
         const removeBtn = template.querySelector('button')
 
-        link.href = `/products/${item.name
-            .toLowerCase()
-            .split(' ')
-            .join('-')}.html`
+        link.href = `/products/${item.name.toLowerCase().split(' ').join('-')}${
+            lang() === 'fr' ? '-fr' : ''
+        }.html`
         link.addEventListener(
             'click',
             () =>

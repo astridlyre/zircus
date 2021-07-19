@@ -18,9 +18,9 @@
 
   &__price {
     @include res("md") {
-      font-size: var(--xl-font-size);
+      font-size: var(--xxl-font-size);
     }
-    font-size: var(--xl-font-size-mobile);
+    font-size: var(--xxl-font-size-mobile);
     margin: 2rem 0 1rem 0;
     width: 100%;
     text-align: right;
@@ -123,7 +123,7 @@
 
     &_stock {
       font-size: var(--default-font-size);
-      margin: 0;
+      margin-top: var(--base-unit);
     }
 
     &_stock.in-stock {
