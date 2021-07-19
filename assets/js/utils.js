@@ -80,6 +80,15 @@ class State {
         return currentItem ? JSON.parse(currentItem) : null
     }
 
+    set order(order) {
+        localStorage.setItem('order', JSON.stringify(order))
+    }
+
+    get order() {
+        const order = localStorage.getItem('order')
+        return order ? JSON.parse(order) : null
+    }
+
     update() {
         this.hooks.forEach(hook =>
             hook({ cart: this.cart, inv: this.inv, countries: this.countries })

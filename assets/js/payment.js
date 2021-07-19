@@ -123,7 +123,7 @@ export default function payment() {
             document.body.classList.remove('hide-y')
             q('blur').classList.remove('blur')
             paymentModal.classList.remove('show-modal')
-            if (state.cart.length === 0) location.assign('/')
+            if (state.cart.length === 0) location.assign('/thanks')
         }
     }
 
@@ -160,6 +160,7 @@ export default function payment() {
             .then(data => data.json())
             .then(data => {
                 state.secret = data.clientSecret
+                state.order = { id: data.id, name: data.name }
                 q('payment-price').innerText = `$${data.total.toFixed(2)}`
                 loadStripe(data)
                 loading(false)

@@ -11,6 +11,12 @@ address {
   padding-left: var(--base-unit);
 }
 
+kbd {
+  background-color: var(--gray-30);
+  padding: calc(var(--base-unit) / 2);
+  border-radius: var(--radius);
+}
+
 details {
   max-width: 75ch;
   p {
