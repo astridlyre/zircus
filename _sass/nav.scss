@@ -248,3 +248,30 @@
 .hide {
   transform: translateX(100%) !important;
 }
+
+.skip-to-main-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+
+  button {
+    border-bottom-right-radius: var(--radius);
+    background: var(--light);
+    color: var(--dark);
+    font-size: var(--small-font-size);
+    font-weight: 600;
+    letter-spacing: var(--letter-spacing);
+    padding: var(--base-unit) var(--base-spacing);
+    transform: translateY(-100%);
+    outline: none;
+    border: 2px solid transparent;
+    transition: all 0.1s ease-out;
+
+    &:focus {
+      transform: translateY(0);
+      transition: all 0.1s ease-out;
+      border-color: var(--teal);
+    }
+  }
+}

@@ -1,3 +1,7 @@
+main {
+  outline: none;
+}
+
 .page {
   @include flexCol();
   @include roundedBigTop();

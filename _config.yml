@@ -9,12 +9,14 @@ lang:
     home_link_path: '/'
     home_link: 'Zircus Home Page'
     footer_text: 'An inspiring underwear brand, queer owned & sewn on Vancouver Island.'
+    skip_link: 'Skip to main content'
   fr:
     name: 'fr'
     home_link_path: '/fr'
     home_link: "Zircus Page d'accueil"
     footer_text: "Une marque de sous-vêtements inspirante, queer appartenant et cousu 
       sur l'île de Vancouver."
+    skip_link: 'Passer au contenu principal'
 
 collections:
   products:

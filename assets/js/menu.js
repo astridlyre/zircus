@@ -15,6 +15,8 @@ export default function menu() {
     const navLinkMobile = q('cart-link-mobile')
     const menu = q('menu-mobile-list')
     const btn = q('menu-mobile-btn')
+    const skipBtn = q('skip-link')
+    const mainContent = q('main-content')
     const cartText = {
         en: 'cart',
         fr: 'panier',
@@ -100,6 +102,9 @@ export default function menu() {
 
     // add mobile button event listener
     btn.addEventListener('click', menuFunc)
+    skipBtn.addEventListener('click', () => {
+        mainContent.focus()
+    })
 
     // register update function with state hooks
     state.addHook(() => updateNavLink())

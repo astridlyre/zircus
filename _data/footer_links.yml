@@ -5,6 +5,9 @@ en:
   - name: sizing
     link: /sizing
     label: View underwear sizing information
+  - name: accessibility
+    link: /accessibility
+    label: Read our statement on accessibility
   - name: terms & conditions
     link: /terms
     label: View site terms and conditions
@@ -18,3 +21,6 @@ fr:
   - name: conditions générales
     link: /fr/conditions
     label: Consulter les modalités du site
+  - name: l'accessibilité
+    link: /fr/accessibilite
+    label: Lire notre déclaration sur l'accessibilité

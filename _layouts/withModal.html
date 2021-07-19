@@ -4,7 +4,9 @@
   <body>
     {% include stripe.html %} {% include nav.html %}
     <div id="blur">
-      <main class="page">{{ content }}</main>
+      <main id="main-content" role="main" tabindex="-1" class="page">
+        {{ content }}
+      </main>
       {% include bottom-image.html %} {% include footer.html %}
     </div>
   </body>

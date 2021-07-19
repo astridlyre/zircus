@@ -3,7 +3,9 @@
   {% include head.html %}
   <body>
     {% include nav.html %}
-    <main class="page">{{ content }}</main>
+    <main role="main" tabindex="-1" id="main-content" class="page">
+      {{ content }}
+    </main>
     {% include bottom-image.html %} {% include footer.html %}
   </body>
 </html>

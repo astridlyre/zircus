@@ -59,7 +59,7 @@
         color: var(--light);
         @include borderHover();
 
-        &:hover {
+        &:hover, &:focus {
           color: var(--light);
         }
 
