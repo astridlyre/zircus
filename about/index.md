@@ -1,5 +1,6 @@
 ---
 lang: en
+ref: about
 layout: generic
 title: about · zircus
 heading: about zircus

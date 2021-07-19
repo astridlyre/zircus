@@ -1,5 +1,6 @@
 ---
 lang: fr
+ref: checkout
 layout: checkout
 title: à la caisse · zircus
 bottom_image: /assets/img/products/1920/closeup-d-1920.jpg

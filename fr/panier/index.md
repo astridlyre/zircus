@@ -1,5 +1,6 @@
 ---
 lang: fr
+ref: cart
 layout: cart
 heading: panier
 label_quantity: quantité

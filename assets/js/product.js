@@ -228,7 +228,10 @@ export default function product() {
     image.addEventListener('click', () => handleViewFull())
     bigImageEl.addEventListener('click', () => handleViewFull())
     addToCart.addEventListener('click', handleAddToCart)
-    goToCart.addEventListener('click', () => location.assign('/cart'))
+    goToCart.addEventListener('click', () => {
+        if (lang() === 'fr') return location.assign('/fr/panier')
+        return location.assign('/fr/panier')
+    })
 
     // Register hooks
     state.addHook(() => updateStatus())

@@ -86,23 +86,33 @@
             </li>
           </ul>
           <ul class="footer__lang_links">
-            {% for lang in site.lang %}
+            {% assign products=site.products | where:"ref", page.ref |
+            sort:"lang" %} {% for product in products %}
             <li class="footer__lang_link">
               <a
-                href="{{ lang[1].home_link_path }}"
+                href="{{ product.url }}"
                 class="
                   {%
                   if
                   page.lang
                   ==
-                  lang[1].name
+                  product.lang
                   %}
                   lang-active
                   {%
                   endif
                   %}
                 "
-                >{{ lang[1].name }}</a
+                >{{ product.lang }}</a
+              >
+            </li>
+            {% endfor %} {% assign pages=site.pages | where:"ref", page.ref |
+            sort:"lang" %} {% for link in pages %}
+            <li class="nav__lang_nav_link">
+              <a
+                href="{{ link.url }}"
+                class="{% if page.lang == link.lang %} lang-active {% endif %}"
+                >{{ link.lang }}</a
               >
             </li>
             {% endfor %}

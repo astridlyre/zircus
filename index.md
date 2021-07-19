@@ -1,5 +1,6 @@
 ---
 lang: en
+ref: home
 layout: home
 title: zircus
 bottom_image: /assets/img/products/1920/closeup-a-1920.jpg

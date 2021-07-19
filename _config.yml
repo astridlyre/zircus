@@ -1,5 +1,5 @@
 ---
-include: [_headers]
+include: [_headers, _redirects]
 
 name: "zircus"
 

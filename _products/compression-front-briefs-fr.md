@@ -1,5 +1,6 @@
 ---
 lang: fr
+ref: cf
 title: avant de compression · zircus
 name: avant de compression
 type: cf

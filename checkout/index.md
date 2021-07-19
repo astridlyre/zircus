@@ -1,5 +1,6 @@
 ---
 lang: en
+ref: checkout
 layout: checkout
 title: checkout · zircus
 bottom_image: /assets/img/products/1920/closeup-d-1920.jpg

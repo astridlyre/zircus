@@ -23,12 +23,22 @@
           {% endfor %}
         </ul>
         <ul class="nav__lang_links">
-          {% for lang in site.lang %}
+          {% assign products=site.products | where:"ref", page.ref | sort:"lang"
+          %} {% for product in products %}
           <li class="nav__lang_nav_link">
             <a
-              href="{{ lang[1].home_link_path }}"
-              class="{% if page.lang == lang[1].name %} lang-active {% endif %}"
-              >{{ lang[1].name }}</a
+              href="{{ product.url }}"
+              class="{% if page.lang == product.lang %} lang-active {% endif %}"
+              >{{ product.lang }}</a
+            >
+          </li>
+          {% endfor %} {% assign pages=site.pages | where:"ref", page.ref |
+          sort:"lang" %} {% for link in pages %}
+          <li class="nav__lang_nav_link">
+            <a
+              href="{{ link.url }}"
+              class="{% if page.lang == link.lang %} lang-active {% endif %}"
+              >{{ link.lang }}</a
             >
           </li>
           {% endfor %}
@@ -51,12 +61,22 @@
     {% endfor %}
     <li class="nav__mobile_lang">
       <ul class="nav__lang_links">
-        {% for lang in site.lang %}
+        {% assign products=site.products | where:"ref", page.ref | sort:"lang"
+        %} {% for product in products %}
         <li class="nav__lang_nav_link">
           <a
-            href="{{ lang[1].home_link_path }}"
-            class="{% if page.lang == lang[1].name %} lang-active {% endif %}"
-            >{{ lang[1].name }}</a
+            href="{{ product.url }}"
+            class="{% if page.lang == product.lang %} lang-active {% endif %}"
+            >{{ product.lang }}</a
+          >
+        </li>
+        {% endfor %} {% assign pages=site.pages | where:"ref", page.ref |
+        sort:"lang" %} {% for link in pages %}
+        <li class="nav__lang_nav_link">
+          <a
+            href="{{ link.url }}"
+            class="{% if page.lang == link.lang %} lang-active {% endif %}"
+            >{{ link.lang }}</a
           >
         </li>
         {% endfor %}

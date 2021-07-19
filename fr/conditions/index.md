@@ -1,5 +1,6 @@
 ---
 lang: fr
+ref: terms
 layout: generic
 title: conditions · zircus
 bottom_image: /assets/img/products/1920/group-d-1920.jpg

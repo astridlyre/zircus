@@ -76,4 +76,16 @@
     content="Queer owned & sewn underwear from Vancouver Island."
   />
   <meta property="twitter:image" content="/site.jpg" />
+
+  {% assign products=site.products | where:"ref", page.ref | sort:"lang" %} {%
+  for product in products %}
+  <link
+    rel="alternate"
+    hreflang="{{ product.lang }}"
+    href="{{ product.url }}"
+  />
+  {% endfor %} {% assign pages=site.pages | where:"ref", page.ref | sort:"lang"
+  %} {% for page in pages %}
+  <link rel="alternate" hreflang="{{ page.lang }}" href="{{ page.url }}" />
+  {% endfor %}
 </head>
