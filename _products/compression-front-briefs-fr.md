@@ -7,7 +7,7 @@ type: cf
 price: 38
 image: /assets/img/products/masked/cf-purple-a-400.png
 bottom_image: /assets/img/products/1920/closeup-e-1920.jpg
-default_color: pourpre
+default_color: purple
 description: un ajustement lisse et comprimé à l'avant.
 image_alt: "Culottes avant de compression: Un ajustement lisse et comprimé
   à l'avant pour maintenir les choses en place. Excellent pour le tucking."

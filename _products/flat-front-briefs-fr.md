@@ -7,7 +7,7 @@ type: ff
 price: 30
 image: /assets/img/products/masked/ff-yellow-a-400.png
 bottom_image: /assets/img/products/1920/closeup-d-1920.jpg
-default_color: jaune
+default_color: yellow
 description: ajustement serré et confortable
 image_alt: "Culottes avant plates: L'ajustement classique et confortable de traditionnel sous-vêtements, avec un style frais audacieux."
 label_color: couleur
