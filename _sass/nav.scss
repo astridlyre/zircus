@@ -41,8 +41,6 @@
         font-size: var(--small-font-size);
     }
 
-    &_link {
-      }
       & a {
         display: flex;
         align-items: center;
@@ -263,7 +261,7 @@
     font-weight: 600;
     letter-spacing: var(--letter-spacing);
     padding: var(--base-unit) var(--base-spacing);
-    transform: translateY(-100%);
+    transform: translateY(-110%);
     outline: none;
     border: 2px solid transparent;
     transition: all 0.1s ease-out;
