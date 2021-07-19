@@ -32,6 +32,18 @@ export default function payment() {
     const checkoutTotal = q('checkout-total')
     const templateEl = q('checkout-product-template')
     const checkoutList = q('checkout-products')
+
+    const formText = {
+        Canada: {
+            en: ['Province', 'Postal Code'],
+            fr: ['Province', 'Code postal'],
+        },
+        'United States': {
+            en: ['State', 'Zip'],
+            fr: ['État', 'Code postal'],
+        },
+    }
+
     let isLoaded = false
 
     function loading(isLoading) {
@@ -232,8 +244,8 @@ export default function payment() {
             state.countries[country].states,
             item => item.name
         )
-        stateElText.innerText = country === 'Canada' ? 'Province' : 'State'
-        zipText.innerText = country === 'Canada' ? 'Postal Code' : 'Zip'
+        stateElText.innerText = formText[country][lang()][0]
+        zipText.innerText = formText[country][lang()][1]
         zip.setAttribute(
             'pattern',
             country === 'Canada'
