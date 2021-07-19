@@ -13,6 +13,28 @@ export default function cart() {
     const templateEl = q('cart-product-template')
     const noItems = q('cart-products-none')
 
+    function genCheckoutLink() {
+        switch (lang()) {
+            case 'en':
+                return '/checkout'
+            case 'fr':
+                return '/fr/la-caisse'
+            default:
+                throw new Error('Invalid language')
+        }
+    }
+
+    function genRemoveBtnText(item) {
+        switch (lang()) {
+            case 'en':
+                return `Remove ${item.name.en} (size: ${item.size} quantity: ${item.quantity}) from cart`
+            case 'fr':
+                return `Retirer ${item.name.fr} (taille: ${item.size} quantité: ${item.quantity}) du panier`
+            default:
+                throw new Error('Invalid language')
+        }
+    }
+
     // enableButtons enables the checkoutBtn if there are items in cart
     function enableButtons() {
         if (state.cart.length > 0) return (checkoutBtn.disabled = false)
@@ -38,10 +60,12 @@ export default function cart() {
         const qty = template.querySelector('.input')
         const label = template.querySelector('label')
         const removeBtn = template.querySelector('button')
+        const l = lang()
 
-        link.href = `/products/${item.name.toLowerCase().split(' ').join('-')}${
-            lang() === 'fr' ? '-fr' : ''
-        }.html`
+        link.href = `/products/${item.name.en
+            .toLowerCase()
+            .split(' ')
+            .join('-')}${l !== 'en' ? `-${l}` : ''}.html`
         link.addEventListener(
             'click',
             () =>
@@ -52,12 +76,12 @@ export default function cart() {
                 })
         )
         img.src = item.images.sm_a
-        img.alt = `${item.name} ${item.size} ${item.color} underwear`
-        desc.textContent = `${item.name} (${item.size})`
+        img.alt = `${item.name[l]} ${item.size} ${item.color} underwear`
+        desc.textContent = `${item.name[l]} (${item.size})`
         price.textContent = `$${item.price * item.quantity}`
         qty.value = item.quantity
         qty.id = item.type
-        qty.setAttribute('name', `${item.name} ${item.size} ${item.color}`)
+        qty.setAttribute('name', `${item.name[l]} ${item.size} ${item.color}`)
         label.setAttribute('for', item.type)
         qty.addEventListener('input', () => {
             if (!qty.value) qty.value = 1
@@ -72,10 +96,7 @@ export default function cart() {
         })
 
         // Add remove button functionality
-        removeBtn.setAttribute(
-            'aria-label',
-            `Remove ${item.name} size ${item.size} color ${item.color} from cart`
-        )
+        removeBtn.setAttribute('aria-label', genRemoveBtnText(item))
         removeBtn.addEventListener('click', () => {
             state.cart = cart => cart.filter(i => i.id !== item.id)
             product.remove()
@@ -103,9 +124,6 @@ export default function cart() {
 
     // Add event listeners
     checkoutBtn.addEventListener('click', () => {
-        if (state.cart.length > 0) {
-            if (lang() === 'fr') return location.assign('/fr/la-caisse')
-            return location.assign('/checkout')
-        }
+        if (state.cart.length > 0) location.assign(genCheckoutLink())
     })
 }

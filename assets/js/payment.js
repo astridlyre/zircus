@@ -88,11 +88,12 @@ export default function payment() {
             const link = template.querySelector('a')
             const img = template.querySelector('img')
             const desc = template.querySelector('p')
+            const l = lang()
 
-            link.href = `/products/${item.name
+            link.href = `/products/${item.name.en
                 .toLowerCase()
                 .split(' ')
-                .join('-')}${lang() === 'fr' ? '-fr' : ''}.html`
+                .join('-')}${l !== 'en' ? `-${l}` : ''}.html`
             link.addEventListener(
                 'click',
                 () =>
@@ -103,7 +104,7 @@ export default function payment() {
                     })
             )
             img.src = item.images.sm_a
-            desc.textContent = `${item.name} (${item.size}) - ${item.quantity} x $${item.price}`
+            desc.textContent = `${item.name[l]} (${item.size}) - ${item.quantity} x $${item.price}`
 
             return fragment.appendChild(template)
         })
@@ -135,7 +136,10 @@ export default function payment() {
             document.body.classList.remove('hide-y')
             q('blur').classList.remove('blur')
             paymentModal.classList.remove('show-modal')
-            if (state.cart.length === 0) location.assign('/thanks')
+            if (state.cart.length === 0) {
+                if (lang() === 'fr') return location.assign('/fr/merci')
+                return location.assign('/thanks')
+            }
         }
     }
 
