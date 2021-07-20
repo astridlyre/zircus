@@ -1,0 +1,43 @@
+.contact {
+  &__form {
+    display: flex;
+    flex-flow: row wrap;
+    gap: var(--base-spacing);
+    max-width: 75ch;
+  }
+
+  &__label__lg {
+    width: 100%;
+  }
+
+  &__label__lg,
+  &__label__sm {
+    display: flex;
+    flex-flow: column nowrap;
+    flex-grow: 1;
+
+    span {
+      @include smallSpaced();
+    }
+  }
+
+  &__label__sm {
+    flex-basis: 14rem;
+  }
+
+  button {
+    max-width: 12rem;
+  }
+
+  &__button {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    p {
+      margin-right: var(--base-spacing);
+      margin-bottom: 0;
+    }
+  }
+}

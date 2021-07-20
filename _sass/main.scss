@@ -69,6 +69,7 @@
   --base-spacing: calc(var(--base-unit) * 4);
   --md-spacing: calc(var(--base-spacing) * 2);
   --lg-spacing: calc(var(--md-spacing) * 2);
+  --xl-spacing: calc(var(--lg-spacing) * 2);
   --base-section-spacing: calc(var(--base-spacing) * 2) var(--base-spacing);
 
   // Side padding for general alignment
@@ -141,3 +142,4 @@
 @import "stripe";
 @import "faq";
 @import "sizing";
+@import "contact";

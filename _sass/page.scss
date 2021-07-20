@@ -11,8 +11,11 @@ main {
   background: var(--light);
   color: var(--dark);
   width: 100%;
-  @include res('md') {
+  @include res("md") {
     width: calc(100vw - var(--md-spacing));
+  }
+  @include res("xl") {
+    width: calc(100vw - var(--lg-spacing));
   }
   justify-content: flex-start;
   align-items: center;
@@ -78,8 +81,11 @@ main {
     position: relative;
     width: 100%;
     z-index: -1;
-    @include res('md') {
+    @include res("md") {
       width: calc(100vw - var(--md-spacing));
+    }
+    @include res("xl") {
+      width: calc(100vw - var(--lg-spacing));
     }
     background: var(--light);
 

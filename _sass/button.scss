@@ -47,7 +47,8 @@
     border-color: var(--teal);
   }
 
-  &:hover::after, &:focus::after {
+  &:hover::after,
+  &:focus::after {
     width: 200%;
     background: var(--teal);
     border-color: var(--dark);
@@ -99,6 +100,34 @@
 
   &:invalid {
     border-color: var(--red);
+  }
+
+  &__textarea {
+    resize: none;
+    padding: var(--input-padding);
+    border: 2px solid var(--dark);
+    border-radius: var(--radius);
+    font-size: var(--small-font-size);
+    letter-spacing: var(--letter-spacing);
+    font-family: var(--site-font-family);
+    outline: none;
+
+    &:hover,
+    &:focus,
+    &:active,
+    &:focus-within,
+    &:focus-visible {
+      border-color: var(--teal);
+    }
+    &:disabled {
+      background: var(--lgrey);
+      border-color: var(--grey) !important;
+      cursor: not-allowed;
+    }
+
+    &:invalid {
+      border-color: var(--red);
+    }
   }
 }
 

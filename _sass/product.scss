@@ -25,6 +25,10 @@
     width: 100%;
     text-align: right;
     font-weight: 600;
+
+    span {
+      font-style: normal;
+    }
   }
 
   &__img {
@@ -110,8 +114,7 @@
 
       span {
         height: 1.5rem;
-        font-size: var(--small-font-size);
-        letter-spacing: var(--letter-spacing);
+        @include smallSpaced();
       }
 
       &:hover span {

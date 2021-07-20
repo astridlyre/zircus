@@ -4,6 +4,7 @@ import cart from './cart.js'
 import menu from './menu.js'
 import hero from './hero.js'
 import thanks from './thanks.js'
+import contact from './contact.js'
 
 product()
 payment()
@@ -11,3 +12,4 @@ cart()
 menu()
 hero()
 thanks()
+contact()

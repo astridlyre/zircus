@@ -262,3 +262,14 @@
   border-bottom-left-radius: var(--big-radius);
   border-bottom-right-radius: var(--big-radius);
 }
+
+@mixin smallSpacedBold() {
+  letter-spacing: var(--letter-spacing);
+  font-size: var(--small-font-size);
+  font-weight: 600;
+}
+
+@mixin smallSpaced() {
+  letter-spacing: var(--letter-spacing);
+  font-size: var(--small-font-size);
+}

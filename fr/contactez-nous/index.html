@@ -1,0 +1,45 @@
+---
+lang: fr
+ref: contact
+layout: generic
+title: contactez-nous · zircus
+heading: contactez zircus
+bg_image: /assets/img/people/hero1.jpg
+bg_image_alt: "Un vue arrière d'un modèle de Zircus portent le pantalon brun. Leurs sous-vêtements en sarcelle brillante sont juste visible de leur ceinture."
+bg_image_title: Contactez Zircus
+bottom_image: /assets/img/products/1920/group-a-1920.jpg
+---
+
+<form id="contact-form" class="contact__form contact">
+  <label for="contact-name" class="contact__label__sm">
+    <span>Nom</span>
+    <input
+      id="contact-name"
+      type="text"
+      name="name"
+      maxlength="80"
+      value=""
+      class="input"
+  /></label>
+  <label for="contact-email" class="contact__label__sm">
+    <span>Courriel</span>
+    <input
+      id="contact-email"
+      type="email"
+      name="contact-email"
+      value=""
+      class="input"
+      maxlength="80"
+    />
+  </label>
+  <label for="contact-message" class="contact__label__lg">
+    <span>Message</span>
+    <textarea rows="10" class="input__textarea" id="contact-message"></textarea>
+  </label>
+  <div class="contact__button">
+    <p id="contact-sent" class="hidden">Message envoyé</p>
+    <button type="submit" id="contact-button" class="btn btn__primary">
+      envoyer
+    </button>
+  </div>
+</form>

@@ -9,6 +9,9 @@
   @include res('md') {
     padding: 0 var(--base-spacing);
   }
+  @include res('xl') {
+    padding: 5rem var(--md-spacing);
+  }
 
 
   &.slide-up {
@@ -191,7 +194,7 @@
       justify-content: center;
       align-items: center;
       color: var(--light) !important;
-      font-size: 0.9rem;
+      font-size: var(--small-font-size);
       text-align: center;
       letter-spacing: var(--letter-spacing);
       font-weight: 600;
