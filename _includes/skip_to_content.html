@@ -1,31 +1,3 @@
-<style>
-  .skip-to-content {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1000;
-  }
-
-  .skip-to-content button {
-    border-bottom-right-radius: var(--radius);
-    background: var(--light);
-    color: var(--dark);
-    padding: var(--base-unit) var(--base-spacing);
-    transform: translateY(-110%);
-    outline: none;
-    border: 2px solid transparent;
-    transition: all 0.1s ease-out;
-  }
-
-  .skip-to-content button:focus {
-    transform: translateY(0);
-    transition: all 0.1s ease-out;
-    border-color: var(--teal);
-  }
-</style>
-
-<div class="skip-to-content">
-  <button id="skip-link" type="button" class="small-spaced-bold">
-    {{ site.lang[page.lang]skip_link }}
-  </button>
-</div>
+<button id="skip-link" type="button" class="skip-to-content small-spaced-bold">
+  {{ site.lang[page.lang]skip_link }}
+</button>

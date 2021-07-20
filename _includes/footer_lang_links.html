@@ -1,20 +1,3 @@
-<style>
-  .footer_lang {
-    display: flex;
-    align-items: center;
-    gap: var(--base-unit);
-  }
-
-  .footer_lang a {
-    padding: var(--base-unit);
-    color: var(--gray-90) !important;
-  }
-
-  .footer_lang a.active {
-    color: var(--light) !important;
-  }
-</style>
-
 <ul class="footer_lang">
   {% assign products=site.products | where:"ref", page.ref | sort:"lang" %} {%
   for product in products %}

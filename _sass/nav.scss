@@ -1,0 +1,241 @@
+// Main nav
+.nav {
+  height: var(--nav-height);
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: var(--dark);
+  width: 100vw;
+  z-index: 10;
+
+  @include res("md") {
+    padding: 0 var(--base-spacing);
+  }
+
+  @include res("xl") {
+    padding: 0 var(--md-spacing);
+  }
+
+  &.slide-up {
+    transform: translateY(-100%);
+    transition: all 0.2s ease-in;
+  }
+
+  &.slide-down {
+    transform: translateY(0);
+    transition: all 0.1s ease-out;
+  }
+
+  header {
+    display: flex;
+    margin: 0 auto;
+    height: var(--nav-height);
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+// Skip to content button
+.skip-to-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  transform: translateY(-110%);
+  border-bottom-right-radius: var(--radius);
+  background: var(--light);
+  color: var(--dark);
+  padding: var(--base-unit) var(--base-spacing);
+  outline: none;
+  border: 2px solid transparent;
+  transition: all 0.1s ease-out;
+
+  &:focus {
+    transform: translateY(0);
+    transition: all 0.1s ease-out;
+    border-color: var(--teal);
+  }
+}
+
+// Heading
+.nav_heading {
+  font-family: var(--accent-font-family) !important;
+  letter-spacing: -5%;
+  font-size: 2rem;
+  font-style: normal;
+  display: inline-block;
+  z-index: 20;
+  position: relative;
+
+  ::after {
+    content: "";
+    position: absolute;
+    right: -1.5rem;
+    top: 0.35rem;
+    color: var(--teal);
+    background: var(--teal);
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 100%;
+  }
+
+  a {
+    padding: 0.25rem 0.25rem;
+    margin-left: -0.25rem;
+  }
+
+  a,
+  a:hover,
+  a:visited,
+  a:focus,
+  a:visited:hover,
+  a:visited:focus {
+    color: var(--light) !important;
+    text-decoration: none;
+  }
+}
+
+// Mobile Menu
+.nav_mobile {
+  display: flex;
+  z-index: 100;
+
+  @include res("md") {
+    display: none;
+  }
+
+  .nav_mobile_list {
+    transform: translateX(0);
+    transition: transform 0.1s ease-out;
+    opacity: 1;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100vw;
+    height: 100vh;
+    background: var(--dark);
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    gap: var(--md-spacing);
+
+    @media screen and (max-height: 400px) {
+      justify-content: flex-end;
+    }
+
+    &.hide {
+      transform: translateX(100%) !important;
+    }
+  }
+
+  .nav_mobile_list_link {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    padding: 0 2rem;
+    font-size: var(--lg-font-size);
+
+    @include res("sm") {
+      font-size: var(--xl-font-size);
+    }
+
+    a,
+    a:hover,
+    a:focus,
+    a:visited,
+    a:visited:hover,
+    a:visited:focus {
+      color: var(--light) !important;
+      letter-spacing: var(--letter-spacing);
+      display: block;
+      text-decoration: none !important;
+    }
+
+    a:hover::before {
+      content: "• ";
+      color: var(--teal);
+    }
+  }
+
+  .nav_mobile_list_lang {
+    width: 100%;
+    padding: 0 2rem;
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--base-spacing);
+
+    a {
+      padding: var(--base-unit);
+    }
+
+    a,
+    a:hover,
+    a:visited,
+    a:visited:hover,
+    a:focus,
+    a:visited:focus {
+      color: var(--gray-90) !important;
+      text-decoration: none;
+    }
+
+    a.active,
+    a.active:hover,
+    a.active:visited,
+    a.active:visited:hover,
+    a.active:focus,
+    a.active:visited:focus {
+      color: var(--light) !important;
+    }
+  }
+}
+
+// Desktop Menu
+.nav_desktop {
+  display: none;
+
+  @include res("md") {
+    display: flex;
+    gap: var(--base-spacing);
+  }
+
+  &_links {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: var(--base-spacing);
+  }
+
+  &_link {
+    padding: var(--base-unit) var(--base-spacing);
+    height: var(--btn-height);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--light) !important;
+    text-align: center;
+  }
+
+  &_lang {
+    display: flex;
+    align-items: center;
+    gap: var(--base-unit);
+  }
+
+  &_lang a {
+    padding: var(--base-unit);
+  }
+
+  &_lang a:hover,
+  &_lang a:focus,
+  &_lang a:visited,
+  &_lang a:visited:hover {
+    color: var(--gray-90) !important;
+  }
+
+  &_lang a.active,
+  &_lang a.active:hover,
+  &_lang a.active:focus {
+    color: var(--light) !important;
+  }
+}
