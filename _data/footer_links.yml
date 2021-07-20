@@ -18,9 +18,9 @@ fr:
   - name: dimensionnement
     link: /fr/dimensionnement
     label: Voir les informations sur le dimensionnement des sous-vêtements
-  - name: conditions générales
-    link: /fr/conditions
-    label: Consulter les modalités du site
   - name: l'accessibilité
     link: /fr/accessibilite
     label: Lire notre déclaration sur l'accessibilité
+  - name: conditions générales
+    link: /fr/conditions
+    label: Consulter les modalités du site

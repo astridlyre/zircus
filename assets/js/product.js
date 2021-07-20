@@ -33,8 +33,19 @@ export default function product() {
 
     let currentColor = color.value
 
-    function getStockText(qty, lang) {
-        switch (lang) {
+    function genCartPath() {
+        switch (lang()) {
+            case 'en':
+                return '/cart'
+            case 'fr':
+                return '/fr/panier'
+            default:
+                throw new Error('Invalid language')
+        }
+    }
+
+    function getStockText(qty) {
+        switch (lang()) {
             case 'en':
                 return ['None available', `Only ${qty} left!`, 'In stock']
             case 'fr':
@@ -167,7 +178,7 @@ export default function product() {
 
     // outOfStock sets out-of-stock status
     function outOfStock() {
-        stock.innerText = getStockText(0, lang())[0]
+        stock.innerText = getStockText(0)[0]
         stock.classList.add('out-stock')
         stock.classList.remove('in-stock')
         quantity.setAttribute('disabled', true)
@@ -177,7 +188,7 @@ export default function product() {
 
     // inStock sets in-stock status
     function inStock(updatedItem) {
-        const text = getStockText(updatedItem.quantity, lang())
+        const text = getStockText(updatedItem.quantity)
         stock.innerText = `${updatedItem.quantity > 5 ? text[2] : text[1]}`
         if (updatedItem.quantity < Number(quantity.value))
             quantity.value = updatedItem.quantity
@@ -228,10 +239,7 @@ export default function product() {
     image.addEventListener('click', () => handleViewFull())
     bigImageEl.addEventListener('click', () => handleViewFull())
     addToCart.addEventListener('click', handleAddToCart)
-    goToCart.addEventListener('click', () => {
-        if (lang() === 'fr') return location.assign('/fr/panier')
-        return location.assign('/fr/panier')
-    })
+    goToCart.addEventListener('click', () => location.assign(genCartPath()))
 
     // Register hooks
     state.addHook(() => updateStatus())

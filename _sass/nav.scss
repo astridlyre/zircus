@@ -7,6 +7,36 @@
   width: 100vw;
   z-index: 10;
 
+  &__svg {
+    top: var(--nav-height);
+    @include res("md") {
+      left: calc(var(--base-spacing) - 0.2rem);
+      width: calc(100% - var(--md-spacing));
+    }
+    left: 0;
+    width: 100%;
+    position: absolute;
+    display: flex;
+    justify-content: space-between;
+    z-index: 50;
+
+    svg {
+      color: var(--dark);
+      height: var(--base-spacing);
+      width: var(--base-spacing);
+    }
+
+    .left {
+      height: var(--base-spacing);
+      width: var(--base-spacing);
+    }
+
+    .right {
+      height: var(--base-spacing);
+      width: var(--base-spacing);
+    }
+  }
+
   & .container {
     padding: 0 calc((var(--md-spacing) / 2) + var(--x-padding));
   }
@@ -33,13 +63,13 @@
       padding: 1rem;
       font-size: var(--lg-font-size);
       margin: 1rem 0;
-      @include res('sm') {
+      @include res("sm") {
         font-size: var(--xl-font-size);
       }
-      @include res('md') {
+      @include res("md") {
         padding: 0;
         font-size: var(--small-font-size);
-    }
+      }
 
       & a {
         display: flex;
