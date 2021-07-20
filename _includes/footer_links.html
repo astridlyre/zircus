@@ -1,0 +1,39 @@
+<style>
+  .footer_links {
+    display: flex;
+    flex-flow: row wrap;
+    gap: var(--base-spacing);
+    margin-right: -0.5rem;
+  }
+
+  @media screen and (min-width: 601px) {
+    .footer_links {
+      justify-content: flex-end;
+    }
+  }
+
+  .footer_links a {
+    color: var(--light) !important;
+    padding: var(--base-unit);
+  }
+
+  .footer_links a:hover,
+  .footer_links a:focus,
+  .footer_links a:visited,
+  .footer_links a:visited:hover {
+    color: var(--light);
+  }
+</style>
+
+<ul class="footer_links">
+  {% for item in site.data.footer_links[page.lang] %}
+  <li>
+    <a
+      class="small-spaced-bold border-hover"
+      href="{{ item.link }}"
+      aria-label="{{ item.label }}"
+      >{{ item.name }}</a
+    >
+  </li>
+  {% endfor %}
+</ul>

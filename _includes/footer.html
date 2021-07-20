@@ -1,124 +1,84 @@
-<div class="footer__container">
-  <div class="container">
-    <footer class="footer">
-      <div class="footer__left">
-        <h4 class="footer__heading">{{ site.name }}</h4>
-        <p class="footer__text dot">{{ site.lang[page.lang]footer_text }}</p>
-      </div>
-      <div class="footer__right">
-        <ul class="footer__links">
-          {% for item in site.data.footer_links[page.lang] %}
-          <li class="footer__links_link">
-            <a href="{{ item.link }}" aria-label="{{ item.label }}"
-              >{{ item.name }}</a
-            >
-          </li>
-          {% endfor %}
-        </ul>
-        <div class="footer__social_lang">
-          <ul class="footer__social">
-            <li class="footer__social_link">
-              <a class="footer__social_button" href="mailto:support@zircus.com">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  class="footer__social_icon"
-                >
-                  <path
-                    d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
-                  ></path>
-                  <polyline points="22,6 12,13 2,6"></polyline>
-                </svg>
-              </a>
-            </li>
-            <li class="footer__social_link">
-              <a
-                href="https://www.facebook.com/zircusapparel/"
-                class="footer__social_button"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  class="footer__social_icon"
-                >
-                  <path
-                    d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"
-                  ></path>
-                </svg>
-              </a>
-            </li>
-            <li class="footer__social_link">
-              <a
-                href="https://www.instagram.com/zircusapparel/"
-                class="footer__social_button"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  class="footer__social_icon"
-                >
-                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                  <path
-                    d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"
-                  ></path>
-                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                </svg>
-              </a>
-            </li>
-          </ul>
-          <ul class="footer__lang_links">
-            {% assign products=site.products | where:"ref", page.ref |
-            sort:"lang" %} {% for product in products %}
-            <li class="footer__lang_link">
-              <a
-                href="{{ product.url }}"
-                class="
-                  {%
-                  if
-                  page.lang
-                  ==
-                  product.lang
-                  %}
-                  lang-active
-                  {%
-                  endif
-                  %}
-                "
-                >{{ product.lang }}</a
-              >
-            </li>
-            {% endfor %} {% assign pages=site.pages | where:"ref", page.ref |
-            sort:"lang" %} {% for link in pages %}
-            <li class="footer__lang_link">
-              <a
-                href="{{ link.url }}"
-                class="{% if page.lang == link.lang %} lang-active {% endif %}"
-                >{{ link.lang }}</a
-              >
-            </li>
-            {% endfor %}
-          </ul>
-        </div>
-      </div>
-    </footer>
-  </div>
+<style>
+  .footer {
+    margin: auto auto 0 auto;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--two-col-gap);
+    padding: 5rem 0;
+  }
+  @media screen and (min-width: 601px) {
+    .footer {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media screen and (min-width: 901px) {
+    .footer {
+      padding: 5rem var(--base-spacing);
+    }
+  }
+  @media screen and (min-width: 1921px) {
+    .footer {
+      padding: 5rem var(--md-spacing);
+    }
+  }
+
+  .footer h4 {
+    font-family: var(--accent-font-family) !important;
+    font-style: normal;
+    padding-bottom: 0.75rem;
+    margin-bottom: 0.75rem;
+    border-bottom: 1px solid var(--light);
+    display: inline-block;
+  }
+
+  .footer p {
+    font-size: var(--small-font-size);
+    max-width: 20rem;
+  }
+
+  .footer .right {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-end;
+    margin-left: auto;
+  }
+
+  @media screen and (min-width: 601px) {
+    .footer .right {
+      max-width: 33vw;
+      align-items: flex-end;
+    }
+  }
+
+  .footer aside {
+    margin-top: var(--md-spacing);
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: flex-start;
+    gap: var(--base-spacing);
+  }
+
+  @media screen and (min-width: 601px) {
+    .footer aside {
+      justify-content: flex-end;
+    }
+  }
+</style>
+
+<div class="container">
+  <footer class="footer">
+    <div>
+      <h4>{{ site.name }}</h4>
+      <p class="dot">{{ site.lang[page.lang]footer_text }}</p>
+    </div>
+    <div class="right">
+      {% include footer_links.html %}
+      <aside>
+        {% include footer_social_links.html %} {% include footer_lang_links.html
+        %}
+      </aside>
+    </div>
+  </footer>
 </div>

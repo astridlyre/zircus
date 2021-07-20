@@ -17,10 +17,52 @@ kbd {
   border-radius: var(--radius);
 }
 
+details + details {
+  margin-top: var(--base-spacing);
+}
+
 details {
+  border: 2px solid var(--gray-30);
+  border-radius: var(--radius);
+  padding: 1rem 1rem 0;
   max-width: 75ch;
+
+  &:hover {
+    border-color: var(--teal);
+  }
+
   p {
     margin-bottom: 0;
+  }
+}
+
+details[open] {
+  padding: 1rem;
+}
+
+details[open] summary {
+  border-bottom: 2px solid var(--gray-30);
+  margin-bottom: 1rem;
+}
+
+summary {
+  margin: -1rem -1rem 0;
+  padding: 0.5em;
+  color: var(--dark);
+  user-select: none;
+
+  &:hover {
+    color: var(--teal);
+  }
+
+  &:focus {
+    outline-color: var(--teal);
+  }
+
+  span {
+    font-weight: 600;
+    cursor: pointer;
+    color: var(--dark);
   }
 }
 

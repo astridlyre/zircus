@@ -1,0 +1,114 @@
+<style>
+  .nav_desktop {
+    display: none;
+  }
+
+  @media screen and (min-width: 901px) {
+    .nav_desktop {
+      display: flex;
+      gap: var(--base-spacing);
+    }
+  }
+
+  .nav_desktop_links {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: var(--base-spacing);
+  }
+
+  .nav_desktop_link {
+    padding: var(--base-unit) var(--base-spacing);
+    height: var(--btn-height);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--light) !important;
+    text-align: center;
+  }
+
+  .nav_desktop_lang {
+    display: flex;
+    align-items: center;
+    gap: var(--base-unit);
+  }
+
+  .nav_desktop_lang a {
+    padding: var(--base-unit);
+  }
+
+  .nav_desktop_lang a:hover,
+  .nav_desktop_lang a:focus,
+  .nav_desktop_lang a:visited,
+  .nav_desktop_lang a:visited:hover {
+    color: var(--gray-90) !important;
+  }
+
+  .nav_desktop_lang a.active,
+  .nav_desktop_lang a.active:hover,
+  .nav_desktop_lang a.active:focus {
+    color: var(--light) !important;
+  }
+</style>
+
+<div class="nav_desktop">
+  <ul class="nav_desktop_links">
+    {% for item in site.data.nav[page.lang] %}
+    <li>
+      <a
+        class="small-spaced-bold border-hover nav_desktop_link"
+        href="{{ item.link }}"
+        id="{{ item.id }}"
+        >{{ item.name }}</a
+      >
+    </li>
+    {% endfor %}
+  </ul>
+  <ul class="nav_desktop_lang">
+    {% assign products=site.products | where:"ref", page.ref | sort:"lang" %} {%
+    for product in products %}
+    <li>
+      <a
+        href="{{ product.url }}"
+        class="
+          {%
+          if
+          page.lang
+          ==
+          product.lang
+          %}
+          active
+          {%
+          endif
+          %}
+          small-spaced-bold
+          border-hover
+        "
+        >{{ product.lang }}</a
+      >
+    </li>
+    {% endfor %} {% assign pages=site.pages | where:"ref", page.ref |
+    sort:"lang" %} {% for link in pages %}
+    <li>
+      <a
+        href="{{ link.url }}"
+        class="
+          {%
+          if
+          page.lang
+          ==
+          link.lang
+          %}
+          active
+          {%
+          endif
+          %}
+          small-spaced-bold
+          border-hover
+        "
+        >{{ link.lang }}</a
+      >
+    </li>
+    {% endfor %}
+  </ul>
+</div>

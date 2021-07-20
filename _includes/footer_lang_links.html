@@ -1,0 +1,64 @@
+<style>
+  .footer_lang {
+    display: flex;
+    align-items: center;
+    gap: var(--base-unit);
+  }
+
+  .footer_lang a {
+    padding: var(--base-unit);
+    color: var(--gray-90) !important;
+  }
+
+  .footer_lang a.active {
+    color: var(--light) !important;
+  }
+</style>
+
+<ul class="footer_lang">
+  {% assign products=site.products | where:"ref", page.ref | sort:"lang" %} {%
+  for product in products %}
+  <li>
+    <a
+      href="{{ product.url }}"
+      class="
+        {%
+        if
+        page.lang
+        ==
+        product.lang
+        %}
+        active
+        {%
+        endif
+        %}
+        small-spaced-bold
+        border-hover
+      "
+      >{{ product.lang }}</a
+    >
+  </li>
+  {% endfor %} {% assign pages=site.pages | where:"ref", page.ref | sort:"lang"
+  %} {% for link in pages %}
+  <li>
+    <a
+      href="{{ link.url }}"
+      class="
+        {%
+        if
+        page.lang
+        ==
+        link.lang
+        %}
+        active
+        {%
+        endif
+        %}
+        small-spaced-bold
+        border-hover
+      "
+      >{{ link.lang }}</a
+    >
+  </li>
+  {% endfor %}
+</ul>

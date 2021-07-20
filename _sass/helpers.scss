@@ -150,3 +150,19 @@
     border-radius: var(--big-radius);
   }
 }
+
+.border-hover {
+  @include borderHover();
+}
+
+.border-hover-big {
+  @include borderHoverBig();
+}
+
+.small-spaced-bold {
+  @include smallSpacedBold();
+}
+
+.small-spaced {
+  @include smallSpaced();
+}

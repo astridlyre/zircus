@@ -1,107 +1,51 @@
-<div class="skip-to-main-content">
-  <button id="skip-link" type="button">
-    {{ site.lang[page.lang]skip_link }}
-  </button>
-</div>
+<style>
+  .nav {
+    height: var(--nav-height);
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: var(--dark);
+    width: 100vw;
+    z-index: 10;
+  }
+
+  @media screen and (min-width: 901px) {
+    .nav {
+      padding: 0 var(--base-spacing);
+    }
+  }
+
+  @media screen and (min-width: 1921px) {
+    .nav {
+      padding: 0 var(--md-spacing);
+    }
+  }
+
+  .nav.slide-up {
+    transform: translateY(-100%);
+    transition: all 0.2s ease-in;
+  }
+
+  .nav.slide-down {
+    transform: translateY(0);
+    transition: all 0.1s ease-out;
+  }
+
+  .nav header {
+    display: flex;
+    margin: 0 auto;
+    height: var(--nav-height);
+    align-items: center;
+    justify-content: space-between;
+  }
+</style>
+
+{% include skip_to_content.html %}
 <nav class="nav" id="nav">
   <div class="container">
-    <header class="nav__nav">
-      <h2 class="nav__heading">
-        <a
-          class="nav__heading_link"
-          href="{{ site.lang[page.lang]home_link_path }}"
-          aria-label="{{ site.lang[page.lang]home_link }}"
-          >{{ site.name }}</a
-        >
-      </h2>
-      <div class="nav__desktop">
-        <ul class="nav__desktop_items">
-          {% for item in site.data.nav[page.lang] %}
-          <li class="nav__desktop_item">
-            <a
-              class="nav__desktop_link"
-              href="{{ item.link }}"
-              id="{{ item.id }}"
-              >{{ item.name }}</a
-            >
-          </li>
-          {% endfor %}
-        </ul>
-        <ul class="nav__lang_links">
-          {% assign products=site.products | where:"ref", page.ref | sort:"lang"
-          %} {% for product in products %}
-          <li class="nav__lang_nav_link">
-            <a
-              href="{{ product.url }}"
-              class="{% if page.lang == product.lang %} lang-active {% endif %}"
-              >{{ product.lang }}</a
-            >
-          </li>
-          {% endfor %} {% assign pages=site.pages | where:"ref", page.ref |
-          sort:"lang" %} {% for link in pages %}
-          <li class="nav__lang_nav_link">
-            <a
-              href="{{ link.url }}"
-              class="{% if page.lang == link.lang %} lang-active {% endif %}"
-              >{{ link.lang }}</a
-            >
-          </li>
-          {% endfor %}
-        </ul>
-      </div>
+    <header>
+      {% include nav_heading.html %} {% include nav_desktop.html %}
     </header>
   </div>
 </nav>
-<div class="nav__mobile">
-  <ul class="nav__mobile_items hide" id="menu-mobile-list">
-    {% for item in site.data.nav[page.lang] %}
-    <li class="nav__mobile_item">
-      <a
-        href="{{ item.link }}"
-        id="{{ item.id }}-mobile"
-        class="nav__mobile_item_link"
-        >{{ item.name }}</a
-      >
-    </li>
-    {% endfor %}
-    <li class="nav__mobile_lang">
-      <ul class="nav__lang_links">
-        {% assign products=site.products | where:"ref", page.ref | sort:"lang"
-        %} {% for product in products %}
-        <li class="nav__lang_nav_link">
-          <a
-            href="{{ product.url }}"
-            class="{% if page.lang == product.lang %} lang-active {% endif %}"
-            >{{ product.lang }}</a
-          >
-        </li>
-        {% endfor %} {% assign pages=site.pages | where:"ref", page.ref |
-        sort:"lang" %} {% for link in pages %}
-        <li class="nav__lang_nav_link">
-          <a
-            href="{{ link.url }}"
-            class="{% if page.lang == link.lang %} lang-active {% endif %}"
-            >{{ link.lang }}</a
-          >
-        </li>
-        {% endfor %}
-      </ul>
-    </li>
-  </ul>
-  <button id="menu-mobile-btn" class="nav__button" type="button">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      class="nav__button_bars"
-    >
-      <line x1="3" y1="12" x2="21" y2="12"></line>
-      <line x1="3" y1="6" x2="21" y2="6"></line>
-      <line x1="3" y1="18" x2="21" y2="18"></line>
-    </svg>
-  </button>
-</div>
+{% include nav_mobile.html %}

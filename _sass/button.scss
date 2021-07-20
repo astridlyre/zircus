@@ -72,6 +72,22 @@
   }
 }
 
+.btn__icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem;
+  background: none;
+  color: var(--light);
+  cursor: pointer;
+  @include borderHover();
+
+  svg {
+    width: var(--base-spacing);
+    color: var(--light);
+  }
+}
+
 .input {
   height: var(--btn-height);
   padding: 0 var(--input-padding);
