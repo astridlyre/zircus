@@ -108,7 +108,7 @@
             </li>
             {% endfor %} {% assign pages=site.pages | where:"ref", page.ref |
             sort:"lang" %} {% for link in pages %}
-            <li class="nav__lang_nav_link">
+            <li class="footer__lang_link">
               <a
                 href="{{ link.url }}"
                 class="{% if page.lang == link.lang %} lang-active {% endif %}"

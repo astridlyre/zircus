@@ -10,6 +10,9 @@
   grid-template-columns: 1fr;
   gap: var(--two-col-gap);
   padding: 5rem 0;
+  @include res('md') {
+    padding: 5rem var(--base-spacing);
+  }
 
 
   &__container {
@@ -17,10 +20,6 @@
     align-items: flex-end;
     width: 100%;
     justify-content: center;
-
-  & .container {
-    padding: 0 calc((var(--md-spacing) / 2) + var(--x-padding));
-  }
   }
 
   &__heading {

@@ -6,40 +6,10 @@
   background: var(--dark);
   width: 100vw;
   z-index: 10;
-
-  &__svg {
-    top: var(--nav-height);
-    @include res("md") {
-      left: calc(var(--base-spacing) - 0.2rem);
-      width: calc(100% - var(--md-spacing));
-    }
-    left: 0;
-    width: 100%;
-    position: absolute;
-    display: flex;
-    justify-content: space-between;
-    z-index: 50;
-
-    svg {
-      color: var(--dark);
-      height: var(--base-spacing);
-      width: var(--base-spacing);
-    }
-
-    .left {
-      height: var(--base-spacing);
-      width: var(--base-spacing);
-    }
-
-    .right {
-      height: var(--base-spacing);
-      width: var(--base-spacing);
-    }
+  @include res('md') {
+    padding: 0 var(--base-spacing);
   }
 
-  & .container {
-    padding: 0 calc((var(--md-spacing) / 2) + var(--x-padding));
-  }
 
   &.slide-up {
     transform: translateY(-100%);
@@ -112,7 +82,7 @@
     height: 3rem;
     width: 3rem;
     padding: 0.5rem;
-    right: calc(var(--x-padding) + 0.25rem);
+    right: calc(var(--x-padding) - 0.6rem);
     cursor: pointer;
     z-index: 50;
 
