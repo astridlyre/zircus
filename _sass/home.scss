@@ -3,16 +3,23 @@
   &__heading {
     margin: auto;
     padding: var(--base-spacing) 0;
-    @include res('lg') {
-      padding: var(--y-padding) 0 ;
+    @include res('sm') {
+      padding: var(--md-spacing) 0 ;
+    }
+    @include res('md') {
+      padding: var(--y-padding) 0;
     }
     text-align: center;
     font-family: var(--accent-font-family);
     font-style: normal;
     word-break: break-word;
     @include res("md") {
+      line-height: 0.88;
       font-size: calc(var(--xxl-font-size) * 1.25);
-      max-width: 50vw;
+      max-width: 70vw;
+    }
+    @include res('lg') {
+      max-width: 55vw;
     }
     font-size: calc(var(--xxl-font-size-mobile) * 1.25);
     letter-spacing: -0.25rem;
