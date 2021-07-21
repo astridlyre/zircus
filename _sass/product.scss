@@ -36,7 +36,7 @@
     cursor: pointer;
     margin-left: auto;
     margin-right: auto;
-    @include res('lg') {
+    @include res("lg") {
       width: 25vw;
     }
   }
@@ -110,15 +110,10 @@
     label {
       display: flex;
       flex-flow: column nowrap;
-      font-weight: 600;
 
       span {
         height: 1.5rem;
-        @include smallSpaced();
-      }
-
-      &:hover span {
-        color: var(--teal);
+        @include smallSpacedBold();
       }
     }
 

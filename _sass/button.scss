@@ -1,18 +1,16 @@
 .btn {
+  @include smallSpacedBold();
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 0 var(--btn-padding);
   height: var(--btn-height);
-  background: var(--light);
+  background: var(--gray-20);
   border-radius: var(--radius);
   border: 2px solid var(--dark);
   color: var(--dark);
   outline: none;
   font-family: var(--site-font-family);
-  font-size: var(--small-font-size);
-  font-weight: 600;
-  letter-spacing: var(--letter-spacing);
   cursor: pointer;
   position: relative;
   z-index: 1;
@@ -89,14 +87,13 @@
 }
 
 .input {
+  @include smallSpaced();
   height: var(--btn-height);
   padding: 0 var(--input-padding);
   border-radius: var(--radius);
   border: 2px solid var(--dark);
-  background-color: var(--light);
-  font-size: var(--small-font-size);
+  background-color: var(--gray-20);
   font-family: var(--site-font-family);
-  letter-spacing: var(--letter-spacing);
   min-width: 4rem;
 
   &:hover,
