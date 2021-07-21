@@ -19,18 +19,12 @@ export default function modal() {
         modalHeading.textContent = modal.heading
         modalText.textContent = modal.text
         modalOk.textContent = modal.ok.text
-        modalOk.addEventListener('click', () => {
-            modal.ok.fn()
-            hideModal()
-        })
+        modalOk.addEventListener('click', () => hideModal())
 
         if (modal.cancel) {
             modalCancel.classList.remove('hidden')
             modalCancel.textContent = modal.cancel.text
-            modalCancel.addEventListener('click', () => {
-                modal.cancel.fn()
-                hideModal()
-            })
+            modalCancel.addEventListener('click', () => hideModal())
             modalCancel.focus()
         } else {
             modalOk.focus()
