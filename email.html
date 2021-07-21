@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Thanks for your order</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600&family=Nunito:ital,wght@0,400;0,600;1,600&display=swap");
+    @font-face {
+      font-family: "Virgo 01";
+      src: url("https://zircus.netlify.app/font/virgo.woff2") format("woff2");
+    }
+    :root {
+      --light: #f9f8fa;
+      --dark: #211b22;
+      --gray-30: #e4e0e6;
+      --teal: #82dbd7;
+      --link: #45576e;
+      --link-hover: #283341;
+      --link-visited: #553a7b;
+      --link-visited-hover: #491845;
+      --heading-font-family: "Nunito", sans-serif;
+      --site-font-family: "Nunito Sans", sans-serif;
+      --accent-font-family: "Virgo 01", sans-serif;
+      --doc-line-height: 1.75;
+      --heading-line-height: 1.1;
+      --base-unit: 0.325rem;
+      --base-spacing: calc(var(--base-unit) * 4);
+      --md-spacing: calc(var(--base-spacing) * 2);
+      --lg-spacing: calc(var(--md-spacing) * 2);
+      --big-radius: 1.25rem;
+      --radius: 0.325rem;
+      --letter-spacing: 0.1rem;
+    }
+
+    body {
+      background-color: var(--dark);
+      font-family: var(--site-font-family);
+      padding: var(--base-spacing);
+      width: 100vw;
+      min-height: 100vh;
+      margin: 0;
+      box-sizing: border-box;
+    }
+
+    main {
+      border-radius: var(--big-radius);
+      background-color: var(--light);
+      padding: var(--md-spacing);
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      margin: var(--md-spacing) 0;
+    }
+
+    header a {
+      text-decoration: none !important;
+      border: 2px solid transparent;
+      border-radius: var(--radius);
+      padding: var(--base-unit);
+    }
+
+    header a:focus,
+    header a:hover {
+      border-color: var(--teal);
+    }
+
+    h3::after {
+      content: "·";
+      position: absolute;
+      bottom: -3.65rem;
+      right: -2.25rem;
+      font-family: var(--heading-font-family);
+      font-size: 8rem;
+      color: var(--teal);
+    }
+
+    h1 {
+      font-family: var(--heading-font-family);
+      letter-spacing: -0.1rem;
+      font-size: 3rem;
+    }
+
+    h3 {
+      font-family: var(--accent-font-family);
+      position: relative;
+      color: var(--light);
+      font-size: 2rem;
+      margin: 0;
+    }
+
+    address {
+      margin-bottom: var(--base-spacing);
+    }
+
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    a {
+      color: var(--link);
+      text-decoration: none;
+    }
+
+    a:hover,
+    a:focus {
+      color: var(--link-hover);
+      text-decoration: underline;
+    }
+
+    a:visited {
+      color: var(--link-visited);
+    }
+
+    a:visited:hover,
+    a:visited:focus {
+      color: var(--link-visited-hover);
+    }
+
+    img {
+      max-width: var(--lg-spacing);
+      object-fit: contain;
+    }
+
+    kbd {
+      padding: var(--base-unit);
+      background-color: var(--gray-30);
+      border-radius: var(--radius);
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .details {
+      text-align: right;
+    }
+
+    .total {
+      width: 100%;
+      font-weight: 600;
+      letter-spacing: var(--letter-spacing);
+      margin-bottom: var(--base-spacing);
+    }
+
+    .products a {
+      box-sizing: border-box;
+      padding: var(--base-spacing);
+      border-top: 2px solid var(--gray-30);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--base-spacing);
+      width: 100%;
+      text-decoration: none;
+      color: var(--dark);
+    }
+
+    .products a p {
+      border: 2px solid transparent;
+      border-radius: var(--radius);
+    }
+
+    .products a:hover p,
+    .products a:focus p {
+      border-color: var(--teal);
+    }
+
+    .product span {
+      padding: var(--base-unit);
+    }
+
+    .container {
+      max-width: 720px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  </style>
+  <body>
+    <div class="container">
+      <header>
+        <a href="https://zircus.netlify.app/"><h3>zircus</h3></a>
+      </header>
+      <main role="main">
+        <h1>Thanks for your order!</h1>
+        <div class="two-col">
+          <address>
+            <strong>Erin Burton</strong><br />
+            <a href="mailto:erin.burton@outlook.com">erin.burton@outlook.com</a
+            ><br />
+            34900 McCabe Place<br />
+            Abbotsford, British Columbia<br />
+            Canada V3G 1H1<br />
+          </address>
+          <div class="details">
+            <p class="total">Total: $62.25</p>
+            <p>Order Id: <kbd>5488188vw80-80najso09r</kbd></p>
+          </div>
+        </div>
+        <div class="products">
+          <a href="https://zircus.netlify.app/products/flat-front-briefs.html">
+            <img
+              src="https://zircus.netlify.app/assets/img/products/masked/ff-yellow-a-400.png"
+              alt=""
+            />
+            <p class="product">
+              <span>Flat Front Briefs</span> <span>yellow</span>
+              <span>1</span>
+            </p></a
+          >
+          <a href="https://zircus.netlify.app/products/pouch-front-briefs.html">
+            <img
+              src="https://zircus.netlify.app/assets/img/products/masked/pf-teal-a-400.png"
+              alt=""
+            />
+            <p class="product">
+              <span>Pouch Front Briefs</span> <span>teal</span> <span>1</span>
+            </p></a
+          >
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

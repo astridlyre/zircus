@@ -167,6 +167,7 @@
 
     a {
       padding: var(--base-unit);
+      font-size: var(--medium-font-size);
     }
 
     a,
@@ -238,5 +239,31 @@
   &_lang a.active:hover,
   &_lang a.active:focus {
     color: var(--light) !important;
+  }
+}
+
+// Nav Button
+.nav_button {
+  position: fixed;
+  background: var(--dark);
+  border: 2px solid transparent;
+  border-radius: var(--radius);
+  outline: none;
+  top: 0.5rem;
+  height: 3rem;
+  width: 3rem;
+  padding: 0.5rem;
+  right: calc(var(--x-padding) - 0.6rem);
+  cursor: pointer;
+  z-index: 50;
+
+  &:hover {
+    border-color: var(--teal);
+  }
+
+  svg {
+    color: var(--light);
+    height: 100%;
+    width: 100%;
   }
 }
