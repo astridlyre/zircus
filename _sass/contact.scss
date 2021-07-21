@@ -1,0 +1,50 @@
+.contact {
+  &.form {
+    display: flex;
+    flex-flow: row wrap;
+    gap: var(--base-spacing);
+    max-width: 75ch;
+  }
+
+  .label_lg {
+    width: 100%;
+  }
+
+  .label_lg,
+  .label_sm {
+    display: flex;
+    flex-flow: column nowrap;
+    flex-grow: 1;
+  }
+
+  span {
+    font-size: var(--small-font-size);
+    letter-spacing: var(--letter-spacing);
+  }
+
+  .label_sm {
+    flex-basis: 14rem;
+  }
+
+  textarea {
+    resize: none;
+    height: unset;
+    padding: var(--input-padding);
+  }
+
+  button {
+    max-width: 12rem;
+  }
+
+  .button_container {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  p {
+    margin-right: var(--base-spacing);
+    margin-bottom: 0;
+  }
+}

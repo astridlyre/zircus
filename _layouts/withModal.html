@@ -2,7 +2,19 @@
 <html lang="{{ page.lang }}">
   {% include head.html %}
   <body>
-    {% include stripe.html %} {% include nav.html %}
+    <div id="modal" class="modal hidden">
+      <form id="modal-form">
+        <h2 id="modal-heading">This is a heading</h2>
+        <p id="modal-text">This is some modal text.</p>
+        <div class="modal_buttons">
+          <button id="modal-ok" class="btn__primary btn">ok</button>
+          <button id="modal-cancel" class="hidden btn btn__secondary">
+            cancel
+          </button>
+        </div>
+      </form>
+    </div>
+    {% include nav.html %}
     <div id="blur">
       <main id="main-content" role="main" tabindex="-1" class="page">
         {{ content }}

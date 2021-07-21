@@ -1,4 +1,5 @@
 import { q, API_ENDPOINT } from './utils.js'
+import modal from './modal.js'
 
 export default function contact() {
     const form = q('contact-form')
@@ -6,9 +7,9 @@ export default function contact() {
     const nameEl = q('contact-name')
     const emailEl = q('contact-email')
     const messageEl = q('contact-message')
-    const sendMsg = q('contact-sent')
     const sendBtn = q('contact-button')
     const els = [nameEl, emailEl, messageEl, sendBtn]
+    const showModal = modal()
 
     form.addEventListener('submit', e => {
         e.preventDefault()
@@ -21,13 +22,6 @@ export default function contact() {
             el.value = ''
             el.disabled = true
         })
-        sendMsg.classList.remove('hidden')
-        setTimeout(() => {
-            els.forEach(el => {
-                el.disabled = false
-            })
-            sendMsg.classList.add('hidden')
-        }, 8000)
         fetch(`${API_ENDPOINT}/msg`, {
             method: 'POST',
             headers: {
@@ -36,7 +30,31 @@ export default function contact() {
             body: JSON.stringify(payload),
         })
             .then(res => res.json())
-            .then(data => console.log(data))
+            .then(data => {
+                els.forEach(el => {
+                    el.disabled = false
+                })
+                console.log('wtf')
+                if (data.error) {
+                    showModal({
+                        heading: 'Error',
+                        text: data.error,
+                        ok: {
+                            text: 'ok',
+                            fn: () => console.log('clicked ok'),
+                        },
+                    })
+                } else {
+                    showModal({
+                        heading: 'Success!',
+                        text: data.reply,
+                        ok: {
+                            text: 'ok',
+                            fn: () => console.log('clicked ok'),
+                        },
+                    })
+                }
+            })
             .catch(e => console.log(e))
     })
 }

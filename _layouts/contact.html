@@ -1,88 +1,46 @@
 ---
-layout: generic
+layout: withModal
 ---
 
-<style>
-  .contact.form {
-    display: flex;
-    flex-flow: row wrap;
-    gap: var(--base-spacing);
-    max-width: 75ch;
-  }
-
-  .contact .label_lg {
-    width: 100%;
-  }
-
-  .contact .label_lg,
-  .contact .label_sm {
-    display: flex;
-    flex-flow: column nowrap;
-    flex-grow: 1;
-  }
-
-  .contact span {
-    font-size: var(--small-font-size);
-    letter-spacing: var(--letter-spacing);
-  }
-
-  .contact .label_sm {
-    flex-basis: 14rem;
-  }
-
-  .contact textarea {
-    resize: none;
-    height: unset;
-    padding: var(--input-padding);
-  }
-
-  .contact button {
-    max-width: 12rem;
-  }
-
-  .contact .button_container {
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-  }
-
-  .contact p {
-    margin-right: var(--base-spacing);
-    margin-bottom: 0;
-  }
-</style>
-
-<form id="contact-form" class="form contact">
-  <label for="contact-name" class="label_sm">
-    <span>{{ page.label_name }}</span>
-    <input
-      id="contact-name"
-      type="text"
-      name="name"
-      maxlength="80"
-      value=""
-      class="input"
-  /></label>
-  <label for="contact-email" class="label_sm">
-    <span>{{ page.label_email }}</span>
-    <input
-      id="contact-email"
-      type="email"
-      name="contact-email"
-      value=""
-      class="input"
-      maxlength="80"
-    />
-  </label>
-  <label for="contact-message" class="label_lg">
-    <span>{{ page.label_message }}</span>
-    <textarea rows="10" class="input" id="contact-message"></textarea>
-  </label>
-  <div class="button_container">
-    <p id="contact-sent" class="hidden">{{ page.label_message_sent }}</p>
-    <button type="submit" id="contact-button" class="btn btn__primary">
-      {{ page.label_button_text }}
-    </button>
-  </div>
-</form>
+<img
+  src="{{ page.bg_image }}"
+  alt="{{ page.bg_image_alt }}"
+  title="{{ page.bg_image_title }}"
+  class="page__image"
+/>
+<div class="container">
+  <h1 class="page__heading">{{ page.heading }}</h1>
+  <form id="contact-form" class="form contact">
+    <label for="contact-name" class="label_sm">
+      <span>{{ page.label_name }}</span>
+      <input
+        id="contact-name"
+        type="text"
+        name="name"
+        maxlength="80"
+        value=""
+        class="input"
+    /></label>
+    <label for="contact-email" class="label_sm">
+      <span>{{ page.label_email }}</span>
+      <input
+        id="contact-email"
+        type="email"
+        name="contact-email"
+        value=""
+        class="input"
+        maxlength="80"
+      />
+    </label>
+    <label for="contact-message" class="label_lg">
+      <span>{{ page.label_message }}</span>
+      <textarea rows="10" class="input" id="contact-message"></textarea>
+    </label>
+    <div class="button_container">
+      <p id="contact-sent" class="hidden">{{ page.label_message_sent }}</p>
+      <button type="submit" id="contact-button" class="btn btn__primary">
+        {{ page.label_button_text }}
+      </button>
+    </div>
+  </form>
+</div>

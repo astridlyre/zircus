@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang }}">
+  {% include head.html %}
+  <body>
+    {% include stripe.html %} {% include nav.html %}
+    <div id="blur">
+      <main id="main-content" role="main" tabindex="-1" class="page">
+        {{ content }}
+      </main>
+      {% include bottom-image.html %} {% include footer.html %}
+    </div>
+  </body>
+</html>

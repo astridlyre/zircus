@@ -11,6 +11,6 @@ bottom_image: /assets/img/products/1920/group-a-1920.jpg
 label_name: Name
 label_email: Email
 label_message: Message
-label_sent: Message sent
+label_message_sent: Message sent
 label_button_text: send message
 ---

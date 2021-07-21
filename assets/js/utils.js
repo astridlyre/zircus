@@ -91,7 +91,11 @@ class State {
 
     update() {
         this.hooks.forEach(hook =>
-            hook({ cart: this.cart, inv: this.inv, countries: this.countries })
+            hook({
+                cart: this.cart,
+                inv: this.inv,
+                countries: this.countries,
+            })
         )
         return this
     }
