@@ -148,6 +148,7 @@ export default function payment() {
         loading(true)
 
         const req = {
+            lang: lang(),
             update: state.secret,
             name: name.value,
             email: email.value,
@@ -157,6 +158,7 @@ export default function payment() {
             state: stateEl.value,
             zip: zip.value,
             items: state.cart.map(item => ({
+                images: item.images,
                 type: item.type,
                 prefix: item.prefix,
                 size: item.size,
