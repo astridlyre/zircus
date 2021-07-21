@@ -178,7 +178,11 @@ export default function payment() {
             .then(data => data.json())
             .then(data => {
                 state.secret = data.clientSecret
-                state.order = { id: data.id, name: data.name }
+                state.order = {
+                    id: data.id,
+                    name: data.name,
+                    email: data.email,
+                }
                 q('payment-price').innerText = `$${data.total.toFixed(2)}`
                 loadStripe(data)
                 loading(false)
