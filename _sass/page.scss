@@ -48,7 +48,7 @@ main {
     line-height: 0.95;
     font-style: normal;
     @include res("md") {
-      font-size: calc(var(--xxl-font-size) * 1.25);
+      font-size: var(--xxl-font-size);
       word-break: unset;
       max-width: 40vw;
       letter-spacing: -0.25rem;
