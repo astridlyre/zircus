@@ -24,15 +24,15 @@ We continue our efforts to constantly improve the accessibility of our site and
 services in the belief that it is our collective moral obligation to allow
 seamless, accessible and unhindered use also for those of us with disabilities.
 
-Despite our efforts to make all pages and content on zircus.com fully
+Despite our efforts to make all pages and content on zircus.ca fully
 accessible, this is a work in progress. To the extent any content is not fully
-accessible, this may be a result of zircus.com not having found or identified
+accessible, this may be a result of zircus.ca not having found or identified
 the most appropriate technological solution. Under such circumstances, we will
 work diligently to remedy any inaccessibility.
 
 ## here for you
 
-If you are experiencing difficulty with any content on zircus.com or require
+If you are experiencing difficulty with any content on zircus.ca or require
 assistance with any part of our site, please contact us during normal business
 hours as detailed below and we will be happy to assist.
 
@@ -41,4 +41,4 @@ hours as detailed below and we will be happy to assist.
 If you wish to report an accessibility issue, have any questions or need
 assistance, please contact Customer Support as follows:
 
-Email: [info@zircus.com](info@zircus.com)
+Email: [info@zircus.ca](info@zircus.ca)

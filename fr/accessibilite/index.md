@@ -25,16 +25,16 @@ site et services en s'insponsant dans la conviction qu'il est de notre
 obligation morale collective de accessible et sans entrave s'adresse aussi
 à ceux d'entre nous qui ont un handicap.
 
-Malgré nos efforts pour que toutes les pages et le contenu zircus.com
+Malgré nos efforts pour que toutes les pages et le contenu zircus.ca
 entièrement accessible, il s'agit d'un travail en cours. Dans la mesure où tout
 contenu n'est pas entièrement accessible, cela peut être le résultat
-d'zircus.com'ayant pas trouvé ou identifié la solution technologique la plus
+d'zircus.ca'ayant pas trouvé ou identifié la solution technologique la plus
 appropriée. Dans de telles circonstances, nous travailler avec diligence pour
 remédier à toute inaccessibilité.
 
 ## là pour vous
 
-Si vous éprouvez des difficultés avec du contenu sur zircus.com ou si vous
+Si vous éprouvez des difficultés avec du contenu sur zircus.ca ou si vous
 assistance avec n'importe quelle partie de notre site, s'il vous plaît nous
 contacter pendant les affaires normales heures comme détaillé ci-dessous et nous
 serons heureux de vous aider.
@@ -44,4 +44,4 @@ serons heureux de vous aider.
 Si vous désirez signaler un problème d'accessibilité, si vous avez des questions
 ou assistance, veuillez contacter le service clientèle comme suit:
 
-Par courriel: [info@zircus.com](info@zircus.com)
+Par courriel: [info@zircus.ca](info@zircus.ca)

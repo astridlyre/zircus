@@ -11,7 +11,7 @@ subheading: Last updated July 07 2021
 ## terms of use
 
 Zircus Underwear ("Zircus") operates online through the website
-www.zircus.com ("the Site"). Use of the Site is regulated by the terms and
+www.zircus.ca ("the Site"). Use of the Site is regulated by the terms and
 conditions that appear below and as outlined in our Privacy Notice. These
 terms and conditions can be modified at any given time by Zircus.
 
@@ -25,7 +25,7 @@ Site. For anything to do with this policy please contact Zircus at:
 
 <address>Zircus Underwear<br />PO Box 8592<br />Nanaimo BC, Canada</address>
 
-or email: [info@zircus.com](mailto:info@zircus.com)
+or email: [info@zircus.ca](mailto:info@zircus.ca)
 
 ## general conditions of sale
 
@@ -156,7 +156,7 @@ according to the rules of the delivery company.
 
 If the contents of an order that you received does not match the items that you
 ordered, or if your order is incomplete, please contact our customer service
-team within 48 hours of receipt by email at: [support@zircus.com](mailto:support@zircus.com).
+team within 48 hours of receipt by email at: [support@zircus.ca](mailto:support@zircus.ca).
 
 ## responsibility
 

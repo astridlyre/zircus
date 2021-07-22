@@ -28,7 +28,7 @@ en:
     content: 'All orders placed Monday through Friday will begin processing the
       following day. You should receive an email confirming your order within
       10-15 minutes of placing an order online. In the unlikely case you have not
-      received a confirmation please email <a href="mailto:support@zircus.com">support@zircus.com</a>.'
+      received a confirmation please email <a href="mailto:support@zircus.ca">support@zircus.ca</a>.'
   - summary: 'Can I change or cancel my order once placed?'
     content: 'As we aim to ship your order as quickly as possible, we regret that it is
       usually not possible for us to handle change or cancel requests once an
@@ -43,7 +43,7 @@ en:
       the shipment has been picked up and scanned by the carrier.'
   - summary: 'I mistakenly ordered the wrong item, what should I do?'
     content: 'Please contact us at email
-      <a href="mailto:support@zircus.com">support@zircus.com</a> as soon as
+      <a href="mailto:support@zircus.ca">support@zircus.ca</a> as soon as
       possible.'
   - summary: 'How do I wash my Zircus underwear?'
     content: 'Most garments can be machine washed with cold water and tumble dried with
@@ -69,12 +69,12 @@ fr:
   - summary: 'Quelle est votre politique de retour?'
     content: "Malheureusement, en raison de notre emballage minimal, nous ne pouvons pas accepter les retours, car il n'y a aucun moyen de s'assurer que les sous-vêtements n'ont pas été portés."
   - summary: "Je viens de faire une commande en ligne, mais je n'ai pas encore reçu de confirmation par courriel, a-t-on reçu par commande?"
-    content: "Toutes les commandes passées du lundi au vendredi commenceront à être traiter le lendemain. Vous devriez recevoir un courriel confirmant votre commande dans les 10 à 15 minutes suivant la commande en ligne. Dans le cas peu probable où vous n'avez pas reçu de confirmation, veuillez envoyer un courriel: <a href='mailto:support@zircus.com'>support@zircus.com</a>."
+    content: "Toutes les commandes passées du lundi au vendredi commenceront à être traiter le lendemain. Vous devriez recevoir un courriel confirmant votre commande dans les 10 à 15 minutes suivant la commande en ligne. Dans le cas peu probable où vous n'avez pas reçu de confirmation, veuillez envoyer un courriel: <a href='mailto:support@zircus.ca'>support@zircus.ca</a>."
   - summary: "Puis-je modifier ou annuler ma commande une fois passée?"
     content: "Comme nous visons à expédier votre commande le plus rapidement possible, nous regrettons qu'il ne soit généralement pas possible pour nous de traiter les demandes de modification ou d'annulation une fois qu'une commande a été soumise. Veuillez vous assurer d'avoir vérifié les détails de votre commande avant la soumission, en particulier l'adresse de facturation et d'expédition. Zircus peut être contacté pendant les heures d'ouverture, mais si nous ne sommes pas en mesure de faciliter un changement de commande ou une demande d'annulation, vous pouvez traiter un retour en vertu de notre politique de garantie de confort."
   - summary: "Comment puis-je savoir quand ma commande a été expédiée?"
     content: "Un courriel vous sera envoyé une fois que votre commande aura été expédiée et inclura votre numéro de suivi. Veuillez noter que le colis peut ne pas être traçable tant que l'envoi n'a pas été ramassé et scanné par le transporteur."
   - summary: "J'ai commandé par erreur le mauvais article, que dois-je faire?"
-    content: "Veuillez nous contacter à l'adresse <a href='mailto:support@zircus.com'>support@zircus.com</a> dès que possible."
+    content: "Veuillez nous contacter à l'adresse <a href='mailto:support@zircus.ca'>support@zircus.ca</a> dès que possible."
   - summary: 'Comment laver mes sous-vêtements Zircus?'
     content: "La plupart des vêtements peuvent être lavés à la machine à l'eau froide et séchés par culbutage à feu doux à cycle délicat. Remarque : seulement du fer (à feu doux), de l'eau de Javel (à l'aide d'un agent de blanchiment non chloré) ou nettoyer à sec au besoin. Il s'il s'est généralement indiqué des instructions de lavage et les pages/étiquettes/emballages de produits individuels doivent être référencés pour chaque style, car les instructions de lavage peuvent varier légèrement."
