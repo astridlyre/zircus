@@ -53,10 +53,11 @@ main {
       max-width: 40vw;
       letter-spacing: -0.25rem;
     }
-    font-size: calc(var(--xxl-font-size-mobile) * 1.125);
+    font-size: var(--xl-font-size-mobile);
     letter-spacing: -0.1rem;
     @media screen and (max-width: 420px) {
-      word-break: break-word;
+      font-size: calc(var(--xl-font-size-mobile) * 0.8);
+      letter-spacing: unset;
     }
   }
 
