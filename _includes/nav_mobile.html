@@ -1,11 +1,11 @@
 <div class="nav_mobile">
   <ul class="nav_mobile_list hide" id="menu-mobile-list">
     {% for item in site.data.nav[page.lang] %}
-    <li class="nav_mobile_list_link">
+    <li class="nav_mobile_list_link container">
       <a href="{{ item.link }}" id="{{ item.id }}-mobile">{{ item.name }}</a>
     </li>
     {% endfor %}
-    <li class="nav_mobile_list_lang">
+    <li class="nav_mobile_list_lang container">
       {% assign products=site.products | where:"ref", page.ref | sort:"lang" %}
       {% for product in products %}
       <a

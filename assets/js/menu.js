@@ -105,6 +105,7 @@ export default function menu() {
     skipBtn.addEventListener('click', () => {
         mainContent.focus()
     })
+    menu.addEventListener('click', () => menuFunc())
 
     // register update function with state hooks
     state.addHook(() => updateNavLink())

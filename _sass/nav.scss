@@ -113,16 +113,12 @@
     right: 0;
     width: 100vw;
     height: 100vh;
-    background: var(--dark);
     display: flex;
     flex-flow: column nowrap;
     justify-content: center;
+    gap: var(--base-spacing);
     align-items: center;
-    gap: var(--md-spacing);
-
-    @media screen and (max-height: 400px) {
-      justify-content: flex-end;
-    }
+    background: var(--dark);
 
     &.hide {
       transform: translateX(100%) !important;
@@ -130,10 +126,7 @@
   }
 
   .nav_mobile_list_link {
-    display: flex;
-    justify-content: flex-end;
-    width: 100%;
-    padding: 0 2rem;
+    text-align: right;
     font-size: var(--lg-font-size);
 
     @include res("sm") {
@@ -148,7 +141,6 @@
     a:visited:focus {
       color: var(--light) !important;
       letter-spacing: var(--letter-spacing);
-      display: block;
       text-decoration: none !important;
     }
 
@@ -160,7 +152,6 @@
 
   .nav_mobile_list_lang {
     width: 100%;
-    padding: 0 2rem;
     display: flex;
     justify-content: flex-end;
     gap: var(--base-spacing);
