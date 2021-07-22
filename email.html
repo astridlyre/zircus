@@ -82,11 +82,6 @@
       color: #491845;
     }
 
-    img {
-      max-width: 50px;
-      object-fit: contain;
-    }
-
     kbd {
       padding: 4px;
       background-color: #e4e0e6;
@@ -121,9 +116,15 @@
           padding: 4px;
         "
       >
-        <a href="https://zircus.netlify.app/" style="color: #211b22"
-          ><h3>zircus</h3></a
-        >
+        <a
+          href="https://zircus.netlify.app/"
+          style="color: #211b22"
+          aria-label="Go to Zircus Home Page"
+          ><img
+            src="logo.png"
+            alt="Zircus Logo"
+            style="height: 32px; object-fit: contain"
+        /></a>
       </header>
       <main role="main" style="padding: 12px">
         <h1>Thanks for your order!</h1>
@@ -169,6 +170,7 @@
             <img
               src="https://zircus.netlify.app/assets/img/products/masked/ff-yellow-a-400.png"
               alt=""
+              style="height: 50px; object-fit: contain"
             />
             <p class="product">
               <span>Flat Front Briefs</span> <span>yellow</span>
