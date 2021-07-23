@@ -112,7 +112,9 @@ export default function cart() {
             state.cart = cart => cart.filter(i => i.id !== item.id)
             product.remove()
             setSubtotal()
-            state.notify(genRemoveNotification(item), 'red')
+            state.notify(genRemoveNotification(item), 'red', () =>
+                location.assign(link.href)
+            )
             !state.cart.length && renderCartItems()
         })
 

@@ -7,7 +7,13 @@
   border-radius: var(--radius);
   box-shadow: var(--box-shadow-sm);
   border: 2px solid transparent;
+  outline: none;
+  text-decoration: none !important;
   @include fadeInUp(0.25s);
+
+  &:hover {
+    cursor: pointer;
+  }
 
   &_text {
     margin: 0;
@@ -17,17 +23,29 @@
 
   &.green {
     background-color: var(--green);
-    color: var(--gray-05);
+    color: var(--gray-05) !important;
+
+    &:hover {
+      background-color: var(--dark-green);
+    }
   }
 
   &.red {
     background-color: var(--red);
-    color: var(--gray-05);
+    color: var(--gray-05) !important;
+
+    &:hover {
+      background-color: var(--dark-red);
+    }
   }
 
   &.gray {
     background-color: var(--gray-20);
     border-color: var(--gray-30);
-    color: var(--dark);
+    color: var(--dark) !important;
+
+    &:hover {
+      background-color: var(--gray-30);
+    }
   }
 }

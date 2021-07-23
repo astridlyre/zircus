@@ -95,8 +95,8 @@ class State {
         this.__notify = fn
     }
 
-    notify(text, color) {
-        return this.__notify(text, color)
+    notify(text, color, onClick) {
+        return this.__notify(text, color, onClick)
     }
 
     set currentNotification(id) {

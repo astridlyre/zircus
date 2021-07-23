@@ -153,7 +153,9 @@ export default function product() {
         if (item.quantity - Number(quantity.value) < 0 || !item.quantity) return
         if (state.cart.find(i => i.type === item.type)) updateCartItem(item)
         else addNewCartItem(item)
-        state.notify(genAddToCartNotification(item), 'green')
+        state.notify(genAddToCartNotification(item), 'green', () =>
+            location.assign(genCartPath())
+        )
         addToCart.blur()
     }
 

@@ -10,15 +10,34 @@ export default function notification() {
     if (!notificationEl) return
     const notificationText = q('notification-text')
 
-    state.notify = (text, color) => {
-        if (state.currentNotification) clearTimeout(state.currentNotification)
+    function clearNotification(color) {
+        notificationEl.classList.add('hidden')
+        notificationEl.classList.remove(color)
+        notificationText.textContent = ''
+    }
+
+    function showNotification(text, color) {
         notificationEl.classList.add(color)
         notificationText.textContent = text
         notificationEl.classList.remove('hidden')
-        state.currentNotification = setTimeout(() => {
-            notificationEl.classList.add('hidden')
-            notificationEl.classList.remove(color)
-            notificationText.textContent = ''
-        }, 4000)
     }
+
+    state.setNotify((text, color, onClick) => {
+        state.currentNotification && clearTimeout(state.currentNotification)
+        showNotification(text, color)
+        state.currentNotification = setTimeout(
+            () => clearNotification(color),
+            4000
+        )
+
+        notificationEl.addEventListener('mouseenter', () =>
+            clearTimeout(state.currentNotification)
+        )
+
+        notificationEl.addEventListener('mouseleave', () =>
+            setTimeout(() => clearNotification(), 2000)
+        )
+
+        notificationEl.onclick = () => onClick()
+    })
 }
