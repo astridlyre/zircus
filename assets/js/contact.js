@@ -68,6 +68,5 @@ export default function contact() {
                 }
             })
             .catch(e => console.log(e))
-        return false
     })
 }
