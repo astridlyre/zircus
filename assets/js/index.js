@@ -5,6 +5,7 @@ import menu from './menu.js'
 import hero from './hero.js'
 import thanks from './thanks.js'
 import contact from './contact.js'
+import notification from './notification.js'
 
 product()
 payment()
@@ -13,3 +14,4 @@ menu()
 hero()
 thanks()
 contact()
+notification()

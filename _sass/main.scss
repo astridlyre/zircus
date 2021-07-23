@@ -36,6 +36,11 @@
   --grey: #8b808f;
   --lgrey: #e4e0e6;
   --red: #8f3342;
+  --dark-red: #5b2538;
+  --green: #589959;
+  --dark-green: #3d6b3e;
+  --yellow: #f6cb5a;
+  --dark-yellow: #c5a249;
   --heading-font-family: "Nunito", sans-serif;
   --site-font-family: "Nunito Sans", sans-serif;
   --accent-font-family: "Virgo 01", sans-serif;
@@ -125,6 +130,8 @@
   --two-col-gap: 2rem;
   --grid-gap: 1rem;
   box-sizing: border-box;
+  --box-shadow-sm: 0 8px 12px 1px rgba(29, 17, 51, 0.04),
+    0 3px 16px 2px rgba(9, 32, 77, 0.12), 0 5px 10px -3px rgba(29, 17, 51, 0.12);
 }
 
 @import "helpers";
@@ -143,3 +150,4 @@
 @import "sizing";
 @import "contact";
 @import "modal";
+@import "notification";

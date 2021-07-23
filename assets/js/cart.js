@@ -24,6 +24,17 @@ export default function cart() {
         }
     }
 
+    function genRemoveNotification(item) {
+        switch (lang()) {
+            case 'en':
+                return `Removed ${item.name.en} from cart`
+            case 'fr':
+                return `${item.name.fr} retiré du panier`
+            default:
+                throw new Error('Invalid language')
+        }
+    }
+
     function genRemoveBtnText(item) {
         switch (lang()) {
             case 'en':
@@ -101,6 +112,7 @@ export default function cart() {
             state.cart = cart => cart.filter(i => i.id !== item.id)
             product.remove()
             setSubtotal()
+            state.notify(genRemoveNotification(item), 'red')
             !state.cart.length && renderCartItems()
         })
 

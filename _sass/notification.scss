@@ -1,0 +1,33 @@
+.notification {
+  position: fixed;
+  bottom: var(--base-spacing);
+  right: var(--base-spacing);
+  z-index: 1000;
+  padding: var(--base-spacing) var(--btn-padding);
+  border-radius: var(--radius);
+  box-shadow: var(--box-shadow-sm);
+  border: 2px solid transparent;
+  @include fadeInUp(0.25s);
+
+  &_text {
+    margin: 0;
+    @include smallSpaced();
+    font-weight: 600;
+  }
+
+  &.green {
+    background-color: var(--green);
+    color: var(--gray-05);
+  }
+
+  &.red {
+    background-color: var(--red);
+    color: var(--gray-05);
+  }
+
+  &.gray {
+    background-color: var(--gray-20);
+    border-color: var(--gray-30);
+    color: var(--dark);
+  }
+}

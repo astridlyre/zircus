@@ -21,6 +21,10 @@
   }
 }
 
+@mixin fadeInUp($time) {
+  animation: $time ease-in 0s forwards fadeInUp;
+}
+
 @mixin fadeIn($time) {
   animation: $time ease-in 0s forwards fadeIn;
 }

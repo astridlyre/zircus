@@ -44,6 +44,17 @@ export default function product() {
         }
     }
 
+    function genAddToCartNotification(item) {
+        switch (lang()) {
+            case 'en':
+                return `Added ${item.name['en']} to cart`
+            case 'fr':
+                return `Ajouté des ${item.name['fr']} au panier`
+            default:
+                throw new Error('Invalid language')
+        }
+    }
+
     function getStockText(qty) {
         switch (lang()) {
             case 'en':
@@ -142,6 +153,7 @@ export default function product() {
         if (item.quantity - Number(quantity.value) < 0 || !item.quantity) return
         if (state.cart.find(i => i.type === item.type)) updateCartItem(item)
         else addNewCartItem(item)
+        state.notify(genAddToCartNotification(item), 'green')
         addToCart.blur()
     }
 

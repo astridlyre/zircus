@@ -18,6 +18,8 @@ export const API_ENDPOINT = 'https://zircus.herokuapp.com/api'
 class State {
     constructor() {
         this.__hooks = []
+        this.__notification = null
+        this.__notify = null
     }
 
     get hooks() {
@@ -87,6 +89,22 @@ class State {
     get order() {
         const order = localStorage.getItem('order')
         return order ? JSON.parse(order) : null
+    }
+
+    setNotify(fn) {
+        this.__notify = fn
+    }
+
+    notify(text, color) {
+        return this.__notify(text, color)
+    }
+
+    set currentNotification(id) {
+        this.__notification = id
+    }
+
+    get currentNotification() {
+        return this.__notification
     }
 
     update() {
