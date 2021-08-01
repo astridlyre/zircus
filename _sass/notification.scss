@@ -1,7 +1,16 @@
 .notification {
   position: fixed;
-  bottom: var(--base-spacing);
-  right: var(--base-spacing);
+  @include res("md") {
+    bottom: var(--md-spacing);
+    right: var(--md-spacing);
+  }
+  @include res('sm') {
+    bottom: var(--base-spacing);
+    right: var(--base-spacing);
+  }
+  bottom: var(--base-unit);
+  right: var(--base-unit);
+  max-width: calc(100% - var(--base-unit) * 2);
   z-index: 1000;
   padding: var(--base-spacing) var(--btn-padding);
   border-radius: var(--radius);
