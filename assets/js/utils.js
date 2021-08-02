@@ -178,10 +178,6 @@ export function appendPreloadLink(url) {
     )
 }
 
-export function withLang(obj) {
-    return obj[lang()]
-}
-
 // Simple toggler generator
 export function toggler(initialState, stateFunc, func) {
     let value = initialState
@@ -220,7 +216,12 @@ getInventory() // Get initial inventory
 setInterval(getInventory, 300_000) // Check every 5 minutes
 
 export function lang() {
-    return document.documentElement.getAttribute('lang')
+    let lang = null
+    return lang || (lang = document.documentElement.getAttribute('lang'))
+}
+
+export function withLang(obj) {
+    return obj[lang()]
 }
 
 // Randomly pick a heading for the homepage, maybe get these from API at some
