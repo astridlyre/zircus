@@ -27,17 +27,15 @@ export default () => {
             this.appendChild(this._roundedBottom)
             this.classList.add('section__hero')
 
-            setInterval(
-                () =>
-                    (this._imageEl.src = this._images[this.getCurrentImage()]),
-                5000
-            )
+            setInterval(() => {
+                this._imageEl.src = this._images[this.getCurrentImage()]
+            }, 4500)
         }
 
         getCurrentImage() {
-            return this._currentImage === this._images.length
+            return this._currentImage === this._images.length - 1
                 ? (this._currentImage = 0)
-                : this._currentImage++
+                : ++this._currentImage
         }
     }
 

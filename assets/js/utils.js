@@ -4,6 +4,8 @@ export const q = x => document.getElementById(x)
 // Production API
 export const API_ENDPOINT = 'https://zircus.herokuapp.com/api'
 
+const reducer = state => initial => state || initial
+
 // Local Testing API
 // export const API_ENDPOINT = 'http://localhost:3000/api'
 
@@ -17,9 +19,21 @@ export const API_ENDPOINT = 'https://zircus.herokuapp.com/api'
  */
 class State {
     constructor() {
+        const savedState = localStorage.getItem('state')
+        this.__state = JSON.parse(savedState) || {}
         this.__hooks = []
         this.__notification = null
         this.__notify = null
+    }
+
+    set(key, val) {
+        this.__state[key] = val
+        return this.save()
+    }
+
+    save() {
+        localStorage.setItem('state', JSON.stringify(this.__state))
+        return this
     }
 
     get hooks() {
@@ -32,63 +46,51 @@ class State {
     }
 
     get inv() {
-        const inv = localStorage.getItem('inv')
-        if (inv) return JSON.parse(inv)
-        return []
+        return this.__state.inv || []
     }
 
     set inv(fn) {
-        localStorage.setItem('inv', JSON.stringify(fn(this.inv)))
-        return this.update()
+        return this.set('inv', fn(this.inv)).update()
     }
 
     get countries() {
-        const countries = localStorage.getItem('countries')
-        if (countries) return JSON.parse(countries)
-        return []
+        return this.__state.countries || []
     }
 
     set countries(fn) {
-        localStorage.setItem('countries', JSON.stringify(fn(this.countries)))
-        return this.update()
-    }
-
-    set cart(fn) {
-        localStorage.setItem('cart', JSON.stringify(fn(this.cart)))
-        return this.update()
+        return this.set('countries', fn(this.countries)).update()
     }
 
     get cart() {
-        const cart = localStorage.getItem('cart')
-        if (cart) return JSON.parse(cart)
-        return []
+        return this.__state.cart || []
+    }
+
+    set cart(fn) {
+        return this.set('cart', fn(this.cart)).update()
     }
 
     get secret() {
-        const sec = localStorage.getItem('clientSecret')
-        return sec ? JSON.parse(sec) : null
+        return this.__state.secret || null
     }
 
-    set secret(sec) {
-        localStorage.setItem('clientSecret', JSON.stringify(sec))
-    }
-
-    set currentItem(item) {
-        localStorage.setItem('currentItem', JSON.stringify(item))
+    set secret(secret) {
+        return this.set('secret', secret)
     }
 
     get currentItem() {
-        const currentItem = localStorage.getItem('currentItem')
-        return currentItem ? JSON.parse(currentItem) : null
+        return this.__state.currentItem || null
     }
 
-    set order(order) {
-        localStorage.setItem('order', JSON.stringify(order))
+    set currentItem(item) {
+        return this.set('currentItem', item)
     }
 
     get order() {
-        const order = localStorage.getItem('order')
-        return order ? JSON.parse(order) : null
+        return this.__state.order || null
+    }
+
+    set order(order) {
+        return this.set('order', order)
     }
 
     setNotify(fn) {
