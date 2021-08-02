@@ -178,6 +178,10 @@ export function appendPreloadLink(url) {
     )
 }
 
+export function withLang(obj) {
+    return obj[lang()]
+}
+
 // Simple toggler generator
 export function toggler(initialState, stateFunc, func) {
     let value = initialState

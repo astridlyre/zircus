@@ -1,4 +1,4 @@
-import { q, state, toggler, lang } from './utils.js'
+import { q, state, toggler, withLang } from './utils.js'
 
 /*
  *   Menu for Zircus
@@ -89,11 +89,11 @@ export default function menu() {
                 (acc, item) => acc + item.quantity,
                 0
             )
-            navLink.textContent = `${cartText[lang()]} (${totalItems})`
-            navLinkMobile.textContent = `${cartText[lang()]} (${totalItems})`
+            navLink.textContent = `${withLang(cartText)} (${totalItems})`
+            navLinkMobile.textContent = `${withLang(cartText)} (${totalItems})`
         } else {
-            navLink.textContent = cartText[lang()]
-            navLinkMobile.textContent = cartText[lang()]
+            navLink.textContent = withLang(cartText)
+            navLinkMobile.textContent = withLang(cartText)
         }
     }
 

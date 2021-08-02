@@ -1,4 +1,4 @@
-import { q, state, lang } from './utils.js'
+import { q, state, lang, withLang } from './utils.js'
 
 /*
     Cart performs the functions manage the shopping cart.
@@ -13,38 +13,15 @@ export default function cart() {
     const templateEl = q('cart-product-template')
     const noItems = q('cart-products-none')
 
-    function genCheckoutLink() {
-        switch (lang()) {
-            case 'en':
-                return '/checkout'
-            case 'fr':
-                return '/fr/la-caisse'
-            default:
-                throw new Error('Invalid language')
-        }
-    }
+    const removeNotificationText = item => ({
+        en: `Removed ${item.name.en} from cart`,
+        fr: `${item.name.fr} retiré du panier`,
+    })
 
-    function genRemoveNotification(item) {
-        switch (lang()) {
-            case 'en':
-                return `Removed ${item.name.en} from cart`
-            case 'fr':
-                return `${item.name.fr} retiré du panier`
-            default:
-                throw new Error('Invalid language')
-        }
-    }
-
-    function genRemoveBtnText(item) {
-        switch (lang()) {
-            case 'en':
-                return `Remove ${item.name.en} (size: ${item.size} quantity: ${item.quantity}) from cart`
-            case 'fr':
-                return `Retirer ${item.name.fr} (taille: ${item.size} quantité: ${item.quantity}) du panier`
-            default:
-                throw new Error('Invalid language')
-        }
-    }
+    const removeBtnText = item => ({
+        en: `Remove ${item.name.en} (size: ${item.size} quantity: ${item.quantity}) from cart`,
+        fr: `Retirer ${item.name.fr} (taille: ${item.size} quantité: ${item.quantity}) du panier`,
+    })
 
     // enableButtons enables the checkoutBtn if there are items in cart
     function enableButtons() {
@@ -107,12 +84,12 @@ export default function cart() {
         })
 
         // Add remove button functionality
-        removeBtn.setAttribute('aria-label', genRemoveBtnText(item))
+        removeBtn.setAttribute('aria-label', withLang(removeBtnText(item)))
         removeBtn.addEventListener('click', () => {
             state.cart = cart => cart.filter(i => i.id !== item.id)
             product.remove()
             setSubtotal()
-            state.notify(genRemoveNotification(item), 'red', () =>
+            state.notify(withLang(removeNotificationText(item)), 'red', () =>
                 location.assign(link.href)
             )
             !state.cart.length && renderCartItems()
@@ -138,6 +115,12 @@ export default function cart() {
 
     // Add event listeners
     checkoutBtn.addEventListener('click', () => {
-        if (state.cart.length > 0) location.assign(genCheckoutLink())
+        if (state.cart.length > 0)
+            location.assign(
+                withLang({
+                    en: '/checkout',
+                    fr: '/fr/la-caisse',
+                })
+            )
     })
 }

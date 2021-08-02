@@ -1,4 +1,12 @@
-import { q, API_ENDPOINT, state, Element, calculateTax, lang } from './utils.js'
+import {
+    q,
+    API_ENDPOINT,
+    state,
+    Element,
+    calculateTax,
+    lang,
+    withLang,
+} from './utils.js'
 const stripe = Stripe(
     'pk_test_51J93KzDIzwSFHzdzCZtyRcjMvw8em0bhnMrVmkBHaMFHuc2nkJ156oJGNxuz0G7W4Jx0R6OCy2nBXYTt6U8bSYew00PIAPcntP'
 )
@@ -136,10 +144,8 @@ export default function payment() {
             document.body.classList.remove('hide-y')
             q('blur').classList.remove('blur')
             paymentModal.classList.remove('show-modal')
-            if (state.cart.length === 0) {
-                if (lang() === 'fr') return location.assign('/fr/merci')
-                return location.assign('/thanks')
-            }
+            if (state.cart.length === 0)
+                location.assign(withLang({ en: '/thanks', fr: '/fr/merci' }))
         }
     }
 

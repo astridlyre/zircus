@@ -1,4 +1,11 @@
-import { q, state, toggler, lang, appendPreloadLink } from './utils.js'
+import {
+    q,
+    state,
+    toggler,
+    lang,
+    appendPreloadLink,
+    withLang,
+} from './utils.js'
 
 /* Path for masked product images. Images follow the convention:
  
@@ -33,42 +40,15 @@ export default function product() {
 
     let currentColor = color.value
 
-    function genCartPath() {
-        switch (lang()) {
-            case 'en':
-                return '/cart'
-            case 'fr':
-                return '/fr/panier'
-            default:
-                throw new Error('Invalid language')
-        }
-    }
+    const addNotificationText = item => ({
+        en: `Added ${item.name['en']} to cart`,
+        fr: `Ajouté des ${item.name['fr']} au panier`,
+    })
 
-    function genAddToCartNotification(item) {
-        switch (lang()) {
-            case 'en':
-                return `Added ${item.name['en']} to cart`
-            case 'fr':
-                return `Ajouté des ${item.name['fr']} au panier`
-            default:
-                throw new Error('Invalid language')
-        }
-    }
-
-    function getStockText(qty) {
-        switch (lang()) {
-            case 'en':
-                return ['None available', `Only ${qty} left!`, 'In stock']
-            case 'fr':
-                return [
-                    'Non disponible',
-                    `Il n'en reste que ${qty}!`,
-                    'En stock',
-                ]
-            default:
-                return []
-        }
-    }
+    const stockText = qty => ({
+        en: ['None available', `Only ${qty} left!`, 'In stock'],
+        fr: ['Non disponible', `Il n'en reste que ${qty}!`, 'En stock'],
+    })
 
     // Get and set item
     const [currentItem, setItem] = (() => {
@@ -149,8 +129,8 @@ export default function product() {
         if (item.quantity - Number(quantity.value) < 0 || !item.quantity) return
         if (state.cart.find(i => i.type === item.type)) updateCartItem(item)
         else addNewCartItem(item)
-        state.notify(genAddToCartNotification(item), 'green', () =>
-            location.assign(genCartPath())
+        state.notify(withLang(addNotificationText(item)), 'green', () =>
+            location.assign(withLang({ en: '/cart', fr: '/fr/panier' }))
         )
         addToCart.blur()
     }
@@ -188,17 +168,17 @@ export default function product() {
 
     // outOfStock sets out-of-stock status
     function outOfStock() {
-        stock.innerText = getStockText(0)[0]
+        stock.innerText = withLang(stockText(0))[0]
         stock.classList.add('out-stock')
         stock.classList.remove('in-stock')
         quantity.setAttribute('disabled', true)
         addToCart.setAttribute('disabled', true)
-        addToCart.innerText = addToCartText[lang()][0]
+        addToCart.innerText = withLang(addToCartText)[0]
     }
 
     // inStock sets in-stock status
     function inStock(updatedItem) {
-        const text = getStockText(updatedItem.quantity)
+        const text = withLang(stockText(updatedItem.quantity))
         stock.innerText = `${updatedItem.quantity > 5 ? text[2] : text[1]}`
         if (updatedItem.quantity < Number(quantity.value))
             quantity.value = updatedItem.quantity
@@ -206,7 +186,7 @@ export default function product() {
         stock.classList.remove('out-stock')
         quantity.removeAttribute('disabled')
         addToCart.removeAttribute('disabled')
-        addToCart.textContent = addToCartText[lang()][1]
+        addToCart.textContent = withLang(addToCartText)[1]
     }
 
     // updateStatus updates the currentItem
@@ -249,7 +229,14 @@ export default function product() {
     image.addEventListener('click', () => handleViewFull())
     bigImageEl.addEventListener('click', () => handleViewFull())
     addToCart.addEventListener('click', handleAddToCart)
-    goToCart.addEventListener('click', () => location.assign(genCartPath()))
+    goToCart.addEventListener('click', () =>
+        location.assign(
+            withLang({
+                en: '/cart',
+                fr: '/fr/panier',
+            })
+        )
+    )
 
     // Register hooks
     state.addHook(() => updateStatus())
