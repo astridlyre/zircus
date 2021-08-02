@@ -1,11 +1,4 @@
-import {
-    q,
-    state,
-    toggler,
-    lang,
-    appendPreloadLink,
-    withLang,
-} from './utils.js'
+import { q, state, toggler, appendPreloadLink, withLang } from './utils.js'
 
 /* Path for masked product images. Images follow the convention:
  
