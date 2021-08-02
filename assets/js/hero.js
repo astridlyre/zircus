@@ -1,35 +1,50 @@
-import { q, appendPreloadLink } from './utils.js'
+import { appendPreloadLink, Element } from './utils.js'
 
-export default function hero() {
-    // If no hero image, don't do anything
-    const image = q('hero-image')
-    if (!image) return
+export default () => {
+    class Hero extends HTMLElement {
+        constructor() {
+            super()
+            const numImages = Number(this.getAttribute('num-images'))
+            const imagePath = this.getAttribute('image-path')
+            this._images = new Array(numImages)
+                .fill('')
+                .map((_, i) => `${imagePath}${i}.jpg`)
+            this._images.forEach(image => appendPreloadLink(image))
+            this._currentImage = 0
+            this._imageEl = new Element('img', ['section__hero_image'], {
+                src: this._images[this._currentImage],
+                alt: this.getAttribute('alt'),
+                title: this.getAttribute('title'),
+            }).render()
+            this._roundedBottom = new Element('div', [
+                'bg-light',
+                'rounded-big-top',
+                'absolute',
+                'b-0',
+                'l-0',
+            ]).render()
 
-    // 6 images
-    const NUM_IMAGES = 6
-    const IMG_PATH = '/assets/img/people/'
-    const setImage = n => (image.src = `${IMG_PATH}hero${n}.jpg`)
+            this.appendChild(this._imageEl)
+            this.appendChild(this._roundedBottom)
+            this.classList.add('section__hero')
 
-    // Preload images
-    for (let i = 0; i < NUM_IMAGES; i++)
-        appendPreloadLink(`/assets/img/people/hero${i}.jpg`)
+            setInterval(
+                () => this.setImage(this._images[this.getCurrentImage()]),
+                5000
+            )
+        }
 
-    // Loop over images endlessly
-    function* getImageNumber(end) {
-        let num = 0
-        while (true) {
-            if (num === end) num = 0
-            yield ++num
+        getCurrentImage() {
+            return this._currentImage === this._images.length
+                ? (this._currentImage = 0)
+                : this._currentImage++
+        }
+
+        setImage(src) {
+            this._imageEl.src = src
         }
     }
 
-    const counter = getImageNumber(NUM_IMAGES - 1)
-
-    // Set initial image
-    setImage(counter.next().value)
-
-    // Start looping
-    setInterval(() => {
-        setImage(counter.next().value)
-    }, 5000)
+    if (!customElements.get('hero-image'))
+        customElements.define('hero-image', Hero)
 }

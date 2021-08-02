@@ -29,15 +29,12 @@ layout: default
     {% endfor %}
   </ul>
 </div>
-<section class="section__hero">
-  <img
-    id="hero-image"
-    class="section__hero_image"
-    alt="{{ page.hero_alt }}"
-    title="{{ page.hero_title }}"
-  />
-  <div class="bg-light rounded-big-top absolute b-0 l-0"></div>
-</section>
+<hero-image
+  num-images="6"
+  image-path="/assets/img/people/hero"
+  alt="{{ page.hero_alt }}"
+  title="{{ page.hero_title }}"
+></hero-image>
 <section class="section__text">
   <div class="section__text__circle"></div>
   <div class="container">
