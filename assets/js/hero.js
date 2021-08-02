@@ -10,7 +10,7 @@ export default () => {
                 .fill('')
                 .map((_, i) => `${imagePath}${i}.jpg`)
             this._images.forEach(image => appendPreloadLink(image))
-            this._currentImage = 0
+            this._currentImage = 1
             this._imageEl = new Element('img', ['section__hero_image'], {
                 src: this._images[this._currentImage],
                 alt: this.getAttribute('alt'),
