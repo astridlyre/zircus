@@ -4,14 +4,13 @@ export default () => {
     class Hero extends HTMLElement {
         constructor() {
             super()
-            const numImages = Number(this.getAttribute('num-images'))
-            const imagePath = this.getAttribute('image-path')
-            this._images = new Array(numImages)
+            // Images
+            this._images = new Array(Number(this.getAttribute('num-images')))
                 .fill('')
-                .map((_, i) => `${imagePath}${i}.jpg`)
+                .map((_, i) => `${this.getAttribute('image-path')}${i}.jpg`)
             this._images.forEach(image => appendPreloadLink(image))
             this._currentImage = 1
-            this._imageEl = new Element('img', ['section__hero_image'], {
+            this._imageEl = new Element('img', 'section__hero_image', {
                 src: this._images[this._currentImage],
                 alt: this.getAttribute('alt'),
                 title: this.getAttribute('title'),
@@ -29,7 +28,8 @@ export default () => {
             this.classList.add('section__hero')
 
             setInterval(
-                () => this.setImage(this._images[this.getCurrentImage()]),
+                () =>
+                    (this._imageEl.src = this._images[this.getCurrentImage()]),
                 5000
             )
         }
@@ -38,10 +38,6 @@ export default () => {
             return this._currentImage === this._images.length
                 ? (this._currentImage = 0)
                 : this._currentImage++
-        }
-
-        setImage(src) {
-            this._imageEl.src = src
         }
     }
 

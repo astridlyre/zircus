@@ -134,10 +134,12 @@ export class Element {
         this.e = document.createElement(type)
         this.children = []
 
-        if (classes) {
+        if (classes && Array.isArray(classes)) {
             classes.forEach(c => {
                 this.e.classList.add(c)
             })
+        } else if (classes && typeof classes === 'string') {
+            this.e.classList.add(classes)
         }
 
         if (attributes) {
