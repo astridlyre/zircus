@@ -1,4 +1,4 @@
-import { q, Element } from './utils.js'
+import { q, appendPreloadLink } from './utils.js'
 
 export default function hero() {
     // If no hero image, don't do anything
@@ -11,15 +11,8 @@ export default function hero() {
     const setImage = n => (image.src = `${IMG_PATH}hero${n}.jpg`)
 
     // Preload images
-    for (let i = 0; i < NUM_IMAGES; i++) {
-        document.head.appendChild(
-            new Element('link', null, {
-                href: `/assets/img/people/hero${i}.jpg`,
-                rel: 'prefetch',
-                as: 'image',
-            }).render()
-        )
-    }
+    for (let i = 0; i < NUM_IMAGES; i++)
+        appendPreloadLink(`/assets/img/people/hero${i}.jpg`)
 
     // Loop over images endlessly
     function* getImageNumber(end) {

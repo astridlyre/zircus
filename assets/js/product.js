@@ -1,4 +1,4 @@
-import { q, state, Element, toggler, lang } from './utils.js'
+import { q, state, toggler, lang, appendPreloadLink } from './utils.js'
 
 /* Path for masked product images. Images follow the convention:
  
@@ -126,14 +126,10 @@ export default function product() {
 
     // Preload images and set default color
     function preloadImages(color) {
-        for (const image of ['a-400.png', 'b-400.png', 'a-1920.jpg']) {
-            const preload = new Element('link', null, {
-                href: `/assets/img/products/masked/${prefix.value}-${color}-${image}`,
-                rel: 'prefetch',
-                as: 'image',
-            })
-            document.head.appendChild(preload.render())
-        }
+        for (const image of ['a-400.png', 'b-400.png', 'a-1920.jpg'])
+            appendPreloadLink(
+                `/assets/img/products/masked/${prefix.value}-${color}-${image}`
+            )
     }
 
     for (const child of color.children) {

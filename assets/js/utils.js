@@ -168,6 +168,16 @@ export class Element {
     }
 }
 
+export function appendPreloadLink(url) {
+    return document.head.appendChild(
+        new Element('link', null, {
+            href: url,
+            rel: 'prefetch',
+            as: 'image',
+        }).render()
+    )
+}
+
 // Simple toggler generator
 export function toggler(initialState, stateFunc, func) {
     let value = initialState
