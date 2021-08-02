@@ -37,7 +37,7 @@
 
 // Skip to content button
 .skip-to-content {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   z-index: 1000;
@@ -144,6 +144,10 @@
       text-decoration: none !important;
     }
 
+    a:focus {
+      outline-color: var(--teal);
+    }
+
     a:hover::before {
       content: "• ";
       color: var(--teal);
@@ -159,6 +163,10 @@
     a {
       padding: var(--base-unit);
       font-size: var(--medium-font-size);
+    }
+
+    a:focus {
+      outline-color: var(--teal);
     }
 
     a,
@@ -248,7 +256,7 @@
   cursor: pointer;
   z-index: 50;
 
-  &:hover {
+  &:hover, &:focus {
     border-color: var(--teal);
   }
 

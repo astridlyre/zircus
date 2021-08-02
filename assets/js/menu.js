@@ -52,35 +52,50 @@ export default function menu() {
 
     // Manages the scroll state of the nav menu and throttles scroll events to
     // not pelt the DOM with class adds and removes.
-    const setMenuShown = (() => {
+    const [setMenuShown, showMenu] = (() => {
         const scrollingUp = scrollState()
+        const show = () => {
+            nav.classList.add('slide-down')
+            nav.classList.remove('slide-up')
+            menuHidden = false
+        }
+        const hide = () => {
+            nav.classList.remove('slide-down')
+            nav.classList.add('slide-up')
+            menuHidden = true
+        }
         let menuThrottled = false
         let menuHidden = false
-        return toggler(
-            true,
-            () =>
-                window.scrollY < 100 || scrollingUp.next().value <= 0
-                    ? true
-                    : false,
-            isScrollingUp => {
-                if (!menuThrottled) {
-                    setTimeout(() => {
-                        if (isScrollingUp && menuHidden) {
-                            nav.classList.add('slide-down')
-                            nav.classList.remove('slide-up')
-                            menuHidden = false
-                        } else if (!isScrollingUp && !menuHidden) {
-                            nav.classList.remove('slide-down')
-                            nav.classList.add('slide-up')
-                            menuHidden = true
-                        }
-                        menuThrottled = false
-                    }, 100)
-                } else {
-                    menuThrottled = true
+        let menuFocused = false
+        return [
+            toggler(
+                true,
+                () =>
+                    window.scrollY < 100 || scrollingUp.next().value <= 0
+                        ? true
+                        : false,
+                isScrollingUp => {
+                    if (!menuThrottled) {
+                        setTimeout(() => {
+                            if ((isScrollingUp && menuHidden) || menuFocused)
+                                show()
+                            else if (!isScrollingUp && !menuHidden) hide()
+                            menuThrottled = false
+                        }, 100)
+                    } else {
+                        menuThrottled = true
+                    }
                 }
-            }
-        )
+            ),
+            hasFocus => {
+                if (hasFocus) {
+                    menuFocused = true
+                    show()
+                } else {
+                    menuFocused = false
+                }
+            },
+        ]
     })()
 
     function updateNavLink() {
@@ -106,6 +121,8 @@ export default function menu() {
         mainContent.focus()
     })
     menu.addEventListener('click', () => menuFunc())
+    nav.addEventListener('focusin', () => showMenu(true))
+    nav.addEventListener('focusout', () => showMenu(false))
 
     // register update function with state hooks
     state.addHook(() => updateNavLink())

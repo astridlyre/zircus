@@ -1,4 +1,5 @@
 <div class="nav_mobile">
+  {% include nav_mobile_button.html %}
   <ul class="nav_mobile_list hide" id="menu-mobile-list">
     {% for item in site.data.nav[page.lang] %}
     <li class="nav_mobile_list_link container">
@@ -49,5 +50,4 @@
       {% endfor %}
     </li>
   </ul>
-  {% include nav_mobile_button.html %}
 </div>
