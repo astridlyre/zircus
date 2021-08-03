@@ -1,3 +1,4 @@
+import 'core-js'
 import product from './product.js'
 import payment from './payment.js'
 import cart from './cart.js'
