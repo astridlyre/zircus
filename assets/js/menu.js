@@ -23,21 +23,22 @@ export default function menu() {
     }
 
     // Mobile menu functionality
-    const menuFunc = (initial => {
-        let hidden = initial
+    const menuFunc = (() => {
+        let hidden = false
         const show = () => {
+            hidden = false
             menu.classList.add('hide')
             document.body.classList.remove('hide-y')
         }
         const hide = () => {
+            hidden = true
             menu.classList.remove('hide')
             document.body.classList.add('hide-y')
         }
-        return () => {
-            hidden = !hidden
-            return hidden ? show() : hide()
+        return shouldShow => {
+            return shouldShow ? show() : hidden ? show() : hide()
         }
-    })(true)
+    })()
 
     // Returns a positive number for scrolling down and a negative for scrolling
     // up the document.
