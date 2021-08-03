@@ -98,9 +98,9 @@ export default function menu() {
         ]
     })()
 
-    function updateNavLink() {
-        if (state.cart.length > 0) {
-            const totalItems = state.cart.reduce(
+    function updateNavLink({ cart }) {
+        if (cart.length > 0) {
+            const totalItems = cart.reduce(
                 (acc, item) => acc + item.quantity,
                 0
             )
@@ -113,7 +113,7 @@ export default function menu() {
     }
 
     // set initial cart link state
-    updateNavLink()
+    updateNavLink({ cart: state.cart })
 
     // add mobile button event listener
     btn.addEventListener('click', menuFunc)
@@ -125,6 +125,6 @@ export default function menu() {
     nav.addEventListener('focusout', () => showMenu(false))
 
     // register update function with state hooks
-    state.addHook(() => updateNavLink())
+    state.addHook({ hook: updateNavLink, key: 'cart' })
     document.addEventListener('scroll', () => setMenuShown())
 }

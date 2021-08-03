@@ -183,15 +183,15 @@ export default function product() {
     }
 
     // updateStatus updates the currentItem
-    function updateStatus(prevItem) {
-        if (!state.inv) return
-        const updatedItem = setItem(prevItem) // Update current item
-        if (prevItem) {
-            size.value = prevItem.size
-            color.value = prevItem.color
+    function updateStatus({ inv, currentItem } = state) {
+        if (!inv) return
+        const updatedItem = setItem(currentItem) // Update current item
+        if (currentItem) {
+            size.value = currentItem.size
+            color.value = currentItem.color
             state.currentItem = null
         }
-        if (!prevItem) productAccent.classList.remove(`${currentColor}-before`)
+        productAccent.classList.remove(`${currentColor}-before`)
         productAccent.classList.add(`${color.value}-before`)
         currentColor = color.value
         if (!updatedItem || updatedItem.quantity === 0) outOfStock()
@@ -201,7 +201,7 @@ export default function product() {
     }
 
     // Set initial status
-    updateStatus(state.currentItem)
+    updateStatus()
     updateCartBtnQty()
 
     // Add event listeners
@@ -232,6 +232,6 @@ export default function product() {
     )
 
     // Register hooks
-    state.addHook(() => updateStatus())
-    state.addHook(() => updateCartBtnQty())
+    state.addHook({ hook: updateStatus, key: 'inv' })
+    state.addHook({ hook: updateCartBtnQty, key: 'cart' })
 }

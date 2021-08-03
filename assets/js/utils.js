@@ -4,8 +4,6 @@ export const q = x => document.getElementById(x)
 // Production API
 export const API_ENDPOINT = 'https://zircus.herokuapp.com/api'
 
-const reducer = state => initial => state || initial
-
 // Local Testing API
 // export const API_ENDPOINT = 'http://localhost:3000/api'
 
@@ -21,7 +19,7 @@ class State {
     constructor() {
         const savedState = localStorage.getItem('state')
         this.__state = JSON.parse(savedState) || {}
-        this.__hooks = []
+        this.__hooks = new Set()
         this.__notification = null
         this.__notify = null
     }
@@ -37,11 +35,11 @@ class State {
     }
 
     get hooks() {
-        return this.__hooks
+        return this.__hooks || {}
     }
 
-    addHook(fn) {
-        this.__hooks.push(fn)
+    addHook(hook) {
+        this.__hooks.add(hook)
         return this
     }
 
@@ -50,7 +48,7 @@ class State {
     }
 
     set inv(fn) {
-        return this.set('inv', fn(this.inv)).update()
+        return this.set('inv', fn(this.inv)).update('inv')
     }
 
     get countries() {
@@ -58,7 +56,7 @@ class State {
     }
 
     set countries(fn) {
-        return this.set('countries', fn(this.countries)).update()
+        return this.set('countries', fn(this.countries)).update('countries')
     }
 
     get cart() {
@@ -66,7 +64,7 @@ class State {
     }
 
     set cart(fn) {
-        return this.set('cart', fn(this.cart)).update()
+        return this.set('cart', fn(this.cart)).update('cart')
     }
 
     get secret() {
@@ -109,13 +107,15 @@ class State {
         return this.__notification
     }
 
-    update() {
-        this.hooks.forEach(hook =>
-            hook({
-                cart: this.cart,
-                inv: this.inv,
-                countries: this.countries,
-            })
+    update(currentKey) {
+        this.hooks.forEach(
+            ({ hook, key }) =>
+                currentKey === key &&
+                hook({
+                    inv: this.inv,
+                    countries: this.countries,
+                    cart: this.cart,
+                })
         )
         return this
     }
