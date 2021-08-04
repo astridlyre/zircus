@@ -110,14 +110,14 @@ export default function product() {
             )
         )
 
-    color.children.forEach(child => {
+    for (const child of color.children) {
         preloadImages(child.value)
         if (child.value === defaultColor.value) {
             child.setAttribute('selected', true)
             productAccent.classList.add(`${child.value}-before`)
             currentColor = child.value // set currentColor
         }
-    })
+    }
 
     // addItemToCart adds the currentItem (item.get()) to the cart, or updates
     // an exisiting item's quantity

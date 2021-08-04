@@ -24,13 +24,14 @@ export default function menu() {
     const btn = q('menu-mobile-btn')
     const skipBtn = q('skip-link')
     const mainContent = q('main-content')
+    const toTopBtn = q('back-to-top')
     const cartText = {
         en: 'cart',
         fr: 'panier',
     }
 
     // Mobile menu functionality
-    const menuFunc = () => {
+    const menuFunc = (() => {
         let hidden = false
         const show = () => {
             menu.classList.add('hide')
@@ -41,7 +42,7 @@ export default function menu() {
             document.body.classList.add('hide-y')
         }
         return () => ((hidden = !hidden) ? hide() : show())
-    }
+    })()
 
     // Returns a positive number for scrolling down and a negative for scrolling
     // up the document.
@@ -54,48 +55,66 @@ export default function menu() {
         }
     }
 
+    const toTopBtnHandler = (() => {
+        const MIN_SCROLL = 400
+
+        function show() {
+            toTopBtn.classList.add('show')
+            return (btnHidden = false)
+        }
+        function hide() {
+            toTopBtn.classList.remove('show')
+            return (btnHidden = true)
+        }
+
+        let btnHidden = true
+        let btnFocused = false
+        let btnThrottled = false
+
+        return () =>
+            !btnThrottled
+                ? setTimeout(() => {
+                      const shouldShow = window.scrollY > MIN_SCROLL
+                      if (btnFocused && btnHidden) show()
+                      if (shouldShow && btnHidden) show()
+                      if (!shouldShow && !btnHidden) hide()
+                      btnThrottled = false
+                  }, 100)
+                : (btnThrottled = true)
+    })()
+
     // Manages the scroll state of the nav menu and throttles scroll events to
     // not pelt the DOM with class adds and removes.
-    const [setMenuShown, showMenu] = (() => {
+    const navScrollHandler = (() => {
         const MIN_SCROLL = 100 // Min distance to scroll
-        const scrollingUp = scrollState()
+        const scroll = scrollState()
         const handler = (a, b, fn) => callback =>
             switchClass(nav, a, b, [fn, callback])
         const setHidden = () => (navHidden = true)
         const setShow = () => (navHidden = false)
         const show = handler('slide-up', 'slide-down', setShow)
         const hide = handler('slide-down', 'slide-up', setHidden)
-        const isScrollingUp = () =>
-            window.scrollY < MIN_SCROLL || scrollingUp.next() <= 0
-                ? true
-                : false
-
         const setNotThrottled = () => (navThrottled = false)
+
         let navThrottled = false
         let navHidden = false
         let navFocused = false
 
-        return [
-            toggler(true, isScrollingUp, isScrollingUp => {
-                !navThrottled
-                    ? setTimeout(() => {
-                          // Show nav if focused
-                          if (navFocused && navHidden)
-                              return show(setNotThrottled)
-                          // Show nav if scrolling up and currently hidden
-                          if (isScrollingUp && navHidden)
-                              return show(setNotThrottled)
-                          // If not hidden and scrolling down, hide nav
-                          if (isScrollingUp && !navHidden)
-                              return hide(setNotThrottled)
-                      }, 100)
-                    : (navThrottled = true)
-            }),
-            hasFocus =>
-                hasFocus
-                    ? show(() => (navFocused = true))
-                    : (navFocused = false),
-        ]
+        return (hasFocus = false) => {
+            const isScrollingUp =
+                window.scrollY < MIN_SCROLL || scroll.next().value <= 0
+            if (hasFocus) return show(() => (navFocused = true))
+            navFocused = false
+            if (!navThrottled)
+                setTimeout(() => {
+                    // Show nav if focused
+                    if (isScrollingUp && navHidden) return show(setNotThrottled)
+                    // If not hidden and scrolling down, hide nav
+                    if (!isScrollingUp && !navHidden)
+                        return hide(setNotThrottled)
+                }, 100)
+            else navThrottled = true
+        }
     })()
 
     function updateNavLink({ cart }) {
@@ -119,10 +138,17 @@ export default function menu() {
         mainContent.focus()
     })
     menu.addEventListener('click', () => menuFunc())
-    nav.addEventListener('focusin', () => showMenu(true))
-    nav.addEventListener('focusout', () => showMenu(false))
+    nav.addEventListener('focusin', () => navScrollHandler(true))
+    nav.addEventListener('focusout', () => navScrollHandler(false))
+    toTopBtn.addEventListener('click', () => {
+        window.scroll({ top: 0 })
+        toTopBtn.blur()
+    })
 
     // register update function with state hooks
     state.addHook({ hook: updateNavLink, key: 'cart' })
-    document.addEventListener('scroll', () => setMenuShown())
+    document.addEventListener('scroll', () => {
+        navScrollHandler()
+        toTopBtnHandler()
+    })
 }

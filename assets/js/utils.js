@@ -180,9 +180,9 @@ export function switchClass(els, a, b, callbacks) {
     if (Array.isArray(els)) els.forEach(el => s(el, a, b))
     else s(els, a, b)
 
-    if (callbacks && Array.isArray(callback))
+    if (callbacks && Array.isArray(callbacks))
         callbacks.forEach(callback => callback())
-    return el
+    return els
 }
 
 export function setTextContent(els, content) {

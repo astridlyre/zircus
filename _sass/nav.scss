@@ -256,7 +256,8 @@
   cursor: pointer;
   z-index: 50;
 
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     border-color: var(--teal);
   }
 
@@ -264,5 +265,43 @@
     color: var(--light);
     height: 100%;
     width: 100%;
+  }
+}
+
+.back_to_top {
+  position: fixed;
+  background: var(--gray-30);
+  padding: var(--base-unit);
+  height: 3rem;
+  width: 3rem;
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(-10px);
+  bottom: var(--base-spacing);
+  right: calc(var(--x-padding) - 0.6rem);
+  @include res("md") {
+    bottom: var(--md-spacing);
+    right: var(--md-spacing);
+  }
+  z-index: 50;
+  border: 2px solid transparent;
+  border-radius: 100%;
+  display: flex;
+  align-items: center;
+  outline: none;
+  transition: all 0.2s ease-out;
+
+  &:focus,
+  &:hover {
+    border-color: var(--teal);
+    background-color: var(--light);
+    cursor: pointer;
+  }
+
+  &.show {
+    visibility: unset;
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.2s ease-out;
   }
 }
