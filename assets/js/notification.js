@@ -1,4 +1,4 @@
-import { q, state } from './utils.js'
+import { q, state, switchClass } from './utils.js'
 
 /*
  * notification sets the state.notify function and performs
@@ -11,15 +11,13 @@ export default function notification() {
     const notificationText = q('notification-text')
 
     function clearNotification(color) {
-        notificationEl.classList.add('hidden')
-        notificationEl.classList.remove(color)
         notificationText.textContent = ''
+        switchClass(notificationEl, color, 'hidden')
     }
 
     function showNotification(text, color) {
-        notificationEl.classList.add(color)
         notificationText.textContent = text
-        notificationEl.classList.remove('hidden')
+        switchClass(notificationEl, 'hidden', color)
     }
 
     state.setNotify((text, color, onClick) => {
