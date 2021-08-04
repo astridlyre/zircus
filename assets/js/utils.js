@@ -172,6 +172,24 @@ export class Element {
     }
 }
 
+export function switchClass(els, a, b, callbacks) {
+    const s = (el, a, b) => {
+        el.classList.remove(a)
+        el.classList.add(b)
+    }
+    if (Array.isArray(els)) els.forEach(el => s(el, a, b))
+    else s(els, a, b)
+
+    if (callbacks && Array.isArray(callback))
+        callbacks.forEach(callback => callback())
+    return el
+}
+
+export function setTextContent(els, content) {
+    if (Array.isArray(els)) els.forEach(el => (el.textContent = content))
+    else els.textContent = content
+}
+
 export function appendPreloadLink(url) {
     return document.head.appendChild(
         new Element('link', null, {

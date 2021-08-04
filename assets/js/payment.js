@@ -6,6 +6,7 @@ import {
     calculateTax,
     lang,
     withLang,
+    switchClass,
 } from './utils.js'
 const stripe = Stripe(
     'pk_test_51J93KzDIzwSFHzdzCZtyRcjMvw8em0bhnMrVmkBHaMFHuc2nkJ156oJGNxuz0G7W4Jx0R6OCy2nBXYTt6U8bSYew00PIAPcntP'
@@ -84,9 +85,9 @@ export default function payment() {
         const total = subtotal + tax
 
         // Set text
-        checkoutSubtotal.innerText = `$${subtotal.toFixed(2)}`
-        checkoutTax.innerText = `$${tax.toFixed(2)}`
-        checkoutTotal.innerText = `$${total.toFixed(2)}`
+        checkoutSubtotal.textContent = `$${subtotal.toFixed(2)}`
+        checkoutTax.textContent = `$${tax.toFixed(2)}`
+        checkoutTotal.textContent = `$${total.toFixed(2)}`
     }
 
     function renderCartItems() {
@@ -120,7 +121,7 @@ export default function payment() {
     }
 
     function populateSelects(select, data = [], fn) {
-        select.textContent = ''
+        select.textContent = '' // clear children
         data.forEach(item => {
             select.appendChild(
                 new Element('option', null, {
@@ -139,7 +140,7 @@ export default function payment() {
             q('blur').classList.add('blur')
             paymentModal.classList.add('show-modal')
             payBtn.disabled = true
-            q('payment-price').innerText = checkoutTotal.textContent
+            q('payment-price').textContent = checkoutTotal.textContent
         } else {
             document.body.classList.remove('hide-y')
             q('blur').classList.remove('blur')
@@ -189,7 +190,7 @@ export default function payment() {
                     name: data.name,
                     email: data.email,
                 }
-                q('payment-price').innerText = `$${data.total.toFixed(2)}`
+                q('payment-price').textContent = `$${data.total.toFixed(2)}`
                 loadStripe(data)
                 loading(false)
             })
@@ -247,9 +248,8 @@ export default function payment() {
         state.secret = null
         q('result-message').classList.remove('hidden')
         payBtn.disabled = true
-        cancel.innerText = 'close'
-        cancel.classList.add('btn__primary')
-        cancel.classList.remove('btn__secondary')
+        cancel.textContent = 'close'
+        switchClass(cancel, 'btn__secondary', 'btn__primary')
     }
 
     function handleCountry() {
@@ -260,8 +260,8 @@ export default function payment() {
             state.countries[country].states,
             item => item.name
         )
-        stateElText.innerText = formText[country][lang()][0]
-        zipText.innerText = formText[country][lang()][1]
+        stateElText.textContent = formText[country][lang()][0]
+        zipText.textContent = formText[country][lang()][1]
         zip.setAttribute(
             'pattern',
             country === 'Canada'

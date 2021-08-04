@@ -1,4 +1,11 @@
-import { q, state, toggler, appendPreloadLink, withLang } from './utils.js'
+import {
+    q,
+    state,
+    toggler,
+    appendPreloadLink,
+    withLang,
+    switchClass,
+} from './utils.js'
 
 /* Path for masked product images. Images follow the convention:
  
@@ -59,9 +66,8 @@ export default function product() {
     })()
 
     // Sets product image
-    function setImage(key) {
-        return currentItem() && (image.src = currentItem().images[key])
-    }
+    const setImage = key =>
+        currentItem() && (image.src = currentItem().images[key])
 
     // Image hover handler
     const handleHoverImage = toggler(
@@ -91,28 +97,27 @@ export default function product() {
     )
 
     // Set price of product
-    function updatePrice() {
-        priceText.textContent = `$${
+    const updatePrice = () =>
+        (priceText.textContent = `$${
             Number(price.value) * Number(quantity.value)
-        }`
-    }
+        }`)
 
     // Preload images and set default color
-    function preloadImages(color) {
-        for (const image of ['a-400.png', 'b-400.png', 'a-1920.jpg'])
+    const preloadImages = color =>
+        ['a-400.png', 'b-400.png', 'a-1920.jpg'].forEach(image =>
             appendPreloadLink(
                 `/assets/img/products/masked/${prefix.value}-${color}-${image}`
             )
-    }
+        )
 
-    for (const child of color.children) {
+    color.children.forEach(child => {
         preloadImages(child.value)
         if (child.value === defaultColor.value) {
             child.setAttribute('selected', true)
             productAccent.classList.add(`${child.value}-before`)
             currentColor = child.value // set currentColor
         }
-    }
+    })
 
     // addItemToCart adds the currentItem (item.get()) to the cart, or updates
     // an exisiting item's quantity
@@ -120,7 +125,9 @@ export default function product() {
         const item = currentItem()
         // If not enough items in stock
         if (item.quantity - Number(quantity.value) < 0 || !item.quantity) return
+        // Otherwise update existing item
         if (state.cart.find(i => i.type === item.type)) updateCartItem(item)
+        // Or add a new item
         else addNewCartItem(item)
         state.notify(withLang(addNotificationText(item)), 'green', () =>
             location.assign(withLang({ en: '/cart', fr: '/fr/panier' }))
@@ -130,15 +137,12 @@ export default function product() {
 
     // updateCartItem updates an existing cart item's quantity
     function updateCartItem(item) {
+        const withQuantity = obj => ({
+            ...obj,
+            quantity: obj.quantity + Number(quantity.value),
+        })
         return (state.cart = cart =>
-            cart.map(i =>
-                i.type === item.type
-                    ? {
-                          ...i,
-                          quantity: i.quantity + Number(quantity.value),
-                      }
-                    : i
-            ))
+            cart.map(i => (i.type === item.type ? withQuantity(i) : i)))
     }
 
     // addNewCartItem adds a new item to cart
@@ -162,8 +166,7 @@ export default function product() {
     // outOfStock sets out-of-stock status
     function outOfStock() {
         stock.innerText = withLang(stockText(0))[0]
-        stock.classList.add('out-stock')
-        stock.classList.remove('in-stock')
+        switchClass(stock, 'in-stock', 'out-stock')
         quantity.setAttribute('disabled', true)
         addToCart.setAttribute('disabled', true)
         addToCart.innerText = withLang(addToCartText)[0]
@@ -175,8 +178,7 @@ export default function product() {
         stock.innerText = `${updatedItem.quantity > 5 ? text[2] : text[1]}`
         if (updatedItem.quantity < Number(quantity.value))
             quantity.value = updatedItem.quantity
-        stock.classList.add('in-stock')
-        stock.classList.remove('out-stock')
+        switchClass(stock, 'out-stock', 'in-stock')
         quantity.removeAttribute('disabled')
         addToCart.removeAttribute('disabled')
         addToCart.textContent = withLang(addToCartText)[1]
@@ -191,8 +193,11 @@ export default function product() {
             color.value = currentItem.color
             state.currentItem = null
         }
-        productAccent.classList.remove(`${currentColor}-before`)
-        productAccent.classList.add(`${color.value}-before`)
+        switchClass(
+            productAccent,
+            `${currentColor}-before`,
+            `${color.value}-before`
+        )
         currentColor = color.value
         if (!updatedItem || updatedItem.quantity === 0) outOfStock()
         else inStock(updatedItem)

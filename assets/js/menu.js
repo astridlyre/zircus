@@ -1,4 +1,11 @@
-import { q, state, toggler, withLang } from './utils.js'
+import {
+    q,
+    state,
+    toggler,
+    withLang,
+    switchClass,
+    setTextContent,
+} from './utils.js'
 
 /*
  *   Menu for Zircus
@@ -23,22 +30,18 @@ export default function menu() {
     }
 
     // Mobile menu functionality
-    const menuFunc = (() => {
+    const menuFunc = () => {
         let hidden = false
         const show = () => {
-            hidden = false
             menu.classList.add('hide')
             document.body.classList.remove('hide-y')
         }
         const hide = () => {
-            hidden = true
             menu.classList.remove('hide')
             document.body.classList.add('hide-y')
         }
-        return shouldShow => {
-            return shouldShow ? show() : hidden ? show() : hide()
-        }
-    })()
+        return () => ((hidden = !hidden) ? hide() : show())
+    }
 
     // Returns a positive number for scrolling down and a negative for scrolling
     // up the document.
@@ -54,63 +57,57 @@ export default function menu() {
     // Manages the scroll state of the nav menu and throttles scroll events to
     // not pelt the DOM with class adds and removes.
     const [setMenuShown, showMenu] = (() => {
+        const MIN_SCROLL = 100 // Min distance to scroll
         const scrollingUp = scrollState()
-        const show = () => {
-            nav.classList.add('slide-down')
-            nav.classList.remove('slide-up')
-            menuHidden = false
-        }
-        const hide = () => {
-            nav.classList.remove('slide-down')
-            nav.classList.add('slide-up')
-            menuHidden = true
-        }
-        let menuThrottled = false
-        let menuHidden = false
-        let menuFocused = false
+        const handler = (a, b, fn) => callback =>
+            switchClass(nav, a, b, [fn, callback])
+        const setHidden = () => (navHidden = true)
+        const setShow = () => (navHidden = false)
+        const show = handler('slide-up', 'slide-down', setShow)
+        const hide = handler('slide-down', 'slide-up', setHidden)
+        const isScrollingUp = () =>
+            window.scrollY < MIN_SCROLL || scrollingUp.next() <= 0
+                ? true
+                : false
+
+        const setNotThrottled = () => (navThrottled = false)
+        let navThrottled = false
+        let navHidden = false
+        let navFocused = false
+
         return [
-            toggler(
-                true,
-                () =>
-                    window.scrollY < 100 || scrollingUp.next().value <= 0
-                        ? true
-                        : false,
-                isScrollingUp => {
-                    if (!menuThrottled) {
-                        setTimeout(() => {
-                            if ((isScrollingUp && menuHidden) || menuFocused)
-                                show()
-                            else if (!isScrollingUp && !menuHidden) hide()
-                            menuThrottled = false
-                        }, 100)
-                    } else {
-                        menuThrottled = true
-                    }
-                }
-            ),
-            hasFocus => {
-                if (hasFocus) {
-                    menuFocused = true
-                    show()
-                } else {
-                    menuFocused = false
-                }
-            },
+            toggler(true, isScrollingUp, isScrollingUp => {
+                !navThrottled
+                    ? setTimeout(() => {
+                          // Show nav if focused
+                          if (navFocused && navHidden)
+                              return show(setNotThrottled)
+                          // Show nav if scrolling up and currently hidden
+                          if (isScrollingUp && navHidden)
+                              return show(setNotThrottled)
+                          // If not hidden and scrolling down, hide nav
+                          if (isScrollingUp && !navHidden)
+                              return hide(setNotThrottled)
+                      }, 100)
+                    : (navThrottled = true)
+            }),
+            hasFocus =>
+                hasFocus
+                    ? show(() => (navFocused = true))
+                    : (navFocused = false),
         ]
     })()
 
     function updateNavLink({ cart }) {
-        if (cart.length > 0) {
-            const totalItems = cart.reduce(
-                (acc, item) => acc + item.quantity,
-                0
+        if (cart.length > 0)
+            setTextContent(
+                [navLink, navLinkMobile],
+                `${withLang(cartText)} (${cart.reduce(
+                    (acc, item) => acc + item.quantity,
+                    0
+                )})`
             )
-            navLink.textContent = `${withLang(cartText)} (${totalItems})`
-            navLinkMobile.textContent = `${withLang(cartText)} (${totalItems})`
-        } else {
-            navLink.textContent = withLang(cartText)
-            navLinkMobile.textContent = withLang(cartText)
-        }
+        else setTextContent([navLink, navLinkMobile], withLang(cartText))
     }
 
     // set initial cart link state
