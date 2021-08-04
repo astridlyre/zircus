@@ -3,7 +3,7 @@ layout: default
 ---
 
 <div class="container">
-  <tag-line taglines="{{ page.tagLines }}"></tag-line>
+  <tag-line taglines="{{ page.tag_lines }}"></tag-line>
   <ul class="home__products">
     {% assign products=site.products | where:"lang", page.lang %} {% for product
     in products %}
