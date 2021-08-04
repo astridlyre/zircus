@@ -25,7 +25,13 @@ label_go_to_cart_aria: Aller au panier
 label_out_of_stock: Aucun disponible
 ---
 
-Culottes à l'avant plat, avec l'ajustement étroit et confortable que vous
-recherchez. Chaque paire est orée d'une ceinture Zircus blanche-sur-noire de
-1,25 po de largeur, d'une garniture élastique noire, et 95% coton 5% spandex
-tissu qui est oeko-tex certifié.
+Rétro culottes pour votre confort futur. Ces culottes extensibles en coton
+doublent aussi comme sous-vêtements d'emballage, tout en gardant le coton contre
+votre corps et votre emballeur serré entre les couches avant de la mouche.
+
+- Couverture complète Mid-Rise Brief
+- Mouche fonctionnelle qui peut être utilisée pour emballer
+- Oeko-Tex Certified Fabric 95% Coton 5% Spandex
+- Ceinture Zircus super douce de 1,25 po de largeur
+- Lavage à la machine froid, séchage en ligne ou séchage par culbutage faible
+- Fait à la main sur l'île de Vancouver, Canada

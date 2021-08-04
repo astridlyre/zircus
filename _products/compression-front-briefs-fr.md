@@ -26,10 +26,16 @@ label_go_to_cart_aria: Aller au panier
 label_out_of_stock: Aucun disponible
 ---
 
-Nos culottes avant de compression offrent une couche de power-net, entre
-2 couches de tissu de coton extensible: le confort du coton et la tenue de
-power-net tout en Un. Avec un style extra large (près de 5 po de largeur au plus
-petit point), votre le tonnerre sera contenu en toute sécurité! Le résultat
-final est un look plat, parfait pour lissant les choses. Chaque paire est ornée
-d'un Zircus blanc sur noir de 1,25 po de largeur ceinture, garniture élastique
-noire, et tissu de spandex de coton de 5% de 95% qui est Oeko-Tex Certifié.
+Culottes classiques avec compression pour un look plat. Aucune contorsion
+nécessaire, ces comprimer sans stress! Le filet de puissance est employé entre
+les couches de coton de bout droit pour d'offrir une prise solide tout en
+profitant du confort du coton sur votre la peau.
+
+- Couverture complète Mid-Rise Brief
+- Entrejambe extra large pour un confinement ultime
+- Tucking pas nécessaire
+- Compression confortable
+- Oeko-Tex Certified Fabric 95% Coton 5% Spandex
+- Ceinture Zircus super douce de 1,25 po de largeur
+- Laver à la machine à froid et suspendre pour sécher
+- Fait à la main sur l'île de Vancouver, Canada

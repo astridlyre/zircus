@@ -88,6 +88,7 @@ class State {
     }
 
     set order(order) {
+        if (this.__state.order && order != null) return
         return this.set('order', order)
     }
 
