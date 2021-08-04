@@ -16,7 +16,7 @@ Zircus Apparel is Queer owned and sewn with material that has the
 Oeko-Tex certification. I hand make each pair in my home shop on
 Vancouver Island. In this shop you won't see Women's or Men's used as
 descriptions but instead each style of underwear is available in a flat
-front, pouch front, or compression front.
+front, pouch front, or compression front. dooptydooptydoop
 
 ## the method
 
