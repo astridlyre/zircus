@@ -26,6 +26,13 @@ label_go_to_cart_aria: Go to shopping cart
 label_out_of_stock: None available
 ---
 
-Flat-front briefs, with the close and comfortable fit you've been looking for.
-Each pair has a 1.25" wide white-on-black Zircus waistband, black elastic trim,
-and 95% cotton 5% spandex fabric that is Oeko-Tex Certified
+Retro briefs for your future comfort. These stretch cotton briefs also double as
+packing underwear while keeping cotton against your body and your packer snug
+between the fly front layers.
+
+- Full Coverage Mid-Rise Brief
+- Functional Fly That Can Be Used To Pack
+- Oeko-Tex Certified Fabric 95% Cotton 5% Spandex
+- Super Soft 1.25” Wide Zircus Waistband
+- Machine Wash Cold, Line Dry or Tumble Dry Low
+- Handmade on Vancouver Island, Canada

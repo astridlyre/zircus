@@ -26,6 +26,12 @@ label_go_to_cart_aria: Go to shopping cart
 label_out_of_stock: None available
 ---
 
-Pouch front briefs, with a bit more space to hold what you're packing in style.
-Each pair has a 1.25" wide white-on-black Zircus waistband, black elastic trim,
-and 95% cotton 5% spandex fabric that is Oeko-Tex Certified
+Retro briefs for your future comfort.
+
+- Full Coverage Mid-Rise Brief
+- Contoured Pouch
+- Functional Fly
+- Oeko-Tex Certified Fabric 95% Cotton 5% Spandex
+- Super Soft 1.25” Wide Zircus Waistband
+- Machine Wash Cold, Line Dry or Tumble Dry Low
+- Handmade on Vancouver Island, Canada

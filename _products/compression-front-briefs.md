@@ -26,10 +26,16 @@ label_go_to_cart_aria: Go to shopping cart
 label_out_of_stock: None available
 ---
 
-Our compression front briefs offer a layer of power-net, in-between 2 layers of
-stretch cotton fabric: the comfort of cotton and the hold of power-net all in
-one. With an extra wide (nearly 5" wide at the smallest point) style, your
-thunder will be safely contained! The end result is a flat look, perfect for
-smoothing things over. Each pair has a 1.25" wide white-on-black Zircus
-waistband, black elastic trim, and 95% cotton 5% spandex fabric that is Oeko-Tex
-Certified
+Classic briefs with compression for a flat look. No contortion necessary, these
+compress with no stress! Power net is used between the stretch cotton layers to
+deliver a strong hold while still experiencing the comfort of cotton on your
+skin.
+
+- Full Coverage Mid-Rise Brief
+- Extra Wide Crotch For Ultimate Containment
+- Tucking Not Necessary
+- Comfortable Compression
+- Oeko-Tex Certified Fabric 95% Cotton 5% Spandex
+- Super Soft 1.25” Wide Zircus Waistband
+- Machine Wash Cold and hang to dry
+- Handmade on Vancouver Island, Canada
