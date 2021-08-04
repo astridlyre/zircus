@@ -6,6 +6,8 @@ import hero from './hero.js'
 import thanks from './thanks.js'
 import contact from './contact.js'
 import notification from './notification.js'
+import skipBtn from './skipBtn.js'
+import tagLine from './tagLine.js'
 
 product()
 payment()
@@ -15,3 +17,5 @@ hero()
 thanks()
 contact()
 notification()
+skipBtn()
+tagLine()

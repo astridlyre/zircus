@@ -1,11 +1,4 @@
-import {
-    q,
-    state,
-    toggler,
-    withLang,
-    switchClass,
-    setTextContent,
-} from './utils.js'
+import { q, state, withLang, switchClass, setTextContent } from './utils.js'
 
 /*
  *   Menu for Zircus
@@ -22,8 +15,6 @@ export default function menu() {
     const navLinkMobile = q('cart-link-mobile')
     const menu = q('menu-mobile-list')
     const btn = q('menu-mobile-btn')
-    const skipBtn = q('skip-link')
-    const mainContent = q('main-content')
     const toTopBtn = q('back-to-top')
     const cartText = {
         en: 'cart',
@@ -134,9 +125,6 @@ export default function menu() {
 
     // add mobile button event listener
     btn.addEventListener('click', menuFunc)
-    skipBtn.addEventListener('click', () => {
-        mainContent.focus()
-    })
     menu.addEventListener('click', () => menuFunc())
     nav.addEventListener('focusin', () => navScrollHandler(true))
     nav.addEventListener('focusout', () => navScrollHandler(false))

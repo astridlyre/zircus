@@ -3,11 +3,7 @@ layout: default
 ---
 
 <div class="container">
-  <div class="home__heading_container">
-    <h1 class="home__heading">
-      <span id="home-heading"></span><span class="teal">.</span>
-    </h1>
-  </div>
+  <tag-line taglines="{{ page.tagLines }}"></tag-line>
   <ul class="home__products">
     {% assign products=site.products | where:"lang", page.lang %} {% for product
     in products %}

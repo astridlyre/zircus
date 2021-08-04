@@ -7,6 +7,7 @@ bottom_image: /assets/img/products/1920/closeup-a-1920.jpg
 heading: queer owned & sewn
 hero_alt: "Colourful photos of Zircus underwear, worn by several different models of varying gender and presentation."
 hero_title: "Zircus models showing off their colourful underwear."
+tagLines: "For your thunder down under|If you are here, you may be gay"
 ---
 
 Zircus Apparel is Queer owned and sewn with material that has the Oeko-Tex
