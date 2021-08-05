@@ -274,6 +274,7 @@
   height: 2.62rem;
   width: 2.62rem;
   visibility: hidden;
+  opacity: 0.65;
   transform: translateY(15px);
   bottom: var(--base-spacing);
   right: calc(var(--x-padding) - 0.6rem);
@@ -283,7 +284,7 @@
   }
   z-index: 50;
   border: none;
-  border-radius: 100%;
+  border-radius: var(--radius);
   display: flex;
   align-items: center;
   outline: none;
@@ -291,7 +292,7 @@
 
   &:focus,
   &:hover {
-    background-color: var(--teal);
+    opacity: 1;
     cursor: pointer;
   }
 
