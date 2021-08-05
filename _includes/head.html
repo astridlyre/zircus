@@ -56,20 +56,18 @@
 
   <!-- Primary Meta Tags -->
   <title>{{ page.title }}</title>
-  <meta name="title" content="Zircus - For your thunder down under." />
+  <meta name="title" content="{{ page.title }}" />
+  <meta name="description" content="{{ page.description }}" />
   <meta
-    name="description"
-    content="Queer owned & sewn underwear from Vancouver Island."
+    name="google-site-verification"
+    content="20n3HbYyvBdD9I_4lK3NR5mQj1rSeBAQHOUzs3z0EqM"
   />
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://zircus.netlify.app" />
   <meta property="og:title" content="Zircus - For your thunder down under." />
-  <meta
-    property="og:description"
-    content="Queer owned & sewn underwear from Vancouver Island."
-  />
+  <meta property="og:description" content="{{ page.description }}" />
   <meta property="og:image" content="/site.jpg" />
 
   <!-- Twitter -->
@@ -79,10 +77,7 @@
     property="twitter:title"
     content="Zircus - For your thunder down under."
   />
-  <meta
-    property="twitter:description"
-    content="Queer owned & sewn underwear from Vancouver Island."
-  />
+  <meta property="twitter:description" content="{{ page.description }}" />
   <meta property="twitter:image" content="/site.jpg" />
 
   {% assign products=site.products | where:"ref", page.ref | sort:"lang" %} {%

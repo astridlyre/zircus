@@ -5,6 +5,7 @@ layout: home
 title: zircus
 bottom_image: /assets/img/products/1920/closeup-a-1920.jpg
 heading: queer possédé et cousu
+description: queer possédé et cousu
 hero_alt: "Photos colorées de sous-vêtements Zircus, portées par plusieurs modèles différents de genre et de présentation variés."
 hero_title: "Les modèles Zircus exhipent leurs sous-vêtements colorés."
 tag_lines: "Pour votre tonnerre vers le bas sous|Garde les bijoux de la couronne|Pour votre tresor national|Un condo de luxe pour vos petit soldats|si vous l'etes, vous pourriez etre gai|Contenir votre tonnerre dans le style|Une forme elegante pour vos meches|La camelote d'une personne est le tresor d'une autre"
