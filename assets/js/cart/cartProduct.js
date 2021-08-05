@@ -2,15 +2,15 @@ import { withLang, lang, state } from '../utils.js'
 import intText from '../int/intText.js'
 
 export default function CartProduct({
-    templateEl,
+    productTemplate,
     updateSubtotal = null,
-    renderCartItems = null,
+    renderCartProducts = null,
     item,
     withActions = false,
 }) {
     const { removeBtnText, removeNotificationText } = intText.cart
 
-    const template = templateEl.content.cloneNode(true)
+    const template = productTemplate.content.cloneNode(true)
     const product = template.querySelector('.cart__product')
     const link = template.querySelector('a')
     const img = template.querySelector('img')
@@ -66,7 +66,7 @@ export default function CartProduct({
             state.notify(withLang(removeNotificationText(item)), 'red', () =>
                 location.assign(link.href)
             )
-            !state.cart.length && renderCartItems()
+            !state.cart.length && renderCartProducts()
         })
     } else {
         desc.textContent = `${item.name[lang()]} (${item.size}) x ${

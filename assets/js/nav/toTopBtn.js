@@ -46,6 +46,6 @@ export default function toTopButton() {
         }
     }
 
-    if (!customElements.get('to-top-button'))
-        customElements.define('to-top-button', ToTopButton)
+    if (!customElements.get('zircus-to-top-button'))
+        customElements.define('zircus-to-top-button', ToTopButton)
 }

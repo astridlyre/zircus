@@ -2,7 +2,7 @@ import {
     q,
     API_ENDPOINT,
     state,
-    Element,
+    ZircusElement,
     calculateTax,
     lang,
     withLang,
@@ -89,7 +89,7 @@ export default function payment() {
             fragment.appendChild(
                 cartProduct({
                     item,
-                    templateEl,
+                    productTemplate: templateEl,
                 })
             )
         )
@@ -100,7 +100,7 @@ export default function payment() {
         select.textContent = '' // clear children
         data.forEach(item => {
             select.appendChild(
-                new Element('option', null, {
+                new ZircusElement('option', null, {
                     value: fn(item),
                 })
                     .addChild(fn(item))

@@ -2,18 +2,16 @@
 <html lang="{{ page.lang }}">
   {% include head.html %}
   <body>
-    <div id="modal" class="modal hidden">
+    <zircus-modal show="false" class="modal hidden">
       <form id="modal-form">
-        <h2 id="modal-heading">This is a heading</h2>
-        <p id="modal-text">This is some modal text.</p>
+        <h2 id="modal-heading"></h2>
+        <div id="modal-content"></div>
         <div class="modal_buttons">
-          <button id="modal-ok" class="btn__primary btn">ok</button>
-          <button id="modal-cancel" class="hidden btn btn__secondary">
-            cancel
-          </button>
+          <button id="modal-ok" class="btn__primary btn"></button>
+          <button id="modal-cancel" class="hidden btn btn__secondary"></button>
         </div>
       </form>
-    </div>
+    </zircus-modal>
     {% include nav.html %}
     <div id="blur">
       <main id="main-content" role="main" tabindex="-1" class="page">

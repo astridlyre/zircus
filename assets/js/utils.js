@@ -92,6 +92,15 @@ class State {
         return this.set('order', order)
     }
 
+    set modal(modal) {
+        this.__modal = modal
+        return this
+    }
+
+    get modal() {
+        return this.__modal
+    }
+
     setNotify(fn) {
         this.__notify = fn
     }
@@ -126,13 +135,13 @@ class State {
 export const state = new State()
 
 /*
- *   Element makes it easier to create basic DOM elements
+ *   ZircusElement makes it easier to create basic DOM elements
  *
  *   takes a 'type' (ie. 'p', 'span', 'li', etc), an array
  *   of css 'classes', and an object of additional 'attributes'
  *   to set on the new element.
  */
-export class Element {
+export class ZircusElement {
     constructor(type, classes, attributes) {
         this.e = document.createElement(type)
         this.children = []
@@ -153,7 +162,7 @@ export class Element {
     }
     render() {
         this.children.forEach(child => {
-            if (child instanceof Element) {
+            if (child instanceof ZircusElement) {
                 this.e.appendChild(child.render())
             } else {
                 this.e.textContent = child
@@ -193,7 +202,7 @@ export function setTextContent(els, content) {
 
 export function appendPreloadLink(url) {
     return document.head.appendChild(
-        new Element('link', null, {
+        new ZircusElement('link', null, {
             href: url,
             rel: 'prefetch',
             as: 'image',

@@ -1,4 +1,4 @@
-import { appendPreloadLink, Element } from '../utils.js'
+import { appendPreloadLink, ZircusElement } from '../utils.js'
 
 export default () => {
     class Hero extends HTMLElement {
@@ -10,13 +10,13 @@ export default () => {
             this._images.forEach(image => appendPreloadLink(image))
             this._currentImage = 1
 
-            this._imageEl = new Element('img', 'section__hero_image', {
+            this._imageEl = new ZircusElement('img', 'section__hero_image', {
                 src: this._images[this._currentImage],
                 alt: this.getAttribute('alt'),
                 title: this.getAttribute('title'),
             })
 
-            this._roundedBottom = new Element('div', [
+            this._roundedBottom = new ZircusElement('div', [
                 'bg-light',
                 'rounded-big-top',
                 'absolute',
@@ -40,6 +40,6 @@ export default () => {
         }
     }
 
-    if (!customElements.get('hero-image'))
-        customElements.define('hero-image', Hero)
+    if (!customElements.get('zircus-hero-image'))
+        customElements.define('zircus-hero-image', Hero)
 }

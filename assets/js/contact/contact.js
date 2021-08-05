@@ -1,72 +1,78 @@
-import { q, API_ENDPOINT, lang } from '../utils.js'
-import modal from '../modal/modal.js'
+import { API_ENDPOINT, lang } from '../utils.js'
+import showModal from '../modal/modal.js'
+import intText from '../int/intText.js'
+
+const { contactText } = intText
+
+const handleFailure = error =>
+    showModal({
+        heading: contactText[lang()].error[0],
+        content: error,
+        ok: {
+            text: contactText[lang()].error[1],
+            action: hide => hide(),
+        },
+    })
+
+const handleSuccess = data =>
+    showModal({
+        heading: contactText[lang()].default[0],
+        content: contactText[lang()].message(data.name, data.email),
+        ok: {
+            text: contactText[lang()].default[1],
+            action: hide => hide(),
+        },
+    })
 
 export default function contact() {
-    const form = q('contact-form')
-    if (!form) return
-    const nameEl = q('contact-name')
-    const emailEl = q('contact-email')
-    const messageEl = q('contact-message')
-    const sendBtn = q('contact-button')
-    const els = [nameEl, emailEl, messageEl, sendBtn]
-    const showModal = modal()
+    class ContactForm extends HTMLElement {
+        connectedCallback() {
+            this._form = this.querySelector('#contact-form')
+            this._nameInput = this.querySelector('#contact-name')
+            this._emailInput = this.querySelector('#contact-email')
+            this._sendButton = this.querySelector('#contact-button')
+            this._messageText = this.querySelector('#contact-message')
 
-    const modalText = {
-        en: {
-            error: ['Error', 'ok'],
-            default: ['Success', 'ok', 'cancel'],
-            message: (name, email) =>
-                `Thanks for your message, ${name}! We'll get back to you at ${email} as soon as possible.`,
-        },
-        fr: {
-            error: ['Error', 'ok'],
-            default: ['Succès', 'ok', 'annuler'],
-            message: (name, email) =>
-                `Merci pour votre message ${name}! Nous vous rappelleons à votre courriel ${email} dans les plus brefs délais.`,
-        },
+            const els = [
+                this._nameInput,
+                this._emailInput,
+                this._sendButton,
+                this._messageText,
+            ]
+
+            this._form.addEventListener('submit', e => {
+                e.preventDefault()
+
+                const message = {
+                    name: this._nameInput.value,
+                    email: this._emailInput.value,
+                    message: this._messageText.value,
+                }
+
+                els.forEach(el => {
+                    el.value = ''
+                    el.disabled = true
+                })
+
+                fetch(`${API_ENDPOINT}/message`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(message),
+                })
+                    .then(res => res.json())
+                    .then(data =>
+                        data.error
+                            ? handleFailure(data.error)
+                            : handleSuccess(data)
+                    )
+                    .then(() => els.forEach(el => (el.disabled = false)))
+                    .catch(e => console.log(e))
+            })
+        }
     }
 
-    form.addEventListener('submit', e => {
-        e.preventDefault()
-        const payload = {
-            name: nameEl.value,
-            email: emailEl.value,
-            message: messageEl.value,
-        }
-        els.forEach(el => {
-            el.value = ''
-            el.disabled = true
-        })
-        fetch(`${API_ENDPOINT}/message`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(payload),
-        })
-            .then(res => res.json())
-            .then(data => {
-                els.forEach(el => {
-                    el.disabled = false
-                })
-                if (data.error) {
-                    showModal({
-                        heading: modalText[lang()].error[0],
-                        text: data.error,
-                        ok: {
-                            text: modalText[lang()].error[1],
-                        },
-                    })
-                } else {
-                    showModal({
-                        heading: modalText[lang()].default[0],
-                        text: modalText[lang()].message(data.name, data.email),
-                        ok: {
-                            text: modalText[lang()].default[1],
-                        },
-                    })
-                }
-            })
-            .catch(e => console.log(e))
-    })
+    if (!customElements.get('zircus-contact-form'))
+        customElements.define('zircus-contact-form', ContactForm)
 }

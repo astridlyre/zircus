@@ -1,9 +1,9 @@
-import { Element } from '../utils.js'
+import { ZircusElement } from '../utils.js'
 
 export default function SkipToContent() {
     class SkipButton extends HTMLElement {
         connectedCallback() {
-            this.button = new Element('button', [
+            this.button = new ZircusElement('button', [
                 'skip-to-content',
                 'small-spaced-bold',
             ])
@@ -18,6 +18,6 @@ export default function SkipToContent() {
         }
     }
 
-    if (!customElements.get('skip-to-content'))
-        customElements.define('skip-to-content', SkipButton)
+    if (!customElements.get('zircus-skip-to-content'))
+        customElements.define('zircus-skip-to-content', SkipButton)
 }

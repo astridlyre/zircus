@@ -3,7 +3,7 @@ layout: default
 ---
 
 <div class="container">
-  <tag-line taglines="{{ page.tag_lines }}"></tag-line>
+  <zircus-tag-line taglines="{{ page.tag_lines }}"></zircus-tag-line>
   <ul class="home__products">
     {% assign products=site.products | where:"lang", page.lang %} {% for product
     in products %}
@@ -25,12 +25,12 @@ layout: default
     {% endfor %}
   </ul>
 </div>
-<hero-image
+<zircus-hero-image
   num-images="6"
   image-path="/assets/img/people/hero"
   alt="{{ page.hero_alt }}"
   title="{{ page.hero_title }}"
-></hero-image>
+></zircus-hero-image>
 <section class="section__text">
   <div class="section__text__circle"></div>
   <div class="container">

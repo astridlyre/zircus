@@ -10,37 +10,44 @@ layout: withModal
 />
 <div class="container">
   <h1 class="page__heading">{{ page.heading }}</h1>
-  <form id="contact-form" class="form contact">
-    <label for="contact-name" class="label_sm">
-      <span>{{ page.label_name }}</span>
-      <input
-        id="contact-name"
-        type="text"
-        name="name"
-        maxlength="80"
-        value=""
-        class="input"
-    /></label>
-    <label for="contact-email" class="label_sm">
-      <span>{{ page.label_email }}</span>
-      <input
-        id="contact-email"
-        type="email"
-        name="contact-email"
-        value=""
-        class="input"
-        maxlength="80"
-      />
-    </label>
-    <label for="contact-message" class="label_lg">
-      <span>{{ page.label_message }}</span>
-      <textarea rows="10" class="input" id="contact-message"></textarea>
-    </label>
-    <div class="button_container">
-      <p id="contact-sent" class="hidden">{{ page.label_message_sent }}</p>
-      <button type="submit" id="contact-button" class="btn btn__primary">
-        {{ page.label_button_text }}
-      </button>
-    </div>
-  </form>
+  <zircus-contact-form>
+    <form id="contact-form" class="form contact">
+      <label for="contact-name" class="label_sm">
+        <span>{{ page.label_name }}</span>
+        <input
+          id="contact-name"
+          type="text"
+          name="name"
+          maxlength="80"
+          value=""
+          class="input"
+      /></label>
+      <label for="contact-email" class="label_sm">
+        <span>{{ page.label_email }}</span>
+        <input
+          id="contact-email"
+          type="email"
+          name="contact-email"
+          value=""
+          class="input"
+          maxlength="80"
+        />
+      </label>
+      <label for="contact-message" class="label_lg">
+        <span>{{ page.label_message }}</span>
+        <textarea
+          name="contact-message"
+          rows="10"
+          class="input"
+          id="contact-message"
+        ></textarea>
+      </label>
+      <div class="button_container">
+        <p id="contact-sent" class="hidden">{{ page.label_message_sent }}</p>
+        <button type="submit" id="contact-button" class="btn btn__primary">
+          {{ page.label_button_text }}
+        </button>
+      </div>
+    </form>
+  </zircus-contact-form>
 </div>

@@ -4,56 +4,58 @@ layout: default
 
 <div class="container">
   <h1 class="page__heading">{{ page.heading }}</h1>
-  <template id="cart-product-template">
-    <div class="cart__product">
-      <a href="" class="cart__product_flexcon">
-        <img src="" alt="" class="cart__product_image" />
-        <div class="cart__product_description">
-          <p></p>
+  <zircus-cart>
+    <template id="cart-product-template">
+      <div class="cart__product">
+        <a href="" class="cart__product_flexcon">
+          <img src="" alt="" class="cart__product_image" />
+          <div class="cart__product_description">
+            <p></p>
+          </div>
+        </a>
+        <div class="cart__product_inputs">
+          <span class="cart__product_price"></span>
+          <label for=""
+            ><span>{{ page.label_quantity }}</span>
+            <input
+              type="number"
+              name=""
+              value=""
+              min="1"
+              max="100"
+              step="1"
+              class="input w-4"
+          /></label>
+          <input type="hidden" name="type" value="" />
+          <button type="button" class="btn btn__secondary" aria-label="">
+            {{ page.label_remove }}
+          </button>
         </div>
-      </a>
-      <div class="cart__product_inputs">
-        <span class="cart__product_price"></span>
-        <label for=""
-          ><span>{{ page.label_quantity }}</span>
-          <input
-            type="number"
-            name=""
-            value=""
-            min="1"
-            max="100"
-            step="1"
-            class="input w-4"
-        /></label>
-        <input type="hidden" name="type" value="" />
-        <button type="button" class="btn btn__secondary" aria-label="">
-          {{ page.label_remove }}
-        </button>
       </div>
+    </template>
+    <div id="cart-products">
+      <p id="cart-products-none" class="dot">{{ page.label_no_items }}</p>
     </div>
-  </template>
-  <div id="cart-products">
-    <p id="cart-products-none" class="dot">{{ page.label_no_items }}</p>
-  </div>
-  <div class="cart__total">
-    <ul class="cart__total_prices">
-      <li class="cart__total_price bold">
-        {{ page.label_subtotal }}:<span
-          class="cart__total_price_item"
-          id="cart-subtotal"
-        ></span>
-      </li>
-    </ul>
-  </div>
-  <div class="cart__buttons">
-    <button
-      name="Checkout cart items"
-      class="btn btn__primary"
-      type="button"
-      id="cart-checkout"
-      disabled
-    >
-      {{ page.label_checkout }}
-    </button>
-  </div>
+    <div class="cart__total">
+      <ul class="cart__total_prices">
+        <li class="cart__total_price bold">
+          {{ page.label_subtotal }}:<span
+            class="cart__total_price_item"
+            id="cart-subtotal"
+          ></span>
+        </li>
+      </ul>
+    </div>
+    <div class="cart__buttons">
+      <button
+        name="Checkout cart items"
+        class="btn btn__primary"
+        type="button"
+        id="cart-checkout"
+        disabled
+      >
+        {{ page.label_checkout }}
+      </button>
+    </div></zircus-cart
+  >
 </div>
