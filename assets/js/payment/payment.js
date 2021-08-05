@@ -9,6 +9,7 @@ import {
     switchClass,
 } from '../utils.js'
 import intText from '../int/intText.js'
+import cartProduct from '../cart/cartProduct.js'
 
 const stripe = Stripe(
     'pk_test_51J93KzDIzwSFHzdzCZtyRcjMvw8em0bhnMrVmkBHaMFHuc2nkJ156oJGNxuz0G7W4Jx0R6OCy2nBXYTt6U8bSYew00PIAPcntP'
@@ -84,31 +85,14 @@ export default function payment() {
 
     function renderCartItems() {
         const fragment = new DocumentFragment()
-        state.cart.forEach(item => {
-            const template = templateEl.content.cloneNode(true)
-            const link = template.querySelector('a')
-            const img = template.querySelector('img')
-            const desc = template.querySelector('p')
-            const l = lang()
-
-            link.href = `/products/${item.name.en
-                .toLowerCase()
-                .split(' ')
-                .join('-')}${l !== 'en' ? `-${l}` : ''}.html`
-            link.addEventListener(
-                'click',
-                () =>
-                    (state.currentItem = {
-                        type: item.type,
-                        color: item.color,
-                        size: item.size,
-                    })
+        state.cart.forEach(item =>
+            fragment.appendChild(
+                cartProduct({
+                    item,
+                    templateEl,
+                })
             )
-            img.src = item.images.sm_a
-            desc.textContent = `${item.name[l]} (${item.size}) - ${item.quantity} x $${item.price}`
-
-            return fragment.appendChild(template)
-        })
+        )
         checkoutList.appendChild(fragment)
     }
 

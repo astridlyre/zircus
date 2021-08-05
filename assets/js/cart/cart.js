@@ -1,5 +1,5 @@
-import { q, state, lang, withLang } from '../utils.js'
-import intText from '../int/intText.js'
+import { q, state, withLang } from '../utils.js'
+import cartProduct from './cartProduct.js'
 
 /*
     Cart performs the functions manage the shopping cart.
@@ -13,8 +13,6 @@ export default function cart() {
     const list = q('cart-products')
     const templateEl = q('cart-product-template')
     const noItems = q('cart-products-none')
-    const removeNotificationText = intText.cart.removeNotificationText
-    const removeBtnText = intText.cart.removeBtnText
 
     // enableButtons enables the checkoutBtn if there are items in cart
     function enableButtons() {
@@ -23,7 +21,7 @@ export default function cart() {
     }
 
     // setSubtotal updates the subtotal
-    function setSubtotal() {
+    function updateSubtotal() {
         // Set text
         cartSubTotal.innerText = `$${state.cart
             .reduce((acc, item) => (acc += item.price * item.quantity), 0)
@@ -31,76 +29,26 @@ export default function cart() {
         enableButtons()
     }
 
-    function appendItemToFragment(item, fragment) {
-        const template = templateEl.content.cloneNode(true)
-        const product = template.querySelector('.cart__product')
-        const link = template.querySelector('a')
-        const img = template.querySelector('img')
-        const desc = template.querySelector('p')
-        const price = template.querySelector('span')
-        const qty = template.querySelector('.input')
-        const label = template.querySelector('label')
-        const removeBtn = template.querySelector('button')
-        const l = lang()
-
-        link.href = `/products/${item.name.en
-            .toLowerCase()
-            .split(' ')
-            .join('-')}${l !== 'en' ? `-${l}` : ''}.html`
-        link.addEventListener(
-            'click',
-            () =>
-                (state.currentItem = {
-                    type: item.type,
-                    color: item.color,
-                    size: item.size,
-                })
-        )
-        img.src = item.images.sm_a
-        img.alt = `${item.name[l]} ${item.size} ${item.color} underwear`
-        desc.textContent = `${item.name[l]} (${item.size})`
-        price.textContent = `$${item.price * item.quantity}`
-        qty.value = item.quantity
-        qty.id = item.type
-        qty.setAttribute('name', `${item.name[l]} ${item.size} ${item.color}`)
-        label.setAttribute('for', item.type)
-        qty.addEventListener('input', () => {
-            if (!qty.value) qty.value = 1
-            const max = state.inv.find(i => i.type === item.type).quantity
-            if (Number(qty.value) > max) qty.value = max
-            state.cart = cart =>
-                cart.map(i =>
-                    i.id === item.id ? { ...i, quantity: Number(qty.value) } : i
-                )
-            price.textContent = `$${item.price * Number(qty.value)}`
-            setSubtotal()
-        })
-
-        // Add remove button functionality
-        removeBtn.setAttribute('aria-label', withLang(removeBtnText(item)))
-        removeBtn.addEventListener('click', () => {
-            state.cart = cart => cart.filter(i => i.id !== item.id)
-            product.remove()
-            setSubtotal()
-            state.notify(withLang(removeNotificationText(item)), 'red', () =>
-                location.assign(link.href)
-            )
-            !state.cart.length && renderCartItems()
-        })
-
-        return fragment.appendChild(template)
-    }
-
     function renderCartItems() {
         if (!state.cart.length) {
             noItems.style.display = 'block'
-            return setSubtotal()
+            return updateSubtotal()
         }
         noItems.style.display = 'none'
         const fragment = new DocumentFragment()
-        state.cart.forEach(item => appendItemToFragment(item, fragment))
+        state.cart.forEach(item =>
+            fragment.appendChild(
+                cartProduct({
+                    item,
+                    templateEl,
+                    updateSubtotal,
+                    renderCartItems,
+                    withActions: true,
+                })
+            )
+        )
         list.appendChild(fragment)
-        return setSubtotal()
+        return updateSubtotal()
     }
 
     // Initial render
