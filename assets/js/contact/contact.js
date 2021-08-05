@@ -1,5 +1,5 @@
-import { q, API_ENDPOINT, lang } from './utils.js'
-import modal from './modal.js'
+import { q, API_ENDPOINT, lang } from '../utils.js'
+import modal from '../modal/modal.js'
 
 export default function contact() {
     const form = q('contact-form')

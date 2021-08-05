@@ -1,4 +1,5 @@
-import { q, state, lang, withLang } from './utils.js'
+import { q, state, lang, withLang } from '../utils.js'
+import intText from '../int/intText.js'
 
 /*
     Cart performs the functions manage the shopping cart.
@@ -12,16 +13,8 @@ export default function cart() {
     const list = q('cart-products')
     const templateEl = q('cart-product-template')
     const noItems = q('cart-products-none')
-
-    const removeNotificationText = item => ({
-        en: `Removed ${item.name.en} from cart`,
-        fr: `${item.name.fr} retiré du panier`,
-    })
-
-    const removeBtnText = item => ({
-        en: `Remove ${item.name.en} (size: ${item.size} quantity: ${item.quantity}) from cart`,
-        fr: `Retirer ${item.name.fr} (taille: ${item.size} quantité: ${item.quantity}) du panier`,
-    })
+    const removeNotificationText = intText.cart.removeNotificationText
+    const removeBtnText = intText.cart.removeBtnText
 
     // enableButtons enables the checkoutBtn if there are items in cart
     function enableButtons() {

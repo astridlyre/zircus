@@ -1,4 +1,4 @@
-import { q, state, switchClass } from './utils.js'
+import { q, state, switchClass } from '../utils.js'
 
 /*
  * notification sets the state.notify function and performs

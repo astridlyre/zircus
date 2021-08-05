@@ -1,4 +1,4 @@
-import { appendPreloadLink, Element } from './utils.js'
+import { appendPreloadLink, Element } from '../utils.js'
 
 export default () => {
     class Hero extends HTMLElement {

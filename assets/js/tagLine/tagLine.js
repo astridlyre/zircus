@@ -1,4 +1,4 @@
-import { Element } from './utils.js'
+import { Element } from '../utils.js'
 
 export default function tagLine() {
     class TagLine extends HTMLElement {

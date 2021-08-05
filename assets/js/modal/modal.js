@@ -1,4 +1,4 @@
-import { q } from './utils.js'
+import { q } from '../utils.js'
 
 export default function modal() {
     const modalEl = q('modal')

@@ -1,4 +1,4 @@
-import { q, state } from './utils.js'
+import { q, state } from '../utils.js'
 
 export default function thanks() {
     const orderIdEl = q('order-id')

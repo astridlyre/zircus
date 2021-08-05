@@ -7,7 +7,9 @@ import {
     lang,
     withLang,
     switchClass,
-} from './utils.js'
+} from '../utils.js'
+import intText from '../int/intText.js'
+
 const stripe = Stripe(
     'pk_test_51J93KzDIzwSFHzdzCZtyRcjMvw8em0bhnMrVmkBHaMFHuc2nkJ156oJGNxuz0G7W4Jx0R6OCy2nBXYTt6U8bSYew00PIAPcntP'
 )
@@ -41,17 +43,7 @@ export default function payment() {
     const checkoutTotal = q('checkout-total')
     const templateEl = q('checkout-product-template')
     const checkoutList = q('checkout-products')
-
-    const formText = {
-        Canada: {
-            en: ['Province', 'Postal Code'],
-            fr: ['Province', 'Code postal'],
-        },
-        'United States': {
-            en: ['State', 'Zip'],
-            fr: ['État', 'Code postal'],
-        },
-    }
+    const formText = intText.checkout.formText
 
     let isLoaded = false
 

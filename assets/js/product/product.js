@@ -5,7 +5,8 @@ import {
     appendPreloadLink,
     withLang,
     switchClass,
-} from './utils.js'
+} from '../utils.js'
+import intText from '../int/intText.js'
 
 /* Path for masked product images. Images follow the convention:
  
@@ -33,22 +34,11 @@ export default function product() {
     const goToCartQty = q('go-to-cart-qty')
     const productAccent = q('product-accent')
     const stock = q('product-stock')
-    const addToCartText = {
-        en: ['out of stock', 'add to cart'],
-        fr: ['non disponible', 'ajouter'],
-    }
+    const addToCartText = intText.product.addToCart
+    const addNotificationText = intText.product.addNotificationText
+    const stockText = intText.product.stockText
 
     let currentColor = color.value
-
-    const addNotificationText = item => ({
-        en: `Added ${item.name['en']} to cart`,
-        fr: `Ajouté des ${item.name['fr']} au panier`,
-    })
-
-    const stockText = qty => ({
-        en: ['None available', `Only ${qty} left!`, 'In stock'],
-        fr: ['Non disponible', `Il n'en reste que ${qty}!`, 'En stock'],
-    })
 
     // Get and set item
     const [currentItem, setItem] = (() => {

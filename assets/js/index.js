@@ -1,21 +1,19 @@
-import product from './product.js'
-import payment from './payment.js'
-import cart from './cart.js'
-import menu from './menu.js'
-import hero from './hero.js'
-import thanks from './thanks.js'
-import contact from './contact.js'
-import notification from './notification.js'
-import skipBtn from './skipBtn.js'
-import tagLine from './tagLine.js'
+import product from './product/product.js'
+import payment from './payment/payment.js'
+import cart from './cart/cart.js'
+import nav from './nav/nav.js'
+import tagLine from './tagLine/tagLine.js'
+import hero from './hero/hero.js'
+import thanks from './thanks/thanks.js'
+import contact from './contact/contact.js'
+import notification from './notification/notification.js'
 
 product()
 payment()
 cart()
-menu()
+nav()
 hero()
 thanks()
 contact()
 notification()
-skipBtn()
 tagLine()
