@@ -2,21 +2,18 @@ import { Element } from '../utils.js'
 
 export default function tagLine() {
     class TagLine extends HTMLElement {
-        constructor() {
-            super()
+        connectedCallback() {
             this.tagLines = this.getAttribute('taglines').split('|')
 
             const textContent =
                 this.tagLines[Math.floor(Math.random() * this.tagLines.length)]
 
-            const heading = new Element('h1', 'home__heading').render()
-            const text = new Element('span').render()
-            const dot = new Element('span', 'teal').addChild('.').render()
-            heading.appendChild(text)
-            heading.appendChild(dot)
-            text.textContent = textContent
+            const heading = new Element('h1', 'home__heading')
+            heading.addChild(new Element('span').addChild(textContent))
+            heading.addChild(new Element('span', 'teal').addChild('.'))
+
             this.classList.add('home__heading_container')
-            this.appendChild(heading)
+            this.appendChild(heading.render())
         }
     }
 

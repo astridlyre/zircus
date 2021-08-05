@@ -156,7 +156,7 @@ export class Element {
             if (child instanceof Element) {
                 this.e.appendChild(child.render())
             } else {
-                this.e.innerText = child
+                this.e.textContent = child
             }
         })
         return this.e

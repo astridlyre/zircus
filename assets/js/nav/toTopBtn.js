@@ -1,42 +1,48 @@
-const toTopBtnHandler = button => {
-    const MIN_SCROLL = 400
-
-    function show() {
-        button.classList.add('show')
-        return (btnHidden = false)
-    }
-    function hide() {
-        button.classList.remove('show')
-        return (btnHidden = true)
-    }
-
-    let btnHidden = true
-    let btnFocused = false
-    let btnThrottled = false
-
-    return () =>
-        !btnThrottled
-            ? setTimeout(() => {
-                  const shouldShow = window.scrollY > MIN_SCROLL
-                  if (btnFocused && btnHidden) show()
-                  if (shouldShow && btnHidden) show()
-                  if (!shouldShow && !btnHidden) hide()
-                  btnThrottled = false
-              }, 100)
-            : (btnThrottled = true)
-}
-
 export default function toTopButton() {
     class ToTopButton extends HTMLElement {
+        #MIN_SCROLL = 400
+
         constructor() {
             super()
             this.button = this.querySelector('#to-top-button')
-            this.scrollHandler = toTopBtnHandler(this.button)
+            this.buttonHidden = true
+            this.buttonFocused = false
+            this.throttled = false
+        }
+
+        connectedCallback() {
             this.button.addEventListener('click', () => {
                 window.scroll({ top: 0 })
                 this.button.blur()
             })
-            document.addEventListener('scroll', this.scrollHandler)
+            document.addEventListener('scroll', this.scrollHandler())
+        }
+
+        show() {
+            this.button.classList.add('show')
+            this.buttonHidden = false
+            this.throttled = false
+        }
+
+        hide() {
+            this.button.classList.remove('show')
+            this.buttonHidden = true
+            this.throttled = false
+        }
+
+        scrollHandler() {
+            return () =>
+                !this.throttled
+                    ? setTimeout(() => {
+                          const shouldShow = window.scrollY > this.#MIN_SCROLL
+                          if (this.buttonFocused && this.buttonHidden)
+                              return this.show()
+                          if (shouldShow && this.buttonHidden)
+                              return this.show()
+                          if (!shouldShow && !this.buttonHidden)
+                              return this.hide()
+                      }, 100)
+                    : (this.throttled = true)
         }
     }
 

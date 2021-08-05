@@ -1,21 +1,20 @@
-import { Element, q } from '../utils.js'
+import { Element } from '../utils.js'
 
 export default function SkipToContent() {
     class SkipButton extends HTMLElement {
-        constructor() {
-            super()
-
-            const button = new Element('button', [
+        connectedCallback() {
+            this.button = new Element('button', [
                 'skip-to-content',
                 'small-spaced-bold',
             ])
                 .addChild(this.getAttribute('text'))
-                .render()
+                .event('click', this.focused)
 
-            const focused = () => q('main-content').focus()
+            this.appendChild(this.button.render())
+        }
 
-            button.addEventListener('click', focused)
-            this.appendChild(button)
+        focused() {
+            document.getElementById('main-content').focus()
         }
     }
 
