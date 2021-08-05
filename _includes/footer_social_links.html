@@ -1,7 +1,9 @@
 <ul class="footer_social">
   {% for link in site.social %}
   <li>
-    <a class="btn__icon" href="{{ link.url }}"> {{ link.icon }} </a>
+    <a class="btn__icon" aria-label="{{ link.url }}" href="{{ link.url }}">
+      {{ link.icon }}
+    </a>
   </li>
   {% endfor %}
 </ul>
