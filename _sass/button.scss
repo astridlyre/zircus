@@ -41,10 +41,6 @@
     background: var(--gold);
   }
 
-  &:focus {
-    border-color: var(--teal);
-  }
-
   &:hover::after,
   &:focus::after {
     width: 200%;

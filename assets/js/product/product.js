@@ -1,11 +1,4 @@
-import {
-    q,
-    state,
-    appendPreloadLink,
-    withLang,
-    switchClass,
-    ZircusElement,
-} from '../utils.js'
+import { state, appendPreloadLink, withLang, ZircusElement } from '../utils.js'
 import intText from '../int/intText.js'
 import inStockText from './inStockText.js'
 import fullImage from './fullImage.js'
@@ -143,45 +136,54 @@ export default function product() {
         }
 
         createNotificationSuccess() {
-            const img = new ZircusElement('img', 'notification__image', {
-                src: this.currentItem.images.sm_a,
-                alt: this.currentItem.name,
-            })
-            const link = new ZircusElement('a', 'notification__text', {
-                href: withLang({ en: '/cart', fr: '/fr/panier' }),
-                title: withLang({ en: 'Go to cart', fr: 'Aller au panier' }),
-            }).addChild(withLang(addNotificationText(this.currentItem)))
             return {
-                content: [img.render(), link.render()],
+                content: [
+                    new ZircusElement('img', 'notification__image', {
+                        src: this.currentItem.images.sm_a,
+                        alt: this.currentItem.name,
+                    }).render(),
+                    new ZircusElement('a', 'notification__text', {
+                        href: withLang({ en: '/cart', fr: '/fr/panier' }),
+                        title: withLang({
+                            en: 'Go to cart',
+                            fr: 'Aller au panier',
+                        }),
+                    })
+                        .addChild(
+                            withLang(addNotificationText(this.currentItem))
+                        )
+                        .render(),
+                ],
             }
         }
 
         createNotificationFailure() {
-            const prefix = new ZircusElement('span', [
-                'notification__prefix',
-                'red',
-            ]).addChild('!')
-            const text = new ZircusElement('p', [
-                'notification__text',
-            ]).addChild(
-                withLang({
-                    en: 'Unable to add to cart - not enough stock',
-                    fr: "Impossible d'ajouter au panier, pas assez de stock",
-                })
-            )
             return {
-                content: [prefix.render(), text.render()],
+                content: [
+                    new ZircusElement('span', ['notification__prefix', 'red'])
+                        .addChild('!')
+                        .render(),
+                    new ZircusElement('p', ['notification__text'])
+                        .addChild(
+                            withLang({
+                                en: 'Unable to add to cart - not enough stock',
+                                fr: "Impossible d'ajouter au panier, pas assez de stock",
+                            })
+                        )
+                        .render(),
+                ],
             }
         }
 
-        handleAddToCart() {
-            if (
-                this.currentItem.quantity - Number(this.quantityInput.value) <
-                    0 ||
-                !this.currentItem.quantity
+        get hasEnoughQuantity() {
+            return (
+                this.currentItem.quantity - Number(this.quantityInput.value) >
+                    0 && this.currentItem.quantity
             )
-                return
+        }
 
+        handleAddToCart() {
+            if (!this.hasEnoughQuantity) return
             const item = state.cart.find(i => i.type == this.currentItem.type)
             const invItem = state.inv.find(
                 i => i.type === this.currentItem.type
@@ -249,8 +251,7 @@ export default function product() {
                 this.colorInput.value = currentItem.color
                 state.currentItem = null
             }
-            switchClass(
-                this.productAccent,
+            this.productAccent.classList.replace(
                 `${this.currentColor}-before`,
                 `${this.colorInput.value}-before`
             )

@@ -182,19 +182,6 @@ export class ZircusElement {
     }
 }
 
-export function switchClass(els, a, b, callbacks) {
-    const s = (el, a, b) => {
-        el.classList.remove(a)
-        el.classList.add(b)
-    }
-    if (Array.isArray(els)) els.forEach(el => s(el, a, b))
-    else s(els, a, b)
-
-    if (callbacks && Array.isArray(callbacks))
-        callbacks.forEach(callback => callback())
-    return els
-}
-
 export function setTextContent(els, content) {
     if (Array.isArray(els)) els.forEach(el => (el.textContent = content))
     else els.textContent = content
@@ -208,12 +195,6 @@ export function appendPreloadLink(url) {
             as: 'image',
         }).render()
     )
-}
-
-// Simple toggler generator
-export function toggler(initialState, stateFunc, func) {
-    let value = initialState
-    return () => func((value = stateFunc(value)))
 }
 
 // Simple tax rate calculator - IMPROVE THIS!!

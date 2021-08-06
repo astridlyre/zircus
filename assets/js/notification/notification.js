@@ -1,4 +1,4 @@
-import { state, switchClass, ZircusElement } from '../utils.js'
+import { state, ZircusElement } from '../utils.js'
 
 /*
  * notification sets the state.notify function and performs
@@ -7,38 +7,88 @@ import { state, switchClass, ZircusElement } from '../utils.js'
 
 export default function notification() {
     class Notification extends HTMLElement {
-        attributeChangedCallback(name, _, newValue) {
-            const notification = state.currentNotification
-            const content = this.querySelector('#notification-content')
-            const notificationElement = this.querySelector('#notification')
-            const closeButton = this.querySelector('#notification-close')
-
-            content.textContent = ''
-
-            if (name === 'show' && newValue === 'false') {
-                return notificationElement.classList.add('hidden')
-            }
-
-            if (name === 'show' && newValue === 'true') {
-                if (typeof notification.content === 'string') {
-                    const p = new ZircusElement(
-                        'p',
-                        'notification__text'
-                    ).addChild(notification.content)
-                    content.appendChild(p.render())
-                } else if (Array.isArray(notification.content)) {
-                    notification.content.forEach(el => content.append(el))
-                } else {
-                    content.appendChild(notification.content)
-                }
-                notificationElement.classList.remove('hidden')
-            }
-
-            closeButton.addEventListener('click', () => {
-                this.setAttribute('show', 'false')
-                state.currentNotification = null
-                clearTimeout(notification.id)
+        constructor() {
+            super()
+            this._isHidden = true
+            this.notificationElement = this.querySelector('#notification')
+            this.notificationContent = this.querySelector(
+                '#notification-content'
+            )
+            this.closeButton = this.querySelector('#notification-close')
+            this.closeButton.addEventListener('click', () => {
+                this.setAttribute('show', false)
             })
+        }
+
+        connectedCallback() {
+            state.setNotify(({ content, time = 4000 }) => {
+                state.currentNotification &&
+                    clearTimeout(state.currentNotification.id)
+
+                state.currentNotification = {
+                    content,
+                    id: setTimeout(
+                        () => this.setAttribute('show', false),
+                        time
+                    ),
+                }
+
+                this.setAttribute('show', true)
+
+                this.addEventListener('mouseenter', () =>
+                    clearTimeout(state.currentNotification.id)
+                )
+
+                this.addEventListener('mouseleave', () =>
+                    setTimeout(
+                        () => this.setAttribute('show', false),
+                        time - time / 2
+                    )
+                )
+            })
+        }
+
+        attributeChangedCallback(name, _, newValue) {
+            if (name === 'show') this.isHidden = newValue === 'false'
+        }
+
+        get isHidden() {
+            return this._isHidden
+        }
+
+        set isHidden(value) {
+            this._isHidden = value
+            this._isHidden ? this.hide() : this.show()
+        }
+
+        clear() {
+            this.notificationContent.textContent = ''
+        }
+
+        show() {
+            this.clear() // clear previous notification
+            if (typeof state.currentNotification.content === 'string') {
+                this.notificationContent.appendChild(
+                    new ZircusElement('p', 'notification__text')
+                        .addChild(state.currentNotification.content)
+                        .render()
+                )
+            } else if (Array.isArray(state.currentNotification.content)) {
+                state.currentNotification.content.forEach(el =>
+                    this.notificationContent.append(el)
+                )
+            } else {
+                this.notificationContent.textContent =
+                    state.currentNotification.content
+            }
+            this.notificationElement.classList.remove('hidden')
+        }
+
+        hide() {
+            state.currentNotification &&
+                clearTimeout(state.currentNotification.id)
+            this.notificationElement.classList.add('hidden')
+            state.currentNotification = null
         }
 
         static get observedAttributes() {
@@ -46,34 +96,6 @@ export default function notification() {
         }
     }
 
-    if (!customElements.get('zircus-notification'))
+    customElements.get('zircus-notification') ||
         customElements.define('zircus-notification', Notification)
-
-    const notificationElement = document.querySelector('zircus-notification')
-    if (!notificationElement) return // if not included on page, return
-
-    const clear = () => {
-        notificationElement.setAttribute('show', 'false')
-        state.currentNotification = null
-    }
-    const show = () => notificationElement.setAttribute('show', 'true')
-
-    return state.setNotify(({ content, time = 4000 }) => {
-        state.currentNotification && clearTimeout(state.currentNotification.id)
-
-        state.currentNotification = {
-            content,
-            id: setTimeout(clear, time),
-        }
-
-        show()
-
-        notificationElement.addEventListener('mouseenter', () =>
-            clearTimeout(state.currentNotification.id)
-        )
-
-        notificationElement.addEventListener('mouseleave', () =>
-            setTimeout(clear, time - time / 2)
-        )
-    })
 }

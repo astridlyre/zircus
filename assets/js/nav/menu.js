@@ -1,5 +1,15 @@
-import { state, switchClass } from '../utils.js'
+import { state } from '../utils.js'
 import withCartQty from './withCartQty.js'
+
+const withScrollState = (prevPos, currentPos) => {
+    function* scrollState() {
+        while (true) {
+            ;[prevPos, currentPos] = [currentPos, window.scrollY]
+            yield currentPos - prevPos
+        }
+    }
+    return { scrollState: scrollState() }
+}
 
 /*
  *   Menu for Zircus
@@ -11,76 +21,89 @@ import withCartQty from './withCartQty.js'
  *   Mobile 'cart' nav link to the number of cart items.
  */
 export default function menu() {
-    const navScrollHandler = (nav, scrollState) => {
-        const MIN_SCROLL = 100 // Min distance to scroll
-        const handler = (a, b, fn) => callback =>
-            switchClass(nav, a, b, [fn, callback])
-        const setHidden = () => (navHidden = true)
-        const setShow = () => (navHidden = false)
-        const show = handler('slide-up', 'slide-down', setShow)
-        const hide = handler('slide-down', 'slide-up', setHidden)
-        const setNotThrottled = () => (navThrottled = false)
-
-        let navThrottled = false
-        let navHidden = false
-        let navFocused = false
-
-        return (hasFocus = false) => {
-            const isScrollingUp =
-                window.scrollY < MIN_SCROLL || scrollState.next().value <= 0
-            if (hasFocus) return show(() => (navFocused = true))
-            navFocused = false
-            if (!navThrottled)
-                setTimeout(() => {
-                    // Show nav if focused
-                    if (isScrollingUp && navHidden) return show(setNotThrottled)
-                    // If not hidden and scrolling down, hide nav
-                    if (!isScrollingUp && !navHidden)
-                        return hide(setNotThrottled)
-                }, 100)
-            else navThrottled = true
-        }
-    }
-
     class NavMenu extends HTMLElement {
+        #MIN_SCROLL = 100
+
         constructor() {
             super()
-
+            this._isFocused = false
+            this._isThrottled = false
+            this._isHidden = false
             this.nav = this.querySelector('#nav')
+            this.nav.classList.add('slide-down') // default to showing
             this.cartLink = this.querySelector('#cart-link')
-            this.navScrollHandler = navScrollHandler(
-                this.nav,
-                NavMenu.scrollState()
-            )
-            this.nav.addEventListener('focusin', () =>
-                this.navScrollHandler(true)
-            )
-            this.nav.addEventListener('focusout', () =>
-                this.navScrollHandler(false)
-            )
 
+            this.nav.addEventListener('focusin', () => (this.isFocused = true))
+            this.nav.addEventListener(
+                'focusout',
+                () => (this.isFocused = false)
+            )
             document.addEventListener('scroll', () => {
-                this.navScrollHandler()
+                this.scrollHandler(
+                    window.scrollY < this.#MIN_SCROLL ||
+                        this.scrollState.next().value <= 0
+                )
             })
-            this.updateCartLink([this.cartLink])
+
+            this.updateCartLink([this.cartLink]) // set cart text
             state.addHook({
                 hook: () => this.updateCartLink([this.cartLink]),
                 key: 'cart',
             })
         }
 
-        static *scrollState() {
-            let prevPos = 0
-            let currentPos = 0
-            while (true) {
-                ;[prevPos, currentPos] = [currentPos, window.scrollY]
-                yield currentPos - prevPos
-            }
+        get isThrottled() {
+            return this._isThrottled
+        }
+
+        set isThrottled(value) {
+            this._isThrottled = value
+        }
+
+        get isFocused() {
+            return this._isFocused
+        }
+
+        set isFocused(value) {
+            this._isFocused = value
+            this._isFocused ? this.show() : this.hide()
+        }
+
+        get isHidden() {
+            return this._isHidden
+        }
+
+        set isHidden(value) {
+            this._isHidden = value
+            this._isHidden ? this.hide() : this.show()
+        }
+
+        show() {
+            this.nav.classList.replace('slide-up', 'slide-down')
+            this.isThrottled = false
+        }
+
+        hide() {
+            this.nav.classList.replace('slide-down', 'slide-up')
+            this.isThrottled = false
+        }
+
+        scrollHandler(isScrollingUp) {
+            return !this.isThrottled
+                ? setTimeout(
+                      () =>
+                          isScrollingUp && this.isHidden
+                              ? (this.isHidden = false)
+                              : !isScrollingUp && !this.isHidden
+                              ? (this.isHidden = true)
+                              : false,
+                      100
+                  )
+                : (this.isThrottled = true)
         }
     }
 
-    Object.assign(NavMenu.prototype, withCartQty())
+    Object.assign(NavMenu.prototype, withCartQty(), withScrollState(0, 0))
 
-    if (!customElements.get('nav-menu'))
-        customElements.define('nav-menu', NavMenu)
+    customElements.get('nav-menu') || customElements.define('nav-menu', NavMenu)
 }
