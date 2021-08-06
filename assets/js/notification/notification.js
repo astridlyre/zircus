@@ -14,6 +14,8 @@ export default function notification() {
             const content = this.querySelector('#notification-content')
             const button = this.querySelector('#notification-button')
 
+            content.textContent = '' // Clear any existing notification
+
             if (name === 'show' && newValue === 'true') {
                 if (typeof notification.content === 'string') {
                     const p = new ZircusElement(
@@ -21,9 +23,11 @@ export default function notification() {
                         'notification__text'
                     ).addChild(notification.content)
                     content.appendChild(p.render())
-                } else if (Array.isArray(notification.content))
+                } else if (Array.isArray(notification.content)) {
                     notification.content.forEach(el => content.append(el))
-                else content.appendChild(notification.content)
+                } else {
+                    content.appendChild(notification.content)
+                }
                 button.addEventListener('click', notification.onClick)
                 switchClass(button, 'hidden', notification.color)
             } else if (name === 'show' && newValue === 'false') {

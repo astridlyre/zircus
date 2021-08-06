@@ -172,7 +172,7 @@ export default function product() {
             return {
                 content: [img.render(), p.render()],
                 onClick,
-                color: 'green',
+                color: 'gray',
             }
         }
 

@@ -21,7 +21,7 @@ export default function CartProduct({
 
         return {
             content: [img.render(), p.render()],
-            color: 'red',
+            color: 'gray',
             onClick: () => location.assign(link.href),
         }
     }
