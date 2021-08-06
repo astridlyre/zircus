@@ -1,4 +1,4 @@
-import { q, state } from '../utils.js'
+import { q, state, ZircusElement } from '../utils.js'
 
 const withShow = () => {
     const blur = q('blur')
@@ -19,7 +19,12 @@ const withShow = () => {
             this.classList.remove('hidden')
             this._heading.textContent = heading
 
-            if (typeof content === 'string') this._content.textContent = content
+            if (typeof content === 'string')
+                this._content.appendChild(
+                    new ZircusElement('p', 'modal__text')
+                        .addChild(content)
+                        .render()
+                )
             else if (content instanceof HTMLElement)
                 this._content.appendChild(content)
             this._ok.textContent = ok.text

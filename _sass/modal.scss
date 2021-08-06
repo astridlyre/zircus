@@ -9,6 +9,10 @@
   align-items: center;
   z-index: 1000;
 
+  &__text {
+    margin: var(--base-spacing) 0;
+  }
+
   form {
     color: var(--dark);
     padding: var(--md-spacing);
