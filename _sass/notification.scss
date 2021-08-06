@@ -12,7 +12,7 @@
   right: var(--base-unit);
   max-width: calc(100% - var(--base-unit) * 2);
   z-index: 1000;
-  padding: var(--base-spacing) var(--base-spacing);
+  padding: var(--base-spacing) var(--md-spacing);
   border-radius: var(--radius);
   box-shadow: var(--box-shadow-sm);
   border: 2px solid transparent;
@@ -20,8 +20,27 @@
   text-decoration: none !important;
   @include fadeInUp(0.25s);
 
-  &:hover {
-    cursor: pointer;
+  &__close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: var(--base-unit);
+    margin: 0;
+    border: none;
+    display: flex;
+    background: none;
+    color: var(--dark);
+    border-radius: var(--radius);
+    outline: none;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  &__icon {
+    height: var(--base-spacing);
+    width: var(--base-spacing);
   }
 
   &__image {

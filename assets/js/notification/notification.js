@@ -12,7 +12,13 @@ export default function notification() {
             if (!notification) return
 
             const content = this.querySelector('#notification-content')
-            const button = this.querySelector('#notification-button')
+            const notificationElement = this.querySelector('#notification')
+            const closeButton = this.querySelector('#notification-close')
+
+            closeButton.addEventListener('click', () => {
+                this.setAttribute('show', 'false')
+                clearTimeout(notification.id)
+            })
 
             content.textContent = '' // Clear any existing notification
 
@@ -28,12 +34,10 @@ export default function notification() {
                 } else {
                     content.appendChild(notification.content)
                 }
-                button.addEventListener('click', notification.onClick)
-                switchClass(button, 'hidden', notification.color)
+                switchClass(notificationElement, 'hidden', notification.color)
             } else if (name === 'show' && newValue === 'false') {
                 content.textContent = ''
-                this.classList.remove(notification.color)
-                switchClass(button, notification.color, 'hidden')
+                switchClass(notificationElement, notification.color, 'hidden')
             }
         }
 
@@ -47,17 +51,19 @@ export default function notification() {
 
     const notificationElement = document.querySelector('zircus-notification')
     if (!notificationElement) return // if not included on page, return
-    const clear = () => notificationElement.setAttribute('show', 'false')
+    const clear = () => {
+        notificationElement.setAttribute('show', 'false')
+        state.currentNotification = null
+    }
     const show = () => notificationElement.setAttribute('show', 'true')
 
-    return state.setNotify(({ content, onClick, color }) => {
+    return state.setNotify(({ content, time = 4000, color }) => {
         state.currentNotification && clearTimeout(state.currentNotification.id)
 
         state.currentNotification = {
             content,
             color,
-            id: setTimeout(clear, 4000),
-            onClick,
+            id: setTimeout(clear, time),
         }
 
         show()
@@ -67,7 +73,7 @@ export default function notification() {
         )
 
         notificationElement.addEventListener('mouseleave', () =>
-            setTimeout(clear, 2000)
+            setTimeout(clear, time - time / 2)
         )
     })
 }

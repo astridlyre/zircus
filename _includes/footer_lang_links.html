@@ -1,47 +1,72 @@
-<ul class="footer_lang">
-  {% assign products=site.products | where:"ref", page.ref | sort:"lang" %} {%
-  for product in products %}
-  <li>
-    <a
-      href="{{ product.url }}"
-      class="
-        {%
-        if
-        page.lang
-        ==
-        product.lang
-        %}
-        active
-        {%
-        endif
-        %}
-        small-spaced-bold
-        border-hover
-      "
-      >{{ product.lang }}</a
+<div class="lang">
+  <button
+    aria-label="{{ site.lang[page.lang].lang_dropdown }}"
+    type="button"
+    class="btn__icon"
+    title="{{ site.lang[page.lang].lang_dropdown }}"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="icon"
     >
-  </li>
-  {% endfor %} {% assign pages=site.pages | where:"ref", page.ref | sort:"lang"
-  %} {% for link in pages %}
-  <li>
-    <a
-      href="{{ link.url }}"
-      class="
-        {%
-        if
-        page.lang
-        ==
-        link.lang
-        %}
-        active
-        {%
-        endif
-        %}
-        small-spaced-bold
-        border-hover
-      "
-      >{{ link.lang }}</a
-    >
-  </li>
-  {% endfor %}
-</ul>
+      <circle cx="12" cy="12" r="10"></circle>
+      <line x1="2" y1="12" x2="22" y2="12"></line>
+      <path
+        d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
+      ></path>
+    </svg>
+  </button>
+  <ul class="lang__list">
+    {% assign products=site.products | where:"ref", page.ref | sort:"lang" %} {%
+    for product in products %}
+    <li>
+      <a
+        href="{{ product.url }}"
+        class="
+          {%
+          if
+          page.lang
+          ==
+          product.lang
+          %}
+          active
+          {%
+          endif
+          %}
+          small-spaced-bold
+          border-hover
+        "
+        >{{ product.lang }}</a
+      >
+    </li>
+    {% endfor %} {% assign pages=site.pages | where:"ref", page.ref |
+    sort:"lang" %} {% for link in pages %}
+    <li>
+      <a
+        href="{{ link.url }}"
+        class="
+          {%
+          if
+          page.lang
+          ==
+          link.lang
+          %}
+          active
+          {%
+          endif
+          %}
+          small-spaced-bold
+          border-hover
+        "
+        >{{ link.lang }}</a
+      >
+    </li>
+    {% endfor %}
+  </ul>
+</div>

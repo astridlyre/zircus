@@ -215,29 +215,6 @@
     text-align: center;
   }
 
-  &_lang {
-    display: flex;
-    align-items: center;
-    gap: var(--base-unit);
-  }
-
-  &_lang a {
-    padding: var(--base-unit);
-  }
-
-  &_lang a,
-  &_lang a:hover,
-  &_lang a:focus,
-  &_lang a:visited,
-  &_lang a:visited:hover {
-    color: var(--gray-90) !important;
-  }
-
-  &_lang a.active,
-  &_lang a.active:hover,
-  &_lang a.active:focus {
-    color: var(--light) !important;
-  }
 }
 
 // Nav Button

@@ -1,11 +1,26 @@
 <zircus-notification show="false">
-  <button
-    aria-hidden="true"
-    title="Notification"
-    type="button"
-    id="notification-button"
-    class="notification hidden"
-  >
+  <div id="notification" class="notification hidden">
+    <button
+      aria-hidden="true"
+      title="Close Notification"
+      type="button"
+      id="notification-close"
+      class="notification__close"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="notification__icon"
+      >
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
     <div id="notification-content" class="notification__content"></div>
-  </button>
+  </div>
 </zircus-notification>
