@@ -28,6 +28,7 @@ const withShow = () => {
             else if (content instanceof HTMLElement)
                 this._content.appendChild(content)
             this._ok.textContent = ok.text
+            this._ok.setAttribute('title', ok.title)
             this._ok.addEventListener('click', () => {
                 ok.action(hide)
             })
@@ -35,6 +36,7 @@ const withShow = () => {
             if (cancel) {
                 this._cancel.classList.remove('hidden')
                 this._cancel.textContent = cancel.text
+                this._cancel.setAttribute('title', cancel.title)
                 this._cancel.addEventListener('click', () => {
                     cancel.acton(hide)
                 })

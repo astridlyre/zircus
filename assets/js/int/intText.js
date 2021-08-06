@@ -44,13 +44,19 @@ const intText = {
     contactText: {
         en: {
             error: ['Error', 'ok'],
-            default: ['Success', 'ok', 'cancel'],
+            default: ['Success', 'ok', 'Close modal', 'cancel', 'Cancel'],
             message: (name, email) =>
                 `Thanks for your message, ${name}! We'll get back to you at ${email} as soon as possible.`,
         },
         fr: {
             error: ['Error', 'ok'],
-            default: ['Succès', 'ok', 'annuler'],
+            default: [
+                'Succès',
+                'ok',
+                'Fermer la fenêtre contextuelle',
+                'annuler',
+                'Annuler',
+            ],
             message: (name, email) =>
                 `Merci pour votre message ${name}! Nous vous rappelleons à votre courriel ${email} dans les plus brefs délais.`,
         },

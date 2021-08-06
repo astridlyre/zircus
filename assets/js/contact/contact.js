@@ -10,6 +10,7 @@ const handleFailure = error =>
         content: error,
         ok: {
             text: contactText[lang()].error[1],
+            title: contactText[lang()].error[2],
             action: hide => hide(),
         },
     })
@@ -20,6 +21,7 @@ const handleSuccess = data =>
         content: contactText[lang()].message(data.name, data.email),
         ok: {
             text: contactText[lang()].default[1],
+            title: contactText[lang()].default[2],
             action: hide => hide(),
         },
     })
