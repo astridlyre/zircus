@@ -1,283 +1,153 @@
-import {
-    q,
-    API_ENDPOINT,
-    state,
-    ZircusElement,
-    calculateTax,
-    lang,
-    withLang,
-    switchClass,
-} from '../utils.js'
+import { state, ZircusElement, calculateTax, lang } from '../utils.js'
 import intText from '../int/intText.js'
 import cartProduct from '../cart/cartProduct.js'
-
-const stripe = Stripe(
-    'pk_test_51J93KzDIzwSFHzdzCZtyRcjMvw8em0bhnMrVmkBHaMFHuc2nkJ156oJGNxuz0G7W4Jx0R6OCy2nBXYTt6U8bSYew00PIAPcntP'
-)
+import initStripe from './stripe.js'
 
 const CANADA_POSTAL_CODE = /^[A-Za-z][0-9][A-Za-z] ?[0-9][A-Za-z][0-9]$/
 const US_ZIP_CODE = /^[0-9]{5}(-[0-9]{4})?$/
 
 export default function payment() {
-    const placeOrder = q('place-order')
-    if (!placeOrder) return // if not on checkout page don't do anything
-    if (state.cart.length === 0) location.assign('/')
-    const name = q('checkout-name')
-    const email = q('checkout-email')
-    const streetAddress = q('checkout-street')
-    const city = q('checkout-city')
-    const stateEl = q('checkout-state')
-    const stateElText = q('checkout-state-text')
-    const countryEl = q('checkout-country')
-    const zip = q('checkout-zip')
-    const zipText = q('checkout-zip-text')
-    const paymentModal = q('stripe-payment-modal')
-    const paymentForm = q('stripe-payment-form')
-    const payBtn = q('pay-button')
-    const cardError = q('card-error')
-    const spinner = q('spinner')
-    const btnText = q('button-text')
-    const checkoutForm = q('checkout-form')
-    const cancel = q('cancel')
-    const checkoutSubtotal = q('checkout-subtotal')
-    const checkoutTax = q('checkout-tax')
-    const checkoutTotal = q('checkout-total')
-    const templateEl = q('checkout-product-template')
-    const checkoutList = q('checkout-products')
     const formText = intText.checkout.formText
 
-    let isLoaded = false
-
-    function loading(isLoading) {
-        if (isLoading) {
-            payBtn.disabled = true
-            spinner.classList.remove('hidden')
-            btnText.classList.add('hidden')
-        } else {
-            payBtn.disabled = false
-            spinner.classList.add('hidden')
-            btnText.classList.remove('hidden')
-        }
-    }
-
-    function showError(msg) {
-        loading(false)
-        cardError.textContent = msg
-        setTimeout(() => {
-            cardError.textContent = ''
-        }, 4000)
-    }
-
-    function setTotals() {
-        // Tally up
-        const subtotal = state.cart.reduce(
-            (acc, item) => acc + item.price * item.quantity,
-            0
-        )
-        const tax = subtotal * calculateTax(countryEl.value, stateEl.value)
-        const total = subtotal + tax
-
-        // Set text
-        checkoutSubtotal.textContent = `$${subtotal.toFixed(2)}`
-        checkoutTax.textContent = `$${tax.toFixed(2)}`
-        checkoutTotal.textContent = `$${total.toFixed(2)}`
-    }
-
-    function renderCartItems() {
-        const fragment = new DocumentFragment()
-        state.cart.forEach(item =>
-            fragment.appendChild(
-                cartProduct({
-                    item,
-                    productTemplate: templateEl,
-                })
+    class Payment extends HTMLElement {
+        connectedCallback() {
+            if (state.cart.length === 0) location.assign('/')
+            this.formName = this.querySelector('#checkout-name')
+            this.formEmail = this.querySelector('#checkout-email')
+            this.formStreetAddress = this.querySelector('#checkout-street')
+            this.formCity = this.querySelector('#checkout-city')
+            this.formState = this.querySelector('#checkout-state')
+            this.formStateLabel = this.querySelector('#checkout-state-text')
+            this.formCountry = this.querySelector('#checkout-country')
+            this.formZip = this.querySelector('#checkout-zip')
+            this.formZipLabel = this.querySelector('#checkout-zip-text')
+            this.formElement = this.querySelector('#checkout-form')
+            this.checkoutSubtotal = this.querySelector('#checkout-subtotal')
+            this.checkoutTax = this.querySelector('#checkout-tax')
+            this.checkoutTotal = this.querySelector('#checkout-total')
+            this.productTemplate = this.querySelector(
+                '#checkout-product-template'
             )
-        )
-        checkoutList.appendChild(fragment)
-    }
+            this.productList = this.querySelector('#checkout-products')
+            this.placeOrderButton = this.querySelector('#place-order')
 
-    function populateSelects(select, data = [], fn) {
-        select.textContent = '' // clear children
-        data.forEach(item => {
-            select.appendChild(
-                new ZircusElement('option', null, {
-                    value: fn(item),
-                })
-                    .addChild(fn(item))
-                    .render()
+            initStripe({
+                formName: this.formName,
+                formEmail: this.formEmail,
+                formStreetAddress: this.formStreetAddress,
+                formCity: this.formCity,
+                formState: this.formState,
+                formCountry: this.formCountry,
+                formZip: this.formZip,
+                formElement: this.formElement,
+            })
+
+            // Set totals
+            this.setTotals()
+
+            // Render Items
+            this.renderCartItems()
+            this.populateSelects(
+                this.formCountry,
+                Object.keys(state.countries),
+                item => item
             )
-        })
-    }
+            this.handleCountry()
 
-    function showModal(show) {
-        loading(false)
-        if (show) {
-            document.body.classList.add('hide-y')
-            q('blur').classList.add('blur')
-            paymentModal.classList.add('show-modal')
-            payBtn.disabled = true
-            q('payment-price').textContent = checkoutTotal.textContent
-        } else {
-            document.body.classList.remove('hide-y')
-            q('blur').classList.remove('blur')
-            paymentModal.classList.remove('show-modal')
-            if (state.cart.length === 0)
-                location.assign(withLang({ en: '/thanks', fr: '/fr/merci' }))
-        }
-    }
-
-    async function createPaymentIntent() {
-        showModal(true)
-        loading(true)
-
-        const req = {
-            lang: lang(),
-            update: state.secret,
-            name: name.value,
-            email: email.value,
-            streetAddress: streetAddress.value,
-            city: city.value,
-            country: countryEl.value,
-            state: stateEl.value,
-            zip: zip.value,
-            items: state.cart.map(item => ({
-                images: item.images,
-                type: item.type,
-                prefix: item.prefix,
-                size: item.size,
-                name: item.name,
-                color: item.color,
-                quantity: item.quantity,
-            })),
-        }
-
-        fetch(`${API_ENDPOINT}/orders/create-payment-intent`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(req),
-        })
-            .then(data => data.json())
-            .then(data => {
-                state.secret = data.clientSecret
-                state.order = {
-                    id: data.id,
-                    name: data.name,
-                    email: data.email,
-                }
-                q('payment-price').textContent = `$${data.total.toFixed(2)}`
-                loadStripe(data)
-                loading(false)
+            // Add event listeners
+            this.formCountry.addEventListener('input', () =>
+                this.handleCountry()
+            )
+            this.formState.addEventListener('input', () => this.setTotals())
+            this.formZip.addEventListener('input', e => {
+                e.target.value = this.normalizeZip(
+                    e.target.value,
+                    this.formCountry.value
+                )
             })
-    }
-
-    function loadStripe(data) {
-        if (isLoaded) return
-        isLoaded = true
-        const elements = stripe.elements()
-        const style = {
-            base: {
-                color: '#1a171b',
-                fontFamily: 'Nunito, sans-serif',
-                fontSmoothing: 'antialiased',
-                fontSize: '16px',
-                '::placeholder': {
-                    color: '#1a171b',
-                },
-            },
-            invalid: {
-                fontFamily: 'Nunito, sans-serif',
-                color: '#fa755a',
-                iconColor: '#fa755a',
-            },
         }
 
-        const card = elements.create('card', { style: style })
-        card.mount('#card-element')
-        card.on('change', event => {
-            payBtn.disabled = event.empty
-            cardError.textContent = event.error ? event.error.message : ''
-        })
+        setTotals() {
+            const subtotal = state.cart.reduce(
+                (acc, item) => acc + item.price * item.quantity,
+                0
+            )
+            const tax =
+                subtotal *
+                calculateTax(this.formCountry.value, this.formState.value)
+            const total = subtotal + tax
 
-        paymentForm.addEventListener('submit', event => {
-            event.preventDefault()
-            payWithCard(stripe, card, data.clientSecret)
-        })
-    }
+            // Set text
+            this.checkoutSubtotal.textContent = `$${subtotal.toFixed(2)}`
+            this.checkoutTax.textContent = `$${tax.toFixed(2)}`
+            this.checkoutTotal.textContent = `$${total.toFixed(2)}`
+        }
 
-    function payWithCard(stripe, card, clientSecret) {
-        loading(true)
-        stripe
-            .confirmCardPayment(clientSecret, {
-                payment_method: { card },
+        renderCartItems() {
+            const fragment = new DocumentFragment()
+            state.cart.forEach(item =>
+                fragment.appendChild(
+                    cartProduct({
+                        item,
+                        productTemplate: this.productTemplate,
+                    })
+                )
+            )
+            this.productList.appendChild(fragment)
+        }
+
+        populateSelects(select, data = [], fn) {
+            select.textContent = '' // clear children
+            data.forEach(item => {
+                select.appendChild(
+                    new ZircusElement('option', null, {
+                        value: fn(item),
+                    })
+                        .addChild(fn(item))
+                        .render()
+                )
             })
-            .then(result => {
-                if (result.error) return showError(result.error.message)
-                return orderComplete()
-            })
-    }
+        }
 
-    function orderComplete() {
-        loading(false)
-        state.cart = () => []
-        state.secret = null
-        q('result-message').classList.remove('hidden')
-        payBtn.disabled = true
-        cancel.textContent = 'close'
-        switchClass(cancel, 'btn__secondary', 'btn__primary')
-    }
+        handleCountry() {
+            const country = this.formCountry.value
+            this.formState.textContent = ''
+            this.formZip.value = ''
+            this.populateSelects(
+                this.formState,
+                state.countries[country].states,
+                item => item.name
+            )
+            this.formStateLabel.textContent = formText[country][lang()][0]
+            this.formZipLabel.textContent = formText[country][lang()][1]
+            this.formZip.setAttribute(
+                'pattern',
+                country === 'Canada'
+                    ? CANADA_POSTAL_CODE.source
+                    : US_ZIP_CODE.source
+            )
+            this.formZip.setAttribute(
+                'maxlength',
+                country === 'Canada' ? '7' : '10'
+            )
+            this.formZip.setAttribute('size', country === 'Canada' ? '7' : '10')
+            this.setTotals()
+        }
 
-    function handleCountry() {
-        const country = countryEl.value
-        stateEl.textContent = ''
-        populateSelects(
-            stateEl,
-            state.countries[country].states,
-            item => item.name
-        )
-        stateElText.textContent = formText[country][lang()][0]
-        zipText.textContent = formText[country][lang()][1]
-        zip.setAttribute(
-            'pattern',
-            country === 'Canada'
-                ? CANADA_POSTAL_CODE.source
-                : US_ZIP_CODE.source
-        )
-        zip.setAttribute('maxlength', country === 'Canada' ? '7' : '10')
-        zip.setAttribute('size', country === 'Canada' ? '7' : '10')
-        setTotals()
-    }
-
-    function normalizeZip(value) {
-        const val = value.toUpperCase()
-        if (countryEl.value === 'Canada') {
-            if (val.length === 6 && CANADA_POSTAL_CODE.test(val))
-                return val.substring(0, 3) + ' ' + val.substring(3, 6)
-            return val
-        } else {
-            if (val.length === 6 && val[5] !== '-') return val.substring(0, 5)
-            return val
+        normalizeZip(value) {
+            value = value.toUpperCase()
+            if (this.formCountry.value === 'Canada') {
+                if (value.length === 6 && CANADA_POSTAL_CODE.test(value))
+                    return value.substring(0, 3) + ' ' + value.substring(3, 6)
+                return value
+            } else {
+                if (value.length === 6 && value[5] !== '-')
+                    return value.substring(0, 5)
+                return value
+            }
         }
     }
 
-    // Set totals
-    setTotals()
-
-    // Render Items
-    renderCartItems()
-    populateSelects(countryEl, Object.keys(state.countries), item => item)
-    handleCountry()
-
-    // Add event listeners
-    checkoutForm.addEventListener('submit', event => {
-        event.preventDefault()
-        createPaymentIntent()
-    })
-    cancel.addEventListener('click', () => showModal(false))
-    countryEl.addEventListener('input', () => handleCountry())
-    stateEl.addEventListener('input', () => setTotals())
-    zip.addEventListener('input', e => {
-        e.target.value = normalizeZip(e.target.value, countryEl.value)
-    })
+    if (!customElements.get('zircus-payment'))
+        customElements.define('zircus-payment', Payment)
 }

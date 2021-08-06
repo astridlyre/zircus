@@ -1,4 +1,4 @@
-<div id="stripe-payment-modal" class="stripe-payment-modal">
+<zircus-stripe id="stripe-payment-modal" class="stripe-payment-modal">
   <div class="container">
     <form id="stripe-payment-form" class="stripe-payment-form">
       <div class="stripe-payment-form-heading-container">
@@ -13,7 +13,7 @@
       <div class="stripe-payment-form-buttons">
         <button id="pay-button" class="btn__primary btn">
           <div class="spinner hidden" id="spinner"></div>
-          <span id="button-text">{{ page.label_pay_now }}</span>
+          <span id="pay-button-text">{{ page.label_pay_now }}</span>
         </button>
         <button id="cancel" class="btn btn__secondary">
           {{ page.label_cancel }}
@@ -27,4 +27,4 @@
       </div>
     </form>
   </div>
-</div>
+</zircus-stripe>

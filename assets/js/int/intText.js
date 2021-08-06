@@ -66,6 +66,10 @@ const intText = {
                 `Merci pour votre message ${name}! Nous vous rappelleons à votre courriel ${email} dans les plus brefs délais.`,
         },
     },
+    redirect: {
+        en: 'Visit our site in English?',
+        fr: 'Visitez notre site en Français?',
+    },
 }
 
 export default intText
