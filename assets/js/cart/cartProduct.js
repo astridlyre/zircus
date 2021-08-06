@@ -9,20 +9,23 @@ export default function CartProduct({
     withActions = false,
 }) {
     const { removeBtnText, removeNotificationText } = intText.cart
-    function createNotification(item) {
+    function createNotification(item, href) {
         const img = new ZircusElement('img', 'notification__image', {
             src: item.images.sm_a,
-            alt: item.name,
+            alt: item.name[lang()],
         })
 
-        const p = new ZircusElement('p').addChild(
-            withLang(removeNotificationText(item))
-        )
+        const link = new ZircusElement('a', 'notification__text', {
+            href,
+            title: withLang({
+                en: 'Go to product page',
+                fr: 'Aller au page du produit',
+            }),
+        }).addChild(withLang(removeNotificationText(item)))
 
         return {
-            content: [img.render(), p.render()],
+            content: [img.render(), link.render()],
             color: 'gray',
-            onClick: () => location.assign(link.href),
         }
     }
 
@@ -90,7 +93,7 @@ export default function CartProduct({
             state.cart = cart => cart.filter(i => i.id !== item.id)
             product.remove()
             updateSubtotal()
-            state.notify(createNotification(item))
+            state.notify(createNotification(item, link.href))
             !state.cart.length && renderCartProducts()
         })
     } else {

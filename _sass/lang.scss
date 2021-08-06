@@ -17,13 +17,20 @@
     gap: var(--base-unit);
     position: absolute;
     right: 0;
-    top: var(--md-spacing);
     background-color: var(--gray-10);
     border-radius: var(--radius);
     padding: var(--input-padding);
     box-shadow: var(--box-shadow-sm);
     transform: translateY(-6px);
     visibility: hidden;
+
+    &.top {
+      top: var(--md-spacing);
+    }
+
+    &.bottom {
+      bottom: var(--md-spacing);
+    }
 
     a {
       padding: var(--base-unit);

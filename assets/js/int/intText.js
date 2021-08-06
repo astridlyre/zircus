@@ -14,10 +14,15 @@ const intText = {
             en: `Added ${item.name['en']} to cart`,
             fr: `Ajouté des ${item.name['fr']} au panier`,
         }),
-        stockText: qty => ({
-            en: ['None available', `Only ${qty} left!`, 'In stock'],
-            fr: ['Non disponible', `Il n'en reste que ${qty}!`, 'En stock'],
-        }),
+        stockText: qty =>
+            qty > 5
+                ? {
+                      en: 'In stock',
+                      fr: 'En stock',
+                  }
+                : qty > 0
+                ? { en: `Only ${qty} left!`, fr: `Il n'en reste que ${qty}!` }
+                : { en: 'None available', fr: 'Non disponible' },
     },
     cart: {
         removeNotificationText: item => ({

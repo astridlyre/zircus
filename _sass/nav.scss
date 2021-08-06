@@ -246,12 +246,10 @@
 
 .back_to_top {
   position: fixed;
-  background: var(--gray-30);
+  background: var(--gray-40);
   padding: var(--base-unit);
-  height: 2.62rem;
-  width: 2.62rem;
   visibility: hidden;
-  opacity: 0.65;
+  opacity: 0.5;
   transform: translateY(15px);
   bottom: var(--base-spacing);
   right: calc(var(--x-padding) - 0.6rem);
@@ -264,8 +262,15 @@
   border-radius: var(--radius);
   display: flex;
   align-items: center;
+  justify-content: center;
   outline: none;
   transition: transform 0.2s ease-out;
+
+  svg {
+    animation: 3s infinite ease-out slowPulse;
+    height: 1.55rem;
+    width: 1.55rem;
+  }
 
   &:focus,
   &:hover {

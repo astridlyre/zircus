@@ -9,18 +9,15 @@ export default function notification() {
     class Notification extends HTMLElement {
         attributeChangedCallback(name, _, newValue) {
             const notification = state.currentNotification
-            if (!notification) return
-
             const content = this.querySelector('#notification-content')
             const notificationElement = this.querySelector('#notification')
             const closeButton = this.querySelector('#notification-close')
 
-            closeButton.addEventListener('click', () => {
-                this.setAttribute('show', 'false')
-                clearTimeout(notification.id)
-            })
+            content.textContent = ''
 
-            content.textContent = '' // Clear any existing notification
+            if (name === 'show' && newValue === 'false') {
+                return notificationElement.classList.add('hidden')
+            }
 
             if (name === 'show' && newValue === 'true') {
                 if (typeof notification.content === 'string') {
@@ -34,11 +31,14 @@ export default function notification() {
                 } else {
                     content.appendChild(notification.content)
                 }
-                switchClass(notificationElement, 'hidden', notification.color)
-            } else if (name === 'show' && newValue === 'false') {
-                content.textContent = ''
-                switchClass(notificationElement, notification.color, 'hidden')
+                notificationElement.classList.remove('hidden')
             }
+
+            closeButton.addEventListener('click', () => {
+                this.setAttribute('show', 'false')
+                state.currentNotification = null
+                clearTimeout(notification.id)
+            })
         }
 
         static get observedAttributes() {
@@ -51,18 +51,18 @@ export default function notification() {
 
     const notificationElement = document.querySelector('zircus-notification')
     if (!notificationElement) return // if not included on page, return
+
     const clear = () => {
         notificationElement.setAttribute('show', 'false')
         state.currentNotification = null
     }
     const show = () => notificationElement.setAttribute('show', 'true')
 
-    return state.setNotify(({ content, time = 4000, color }) => {
+    return state.setNotify(({ content, time = 4000 }) => {
         state.currentNotification && clearTimeout(state.currentNotification.id)
 
         state.currentNotification = {
             content,
-            color,
             id: setTimeout(clear, time),
         }
 

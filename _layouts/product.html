@@ -15,15 +15,14 @@ layout: default
     class="product"
     defaultcolor="{{ page.default_color }}"
   >
-    <div class="full" id="product-image-full">
-      <img
-        src="{{ page.image }}"
-        alt="{{ page.image_alt }}"
-        class="product__full__img"
-        id="product-image-full-image"
-        title="{{ site.label_full_image_close }} "
-      />
-    </div>
+    <zircus-full-image
+      class="full"
+      id="product-image-full"
+      src=""
+      alt="{{ page.image_alt }}"
+      title="{{ site.label_full_image_close }}"
+    >
+    </zircus-full-image>
     <img
       src="{{ page.image }}"
       alt="{{ page.image_alt }}"
@@ -36,9 +35,9 @@ layout: default
         <form class="product__form">
           <h2 class="product__price">
             <span id="product-price-text"></span>
-            <p id="product-stock" class="product__inputs_stock out-stock">
-              {{ page.out_of_stock }}
-            </p>
+            <zircus-in-stock-text
+              text="{{ page.out_of_stock }}"
+            ></zircus-in-stock-text>
           </h2>
           <div class="product__inputs">
             <span></span>

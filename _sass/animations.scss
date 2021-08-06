@@ -10,6 +10,20 @@
   }
 }
 
+@keyframes slowPulse {
+  0% {
+    color: var(--dark);
+  }
+
+  50% {
+    color: var(--gray-90);
+  }
+
+  100% {
+    color: var(--dark);
+  }
+}
+
 @keyframes fadeInUp {
   0% {
     opacity: 0;

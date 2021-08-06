@@ -4,7 +4,7 @@
     bottom: var(--md-spacing);
     right: var(--md-spacing);
   }
-  @include res('sm') {
+  @include res("sm") {
     bottom: var(--base-spacing);
     right: var(--base-spacing);
   }
@@ -18,7 +18,14 @@
   border: 2px solid transparent;
   outline: none;
   text-decoration: none !important;
+  background-color: var(--gray-20);
+  border-color: var(--gray-30);
+  color: var(--dark) !important;
   @include fadeInUp(0.25s);
+
+  &:hover {
+    background-color: var(--gray-30);
+  }
 
   &__close {
     position: absolute;
@@ -53,37 +60,34 @@
     gap: var(--base-spacing);
   }
 
-  & p {
+  &__text {
     margin: 0 !important;
     @include smallSpaced();
     font-weight: 600;
+    text-decoration: none !important;
   }
 
-  &.green {
-    background-color: var(--green);
-    color: var(--gray-05) !important;
+  a {
+    color: inherit !important;
+  }
 
-    &:hover {
-      background-color: var(--dark-green);
+  &__prefix {
+    border-radius: var(--radius);
+    padding: 0 calc(var(--base-unit) * 2);
+    margin-left: var(--base-unit);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    @include smallSpacedBold();
+
+    &.green {
+      background-color: var(--green);
+      color: var(--gray-05) !important;
     }
-  }
 
-  &.red {
-    background-color: var(--red);
-    color: var(--gray-05) !important;
-
-    &:hover {
-      background-color: var(--dark-red);
-    }
-  }
-
-  &.gray {
-    background-color: var(--gray-20);
-    border-color: var(--gray-30);
-    color: var(--dark) !important;
-
-    &:hover {
-      background-color: var(--gray-30);
+    &.red {
+      background-color: var(--red);
+      color: var(--gray-05) !important;
     }
   }
 }

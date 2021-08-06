@@ -25,15 +25,20 @@ if (
     !location.pathname.includes('/fr') &&
     !localStorage.getItem('notified')
 ) {
-    const link = new ZircusElement('a', null, {
+    const link = new ZircusElement('a', 'notification__text', {
         href: `/fr`,
         title: 'Visitez notre site en français',
     }).addChild('Visitez notre site en français?')
 
+    const prefix = new ZircusElement('span', [
+        'notification__prefix',
+        'green',
+    ]).addChild('?')
+
     state.notify({
         color: 'gray',
         time: 8000,
-        content: link.render(),
+        content: [prefix.render(), link.render()],
     })
 
     localStorage.setItem('notified', JSON.stringify(true))
