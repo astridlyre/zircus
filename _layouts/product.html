@@ -9,7 +9,12 @@ layout: default
     </h1>
     <p class="page__subheading">{{ page.description }}</p>
   </div>
-  <div class="product">
+  <zircus-product
+    prefix="{{ page.type }}"
+    price="{{ page.price }}"
+    class="product"
+    defaultcolor="{{ page.default_color }}"
+  >
     <div class="full" id="product-image-full">
       <img
         src="{{ page.image }}"
@@ -37,19 +42,6 @@ layout: default
           </h2>
           <div class="product__inputs">
             <span></span>
-            <input type="hidden" id="product-prefix" value="{{ page.type }}" />
-            <input
-              type="hidden"
-              aria-hidden="true"
-              id="product-price"
-              value="{{ page.price }}"
-            />
-            <input
-              type="hidden"
-              aria-hidden="true"
-              id="product-default-color"
-              value="{{ page.default_color }}"
-            />
             <label for="product-quantity"
               ><span>{{ page.label_quantity }}</span>
               <input
@@ -123,5 +115,5 @@ layout: default
         <div class="product__description">{{ content }}</div>
       </div>
     </div>
-  </div>
+  </zircus-product>
 </div>
