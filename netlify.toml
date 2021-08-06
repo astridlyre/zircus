@@ -78,5 +78,5 @@
   X-XSS-Protection = "1; mode=block"
   X-Content-Type-Options = "nosniff"
   Content-Security-Policy = "default-src 'self' https://fonts.gstatic.com https://js.stripe.com https://zircus.herokuapp.com *.cloudfront.net; img-src 'self' *.cloudfront.net data:;"
-  Cache-Control = "public, max-age=604800, immutable"
+  Cache-Control = "public, max-age=86400, immutable"
 
