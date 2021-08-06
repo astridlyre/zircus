@@ -1,4 +1,4 @@
-import { withLang, lang, state } from '../utils.js'
+import { withLang, lang, state, ZircusElement } from '../utils.js'
 import intText from '../int/intText.js'
 
 export default function CartProduct({
@@ -9,6 +9,22 @@ export default function CartProduct({
     withActions = false,
 }) {
     const { removeBtnText, removeNotificationText } = intText.cart
+    function createNotification(item) {
+        const img = new ZircusElement('img', 'notification__image', {
+            src: item.images.sm_a,
+            alt: item.name,
+        })
+
+        const p = new ZircusElement('p').addChild(
+            withLang(removeNotificationText(item))
+        )
+
+        return {
+            content: [img.render(), p.render()],
+            color: 'red',
+            onClick: () => location.assign(link.href),
+        }
+    }
 
     const template = productTemplate.content.cloneNode(true)
     const product = template.querySelector('.cart__product')
@@ -63,9 +79,7 @@ export default function CartProduct({
             state.cart = cart => cart.filter(i => i.id !== item.id)
             product.remove()
             updateSubtotal()
-            state.notify(withLang(removeNotificationText(item)), 'red', () =>
-                location.assign(link.href)
-            )
+            state.notify(createNotification(item))
             !state.cart.length && renderCartProducts()
         })
     } else {

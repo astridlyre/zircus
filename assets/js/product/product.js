@@ -5,6 +5,7 @@ import {
     appendPreloadLink,
     withLang,
     switchClass,
+    ZircusElement,
 } from '../utils.js'
 import intText from '../int/intText.js'
 
@@ -109,6 +110,23 @@ export default function product() {
         }
     }
 
+    function createNotification(item) {
+        const img = new ZircusElement('img', 'notification__image', {
+            src: item.images.sm_a,
+            alt: item.name,
+        })
+        const p = new ZircusElement('p').addChild(
+            withLang(addNotificationText(item))
+        )
+        const onClick = () =>
+            location.assign(withLang({ en: '/cart', fr: '/fr/panier' }))
+        return {
+            content: [img.render(), p.render()],
+            onClick,
+            color: 'green',
+        }
+    }
+
     // addItemToCart adds the currentItem (item.get()) to the cart, or updates
     // an exisiting item's quantity
     function handleAddToCart() {
@@ -119,9 +137,7 @@ export default function product() {
         if (state.cart.find(i => i.type === item.type)) updateCartItem(item)
         // Or add a new item
         else addNewCartItem(item)
-        state.notify(withLang(addNotificationText(item)), 'green', () =>
-            location.assign(withLang({ en: '/cart', fr: '/fr/panier' }))
-        )
+        state.notify(createNotification(item))
         addToCart.blur()
     }
 

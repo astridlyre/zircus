@@ -12,7 +12,7 @@
   right: var(--base-unit);
   max-width: calc(100% - var(--base-unit) * 2);
   z-index: 1000;
-  padding: var(--base-spacing) var(--btn-padding);
+  padding: var(--base-spacing) var(--base-spacing);
   border-radius: var(--radius);
   box-shadow: var(--box-shadow-sm);
   border: 2px solid transparent;
@@ -24,8 +24,18 @@
     cursor: pointer;
   }
 
-  &_text {
-    margin: 0;
+  &__image {
+    max-height: 2rem;
+  }
+
+  &__content {
+    display: flex;
+    align-items: center;
+    gap: var(--base-spacing);
+  }
+
+  & p {
+    margin: 0 !important;
     @include smallSpaced();
     font-weight: 600;
   }

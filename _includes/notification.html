@@ -1,9 +1,11 @@
-<button
-  aria-hidden="true"
-  title="Notification"
-  type="button"
-  id="notification"
-  class="notification hidden"
->
-  <p id="notification-text" class="notification_text"></p>
-</button>
+<zircus-notification show="false">
+  <button
+    aria-hidden="true"
+    title="Notification"
+    type="button"
+    id="notification-button"
+    class="notification hidden"
+  >
+    <div id="notification-content" class="notification__content"></div>
+  </button>
+</zircus-notification>

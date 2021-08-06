@@ -1,4 +1,4 @@
-import { q, state, switchClass } from '../utils.js'
+import { state, switchClass, ZircusElement } from '../utils.js'
 
 /*
  * notification sets the state.notify function and performs
@@ -6,36 +6,64 @@ import { q, state, switchClass } from '../utils.js'
  */
 
 export default function notification() {
-    const notificationEl = q('notification')
-    if (!notificationEl) return
-    const notificationText = q('notification-text')
+    class Notification extends HTMLElement {
+        attributeChangedCallback(name, _, newValue) {
+            const notification = state.currentNotification
+            if (!notification) return
 
-    function clearNotification(color) {
-        notificationText.textContent = ''
-        switchClass(notificationEl, color, 'hidden')
+            const content = this.querySelector('#notification-content')
+            const button = this.querySelector('#notification-button')
+
+            if (name === 'show' && newValue === 'true') {
+                if (typeof notification.content === 'string') {
+                    const p = new ZircusElement(
+                        'p',
+                        'notification__text'
+                    ).addChild(notification.content)
+                    content.appendChild(p.render())
+                } else if (Array.isArray(notification.content))
+                    notification.content.forEach(el => content.append(el))
+                else content.appendChild(notification.content)
+                button.addEventListener('click', notification.onClick)
+                switchClass(button, 'hidden', notification.color)
+            } else if (name === 'show' && newValue === 'false') {
+                content.textContent = ''
+                this.classList.remove(notification.color)
+                switchClass(button, notification.color, 'hidden')
+            }
+        }
+
+        static get observedAttributes() {
+            return ['show']
+        }
     }
 
-    function showNotification(text, color) {
-        notificationText.textContent = text
-        switchClass(notificationEl, 'hidden', color)
-    }
+    if (!customElements.get('zircus-notification'))
+        customElements.define('zircus-notification', Notification)
 
-    state.setNotify((text, color, onClick) => {
-        state.currentNotification && clearTimeout(state.currentNotification)
-        showNotification(text, color)
-        state.currentNotification = setTimeout(
-            () => clearNotification(color),
-            4000
+    const notificationElement = document.querySelector('zircus-notification')
+    if (!notificationElement) return // if not included on page, return
+    const clear = () => notificationElement.setAttribute('show', 'false')
+    const show = () => notificationElement.setAttribute('show', 'true')
+
+    return state.setNotify(({ content, onClick, color }) => {
+        state.currentNotification && clearTimeout(state.currentNotification.id)
+
+        state.currentNotification = {
+            content,
+            color,
+            id: setTimeout(clear, 4000),
+            onClick,
+        }
+
+        show()
+
+        notificationElement.addEventListener('mouseenter', () =>
+            clearTimeout(state.currentNotification.id)
         )
 
-        notificationEl.addEventListener('mouseenter', () =>
-            clearTimeout(state.currentNotification)
+        notificationElement.addEventListener('mouseleave', () =>
+            setTimeout(clear, 2000)
         )
-
-        notificationEl.addEventListener('mouseleave', () =>
-            setTimeout(() => clearNotification(), 2000)
-        )
-
-        notificationEl.onclick = () => onClick()
     })
 }
