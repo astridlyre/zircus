@@ -6,7 +6,7 @@
   &:focus-within {
     .lang__list {
       visibility: unset;
-      transform: translateY(0);
+      transform: translateY(0) !important;
       transition: all 0.1s ease-out;
     }
   }
@@ -21,15 +21,16 @@
     border-radius: var(--radius);
     padding: var(--input-padding);
     box-shadow: var(--box-shadow-sm);
-    transform: translateY(-6px);
     visibility: hidden;
 
     &.top {
-      top: var(--md-spacing);
+      top: calc(var(--md-spacing) + 0.1rem);
+      transform: translateY(-6px);
     }
 
     &.bottom {
-      bottom: var(--md-spacing);
+      bottom: calc(var(--md-spacing) + 0.1rem);
+      transform: translateY(6px);
     }
 
     a {
