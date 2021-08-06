@@ -22,6 +22,8 @@ lang:
     footer_text: 'An inspiring underwear brand, queer owned & sewn on Vancouver Island.'
     skip_link: 'Skip to main content'
     lang_dropdown: 'Select language'
+    close_notification: 'Close notification'
+    back_to_top: 'Back to top of page'
   fr:
     name: 'fr'
     home_link_path: '/fr'
@@ -30,6 +32,8 @@ lang:
       sur l'île de Vancouver."
     skip_link: 'Passer au contenu principal'
     lang_dropdown: 'Sélectionnez la langue'
+    close_notification: 'Fermez notification'
+    back_to_top: 'Retour au haut de la page'
 
 collections:
   products:

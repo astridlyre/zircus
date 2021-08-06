@@ -48,6 +48,7 @@ export default function CartProduct({
                 size: item.size,
             })
     )
+    link.setAttribute('title', item.name[lang()])
     img.src = item.images.sm_a
     img.alt = `${item.name[lang()]} ${item.size} ${item.color} underwear`
 
@@ -70,10 +71,20 @@ export default function CartProduct({
                     i.id === item.id ? { ...i, quantity: Number(qty.value) } : i
                 )
             price.textContent = `$${item.price * Number(qty.value)}`
+            removeBtn.setAttribute(
+                'title',
+                withLang(
+                    removeBtnText({
+                        ...item,
+                        quantity: Number(qty.value),
+                    })
+                )
+            )
             updateSubtotal()
         })
 
         // Add remove button functionality
+        removeBtn.setAttribute('title', withLang(removeBtnText(item)))
         removeBtn.setAttribute('aria-label', withLang(removeBtnText(item)))
         removeBtn.addEventListener('click', () => {
             state.cart = cart => cart.filter(i => i.id !== item.id)

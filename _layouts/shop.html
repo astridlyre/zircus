@@ -12,13 +12,10 @@ layout: default
       <a
         class="home__products_product_link"
         href="{{ product.url }}"
-        aria-label="Link to {{ product.image_alt }}"
+        aria-label="{{ product.image_alt }}"
+        title="{{ product.name }} - {{ product.description }}"
       >
-        <img
-          src="{{ product.image }}"
-          alt="{{ product.image_alt }}"
-          title="{{ product.name }}"
-        />
+        <img src="{{ product.image }}" alt="{{ product.image_alt }}" />
         <p class="home__products_product_text">{{ product.name }}</p>
       </a>
     </li>

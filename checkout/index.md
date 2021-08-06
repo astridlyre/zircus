@@ -17,6 +17,7 @@ label_subtotal: Subtotal
 label_estimated_tax: Estimated Tax
 label_total: Total
 label_pay_with_card: pay with card
+label_pay_with_card_title: Complete order with Stripe
 label_card_details: Enter card details
 label_pay_now: pay now
 label_cancel: cancel

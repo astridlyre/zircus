@@ -17,6 +17,7 @@ label_subtotal: Sous-total
 label_estimated_tax: Estimation de l'impôt
 label_total: Total
 label_pay_with_card: payer par carte
+label_pay_with_card_title: Complétez votre commande avec Stripe
 label_card_details: Entrez les détails de la carte
 label_pay_now: payer
 label_cancel: annuler

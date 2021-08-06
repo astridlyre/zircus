@@ -27,7 +27,12 @@ layout: default
               class="input w-4"
           /></label>
           <input type="hidden" name="type" value="" />
-          <button type="button" class="btn btn__secondary" aria-label="">
+          <button
+            type="button"
+            title="{{ page.label_remove }}"
+            class="btn btn__secondary"
+            aria-label=""
+          >
             {{ page.label_remove }}
           </button>
         </div>
@@ -48,11 +53,12 @@ layout: default
     </div>
     <div class="cart__buttons">
       <button
-        name="Checkout cart items"
+        name="{{ page.label_checkout }}"
         class="btn btn__primary"
         type="button"
         id="cart-checkout"
         disabled
+        title="{{ page.label_checkout_title }}"
       >
         {{ page.label_checkout }}
       </button>

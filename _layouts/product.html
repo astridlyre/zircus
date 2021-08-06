@@ -28,7 +28,7 @@ layout: default
       src="{{ page.image }}"
       alt="{{ page.image_alt }}"
       class="product__img"
-      title="{{ page.name }}"
+      title="{{ page.name }} - {{ page.description }}"
       id="product-image"
     />
     <div id="product-accent" class="product__details">
@@ -97,6 +97,7 @@ layout: default
               id="add-to-cart"
               accesskey="a"
               aria-label="{{ page.label_add_to_cart_aria }}"
+              title="{{ page.label_add_to_cart_aria }}"
               disabled
             >
               {{ page.label_add_to_cart }}
@@ -107,6 +108,7 @@ layout: default
               id="go-to-cart"
               name="Go to cart"
               aria-label="{{ page.label_go_to_cart_aria }}"
+              title="{{ page.label_go_to_cart_aria }}"
             >
               {{ page.label_go_to_cart }}<span id="go-to-cart-qty"></span>
             </button>
