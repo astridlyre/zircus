@@ -170,6 +170,6 @@ export default function initStripe(form) {
         }
     }
 
-    if (!customElements.get('zircus-stripe'))
+    customElements.get('zircus-stripe') ||
         customElements.define('zircus-stripe', ZircusStripe)
 }
