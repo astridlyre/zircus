@@ -5,9 +5,8 @@ export default function toTopButton() {
         constructor() {
             super()
             this.button = this.querySelector('#to-top-button')
-            this.buttonHidden = true
-            this.buttonFocused = false
-            this.throttled = false
+            this._isHidden = true
+            this._isThrottled = false
         }
 
         connectedCallback() {
@@ -15,37 +14,45 @@ export default function toTopButton() {
                 window.scroll({ top: 0 })
                 this.button.blur()
             })
-            document.addEventListener('scroll', this.scrollHandler())
+            document.addEventListener('scroll', () =>
+                this.scrollHandler(window.scrollY > this.#MIN_SCROLL)
+            )
+        }
+
+        get isHidden() {
+            return this._isHidden
+        }
+
+        set isHidden(value) {
+            this._isHidden = value
+            this._isHidden ? this.hide() : this.show()
         }
 
         show() {
             this.button.classList.add('show')
-            this.buttonHidden = false
-            this.throttled = false
+            this._isThrottled = false
         }
 
         hide() {
             this.button.classList.remove('show')
-            this.buttonHidden = true
-            this.throttled = false
+            this._isThrottled = false
         }
 
-        scrollHandler() {
-            return () =>
-                !this.throttled
-                    ? setTimeout(() => {
-                          const shouldShow = window.scrollY > this.#MIN_SCROLL
-                          if (this.buttonFocused && this.buttonHidden)
-                              return this.show()
-                          if (shouldShow && this.buttonHidden)
-                              return this.show()
-                          if (!shouldShow && !this.buttonHidden)
-                              return this.hide()
-                      }, 100)
-                    : (this.throttled = true)
+        scrollHandler(shouldShow) {
+            !this._isThrottled
+                ? setTimeout(
+                      () =>
+                          shouldShow && this.isHidden
+                              ? (this.isHidden = false)
+                              : !shouldShow && !this.isHidden
+                              ? (this.isHidden = true)
+                              : false,
+                      100
+                  )
+                : (this._isThrottled = true)
         }
     }
 
-    if (!customElements.get('zircus-to-top-button'))
+    customElements.get('zircus-to-top-button') ||
         customElements.define('zircus-to-top-button', ToTopButton)
 }

@@ -2,22 +2,24 @@ import { ZircusElement } from '../utils.js'
 
 export default function SkipToContent() {
     class SkipButton extends HTMLElement {
-        connectedCallback() {
+        constructor() {
+            super()
             this.button = new ZircusElement('button', [
                 'skip-to-content',
                 'small-spaced-bold',
             ])
                 .addChild(this.getAttribute('text'))
-                .event('click', this.focused)
+                .event('click', this.focusMainContent)
+                .render()
 
-            this.appendChild(this.button.render())
+            this.appendChild(this.button)
         }
 
-        focused() {
+        focusMainContent() {
             document.getElementById('main-content').focus()
         }
     }
 
-    if (!customElements.get('zircus-skip-to-content'))
+    customElements.get('zircus-skip-to-content') ||
         customElements.define('zircus-skip-to-content', SkipButton)
 }

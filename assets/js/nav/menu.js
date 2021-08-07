@@ -66,7 +66,9 @@ export default function menu() {
 
         set isFocused(value) {
             this._isFocused = value
-            this._isFocused ? this.show() : this.hide()
+            this._isFocused || window.scrollY < this.#MIN_SCROLL
+                ? this.show()
+                : this.hide()
         }
 
         get isHidden() {
