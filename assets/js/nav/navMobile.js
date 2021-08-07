@@ -1,4 +1,3 @@
-import { state } from '../utils.js'
 import withCartQty from './withCartQty.js'
 
 export default function navMobile() {
@@ -21,11 +20,10 @@ export default function navMobile() {
             )
 
             // Update initial text
-            this.updateCartLink([this.cartLink])
-            state.addHook({
-                hook: () => this.updateCartLink([this.cartLink]),
-                key: 'cart',
-            })
+            this.updateCartLink()
+            document.addEventListener('cart-updated', () =>
+                this.updateCartLink()
+            )
         }
 
         get isHidden() {

@@ -19,11 +19,11 @@ export default function productImage() {
             this.image.alt = this.getAttribute('alt')
             this.image.setAttribute('title', this.getAttribute('title'))
             this.image.addEventListener(
-                'mouseenter',
+                'pointerenter',
                 () => (this.isHovered = true)
             )
             this.image.addEventListener(
-                'mouseleave',
+                'pointerleave',
                 () => (this.isHovered = false)
             )
             this.image.addEventListener('click', () =>

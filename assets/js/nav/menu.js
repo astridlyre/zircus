@@ -45,11 +45,10 @@ export default function menu() {
                 )
             })
 
-            this.updateCartLink([this.cartLink]) // set cart text
-            state.addHook({
-                hook: () => this.updateCartLink([this.cartLink]),
-                key: 'cart',
-            })
+            this.updateCartLink() // set cart text
+            document.addEventListener('cart-updated', () =>
+                this.updateCartLink()
+            )
         }
 
         get isThrottled() {

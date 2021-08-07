@@ -34,21 +34,14 @@ class State {
         return this
     }
 
-    get hooks() {
-        return this.__hooks || {}
-    }
-
-    addHook(hook) {
-        this.__hooks.add(hook)
-        return this
-    }
-
     get inv() {
         return this.__state.inv || []
     }
 
     set inv(fn) {
-        return this.set('inv', fn(this.inv)).update('inv')
+        this.set('inv', fn(this.inv))
+        document.dispatchEvent(new CustomEvent('inv-updated'))
+        return this
     }
 
     get countries() {
@@ -56,7 +49,9 @@ class State {
     }
 
     set countries(fn) {
-        return this.set('countries', fn(this.countries)).update('countries')
+        this.set('countries', fn(this.countries))
+        document.dispatchEvent(new CustomEvent('countries-updated'))
+        return this
     }
 
     get cart() {
@@ -64,7 +59,9 @@ class State {
     }
 
     set cart(fn) {
-        return this.set('cart', fn(this.cart)).update('cart')
+        this.set('cart', fn(this.cart))
+        document.dispatchEvent(new CustomEvent('cart-updated'))
+        return this
     }
 
     get secret() {
@@ -115,19 +112,6 @@ class State {
 
     get currentNotification() {
         return this.__notification
-    }
-
-    update(currentKey) {
-        this.hooks.forEach(
-            ({ hook, key }) =>
-                currentKey === key &&
-                hook({
-                    inv: this.inv,
-                    countries: this.countries,
-                    cart: this.cart,
-                })
-        )
-        return this
     }
 }
 

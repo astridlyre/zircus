@@ -55,6 +55,7 @@ export default function product() {
                 }
             }
 
+            // Initial updates
             this.updateStatus()
             this.updateCartBtnQty()
 
@@ -85,9 +86,10 @@ export default function product() {
                 )
             )
 
-            // Register hooks
-            state.addHook({ hook: () => this.updateStatus(), key: 'inv' })
-            state.addHook({ hook: () => this.updateCartBtnQty(), key: 'cart' })
+            document.addEventListener('inv-updated', () => this.updateStatus())
+            document.addEventListener('cart-updated', () =>
+                this.updateCartBtnQty()
+            )
         }
 
         get currentItem() {
