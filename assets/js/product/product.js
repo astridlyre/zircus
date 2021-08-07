@@ -40,7 +40,6 @@ export default function product() {
             this.currentColor = this.colorInput.value
             this.item = this.currentItem
             this.imageHovered = false
-            this.showingFullImage = false
 
             const preloadImages = color =>
                 ['a-400.png', 'b-400.png', 'a-1920.jpg'].forEach(image =>

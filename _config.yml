@@ -24,6 +24,7 @@ lang:
     lang_dropdown: 'Select language'
     close_notification: 'Close notification'
     back_to_top: 'Back to top of page'
+    close_full_image: 'Close full view'
   fr:
     name: 'fr'
     home_link_path: '/fr'
@@ -34,6 +35,7 @@ lang:
     lang_dropdown: 'Sélectionnez la langue'
     close_notification: 'Fermez notification'
     back_to_top: 'Retour au haut de la page'
+    close_full_image: 'Fermer la vue pleine grandeur'
 
 collections:
   products:

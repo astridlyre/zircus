@@ -1,38 +1,46 @@
 import { ZircusElement, q } from '../utils.js'
 
 export default function fullImage() {
+    const nav = q('nav')
+    const mobileButton = q('menu-mobile-btn')
+
     class FullImage extends HTMLElement {
         constructor() {
             super()
+            this._isHidden = true
+            this.setAttribute('src', '')
             this.image = new ZircusElement('img', 'product__full__img').render()
             this.appendChild(this.image)
         }
 
-        setImage() {
-            this.image.src = this.getAttribute('src') || ''
-            this.image.alt = this.getAttribute('alt')
-            this.image.title = this.getAttribute('title')
+        set isHidden(value) {
+            this._isHidden = value
+            this.isHidden ? this.hide() : this.show()
         }
 
-        showFull() {
-            this.setImage()
+        get isHidden() {
+            return this._isHidden
+        }
+
+        show() {
+            this.image.src = this.getAttribute('src')
+            this.image.alt = this.getAttribute('alt')
+            this.image.title = this.getAttribute('title')
             this.style.display = 'flex'
-            q('nav').classList.add('hidden')
-            q('menu-mobile-btn').classList.add('hidden')
+            nav.classList.add('hidden')
+            mobileButton.classList.add('hidden')
             document.body.classList.add('hide-y')
         }
 
-        hideFull() {
+        hide() {
             this.style.display = 'none'
-            q('nav').classList.remove('hidden')
-            q('menu-mobile-btn').classList.remove('hidden')
+            nav.classList.remove('hidden')
+            mobileButton.classList.remove('hidden')
             document.body.classList.remove('hide-y')
         }
 
         attributeChangedCallback(name, _, newValue) {
-            if (name === 'src')
-                if (newValue.length > 0) this.showFull()
-                else this.hideFull()
+            if (name === 'src') this.isHidden = newValue.length === 0
         }
 
         static get observedAttributes() {
@@ -40,6 +48,6 @@ export default function fullImage() {
         }
     }
 
-    if (!customElements.get('zircus-full-image'))
+    customElements.get('zircus-full-image') ||
         customElements.define('zircus-full-image', FullImage)
 }
