@@ -100,7 +100,6 @@ export default function product() {
 
         setImage() {
             if (!this.currentItem) return
-            if (this.currentColor === this.currentItem.color) return
             this.imageElement.setAttribute(
                 'src',
                 this.currentItem.images['sm_a']

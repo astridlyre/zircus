@@ -15,16 +15,24 @@
 
   &__container {
     color: var(--dark);
-    padding: var(--md-spacing);
+    @include res('md') {
+      padding: var(--md-spacing);
+    }
+    padding: var(--base-spacing);
     border: 2px solid var(--dark);
     border-radius: var(--big-radius);
     background-color: var(--light);
-    width: 40rem;
+    width: 100%;
+    margin: 0 var(--base-unit);
+    max-width: 40rem;
   }
 
   &_buttons {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    @include res('md') {
+      grid-template-columns: 1fr 1fr;
+    }
+    grid-template-columns: 1fr;
     gap: 1rem;
   }
 }
