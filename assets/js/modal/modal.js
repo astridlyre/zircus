@@ -5,12 +5,45 @@ export default function modal() {
     const nav = q('nav')
 
     class Modal extends HTMLElement {
+        constructor() {
+            super()
+            this._active = false
+        }
+
         connectedCallback() {
             this._heading = this.querySelector('#modal-heading')
             this._content = this.querySelector('#modal-content')
             this._ok = this.querySelector('#modal-ok')
+            this._okText = this.querySelector('#modal-button-text')
             this._cancel = this.querySelector('#modal-cancel')
-            state.setModal(modal => this.show(modal))
+            this._spinner = this.querySelector('#modal-spinner')
+            state.setModal(modal => {
+                this.show(modal)
+                return {
+                    setActive: value => (this.active = value),
+                    close: () => this.hide(),
+                }
+            })
+        }
+
+        set active({ value, spinning = false }) {
+            this._active = value
+            if (spinning) {
+                this._okText.classList.add('hidden')
+                this._spinner.classList.remove('hidden')
+            } else if (!spinning) {
+                this._okText.classList.remove('hidden')
+                this._spinner.classList.add('hidden')
+            }
+            if (this.active) {
+                this._ok.disabled = false
+            } else {
+                this._ok.disabled = true
+            }
+        }
+
+        get active() {
+            return this._active
         }
 
         hide() {
@@ -21,7 +54,7 @@ export default function modal() {
             this._cancel.classList.add('hidden')
             this._heading.textContent = ''
             this._content.textContent = ''
-            this._ok.textContent = ''
+            this._okText.textContent = ''
             this._cancel.textContent = ''
             this.classList.add('hidden')
         }
@@ -42,10 +75,17 @@ export default function modal() {
             else if (content instanceof HTMLElement)
                 this._content.appendChild(content)
 
-            this._ok.textContent = ok.text
+            this._okText.textContent = ok.text
             this._ok.setAttribute('title', ok.title)
             this._ok.addEventListener('click', () => {
-                ok.action(() => this.hide())
+                ok.action({
+                    setActive: value => (this.active = value),
+                    close: () => this.hide(),
+                    setCustomClose: cancel => {
+                        this._cancel.textContent = cancel.text
+                        this._cancel.setAttribute('title', cancel.title)
+                    },
+                })
             })
 
             if (cancel) {
@@ -53,7 +93,12 @@ export default function modal() {
                 this._cancel.textContent = cancel.text
                 this._cancel.setAttribute('title', cancel.title)
                 this._cancel.addEventListener('click', () => {
-                    cancel.action(() => this.hide())
+                    cancel.action({
+                        setActive: value => (this.active = value),
+                        close: () => this.hide(),
+                        setCustomClose: text =>
+                            (this._cancel.textContent = text),
+                    })
                 })
                 this._cancel.focus()
             } else {

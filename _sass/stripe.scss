@@ -1,79 +1,17 @@
 .stripe-payment {
-  &-modal {
-    transform: translateY(-100%);
-    display: flex;
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 100;
-    flex-flow: column nowrap;
-    padding: var(--y-padding) 0;
-    align-items: center;
-  }
-
   &-form {
-    margin: 0 auto;
-    margin-top: 10%;
     width: 100%;
-    background: var(--light);
-    padding: var(--y-padding) var(--x-padding);
-    border-radius: var(--big-radius);
-    border: 0.2rem solid var(--dark);
-    max-width: 40rem;
-    @include moveDown();
-
-    &-buttons {
-      display: grid;
-      position: relative;
-      width: 100%;
-      grid-template-columns: 1fr;
-      @include res("md") {
-        grid-template-columns: 1fr 1fr;
-      }
-      grid-template-rows: auto;
-      gap: 1rem;
-      z-index: 50;
-
-    }
+    padding: var(--base-spacing) 0;
+    display: flex;
+    flex-flow: column nowrap;
 
     &-card {
+      width: 100%;
       margin-bottom: 1rem;
       height: var(--btn-height);
       border: 2px solid var(--dark);
       border-radius: var(--radius);
       padding: var(--input-padding);
-    }
-
-    &-heading {
-      display: flex;
-      justify-content: space-between;
-      gap: 1rem;
-      color: var(--dark);
-      width: 100%;
-
-      &-container {
-        @include flexRow();
-        justify-content: space-between;
-        margin-bottom: 2rem;
-      }
-    }
-
-    .error::after {
-      content: "";
-    }
-
-    .error {
-      color: var(--grey);
-      text-align: left;
-      font-size: 0.9rem;
-      font-weight: 600;
-      line-height: 1.5;
-      margin-top: 0.5rem;
-      bottom: -3rem;
-      left: 0;
-      position: absolute;
     }
   }
 }
@@ -140,15 +78,5 @@
 
 .result-message {
   letter-spacing: 0.1rem;
-  font-weight: 600;
-  font-size: 0.9rem;
-  color: var(--dark);
-  bottom: -3rem;
-  left: 0;
-  z-index: 5;
-  position: absolute;
-}
-
-.show-modal {
-  transform: translateY(0);
+  @include smallSpacedBold();
 }

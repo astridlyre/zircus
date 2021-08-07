@@ -1,4 +1,4 @@
-import { lang, withLang, state, q, API_ENDPOINT } from '../utils.js'
+import { lang, withLang, state, API_ENDPOINT } from '../utils.js'
 
 const stripe = Stripe(
     'pk_test_51J93KzDIzwSFHzdzCZtyRcjMvw8em0bhnMrVmkBHaMFHuc2nkJ156oJGNxuz0G7W4Jx0R6OCy2nBXYTt6U8bSYew00PIAPcntP'
@@ -19,79 +19,54 @@ export default function initStripe(form) {
     class ZircusStripe extends HTMLElement {
         constructor() {
             super()
+            this.style.display = 'none'
             this._isLoaded = false
         }
 
         connectedCallback() {
-            this.cardError = this.querySelector('#card-error')
-            this.payButton = this.querySelector('#pay-button')
-            this.buttonText = this.querySelector('#pay-button-text')
-            this.spinner = this.querySelector('#spinner')
-            this.paymentPrice = this.querySelector('#payment-price')
+            this.classList.add('stripe-payment-form')
+            this.paymentPrice = this.querySelector('#stripe-payment-price')
             this.resultMessage = this.querySelector('#result-message')
-            this.paymentForm = this.querySelector('#stripe-payment-form')
-            this.cancelButton = this.querySelector('#cancel')
 
             formElement.addEventListener('submit', event => {
                 event.preventDefault()
                 this.createPaymentIntent()
             })
-            this.cancelButton.addEventListener('click', () =>
-                this.showModal(false)
-            )
         }
 
-        set isLoaded(value) {
-            this._isLoaded = value
-            this.#handleLoading()
-        }
-
-        get isLoaded() {
-            return this._isLoaded
-        }
-
-        #handleLoading = () => {
-            if (!this.isLoaded) {
-                this.payButton.disabled = true
-                this.spinner.classList.remove('hidden')
-                this.buttonText.classList.add('hidden')
-            } else {
-                this.payButton.disabled = false
-                this.spinner.classList.add('hidden')
-                this.buttonText.classList.remove('hidden')
-            }
-        }
-
-        #showError(msg) {
-            this.isLoaded = false
-            this.cardError.textContent = msg
+        showError(msg = this.getAttribute('failure'), setActive) {
+            setActive({ value: false })
+            this.resultMessage.textContent = msg
+            this.resultMessage.classList.remove('hidden')
+            this.resultMessage.classList.add('red')
             setTimeout(() => {
-                this.cardError.textContent = ''
+                this.resultMessage.classList.add('hidden')
+                this.resultMessage.classList.remove('red')
             }, 4000)
         }
 
-        showModal(show) {
-            this.isLoaded = false
-            if (show) {
-                document.body.classList.add('hide-y')
-                q('blur').classList.add('blur')
-                this.classList.add('show-modal')
-                this.payButton.disabled = true
-                this.paymentPrice.textContent = ''
-            } else {
-                document.body.classList.remove('hide-y')
-                q('blur').classList.remove('blur')
-                this.classList.remove('show-modal')
-                if (state.cart.length === 0)
-                    location.assign(
-                        withLang({ en: '/thanks', fr: '/fr/merci' })
-                    )
-            }
-        }
-
         async createPaymentIntent() {
-            this.showModal(true)
-            this.isLoaded = false
+            const { setActive } = state.showModal({
+                content: this,
+                heading: this.getAttribute('heading'),
+                ok: {
+                    action: cbs => this.payWithCard(cbs),
+                    text: this.getAttribute('buttontext'),
+                },
+                cancel: {
+                    action: ({ close }) => {
+                        if (!state.cart.length)
+                            location.assign(
+                                withLang({ en: '/thanks', fr: '/fr/merci' })
+                            )
+                        close()
+                    },
+                    text: this.getAttribute('canceltext'),
+                },
+            })
+
+            this.style.display = 'flex'
+            setActive({ value: false, spinning: true })
 
             const req = {
                 lang: lang(),
@@ -129,15 +104,16 @@ export default function initStripe(form) {
                         name: data.name,
                         email: data.email,
                     }
-                    this.paymentPrice.textContent = `$${data.total.toFixed(2)}`
-                    this.loadStripe(data)
-                    this.isLoaded = true
+                    this.paymentPrice.textContent = `Calculated total: $${data.total.toFixed(
+                        2
+                    )}`
+                    this.loadStripe(data, setActive)
                 })
         }
 
-        loadStripe(data) {
-            if (this.isLoaded) return
-            this.isLoaded = true
+        loadStripe(data, setActive) {
+            if (this._isLoaded) return
+            setActive({ value: false })
             const elements = stripe.elements()
             const style = {
                 base: {
@@ -159,46 +135,38 @@ export default function initStripe(form) {
             const card = elements.create('card', { style: style })
             card.mount('#card-element')
             card.on('change', event => {
-                this.payButton.disabled = event.empty
-                this.cardError.textContent = event.error
-                    ? event.error.message
-                    : ''
+                setActive({ value: !event.empty })
+                event.error?.message &&
+                    this.showError(event.error.message, setActive)
             })
-
-            this.paymentForm.addEventListener('submit', event => {
-                event.preventDefault()
-                this.payWithCard(stripe, card, data.clientSecret)
-            })
+            this._card = card
+            this._secret = data.clientSecret
+            this._isLoaded = true
         }
 
-        payWithCard(stripe, card, clientSecret) {
-            this.isLoaded = false
+        payWithCard({ setActive, setCustomClose }) {
+            setActive({ value: false, spinning: true })
             stripe
-                .confirmCardPayment(clientSecret, {
-                    payment_method: { card },
+                .confirmCardPayment(this._secret, {
+                    payment_method: { card: this._card },
                 })
                 .then(result => {
                     if (result.error)
-                        return this.#showError(result.error.message)
-                    return this.orderComplete()
+                        return this.showError(result.error.message, setActive)
+                    return this.orderComplete({ setActive, setCustomClose })
                 })
         }
 
-        orderComplete() {
-            this.isLoaded = true
+        orderComplete({ setActive, setCustomClose }) {
+            setActive({ value: false, spinning: false })
             state.cart = () => []
             state.secret = null
-            this.resultMessage.classList.remove('hidden')
-            this.payButton.disabled = true
-            this.payButton.textContent = ''
-            this.cancelButton.textContent = withLang({
-                en: 'finish',
-                fr: 'complétez',
+            setCustomClose({
+                text: withLang({ en: 'finish', fr: 'complétez' }),
+                title: withLang({ en: 'finish', fr: 'complétez' }),
             })
-            this.cancelButton.classList.replace(
-                'btn__secondary',
-                'btn__primary'
-            )
+            this.resultMessage.textContent = this.getAttribute('success')
+            this.resultMessage.classList.remove('hidden')
         }
     }
 

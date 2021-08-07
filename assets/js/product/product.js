@@ -157,9 +157,9 @@ export default function product() {
 
         handleAddToCart() {
             if (
-                this.currentItem.quantity - Number(this.quantityInput.value) >
-                    0 &&
-                this.currentItem.quantity
+                this.currentItem.quantity - Number(this.quantityInput.value) <=
+                    0 ||
+                !this.currentItem.quantity
             )
                 return
             const item = state.cart.find(i => i.type == this.currentItem.type)

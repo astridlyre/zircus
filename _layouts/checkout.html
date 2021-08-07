@@ -1,7 +1,24 @@
 ---
-layout: withStripe
+layout: withModal
 ---
 
+<zircus-stripe
+  heading="{{ page.label_card_details }}"
+  buttontext="{{ page.label_pay_now }}"
+  canceltext="{{ page.label_cancel }}"
+  id="stripe-payment-modal"
+  class="stripe-payment-form"
+  success="{{ page.label_success_message }}"
+  failure="{{ page.label_failure_message }}"
+>
+  <p id="stripe-payment-price"></p>
+  <p id="result-message" class="result-message hidden">
+    {{ page.label_success_message }}
+  </p>
+  <div id="card-element" class="stripe-payment-form-card">
+    <!--Stripe.js injects the Card Element-->
+  </div>
+</zircus-stripe>
 <zircus-payment class="checkout">
   <div class="container">
     <h1 class="page__heading">{{ page.heading }}</h1>
