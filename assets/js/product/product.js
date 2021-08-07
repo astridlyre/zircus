@@ -1,7 +1,14 @@
 import { state, appendPreloadLink, withLang, ZircusElement } from '../utils.js'
 import intText from '../int/intText.js'
 import inStockText from './inStockText.js'
-import fullImage from './fullImage.js'
+import productImage from './productImage.js'
+
+const IMAGE_BASE_PATH = '/assets/img/products/masked/'
+// Preload images
+const preloadImages = ({ prefix, color }) =>
+    ['a-400.png', 'b-400.png', 'a-1920.jpg'].forEach(image =>
+        appendPreloadLink(`${IMAGE_BASE_PATH}${prefix}-${color}-${image}`)
+    )
 
 /* Path for masked product images. Images follow the convention:
  
@@ -14,7 +21,7 @@ import fullImage from './fullImage.js'
 */
 export default function product() {
     inStockText()
-    fullImage()
+    productImage()
     const addToCartText = intText.product.addToCart
     const addNotificationText = intText.product.addNotificationText
     const stockText = intText.product.stockText
@@ -23,8 +30,7 @@ export default function product() {
         connectedCallback() {
             this.priceText = this.querySelector('#product-price-text')
             this.sizeInput = this.querySelector('#product-size')
-            this.imageElement = this.querySelector('#product-image')
-            this.fullImageElement = this.querySelector('zircus-full-image')
+            this.imageElement = this.querySelector('zircus-product-image')
             this.quantityInput = this.querySelector('#product-quantity')
             this.colorInput = this.querySelector('#product-color')
             this.addToCartButton = this.querySelector('#add-to-cart')
@@ -39,17 +45,9 @@ export default function product() {
 
             this.currentColor = this.colorInput.value
             this.item = this.currentItem
-            this.imageHovered = false
-
-            const preloadImages = color =>
-                ['a-400.png', 'b-400.png', 'a-1920.jpg'].forEach(image =>
-                    appendPreloadLink(
-                        `/assets/img/products/masked/${this._prefix}-${color}-${image}`
-                    )
-                )
 
             for (const child of this.colorInput.children) {
-                preloadImages(child.value)
+                preloadImages({ color: child.value, prefix: this._prefix })
                 if (child.value === this.defaultColor) {
                     child.setAttribute('selected', true)
                     this.productAccent.classList.add(`${child.value}-before`)
@@ -61,10 +59,9 @@ export default function product() {
             this.updateCartBtnQty()
 
             // Add event listeners
-            this.colorInput.addEventListener('change', () => {
-                this.setImage('sm_a')
+            this.colorInput.addEventListener('change', () =>
                 this.updateStatus()
-            })
+            )
 
             this.quantityInput.addEventListener('input', () => {
                 const max = this.currentItem.quantity
@@ -76,21 +73,6 @@ export default function product() {
             })
 
             this.sizeInput.addEventListener('input', () => this.updateStatus())
-            this.imageElement.addEventListener('pointerover', () =>
-                this.handleHoverImage()
-            )
-            this.imageElement.addEventListener('pointerleave', () =>
-                this.handleHoverImage()
-            )
-            this.imageElement.addEventListener('click', () =>
-                this.fullImageElement.setAttribute(
-                    'src',
-                    this.currentItem.images.lg_a
-                )
-            )
-            this.fullImageElement.addEventListener('click', () =>
-                this.fullImageElement.setAttribute('src', '')
-            )
             this.addToCartButton.addEventListener('click', () =>
                 this.handleAddToCart()
             )
@@ -116,22 +98,21 @@ export default function product() {
             )
         }
 
-        setImage(key) {
-            this.currentItem &&
-                (this.imageElement.src = this.currentItem.images[key])
-        }
-
-        handleHoverImage() {
-            this.imageHovered = !this.imageHovered
-            return this.imageHovered
-                ? this.setImage('sm_b')
-                : this.setImage('sm_a')
-        }
-
-        updatePrice() {
-            this.priceText.textContent = `$${
-                Number(this.productPrice) * Number(this.quantityInput.value)
-            }`
+        setImage() {
+            if (!this.currentItem) return
+            if (this.currentColor === this.currentItem.color) return
+            this.imageElement.setAttribute(
+                'src',
+                this.currentItem.images['sm_a']
+            )
+            this.imageElement.setAttribute(
+                'hovered',
+                this.currentItem.images['sm_b']
+            )
+            this.imageElement.setAttribute(
+                'fullsrc',
+                this.currentItem.images['lg_a']
+            )
         }
 
         createNotificationSuccess() {
@@ -174,15 +155,13 @@ export default function product() {
             }
         }
 
-        get hasEnoughQuantity() {
-            return (
-                this.currentItem.quantity - Number(this.quantityInput.value) >
-                    0 && this.currentItem.quantity
-            )
-        }
-
         handleAddToCart() {
-            if (!this.hasEnoughQuantity) return
+            if (
+                this.currentItem.quantity - Number(this.quantityInput.value) >
+                    0 &&
+                this.currentItem.quantity
+            )
+                return
             const item = state.cart.find(i => i.type == this.currentItem.type)
             const invItem = state.inv.find(
                 i => i.type === this.currentItem.type
@@ -201,13 +180,15 @@ export default function product() {
         }
 
         updateCartItem() {
-            const withQuantity = obj => ({
-                ...obj,
-                quantity: obj.quantity + Number(this.quantityInput.value),
-            })
             return (state.cart = cart =>
                 cart.map(i =>
-                    i.type === this.currentItem.type ? withQuantity(i) : i
+                    i.type === this.currentItem.type
+                        ? {
+                              ...i,
+                              quantity:
+                                  i.quantity + Number(this.quantityInput.value),
+                          }
+                        : i
                 ))
         }
 
@@ -230,16 +211,16 @@ export default function product() {
         }
 
         outOfStock() {
-            this.quantityInput.setAttribute('disabled', true)
-            this.addToCartButton.setAttribute('disabled', true)
+            this.quantityInput.disabled = true
+            this.addToCartButton.disabled = true
             this.addToCartButton.textContent = withLang(addToCartText)[0]
         }
 
         inStock() {
             if (this.currentItem.quantity < Number(this.quantityInput.value))
                 this.quantityInput.value = this.currentItem.quantity
-            this.quantityInput.removeAttribute('disabled')
-            this.addToCartButton.removeAttribute('disabled')
+            this.quantityInput.disabled = false
+            this.addToCartButton.disabled = false
             this.addToCartButton.textContent = withLang(addToCartText)[1]
         }
 
@@ -250,6 +231,7 @@ export default function product() {
                 this.colorInput.value = currentItem.color
                 state.currentItem = null
             }
+            this.setImage() // must be before updating currentColor
             this.productAccent.classList.replace(
                 `${this.currentColor}-before`,
                 `${this.colorInput.value}-before`
@@ -266,11 +248,12 @@ export default function product() {
             if (!this.currentItem || this.currentItem.quantity === 0)
                 this.outOfStock()
             else this.inStock()
-            this.setImage('sm_a')
-            this.updatePrice()
+            this.priceText.textContent = `$${
+                Number(this.productPrice) * Number(this.quantityInput.value)
+            }`
         }
     }
 
-    if (!customElements.get('zircus-product'))
+    customElements.get('zircus-product') ||
         customElements.define('zircus-product', Product)
 }

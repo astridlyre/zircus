@@ -1,11 +1,10 @@
-import { API_ENDPOINT, lang } from '../utils.js'
-import showModal from '../modal/modal.js'
+import { API_ENDPOINT, lang, state } from '../utils.js'
 import intText from '../int/intText.js'
 
 const { contactText } = intText
 
 const handleFailure = error =>
-    showModal({
+    state.showModal({
         heading: contactText[lang()].error[0],
         content: error,
         ok: {
@@ -16,7 +15,7 @@ const handleFailure = error =>
     })
 
 const handleSuccess = data =>
-    showModal({
+    state.showModal({
         heading: contactText[lang()].default[0],
         content: contactText[lang()].message(data.name, data.email),
         ok: {

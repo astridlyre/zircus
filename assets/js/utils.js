@@ -92,13 +92,13 @@ class State {
         return this.set('order', order)
     }
 
-    set modal(modal) {
-        this.__modal = modal
+    setModal(modalFunc) {
+        this.__modal = modalFunc
         return this
     }
 
-    get modal() {
-        return this.__modal
+    showModal(modal) {
+        return this.__modal(modal)
     }
 
     setNotify(fn) {

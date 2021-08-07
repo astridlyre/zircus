@@ -8,9 +8,13 @@ export default function fullImage() {
         constructor() {
             super()
             this._isHidden = true
-            this.setAttribute('src', '')
             this.image = new ZircusElement('img', 'product__full__img').render()
             this.appendChild(this.image)
+        }
+
+        connectedCallback() {
+            this.classList.add('full')
+            this.setAttribute('src', '')
         }
 
         set isHidden(value) {

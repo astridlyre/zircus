@@ -8,6 +8,7 @@ import thanks from './thanks/thanks.js'
 import contact from './contact/contact.js'
 import notification from './notification/notification.js'
 import langRedirect from './int/langRedirect.js'
+import modal from './modal/modal.js'
 
 product()
 payment()
@@ -16,6 +17,7 @@ nav()
 hero()
 thanks()
 contact()
+modal()
 notification()
 tagLine()
 langRedirect()
