@@ -8,6 +8,7 @@ export default function modal() {
         constructor() {
             super()
             this._active = false
+            this._isClear = true
         }
 
         connectedCallback() {
@@ -19,11 +20,21 @@ export default function modal() {
             this._spinner = this.querySelector('#modal-spinner')
             state.setModal(modal => {
                 this.show(modal)
+                this.isClear = false
                 return {
                     setActive: value => (this.active = value),
                     close: () => this.hide(),
+                    clear: () => this.clear(),
                 }
             })
+        }
+
+        set isClear(value) {
+            this._isClear = value
+        }
+
+        get isClear() {
+            return this._isClear
         }
 
         set active({ value, spinning = false }) {
@@ -46,16 +57,18 @@ export default function modal() {
             return this._active
         }
 
-        hide() {
-            blur.classList.remove('blur')
-            nav.classList.remove('blur')
-            document.body.classList.remove('hide-y')
-            state.modal = null
-            this._cancel.classList.add('hidden')
+        clear() {
             this._heading.textContent = ''
             this._content.textContent = ''
             this._okText.textContent = ''
             this._cancel.textContent = ''
+            state.modal = null
+        }
+
+        hide() {
+            blur.classList.remove('blur')
+            nav.classList.remove('blur')
+            document.body.classList.remove('hide-y')
             this.classList.add('hidden')
         }
 
@@ -64,6 +77,8 @@ export default function modal() {
             nav.classList.add('blur')
             document.body.classList.add('hide-y')
             this.classList.remove('hidden')
+
+            if (!this.isClear) return
             this._heading.textContent = heading
 
             if (typeof content === 'string')
@@ -81,6 +96,7 @@ export default function modal() {
                 ok.action({
                     setActive: value => (this.active = value),
                     close: () => this.hide(),
+                    clear: () => this.clear(),
                     setCustomClose: cancel => {
                         this._cancel.textContent = cancel.text
                         this._cancel.setAttribute('title', cancel.title)
@@ -96,6 +112,7 @@ export default function modal() {
                     cancel.action({
                         setActive: value => (this.active = value),
                         close: () => this.hide(),
+                        clear: () => this.clear(),
                         setCustomClose: text =>
                             (this._cancel.textContent = text),
                     })
@@ -103,6 +120,7 @@ export default function modal() {
                 this._cancel.focus()
             } else {
                 this._ok.focus()
+                this._cancel.classList.add('hidden')
             }
         }
 

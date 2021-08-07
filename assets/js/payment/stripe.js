@@ -21,12 +21,14 @@ export default function initStripe(form) {
             super()
             this.style.display = 'none'
             this._isLoaded = false
+            this._paymentCompleted = false
         }
 
         connectedCallback() {
             this.classList.add('stripe-payment-form')
             this.paymentPrice = this.querySelector('#stripe-payment-price')
             this.resultMessage = this.querySelector('#result-message')
+            this._cardElement = this.querySelector('#card-element')
 
             formElement.addEventListener('submit', event => {
                 event.preventDefault()
@@ -54,12 +56,13 @@ export default function initStripe(form) {
                     text: this.getAttribute('buttontext'),
                 },
                 cancel: {
-                    action: ({ close }) => {
+                    action: ({ close, clear }) => {
                         if (!state.cart.length)
                             location.assign(
                                 withLang({ en: '/thanks', fr: '/fr/merci' })
                             )
                         close()
+                        if (this._paymentCompleted) clear()
                     },
                     text: this.getAttribute('canceltext'),
                 },
@@ -104,6 +107,7 @@ export default function initStripe(form) {
                         name: data.name,
                         email: data.email,
                     }
+                    if (data.error) return this.showError(data.error, setActive)
                     this.paymentPrice.textContent = `Calculated total: $${data.total.toFixed(
                         2
                     )}`
@@ -112,8 +116,8 @@ export default function initStripe(form) {
         }
 
         loadStripe(data, setActive) {
-            if (this._isLoaded) return
             setActive({ value: false })
+            if (this._isLoaded) return
             const elements = stripe.elements()
             const style = {
                 base: {
@@ -158,6 +162,7 @@ export default function initStripe(form) {
         }
 
         orderComplete({ setActive, setCustomClose }) {
+            this._paymentCompleted = true
             setActive({ value: false, spinning: false })
             state.cart = () => []
             state.secret = null
