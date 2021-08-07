@@ -5,17 +5,22 @@ export default function navMobile() {
     class NavMobile extends HTMLElement {
         constructor() {
             super()
+            this._isHidden = true
+        }
 
-            this._hidden = true
+        connectedCallback() {
             this.classList.add('nav_mobile')
             this.cartLink = this.querySelector('#cart-link-mobile')
             this.list = this.querySelector('#menu-mobile-list')
-            this.list.addEventListener('click', () => this.hide())
             this.button = this.querySelector('#menu-mobile-btn')
-            this.button.addEventListener('click', () =>
-                this._hidden ? this.show() : this.hide()
+
+            this.list.addEventListener('click', () => (this.isHidden = true))
+            this.button.addEventListener(
+                'click',
+                () => (this.isHidden = !this.isHidden)
             )
 
+            // Update initial text
             this.updateCartLink([this.cartLink])
             state.addHook({
                 hook: () => this.updateCartLink([this.cartLink]),
@@ -23,14 +28,21 @@ export default function navMobile() {
             })
         }
 
+        get isHidden() {
+            return this._isHidden
+        }
+
+        set isHidden(value) {
+            this._isHidden = value
+            this.isHidden ? this.hide() : this.show()
+        }
+
         // Mobile menu functionality
         hide() {
-            this._hidden = true
             this.list.classList.add('hide')
             document.body.classList.remove('hide-y')
         }
         show() {
-            this._hidden = false
             this.list.classList.remove('hide')
             document.body.classList.add('hide-y')
         }
@@ -38,6 +50,6 @@ export default function navMobile() {
 
     Object.assign(NavMobile.prototype, withCartQty())
 
-    if (!customElements.get('nav-mobile'))
-        customElements.define('nav-mobile', NavMobile)
+    customElements.get('zircus-nav-mobile') ||
+        customElements.define('zircus-nav-mobile', NavMobile)
 }

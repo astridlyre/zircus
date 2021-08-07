@@ -107,5 +107,6 @@ export default function menu() {
 
     Object.assign(NavMenu.prototype, withCartQty(), withScrollState(0, 0))
 
-    customElements.get('nav-menu') || customElements.define('nav-menu', NavMenu)
+    customElements.get('zircus-nav-desktop') ||
+        customElements.define('zircus-nav-desktop', NavMenu)
 }
