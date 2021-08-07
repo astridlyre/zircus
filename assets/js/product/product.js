@@ -58,22 +58,26 @@ export default function product() {
             // Initial updates
             this.updateStatus()
             this.updateCartBtnQty()
+            this.updateColorOptionText()
+            this.updateSizeOptionText()
 
             // Add event listeners
-            this.colorInput.addEventListener('change', () =>
+            this.colorInput.addEventListener('change', () => {
                 this.updateStatus()
-            )
+                this.updateSizeOptionText()
+            })
 
             this.quantityInput.addEventListener('input', () => {
                 const max = this.currentItem.quantity
                 if (Number(this.quantityInput.value) > max)
                     this.quantityInput.value = max
-                this.priceText.textContent = `$${
-                    Number(this.quantityInput.value) * Number(this.productPrice)
-                }`
+                this.setProductPriceText()
             })
 
-            this.sizeInput.addEventListener('input', () => this.updateStatus())
+            this.sizeInput.addEventListener('input', () => {
+                this.updateStatus()
+                this.updateColorOptionText()
+            })
             this.addToCartButton.addEventListener('click', () =>
                 this.handleAddToCart()
             )
@@ -90,6 +94,12 @@ export default function product() {
             document.addEventListener('cart-updated', () =>
                 this.updateCartBtnQty()
             )
+        }
+
+        setProductPriceText() {
+            this.priceText.textContent = `$${Math.abs(
+                Number(this.quantityInput.value) * Number(this.productPrice)
+            )}`
         }
 
         get currentItem() {
@@ -225,6 +235,38 @@ export default function product() {
             this.addToCartButton.textContent = withLang(addToCartText)[1]
         }
 
+        updateOptionText({ input, test, alt }) {
+            for (const child of input.children) {
+                const item = state.inv.find(item => test({ item, child }))
+                const [text] = child.textContent.split(' - ')
+                child.textContent = `${text} - (${alt} ${
+                    item.quantity > 0
+                        ? withLang({ en: 'in stock', fr: 'en stock' })
+                        : withLang({ en: 'out of stock', fr: 'pas disponible' })
+                })`
+            }
+        }
+
+        updateSizeOptionText() {
+            return this.updateOptionText({
+                input: this.sizeInput,
+                alt: this.colorInput.value,
+                test: ({ child, item }) =>
+                    item.type ===
+                    `${this._prefix}-${this.colorInput.value}-${child.value}`,
+            })
+        }
+
+        updateColorOptionText() {
+            return this.updateOptionText({
+                input: this.colorInput,
+                alt: this.sizeInput.value,
+                test: ({ child, item }) =>
+                    item.type ===
+                    `${this._prefix}-${child.value}-${this.sizeInput.value}`,
+            })
+        }
+
         updateStatus({ inv, currentItem } = state) {
             if (!inv) return
             if (currentItem) {
@@ -246,12 +288,10 @@ export default function product() {
                 'text',
                 withLang(stockText(this.currentItem?.quantity))
             )
-            if (!this.currentItem || this.currentItem.quantity === 0)
+            if (!this.currentItem || this.currentItem.quantity <= 0)
                 this.outOfStock()
             else this.inStock()
-            this.priceText.textContent = `$${
-                Number(this.productPrice) * Number(this.quantityInput.value)
-            }`
+            this.setProductPriceText()
         }
     }
 

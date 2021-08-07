@@ -101,11 +101,25 @@
   }
 
   &__inputs {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto;
+    border-bottom: 2px solid var(--gray-30);
+    padding-bottom: var(--base-spacing);
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    flex-flow: row wrap;
     flex-grow: 1;
     gap: 0.5rem;
+
+    .grow-half {
+      flex-grow: 0.5;
+      max-width: 6rem;
+    }
+
+    .grow {
+      flex-basis: 16rem;
+      flex-grow: 1;
+      flex-shrink: 1;
+    }
 
     label {
       display: flex;
@@ -139,13 +153,12 @@
       display: flex;
       flex-flow: row wrap;
       flex-grow: 1;
-      margin-top: 1rem;
+      margin-top: var(--base-spacing);
       gap: 0.5rem;
 
       button {
         flex-grow: 1;
-        flex-shrink: 1;
-        flex-basis: 14rem;
+        flex-basis: 10rem;
       }
     }
   }

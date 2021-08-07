@@ -16,56 +16,59 @@ export const API_ENDPOINT = 'https://zircus.herokuapp.com/api'
  * 'get' returns the state from localStorage.
  */
 class State {
+    #notify
+    #notification
+    #modal
+    #state
+
     constructor() {
-        const savedState = localStorage.getItem('state')
-        this.__state = JSON.parse(savedState) || {}
-        this.__hooks = new Set()
-        this.__notification = null
-        this.__notify = null
+        this.#state = JSON.parse(localStorage.getItem('state')) || {}
+        this.#notification = null
+        this.#notify = null
+        this.#modal = null
     }
 
-    set(key, val) {
-        this.__state[key] = val
-        return this.save()
+    static dispatch(event) {
+        return document.dispatchEvent(new CustomEvent(event))
     }
 
-    save() {
-        localStorage.setItem('state', JSON.stringify(this.__state))
-        return this
+    #set(key, val) {
+        this.#state[key] = val
+        localStorage.setItem('state', JSON.stringify(this.#state))
     }
 
     get inv() {
-        return this.__state.inv || []
+        return this.#state.inv || []
     }
 
     set inv(fn) {
-        this.set('inv', fn(this.inv))
-        document.dispatchEvent(new CustomEvent('inv-updated'))
+        this.#set('inv', fn(this.inv))
+        State.dispatch('inv-updated')
         return this
     }
 
     get countries() {
-        return this.__state.countries || []
+        return this.#state.countries || []
     }
 
     set countries(fn) {
-        this.set('countries', fn(this.countries))
-        document.dispatchEvent(new CustomEvent('countries-updated'))
+        this.#set('countries', fn(this.countries))
+        State.dispatch('countries-updated')
         return this
     }
 
     get cart() {
-        return this.__state.cart || []
+        return this.#state.cart || []
     }
 
     set cart(fn) {
-        this.set('cart', fn(this.cart))
-        document.dispatchEvent(new CustomEvent('cart-updated'))
+        this.#set('cart', fn(this.cart))
+        State.dispatch('cart-updated')
         return this
     }
 
     get secret() {
-        return this.__state.secret || null
+        return this.#state.secret || null
     }
 
     set secret(secret) {
@@ -73,45 +76,45 @@ class State {
     }
 
     get currentItem() {
-        return this.__state.currentItem || null
+        return this.#state.currentItem || null
     }
 
     set currentItem(item) {
-        return this.set('currentItem', item)
+        return this.#set('currentItem', item)
     }
 
     get order() {
-        return this.__state.order || null
+        return this.#state.order || null
     }
 
     set order(order) {
-        if (this.__state.order && order != null) return
-        return this.set('order', order)
+        if (this.#state.order && order != null) return
+        return this.#set('order', order)
     }
 
     setModal(modalFunc) {
-        this.__modal = modalFunc
+        this.#modal = modalFunc
         return this
     }
 
     showModal(modal) {
-        return this.__modal(modal)
+        return this.#modal(modal)
     }
 
     setNotify(fn) {
-        this.__notify = fn
+        this.#notify = fn
     }
 
     notify(text, color, onClick) {
-        return this.__notify(text, color, onClick)
+        return this.#notify(text, color, onClick)
     }
 
     set currentNotification(id) {
-        this.__notification = id
+        this.#notification = id
     }
 
     get currentNotification() {
-        return this.__notification
+        return this.#notification
     }
 }
 
