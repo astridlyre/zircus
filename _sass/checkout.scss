@@ -8,12 +8,25 @@
   }
 
   &__inputs {
-    flex-basis: 16rem;
+    flex-basis: 35%;
     flex-grow: 1;
-    flex-shrink: 1;
     display: flex;
-    flex-flow: column nowrap;
+    flex-flow: row wrap;
     gap: var(--base-spacing);
+
+    .max-w-10 {
+      max-width: 10rem;
+    }
+
+    .address {
+      flex-grow: 1;
+      max-width: 35wv;
+    }
+
+    zircus-shipping-inputs {
+      flex-grow: 1;
+      flex-basis: 16rem;
+    }  
   }
 
   &__products__container {

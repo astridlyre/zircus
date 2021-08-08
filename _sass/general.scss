@@ -8,7 +8,7 @@ html {
 
 hr {
   border: 0 solid var(--gray-30);
-  @include res('sm') {
+  @include res("sm") {
     width: 33%;
   }
   width: 100%;
@@ -95,16 +95,16 @@ fieldset {
   .flex-inputs {
     display: flex;
     flex-flow: row wrap;
+    align-items: flex-end;
     gap: var(--base-spacing);
 
-    label {
-      flex-grow: 1;
-    }
   }
 }
 
 input[type="radio"] {
   outline-color: var(--teal);
+  margin: var(--base-unit);
+  padding: var(--base-unit);
 }
 
 legend {
@@ -200,6 +200,9 @@ blockquote {
   }
   @include res("xl") {
     width: 85%;
+  }
+  @include res("xxl") {
+    width: 75%;
   }
 }
 

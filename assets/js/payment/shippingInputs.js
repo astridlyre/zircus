@@ -8,15 +8,15 @@ export default function shippingInputs({ shippingTypes }) {
             )
             this.container = new ZircusElement('div', 'flex-inputs').render()
             Object.entries(shippingTypes).forEach(([key, type]) => {
-                const label = new ZircusElement('label', 'row', {
-                    for: `shipping-${key}`,
-                })
+                const text = new ZircusElement('span', null)
                     .addChild(
-                        new ZircusElement('span', null).addChild(
-                            `${withLang(type.name)} - $${type.price.toFixed(2)}`
-                        )
+                        `${withLang(type.name)} - $${type.price.toFixed(2)}`
                     )
                     .render()
+
+                const label = new ZircusElement('label', 'row', {
+                    for: `shipping-${key}`,
+                }).render()
 
                 const input = new ZircusElement('input', null, {
                     type: 'radio',
@@ -32,6 +32,7 @@ export default function shippingInputs({ shippingTypes }) {
                 }
 
                 label.appendChild(input)
+                label.appendChild(text)
                 this.container.appendChild(label)
             })
             this.inputsContainer.appendChild(this.container)
