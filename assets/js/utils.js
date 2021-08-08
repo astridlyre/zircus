@@ -677,6 +677,6 @@ function changePage() {
         const newContent = wrapper.querySelector('main')
 
         page.replaceChild(newContent, oldContent)
-        window.scrollTo({ top: 0 })
+        document.dispatchEvent(new CustomEvent('navigated'))
     })
 }

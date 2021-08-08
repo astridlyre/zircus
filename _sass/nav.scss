@@ -18,12 +18,7 @@
 
   &.slide-up {
     transform: translateY(-100%);
-    transition: all 0.2s ease-in;
-  }
-
-  &.slide-down {
-    transform: translateY(0);
-    transition: all 0.1s ease-out;
+    transition: transform 0.3s ease-in;
   }
 
   header {

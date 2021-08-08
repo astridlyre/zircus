@@ -51,6 +51,10 @@ export default function menu() {
             document.addEventListener('cart-updated', () =>
                 this.updateCartLink()
             )
+            document.addEventListener('navigated', () => {
+                this.isHidden = false
+                window.scrollTo({ top: 0 })
+            })
         }
 
         get isFocused() {
@@ -74,12 +78,12 @@ export default function menu() {
         }
 
         show() {
-            this.#nav.classList.replace('slide-up', 'slide-down')
+            this.#nav.classList.remove('slide-up')
             this.#isThrottled = false
         }
 
         hide() {
-            this.#nav.classList.replace('slide-down', 'slide-up')
+            this.#nav.classList.add('slide-up')
             this.#isThrottled = false
         }
 
