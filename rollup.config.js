@@ -1,5 +1,7 @@
 import resolve from '@rollup/plugin-node-resolve'
 import { terser } from 'rollup-plugin-terser'
+import { babel } from '@rollup/plugin-babel'
+import commonjs from '@rollup/plugin-commonjs'
 
 export default {
     input: 'assets/js/index.js',
@@ -7,5 +9,24 @@ export default {
         file: 'assets/js/bundle.js',
         format: 'iife',
     },
-    plugins: [resolve(), terser()],
+    plugins: [
+        resolve(),
+        commonjs(),
+        terser(),
+        babel({
+            babelHelpers: 'bundled',
+            exclude: 'node_modules/**',
+            presets: [
+                [
+                    '@babel/preset-env',
+                    {
+                        corejs: 3,
+                        modules: false,
+                        useBuiltIns: 'usage',
+                        targets: '> 5%, last 2 versions',
+                    },
+                ],
+            ],
+        }),
+    ],
 }
