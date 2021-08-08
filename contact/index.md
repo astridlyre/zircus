@@ -8,6 +8,7 @@ bg_image: /assets/img/people/hero1.jpg
 bg_image_alt: "A rear-view shot of a Zircus model wearing brown pants. Their bright teal underwear is just visible from their waistband."
 bg_image_title: Zircus Underwear Contact Us
 bottom_image: /assets/img/products/1920/group-a-1920.jpg
+label_contact: Contact Us
 label_name: Name
 label_email: Email
 label_message: Message

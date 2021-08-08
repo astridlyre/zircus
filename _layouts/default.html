@@ -2,11 +2,25 @@
 <html lang="{{ page.lang }}">
   {% include head.html %}
   <body>
+    <zircus-modal show="false" class="modal hidden">
+      <div class="modal__container">
+        <h2 id="modal-heading"></h2>
+        <div id="modal-content"></div>
+        <div class="modal_buttons">
+          <button id="modal-ok" class="btn__primary btn">
+            <div class="spinner hidden" id="modal-spinner"></div>
+            <span id="modal-button-text"></span>
+          </button>
+          <button id="modal-cancel" class="hidden btn btn__secondary"></button>
+        </div>
+      </div>
+    </zircus-modal>
     {% include nav.html %}
-    <main role="main" tabindex="-1" id="main-content" class="page">
-      {{ content }}
-    </main>
-    {% include bottom-image.html %} {% include footer.html %}{% include
-    notification.html %}
+    <div id="blur">
+      <main id="main-content" role="main" tabindex="-1" class="page">
+        {{ content }} {% include bottom-image.html %}
+      </main>
+    </div>
+    {% include footer.html %} {% include notification.html %}
   </body>
 </html>

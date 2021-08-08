@@ -5,7 +5,9 @@ main {
 .page {
   @include flexCol();
   @include roundedBigTop();
+  @include roundedBigBottom();
   overflow-x: hidden;
+  margin: 0 auto;
   margin-top: var(--nav-height);
   padding-top: var(--y-padding);
   background: var(--light);
@@ -110,4 +112,8 @@ main {
       margin-bottom: var(--y-padding);
     }
   }
+}
+
+#blur {
+  width: 100%;
 }

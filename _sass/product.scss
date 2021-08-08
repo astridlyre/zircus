@@ -33,7 +33,7 @@
   }
 
   zircus-product-image {
-    img {
+    .product__image {
       @include res('sm') {
         margin-left: auto;
         max-width: 24rem;

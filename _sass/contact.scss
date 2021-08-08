@@ -1,9 +1,14 @@
 .contact {
   &.form {
+    max-width: 75ch;
+  }
+
+  fieldset {
+    width: 100%;
     display: flex;
     flex-flow: row wrap;
     gap: var(--base-spacing);
-    max-width: 75ch;
+    margin-bottom: var(--md-spacing);
   }
 
   .label_lg {

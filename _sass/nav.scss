@@ -101,13 +101,14 @@
 // Mobile Menu
 .nav_mobile {
   display: flex;
-  z-index: 100;
+  z-index: 50;
 
   @include res("md") {
     display: none;
   }
 
   .nav_mobile_list {
+    z-index: 25;
     transform: translateX(0);
     transition: transform 0.1s ease-out;
     opacity: 1;

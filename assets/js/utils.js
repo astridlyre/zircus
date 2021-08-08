@@ -640,3 +640,43 @@ const countries = {
 
 // Set countries
 state.countries = () => countries
+
+document.addEventListener('click', event => {
+    let el = event.target
+    while (el && !el.href) {
+        el = el.parentNode
+    }
+
+    if (el && !el.getAttribute('lang-link')) {
+        event.preventDefault()
+        console.log('hello')
+        history.pushState(null, null, el.href)
+        changePage()
+        return el.blur()
+    }
+})
+
+window.addEventListener('popstate', changePage)
+
+async function loadPage(url) {
+    const res = await fetch(url, {
+        method: 'GET',
+    })
+    return await res.text()
+}
+
+function changePage() {
+    const url = window.location.href
+    const page = document.getElementById('blur')
+
+    loadPage(url).then(res => {
+        const wrapper = document.createElement('div')
+        wrapper.innerHTML = res
+
+        const oldContent = document.querySelector('main')
+        const newContent = wrapper.querySelector('main')
+
+        page.replaceChild(newContent, oldContent)
+        window.scrollTo({ top: 0 })
+    })
+}
