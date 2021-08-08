@@ -22,6 +22,10 @@
     flex-shrink: 1;
     display: flex;
     flex-flow: row wrap;
+
+    @include res('lg') {
+      flex-flow: column nowrap;
+    }
   }
 
   &__products {
