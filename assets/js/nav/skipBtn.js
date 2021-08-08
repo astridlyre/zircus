@@ -1,13 +1,16 @@
-import { ZircusElement } from '../utils.js'
+import { withLang, ZircusElement } from '../utils.js'
 
 export default function SkipToContent() {
     class SkipButton extends HTMLElement {
         constructor() {
             super()
-            this.button = new ZircusElement('button', [
-                'skip-to-content',
-                'small-spaced-bold',
-            ])
+            this.button = new ZircusElement(
+                'button',
+                ['skip-to-content', 'small-spaced-bold'],
+                {
+                    title: this.getAttribute('text'),
+                }
+            )
                 .addChild(this.getAttribute('text'))
                 .event('click', this.focusMainContent)
                 .render()

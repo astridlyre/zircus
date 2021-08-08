@@ -3,19 +3,25 @@ en:
   - name: shop
     link: /shop
     id: shop-link
+    label: Go to Zircus shop
   - name: about
     link: /about
     id: about-link
+    label: Learn more about Zircus
   - name: cart
     link: /cart
     id: cart-link
+    label: Go to shopping cart
 fr:
   - name: boutique
     link: /fr/boutique
     id: shop-link
+    label: Visitez notre boutique
   - name: à propos
     link: /fr/a-propos
     id: about-link
+    label: En savoir plus sur nous
   - name: panier
     link: /fr/panier
     id: cart-link
+    label: Aller au panier

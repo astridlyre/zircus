@@ -15,13 +15,13 @@
     word-break: break-word;
     @include res("md") {
       line-height: 0.88;
-      font-size: calc(var(--xxl-font-size) * 1.25);
-      max-width: 70vw;
+      font-size: var(--xxl-font-size);
+      max-width: 75vw;
     }
     @include res('lg') {
-      max-width: 55vw;
+      max-width: 60vw;
     }
-    font-size: calc(var(--xxl-font-size-mobile) * 1.25);
+    font-size: var(--xxl-font-size-mobile);
     letter-spacing: -0.25rem;
     line-height: 0.95;
   }
@@ -114,7 +114,7 @@
     background-color: var(--gray-40);
     border-radius: 100%;
     z-index: -1;
-    opacity: 0.25;
+    opacity: 0.5;
 
     &::after {
       position: absolute;
@@ -125,7 +125,6 @@
       height: 8rem;
       background-color: var(--purple);
       border-radius: 100%;
-      opacity: 0.75;
     }
   }
 }

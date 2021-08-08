@@ -111,17 +111,6 @@ select {
   font: inherit;
 }
 
-hr {
-  border: 0 solid var(--gray-20);
-  border-top-width: 4px;
-  margin: 48px 0;
-}
-@media (min-width: 1024px) {
-  hr {
-    margin: 64px 0;
-  }
-}
-
 /* Remove all animations and transitions for people that prefer not to see them */
 @media (prefers-reduced-motion: reduce) {
   /* We are relaxing the `declaration-no-important` here

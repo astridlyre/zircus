@@ -36,19 +36,26 @@ layout: default
             ></zircus-in-stock-text>
           </h2>
           <div class="product__inputs">
-            <label for="product-quantity" class="column grow-half"
+            <label
+              for="product-quantity"
+              class="column grow-half"
+              title="{{ page.label_quantity }}"
               ><span>{{ page.label_quantity }}</span>
               <input
                 id="product-quantity"
                 class="input"
                 max="10"
                 min="1"
+                step="1"
                 name="quantity"
                 type="number"
                 value="1"
                 disabled
             /></label>
-            <label for="product-size" class="column grow"
+            <label
+              for="product-size"
+              class="column grow"
+              title="{{ page.label_size }}"
               ><span>{{ page.label_size }}</span>
               <select id="product-size" accesskey="z" class="input">
                 <option value="xs" name="xs">xs</option>
@@ -63,7 +70,10 @@ layout: default
                 <option value="6xl" name="6xl">6xl</option>
               </select></label
             >
-            <label for="product-color" class="column grow"
+            <label
+              for="product-color"
+              class="column grow"
+              title="{{ page.label_color }}"
               ><span>{{ page.label_color }}</span>
               <select id="product-color" class="input" name="color">
                 <option value="yellow" name="yellow">
@@ -84,6 +94,7 @@ layout: default
               </select></label
             >
           </div>
+          <hr />
           <div class="product__inputs_buttons">
             <button
               class="btn btn__primary"

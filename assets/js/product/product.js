@@ -67,10 +67,18 @@ export default function product() {
                 this.updateSizeOptionText()
             })
 
-            this.quantityInput.addEventListener('input', () => {
-                const max = this.currentItem.quantity
-                if (Number(this.quantityInput.value) > max)
-                    this.quantityInput.value = max
+            this.quantityInput.addEventListener('input', event => {
+                const value = Number(event.target.value)
+                if (value > this.currentItem.quantity)
+                    this.quantityInput.value = this.currentItem.quantity
+                this.setProductPriceText()
+            })
+
+            this.quantityInput.addEventListener('blur', event => {
+                const value = Number(event.target.value)
+                if (value > this.currentItem.quantity)
+                    this.quantityInput.value = this.currentItem.quantity
+                if (value <= 0) this.quantityInput.value = 1
                 this.setProductPriceText()
             })
 

@@ -88,25 +88,26 @@
     @include res("sm") {
       border-radius: var(--big-radius);
       background: var(--light);
-      padding: 1rem;
+      padding: var(--md-spacing);
       border: 2px solid var(--dark);
     }
     @include res("md") {
-      padding: 2rem;
+      padding: var(--base-spacing);
+    }
+    @include res("lg") {
+      padding: var(--md-spacing);
     }
     padding: 0;
     gap: var(--base-spacing);
   }
 
   &__inputs {
-    border-bottom: 2px solid var(--gray-30);
-    padding-bottom: var(--base-spacing);
     width: 100%;
     display: flex;
     justify-content: flex-end;
     flex-flow: row wrap;
     flex-grow: 1;
-    gap: var(--base-unit);
+    gap: var(--base-unit) var(--base-spacing);
 
     .grow-half {
       flex-grow: 0.5;
@@ -114,11 +115,10 @@
     }
 
     .grow {
-      flex-basis: 16rem;
+      flex-basis: 14rem;
       flex-grow: 1;
       flex-shrink: 1;
     }
-
 
     &_stock {
       font-size: var(--default-font-size);
@@ -142,8 +142,7 @@
       display: flex;
       flex-flow: row wrap;
       flex-grow: 1;
-      margin-top: var(--base-spacing);
-      gap: var(--base-unit);
+      gap: var(--base-spacing);
 
       button {
         flex-grow: 1;

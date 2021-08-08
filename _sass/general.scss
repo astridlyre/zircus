@@ -6,6 +6,17 @@ html {
   box-sizing: border-box;
 }
 
+hr {
+  border: 0 solid var(--gray-30);
+  @include res('sm') {
+    width: 33%;
+  }
+  width: 100%;
+  border-top-width: 2px;
+  margin: var(--base-spacing) auto;
+  padding: 0;
+}
+
 address {
   border-left: var(--base-unit) solid var(--gray-30);
   padding-left: var(--base-unit);
@@ -68,6 +79,7 @@ summary {
 
 fieldset {
   border: 2px solid var(--gray-30);
+  background-color: var(--gray-20);
   border-radius: var(--radius);
   padding: var(--base-spacing);
 

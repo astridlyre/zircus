@@ -103,6 +103,9 @@
 
     &_prices {
       text-align: right;
+      .text {
+        margin-right: var(--base-spacing);
+      }
     }
 
     &_price {
