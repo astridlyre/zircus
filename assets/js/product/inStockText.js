@@ -3,23 +3,25 @@ import intText from '../int/intText.js'
 
 export default function inStockText() {
     class InStockText extends HTMLElement {
+        #text
+
         constructor() {
             super()
-            this.text = new ZircusElement('p', [
+            this.#text = new ZircusElement('p', [
                 'product__inputs_stock',
                 'dot',
             ]).render()
-            this.appendChild(this.text)
+            this.appendChild(this.#text)
         }
 
         inStock() {
-            this.text.classList.add('in-stock')
-            this.text.classList.remove('out-stock')
+            this.#text.classList.add('in-stock')
+            this.#text.classList.remove('out-stock')
         }
 
         outStock() {
-            this.text.classList.add('out-stock')
-            this.text.classList.remove('in-stock')
+            this.#text.classList.add('out-stock')
+            this.#text.classList.remove('in-stock')
         }
 
         set quantity(value) {
@@ -33,6 +35,6 @@ export default function inStockText() {
         }
     }
 
-    if (!customElements.get('zircus-in-stock-text'))
+    customElements.get('zircus-in-stock-text') ||
         customElements.define('zircus-in-stock-text', InStockText)
 }

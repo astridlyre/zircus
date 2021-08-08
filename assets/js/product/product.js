@@ -32,6 +32,8 @@ export default function product() {
     const addNotificationText = intText.product.addNotificationText
 
     class Product extends HTMLElement {
+        #prefix
+
         connectedCallback() {
             this.priceText = this.querySelector('#product-price-text')
             this.sizeInput = this.querySelector('#product-size')
@@ -43,11 +45,11 @@ export default function product() {
             this.gotoCartButtonText = this.querySelector('#go-to-cart-qty')
             this.productAccent = this.querySelector('#product-accent')
             this.stockStatusText = this.querySelector('zircus-in-stock-text')
-            this.prefix = this.getAttribute('prefix')
+            this.#prefix = this.getAttribute('prefix')
             this.defaultColor = this.getAttribute('defaultcolor')
             this.currentColor = this.colorInput.value
-            this.colorInput.children.forEach(child => {
-                preloadImages({ color: child.value, prefix: this.prefix })
+            ;[...this.colorInput.children].forEach(child => {
+                preloadImages({ color: child.value, prefix: this.#prefix })
                 if (child.value === this.defaultColor) {
                     child.setAttribute('selected', true)
                     this.productAccent.classList.add(`${child.value}-before`)
@@ -113,7 +115,9 @@ export default function product() {
             return state.inv.find(
                 item =>
                     item.type ===
-                    `${this.prefix}-${this.colorInput.value}-${this.sizeInput.value}`
+                    `${this.#prefix}-${this.colorInput.value}-${
+                        this.sizeInput.value
+                    }`
             )
         }
 
@@ -227,7 +231,7 @@ export default function product() {
         }
 
         updateOptionText({ input, test, alt }) {
-            input.children.forEach(child => {
+            ;[...input.children].forEach(child => {
                 child.textContent = `${
                     child.textContent.split(' - ')[0]
                 } - (${alt} ${
@@ -245,7 +249,7 @@ export default function product() {
                 alt: this.colorInput.value,
                 test: ({ child, item }) =>
                     item.type ===
-                    `${this.prefix}-${this.colorInput.value}-${child.value}`,
+                    `${this.#prefix}-${this.colorInput.value}-${child.value}`,
             })
         }
 
@@ -255,7 +259,7 @@ export default function product() {
                 alt: this.sizeInput.value,
                 test: ({ child, item }) =>
                     item.type ===
-                    `${this.prefix}-${child.value}-${this.sizeInput.value}`,
+                    `${this.#prefix}-${child.value}-${this.sizeInput.value}`,
             })
         }
 
