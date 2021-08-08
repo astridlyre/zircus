@@ -1,18 +1,15 @@
 export default function toTopButton() {
     class ToTopButton extends HTMLElement {
         #MIN_SCROLL = 400
-
-        constructor() {
-            super()
-            this.button = this.querySelector('#to-top-button')
-            this._isHidden = true
-            this._isThrottled = false
-        }
+        #button
+        #isHidden = true
+        #isThrottled = false
 
         connectedCallback() {
-            this.button.addEventListener('click', () => {
+            this.#button = this.querySelector('#to-top-button')
+            this.#button.addEventListener('click', () => {
                 window.scroll({ top: 0 })
-                this.button.blur()
+                this.#button.blur()
             })
             document.addEventListener('scroll', () =>
                 this.scrollHandler(window.scrollY > this.#MIN_SCROLL)
@@ -20,26 +17,26 @@ export default function toTopButton() {
         }
 
         get isHidden() {
-            return this._isHidden
+            return this.#isHidden
         }
 
         set isHidden(value) {
-            this._isHidden = value
-            this._isHidden ? this.hide() : this.show()
+            this.#isHidden = value
+            this.#isHidden ? this.hide() : this.show()
         }
 
         show() {
-            this.button.classList.add('show')
-            this._isThrottled = false
+            this.#button.classList.add('show')
+            this.#isThrottled = false
         }
 
         hide() {
-            this.button.classList.remove('show')
-            this._isThrottled = false
+            this.#button.classList.remove('show')
+            this.#isThrottled = false
         }
 
         scrollHandler(shouldShow) {
-            !this._isThrottled
+            !this.#isThrottled
                 ? setTimeout(
                       () =>
                           shouldShow && this.isHidden
@@ -49,7 +46,7 @@ export default function toTopButton() {
                               : false,
                       100
                   )
-                : (this._isThrottled = true)
+                : (this.#isThrottled = true)
         }
     }
 

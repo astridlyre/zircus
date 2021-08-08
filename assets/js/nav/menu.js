@@ -1,4 +1,3 @@
-import { state } from '../utils.js'
 import withCartQty from './withCartQty.js'
 
 const withScrollState = (prevPos, currentPos) => {
@@ -23,18 +22,23 @@ const withScrollState = (prevPos, currentPos) => {
 export default function menu() {
     class NavMenu extends HTMLElement {
         #MIN_SCROLL = 100
+        #isThrottled = false
+        #isHidden = false
+        #isFocused = false
+        #nav
+        cartLink
 
         constructor() {
             super()
-            this._isFocused = false
-            this._isThrottled = false
-            this._isHidden = false
-            this.nav = this.querySelector('#nav')
-            this.nav.classList.add('slide-down') // default to showing
+            this.#nav = this.querySelector('#nav')
+            this.#nav.classList.add('slide-down') // show menu initially
             this.cartLink = this.querySelector('#cart-link')
+        }
 
-            this.nav.addEventListener('focusin', () => (this.isFocused = true))
-            this.nav.addEventListener(
+        connectedCallback() {
+            this.updateCartLink() // set cart text
+            this.#nav.addEventListener('focusin', () => (this.isFocused = true))
+            this.#nav.addEventListener(
                 'focusout',
                 () => (this.isFocused = false)
             )
@@ -44,53 +48,43 @@ export default function menu() {
                         this.scrollState.next().value <= 0
                 )
             })
-
-            this.updateCartLink() // set cart text
             document.addEventListener('cart-updated', () =>
                 this.updateCartLink()
             )
         }
 
-        get isThrottled() {
-            return this._isThrottled
-        }
-
-        set isThrottled(value) {
-            this._isThrottled = value
-        }
-
         get isFocused() {
-            return this._isFocused
+            return this.#isFocused
         }
 
         set isFocused(value) {
-            this._isFocused = value
-            this._isFocused || window.scrollY < this.#MIN_SCROLL
+            this.#isFocused = value
+            this.#isFocused || window.scrollY < this.#MIN_SCROLL
                 ? this.show()
                 : this.hide()
         }
 
         get isHidden() {
-            return this._isHidden
+            return this.#isHidden
         }
 
         set isHidden(value) {
-            this._isHidden = value
-            this._isHidden ? this.hide() : this.show()
+            this.#isHidden = value
+            this.#isHidden ? this.hide() : this.show()
         }
 
         show() {
-            this.nav.classList.replace('slide-up', 'slide-down')
-            this.isThrottled = false
+            this.#nav.classList.replace('slide-up', 'slide-down')
+            this.#isThrottled = false
         }
 
         hide() {
-            this.nav.classList.replace('slide-down', 'slide-up')
-            this.isThrottled = false
+            this.#nav.classList.replace('slide-down', 'slide-up')
+            this.#isThrottled = false
         }
 
         scrollHandler(isScrollingUp) {
-            return !this.isThrottled
+            return !this.#isThrottled
                 ? setTimeout(
                       () =>
                           isScrollingUp && this.isHidden
@@ -100,7 +94,7 @@ export default function menu() {
                               : false,
                       100
                   )
-                : (this.isThrottled = true)
+                : (this.#isThrottled = true)
         }
     }
 

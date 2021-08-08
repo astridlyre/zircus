@@ -1,4 +1,5 @@
-import { ZircusElement } from '../utils.js'
+import { ZircusElement, withLang } from '../utils.js'
+import intText from '../int/intText.js'
 
 export default function inStockText() {
     class InStockText extends HTMLElement {
@@ -11,10 +12,6 @@ export default function inStockText() {
             this.appendChild(this.text)
         }
 
-        connectedCallback() {
-            this.quantity = this.getAttribute('quantity')
-        }
-
         inStock() {
             this.text.classList.add('in-stock')
             this.text.classList.remove('out-stock')
@@ -25,14 +22,14 @@ export default function inStockText() {
             this.text.classList.remove('in-stock')
         }
 
-        attributeChangedCallback(name, _, newValue) {
-            if (name === 'text') return (this.text.textContent = newValue)
-            if (name === 'quantity')
-                return Number(newValue) > 0 ? this.inStock() : this.outStock()
+        set quantity(value) {
+            this.setAttribute('quantity', value)
+            this.#text.textContent = withLang(intText.product.stockText(value))
+            return value > 0 ? this.inStock() : this.outStock()
         }
 
-        static get observedAttributes() {
-            return ['text']
+        get quantity() {
+            return Number(this.getAttribute('quantity'))
         }
     }
 

@@ -175,13 +175,19 @@ export function setTextContent(els, content) {
 }
 
 export function appendPreloadLink(url) {
-    return document.head.appendChild(
+    document.head.appendChild(
         new ZircusElement('link', null, {
             href: url,
             rel: 'prefetch',
             as: 'image',
         }).render()
     )
+    return url
+}
+
+export function setAttributes(el, attrs) {
+    Object.entries(attrs).forEach(([key, value]) => el.setAttribute(key, value))
+    return el
 }
 
 // Simple tax rate calculator - IMPROVE THIS!!

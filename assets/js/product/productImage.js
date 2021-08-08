@@ -4,49 +4,66 @@ import fullImage from './fullImage.js'
 export default function productImage() {
     fullImage()
     class ProductImage extends HTMLElement {
+        #image
+        #isHovered = false
+        #fullImage
+
         constructor() {
             super()
-            this.image = new ZircusElement('img', 'product__img').render()
-            this.appendChild(this.image)
+            this.#image = new ZircusElement('img', 'product__img').render()
+            this.#fullImage = document.createElement('zircus-full-image')
+            this.appendChild(this.#image)
+            this.appendChild(this.#fullImage)
         }
 
         connectedCallback() {
-            this.fullImage = this.querySelector('zircus-full-image')
-            this.fullImage.addEventListener('click', () =>
-                this.fullImage.setAttribute('src', '')
+            this.#fullImage.setAttribute('alt', this.getAttribute('alt'))
+            this.#fullImage.setAttribute(
+                'title',
+                this.getAttribute('fulltitle')
             )
-            this.image.src = this.getAttribute('src')
-            this.image.alt = this.getAttribute('alt')
-            this.image.setAttribute('title', this.getAttribute('title'))
-            this.image.addEventListener(
+            this.#fullImage.addEventListener('click', () =>
+                this.#fullImage.removeAttribute('src')
+            )
+            this.#image.src = this.getAttribute('src')
+            this.#image.alt = this.getAttribute('alt')
+            this.#image.setAttribute('title', this.getAttribute('title'))
+            this.#image.addEventListener(
                 'pointerenter',
                 () => (this.isHovered = true)
             )
-            this.image.addEventListener(
+            this.#image.addEventListener(
                 'pointerleave',
                 () => (this.isHovered = false)
             )
-            this.image.addEventListener('click', () =>
-                this.fullImage.setAttribute('src', this.getAttribute('fullsrc'))
+            this.#image.addEventListener('click', () =>
+                this.#fullImage.setAttribute(
+                    'src',
+                    this.getAttribute('fullsrc')
+                )
             )
         }
 
         attributeChangedCallback(name, _, newValue) {
-            if (name === 'alt') return (this.image.alt = newValue)
-            if (name === 'title')
-                return this.image.setAttribute('title', newValue)
-            if (name === 'src') return (this.image.src = newValue)
+            switch (name) {
+                case 'alt':
+                    return (this.#image.alt = newValue)
+                case 'title':
+                    return this.#image.setAttribute('title', newValue)
+                case 'src':
+                    return (this.#image.src = newValue)
+            }
         }
 
         set isHovered(value) {
-            this._isHovered = value
-            this.isHovered
-                ? (this.image.src = this.getAttribute('hovered'))
-                : (this.image.src = this.getAttribute('src'))
+            this.#isHovered = value
+            this.#isHovered
+                ? (this.#image.src = this.getAttribute('hovered'))
+                : (this.#image.src = this.getAttribute('src'))
         }
 
         get isHovered() {
-            return this._isHovered
+            return this.#isHovered
         }
 
         static get observedAttributes() {

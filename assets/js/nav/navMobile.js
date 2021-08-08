@@ -2,46 +2,47 @@ import withCartQty from './withCartQty.js'
 
 export default function navMobile() {
     class NavMobile extends HTMLElement {
+        cartLink
+        #list
+        #button
+        #isHidden = true
+
         constructor() {
             super()
-            this._isHidden = true
+            this.classList.add('nav_mobile')
+            this.cartLink = this.querySelector('#cart-link-mobile')
+            this.#list = this.querySelector('#menu-mobile-list')
+            this.#button = this.querySelector('#menu-mobile-btn')
         }
 
         connectedCallback() {
-            this.classList.add('nav_mobile')
-            this.cartLink = this.querySelector('#cart-link-mobile')
-            this.list = this.querySelector('#menu-mobile-list')
-            this.button = this.querySelector('#menu-mobile-btn')
-
-            this.list.addEventListener('click', () => (this.isHidden = true))
-            this.button.addEventListener(
+            this.updateCartLink()
+            this.#list.addEventListener('click', () => (this.isHidden = true))
+            this.#button.addEventListener(
                 'click',
                 () => (this.isHidden = !this.isHidden)
             )
-
-            // Update initial text
-            this.updateCartLink()
             document.addEventListener('cart-updated', () =>
                 this.updateCartLink()
             )
         }
 
-        get isHidden() {
-            return this._isHidden
+        set isHidden(value) {
+            this.#isHidden = value
+            this.#isHidden ? this.hide() : this.show()
         }
 
-        set isHidden(value) {
-            this._isHidden = value
-            this.isHidden ? this.hide() : this.show()
+        get isHidden() {
+            return this.#isHidden
         }
 
         // Mobile menu functionality
         hide() {
-            this.list.classList.add('hide')
+            this.#list.classList.add('hide')
             document.body.classList.remove('hide-y')
         }
         show() {
-            this.list.classList.remove('hide')
+            this.#list.classList.remove('hide')
             document.body.classList.add('hide-y')
         }
     }
