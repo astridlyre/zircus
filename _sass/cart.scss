@@ -1,4 +1,7 @@
 .cart {
+  &__product:first-of-type {
+    border-top: none;
+  }
   &__product {
     @include fadeIn(0.1s);
     padding: 1rem 0;
@@ -11,7 +14,7 @@
     justify-content: flex-end;
     width: 100%;
     max-width: 100vw;
-    border-top: 2px solid var(--dark);
+    border-top: 2px solid var(--gray-30);
 
     &_image {
       object-fit: contain;

@@ -72,7 +72,7 @@ class State {
     }
 
     set secret(secret) {
-        return this.set('secret', secret)
+        return this.#set('secret', secret)
     }
 
     get currentItem() {
@@ -159,7 +159,7 @@ export class ZircusElement {
     }
 
     event(ev, func) {
-        this.e.addEventListener(ev, () => func())
+        this.e.addEventListener(ev, func)
         return this
     }
 

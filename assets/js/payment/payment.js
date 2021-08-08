@@ -2,12 +2,17 @@ import { state, ZircusElement, calculateTax, lang } from '../utils.js'
 import intText from '../int/intText.js'
 import cartProduct from '../cart/cartProduct.js'
 import initStripe from './stripe.js'
+import shippingInputs from './shippingInputs.js'
+import shippingTypes from './shippingTypes.js'
 
 const CANADA_POSTAL_CODE = /^[A-Za-z][0-9][A-Za-z] ?[0-9][A-Za-z][0-9]$/
 const US_ZIP_CODE = /^[0-9]{5}(-[0-9]{4})?$/
 
 export default function payment() {
     const formText = intText.checkout.formText
+    shippingInputs({
+        shippingTypes,
+    })
 
     class Payment extends HTMLElement {
         connectedCallback() {
@@ -25,6 +30,8 @@ export default function payment() {
             this.checkoutSubtotal = this.querySelector('#checkout-subtotal')
             this.checkoutTax = this.querySelector('#checkout-tax')
             this.checkoutTotal = this.querySelector('#checkout-total')
+            this.checkoutShipping = this.querySelector('#checkout-shipping')
+            this.shippingInputs = this.querySelector('zircus-shipping-inputs')
             this.productTemplate = this.querySelector(
                 '#checkout-product-template'
             )
@@ -39,6 +46,7 @@ export default function payment() {
                 formState: this.formState,
                 formCountry: this.formCountry,
                 formZip: this.formZip,
+                formShipping: this.shippingInputs,
                 formElement: this.formElement,
             })
 
@@ -65,20 +73,29 @@ export default function payment() {
                     this.formCountry.value
                 )
             })
+
+            this.shippingInputs.addEventListener('method-changed', () =>
+                this.setTotals()
+            )
         }
 
         setTotals() {
+            const shipping = Number(
+                shippingTypes[this.shippingInputs.getAttribute('shipping-type')]
+                    .price
+            )
             const subtotal = state.cart.reduce(
                 (acc, item) => acc + item.price * item.quantity,
                 0
             )
             const tax =
-                subtotal *
+                (subtotal + shipping) *
                 calculateTax(this.formCountry.value, this.formState.value)
             const total = subtotal + tax
 
             // Set text
             this.checkoutSubtotal.textContent = `$${subtotal.toFixed(2)}`
+            this.checkoutShipping.textContent = `$${shipping.toFixed(2)}`
             this.checkoutTax.textContent = `$${tax.toFixed(2)}`
             this.checkoutTotal.textContent = `$${total.toFixed(2)}`
         }

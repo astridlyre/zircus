@@ -66,6 +66,60 @@ summary {
   }
 }
 
+fieldset {
+  border: 2px solid var(--gray-30);
+  border-radius: var(--radius);
+  padding: var(--base-spacing);
+
+  .grid-inputs {
+    @include res("sm") {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-gap: var(--base-spacing);
+      gap: var(--base-spacing);
+    }
+  }
+
+  .flex-inputs {
+    display: flex;
+    flex-flow: row wrap;
+    gap: var(--base-spacing);
+
+    label {
+      flex-grow: 1;
+    }
+  }
+}
+
+input[type="radio"] {
+  outline-color: var(--teal);
+}
+
+legend {
+  @include smallSpacedBold();
+}
+
+label.column {
+  display: flex;
+  flex-flow: column nowrap;
+
+  span {
+    height: 1.5rem;
+    @include smallSpacedBold();
+  }
+}
+
+label.row {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  gap: var(--base-unit);
+
+  span {
+    @include smallSpacedBold();
+  }
+}
+
 body {
   @include set-site-font-family();
   @include font-smoothing();

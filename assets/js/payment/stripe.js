@@ -14,6 +14,7 @@ export default function initStripe(form) {
         formState,
         formZip,
         formElement,
+        formShipping,
     } = form
 
     class ZircusStripe extends HTMLElement {
@@ -81,6 +82,7 @@ export default function initStripe(form) {
                 country: formCountry.value,
                 state: formState.value,
                 zip: formZip.value,
+                shippingMethod: formShipping.getAttribute('shipping-type'),
                 items: state.cart.map(item => ({
                     images: item.images,
                     type: item.type,
