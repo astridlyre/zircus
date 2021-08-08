@@ -7,7 +7,7 @@ export default {
     input: 'assets/js/index.js',
     output: {
         file: 'assets/js/bundle.js',
-        format: 'iife',
+        format: 'esm',
     },
     plugins: [
         resolve(),
@@ -20,8 +20,7 @@ export default {
                 [
                     '@babel/preset-env',
                     {
-                        corejs: 3,
-                        modules: false,
+                        corejs: '3.16.1',
                         useBuiltIns: 'usage',
                         targets: '> 5%, last 2 versions',
                     },
