@@ -17,7 +17,7 @@ export default function router() {
 
             window.addEventListener('popstate', () => this.changePage())
             document.addEventListener('preload', event =>
-                this.preload(event.detail)
+                this.loadPage(event.detail)
             )
         }
 
@@ -35,15 +35,6 @@ export default function router() {
                 this.navigate(newValue)
                 this.#currentPage.focus()
             }
-        }
-
-        async preload(url) {
-            if (cache.get(url)) return
-            const res = await fetch(url, {
-                method: 'GET',
-            })
-            const text = await res.text()
-            cache.set(url, text)
         }
 
         navigate(href) {

@@ -117,8 +117,9 @@
     flex-flow: column nowrap;
     justify-content: center;
     gap: var(--base-spacing);
-    align-items: center;
+    align-items: flex-end;
     background: var(--dark);
+    padding-right: var(--x-padding);
 
     &.hide {
       transform: translateX(100%) !important;
@@ -155,11 +156,6 @@
     }
   }
 
-  .nav_mobile_list_lang {
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-  }
 }
 
 // Desktop Menu

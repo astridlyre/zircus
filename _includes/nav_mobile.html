@@ -5,13 +5,13 @@
   {% include nav_mobile_button.html %}
   <ul class="nav_mobile_list hide" id="menu-mobile-list">
     {% for item in site.data.nav[page.lang] %}
-    <li class="nav_mobile_list_link container">
+    <li class="nav_mobile_list_link">
       <zircus-router-link>
         <a href="{{ item.link }}" id="{{ item.id }}-mobile">{{ item.name }}</a>
       </zircus-router-link>
     </li>
     {% endfor %}
-    <li class="nav_mobile_list_lang container">
+    <li class="nav_mobile_list_lang">
       <zircus-lang-links
         class="lang"
         title="{{ site.data.labels[page.lang].lang_dropdown }}"
