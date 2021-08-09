@@ -226,7 +226,7 @@ export default function product() {
                 child.textContent = `${
                     child.textContent.split(' - ')[0]
                 } - (${alt} ${
-                    state.inv.find(item => test({ item, child })).quantity > 0
+                    state.inv.find(item => test({ item, child }))?.quantity > 0
                         ? withLang({ en: 'in stock', fr: 'en stock' })
                         : withLang({ en: 'out of stock', fr: 'pas disponible' })
                 })`
@@ -255,7 +255,7 @@ export default function product() {
         }
 
         updateStatus({ inv, currentItem } = state) {
-            if (!inv || !this.currentItem) return
+            if (!inv || !this.currentItem) return this
             if (currentItem) {
                 this.sizeInput.value = currentItem.size
                 this.colorInput.value = currentItem.color
