@@ -10,7 +10,15 @@ export default function router() {
             this.#currentPage = this.querySelector('main')
 
             window.addEventListener('popstate', () => this.changePage())
+            document.addEventListener('pointerover', event => {
+                let el = event.target
+                while (el && !el.href) el = el.parentNode
+                if (el && !el.getAttribute('router-ignore')) {
+                    this.preload(el.href)
+                }
+            })
             document.addEventListener('click', event => {
+                if (event.ctrlKey) return
                 let el = event.target
                 while (el && !el.href) el = el.parentNode
 
@@ -30,6 +38,16 @@ export default function router() {
         set href(value) {
             this.setAttribute('href', value)
             this.navigate(value)
+        }
+
+        async preload(url) {
+            console.log('triggered')
+            if (cache.get(url)) return
+            const res = await fetch(url, {
+                method: 'GET',
+            })
+            const text = await res.text()
+            cache.set(url, text)
         }
 
         navigate(href) {
