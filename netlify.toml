@@ -26,8 +26,8 @@
   # Optionally, override the default options for the minification
   # https://github.com/kangax/html-minifier#options-quick-reference
   [plugins.inputs.minifierOptions]
-  removeComments = false
-  collapseInlineTagWhitespace = false
+  removeComments = true
+  collapseInlineTagWhitespace = true
 
 [[plugins]]
   package = "netlify-plugin-a11y"
