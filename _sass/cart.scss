@@ -1,6 +1,5 @@
 .cart {
   &__product {
-    @include fadeIn(0.1s);
     padding: 1rem 0;
     @include res("md") {
       @include flexRow();

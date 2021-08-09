@@ -1,4 +1,5 @@
 import routerLink from './routerLink.js'
+import { lang } from '../utils.js'
 
 const cache = new Map()
 
@@ -7,8 +8,10 @@ export default function router() {
     class Router extends HTMLElement {
         #container
         #currentPage
+        #lang
 
         connectedCallback() {
+            this.#lang = lang()
             this.#container = this.querySelector('#blur')
             this.#currentPage = this.querySelector('main')
 
@@ -24,9 +27,15 @@ export default function router() {
 
         set page(value) {
             this.setAttribute('page', value)
-            document.documentElement.style.cursor = 'wait'
-            this.navigate(value)
-            this.#currentPage.focus()
+        }
+
+        attributeChangedCallback(name, oldValue, newValue) {
+            if (oldValue === newValue) return
+            if (name === 'page') {
+                document.documentElement.style.cursor = 'wait'
+                this.navigate(newValue)
+                this.#currentPage.focus()
+            }
         }
 
         async preload(url) {
@@ -59,13 +68,18 @@ export default function router() {
             const wrapper = document.createElement('div')
             wrapper.innerHTML = res
             const newContent = wrapper.querySelector('main')
-
+            const newLang = newContent.getAttribute('lang')
             document.title = newContent.getAttribute('pagetitle')
-            document.documentElement.setAttribute(
-                'lang',
-                newContent.getAttribute('lang')
-            )
-            this.#container.replaceChild(newContent, this.#currentPage)
+
+            if (newLang === this.#lang) {
+                this.#container.replaceChild(newContent, this.#currentPage)
+            } else {
+                document.documentElement.setAttribute('lang', newLang)
+                this.#lang = newLang
+                this.textContent = ''
+                this.appendChild(wrapper.querySelector('zircus-router'))
+                this.#container = this.querySelector('#blur')
+            }
             this.#currentPage = newContent
             document.dispatchEvent(new CustomEvent('navigated'))
             document.documentElement.style.cursor = 'unset'

@@ -17,7 +17,9 @@ export default function navMobile() {
 
         connectedCallback() {
             this.updateCartLink()
-            this.#list.addEventListener('click', () => (this.isHidden = true))
+            this.#list.addEventListener('click', event => {
+                if (event.target === this.#list) this.isHidden = true
+            })
             this.#button.addEventListener(
                 'click',
                 () => (this.isHidden = !this.isHidden)
@@ -25,11 +27,14 @@ export default function navMobile() {
             document.addEventListener('cart-updated', () =>
                 this.updateCartLink()
             )
+            document.addEventListener('navigated', () => (this.isHidden = true))
         }
 
         set isHidden(value) {
             this.#isHidden = value
-            this.#isHidden ? this.hide() : this.show()
+            requestAnimationFrame(() =>
+                this.#isHidden ? this.hide() : this.show()
+            )
         }
 
         get isHidden() {

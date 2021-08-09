@@ -6,7 +6,7 @@ export default function productImage() {
     class ProductImage extends HTMLElement {
         #image
         #isHovered = false
-        #didHover = false
+        #updating = false
         #fullImage
 
         constructor() {
@@ -35,14 +35,12 @@ export default function productImage() {
                 )})`
             )
             this.#image.addEventListener('pointerenter', () => {
-                if (this.#didHover) return
+                if (this.#updating) return
                 this.isHovered = true
-                setTimeout(() => (this.#didHover = false), 200)
             })
             this.#image.addEventListener('pointerleave', () => {
-                if (this.#didHover) return
+                if (this.#updating) return
                 this.isHovered = false
-                setTimeout(() => (this.#didHover = false), 200)
             })
             this.#image.addEventListener('click', () =>
                 this.#fullImage.setAttribute(
@@ -65,9 +63,12 @@ export default function productImage() {
 
         set isHovered(value) {
             this.#isHovered = value
-            this.#isHovered
-                ? (this.#image.src = this.getAttribute('hovered'))
-                : (this.#image.src = this.getAttribute('src'))
+            requestAnimationFrame(() => {
+                this.#isHovered
+                    ? (this.#image.src = this.getAttribute('hovered'))
+                    : (this.#image.src = this.getAttribute('src'))
+                this.#updating = false
+            })
         }
 
         get isHovered() {

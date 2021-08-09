@@ -159,35 +159,6 @@
     width: 100%;
     display: flex;
     justify-content: flex-end;
-    gap: var(--base-spacing);
-
-    a {
-      padding: var(--base-unit);
-      font-size: var(--medium-font-size);
-    }
-
-    a:focus {
-      outline-color: var(--teal);
-    }
-
-    a,
-    a:hover,
-    a:visited,
-    a:visited:hover,
-    a:focus,
-    a:visited:focus {
-      color: var(--gray-90) !important;
-      text-decoration: none;
-    }
-
-    a.active,
-    a.active:hover,
-    a.active:visited,
-    a.active:visited:hover,
-    a.active:focus,
-    a.active:visited:focus {
-      color: var(--light) !important;
-    }
   }
 }
 

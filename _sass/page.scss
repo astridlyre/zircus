@@ -37,10 +37,9 @@ main {
     position: absolute;
     right: 0;
     top: 0;
-    height: calc(100% - (var(--y-padding) / 2));
     object-fit: cover;
     width: 35vw;
-    max-height: 75vh;
+    height: 50%;
     @media screen and (min-width: 1556px) {
       opacity: 1;
     }
@@ -52,7 +51,10 @@ main {
   &__container {
     min-height: 45vh;
     @include res('lg') {
-      min-height: 70vh;
+      min-height: 60vh;
+    }
+    @include res('xl') {
+      min-height: 75vh;
     }
   }
 

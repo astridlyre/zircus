@@ -24,7 +24,7 @@ export default function menu() {
         #MIN_SCROLL = 100
         #isHidden = false
         #isFocused = false
-        #didUpdate = false
+        #updating = false
         #nav
         cartLink
 
@@ -72,22 +72,25 @@ export default function menu() {
         }
 
         set isHidden(value) {
+            this.#updating = true
             this.#isHidden = value
-            this.#isHidden ? this.hide() : this.show()
+            requestAnimationFrame(() => {
+                this.#isHidden ? this.hide() : this.show()
+            })
         }
 
         show() {
             this.#nav.classList.remove('slide-up')
+            this.#updating = false
         }
 
         hide() {
             this.#nav.classList.add('slide-up')
+            this.#updating = false
         }
 
         scrollHandler(isScrollingUp) {
-            if (this.#didUpdate) return
-            this.#didUpdate = true
-            setTimeout(() => (this.#didUpdate = false), 100)
+            if (this.#updating) return
             if (isScrollingUp && this.isHidden) return (this.isHidden = false)
             if (!isScrollingUp && !this.isHidden) return (this.isHidden = true)
         }

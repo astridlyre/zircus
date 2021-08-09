@@ -3,7 +3,7 @@ export default function toTopButton() {
         #MIN_SCROLL = 400
         #button
         #isHidden = true
-        #isThrottled = false
+        #updating = false
 
         connectedCallback() {
             this.#button = this.querySelector('#to-top-button')
@@ -22,31 +22,29 @@ export default function toTopButton() {
 
         set isHidden(value) {
             this.#isHidden = value
-            this.#isHidden ? this.hide() : this.show()
+            requestAnimationFrame(() =>
+                this.#isHidden ? this.hide() : this.show()
+            )
         }
 
         show() {
             this.#button.classList.add('show')
-            this.#isThrottled = false
+            this.#updating = false
         }
 
         hide() {
             this.#button.classList.remove('show')
-            this.#isThrottled = false
+            this.#updating = false
         }
 
         scrollHandler(shouldShow) {
-            !this.#isThrottled
-                ? setTimeout(
-                      () =>
-                          shouldShow && this.isHidden
-                              ? (this.isHidden = false)
-                              : !shouldShow && !this.isHidden
-                              ? (this.isHidden = true)
-                              : false,
-                      100
-                  )
-                : (this.#isThrottled = true)
+            if (this.#updating) return
+            this.#updating = true
+            return shouldShow && this.isHidden
+                ? (this.isHidden = false)
+                : !shouldShow && !this.isHidden
+                ? (this.isHidden = true)
+                : (this.#updating = false)
         }
     }
 

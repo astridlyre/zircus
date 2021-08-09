@@ -106,14 +106,15 @@ export default function cartProduct() {
                 src: this.item.images.sm_a,
                 alt: withLang(this.item.name),
             })
-
-            const link = new ZircusElement('a', 'notification__text', {
+            const a = new ZircusElement('a', 'notification__text', {
                 href,
                 title: withLang({
                     en: 'Go to product page',
                     fr: 'Aller au page du produit',
                 }),
             }).addChild(withLang(removeNotificationText(this.item)))
+
+            const link = new ZircusElement('zircus-router-link').addChild(a)
 
             return {
                 content: [img.render(), link.render()],

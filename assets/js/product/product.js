@@ -135,14 +135,16 @@ export default function product() {
                         src: this.currentItem.images.sm_a,
                         alt: this.currentItem.name,
                     }).render(),
-                    new ZircusElement('a', 'notification__text', {
-                        href: this.getAttribute('carthref'),
-                        title: this.getAttribute('carttitle'),
-                    })
+                    new ZircusElement('zircus-router-link')
                         .addChild(
-                            this.getAttribute('successadd').replace(
-                                '|',
-                                withLang(this.currentItem.name)
+                            new ZircusElement('a', 'notification__text', {
+                                href: this.getAttribute('carthref'),
+                                title: this.getAttribute('carttitle'),
+                            }).addChild(
+                                this.getAttribute('successadd').replace(
+                                    '|',
+                                    withLang(this.currentItem.name)
+                                )
                             )
                         )
                         .render(),
