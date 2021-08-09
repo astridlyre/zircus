@@ -51,6 +51,9 @@ main {
 
   &__container {
     min-height: 45vh;
+    @include res('lg') {
+      min-height: 70vh;
+    }
   }
 
   &__heading {
