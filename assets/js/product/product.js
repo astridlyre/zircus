@@ -210,9 +210,8 @@ export default function product() {
         }
 
         updateCartBtnQty() {
-            this.gotoCartButtonText.textContent = `(${
-                state.cart.reduce((acc, item) => acc + item.quantity, 0) || ''
-            })`
+            const qty = state.cart.reduce((acc, item) => acc + item.quantity, 0)
+            this.gotoCartButtonText.textContent = qty ? `(${qty})` : ''
             return this
         }
 

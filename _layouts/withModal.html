@@ -4,14 +4,18 @@
   <body>
     <zircus-modal show="false" class="modal hidden">
       <div class="modal__container">
-        <h2 id="modal-heading"></h2>
+        <h2 aria-hidden="true" id="modal-heading"></h2>
         <div id="modal-content"></div>
         <div class="modal_buttons">
-          <button id="modal-ok" class="btn__primary btn">
+          <button aria-hidden="true" id="modal-ok" class="btn__primary btn">
             <div class="spinner hidden" id="modal-spinner"></div>
             <span id="modal-button-text"></span>
           </button>
-          <button id="modal-cancel" class="hidden btn btn__secondary"></button>
+          <button
+            aria-hidden="true"
+            id="modal-cancel"
+            class="hidden btn btn__secondary"
+          ></button>
         </div>
       </div>
     </zircus-modal>

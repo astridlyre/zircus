@@ -5,19 +5,22 @@ export default function modal() {
     const nav = q('nav')
 
     class Modal extends HTMLElement {
-        constructor() {
-            super()
-            this._active = false
-            this._isClear = true
-        }
+        #heading
+        #content
+        #ok
+        #okText
+        #cancel
+        #spinner
+        #isActive = false
+        #isClear = true
 
         connectedCallback() {
-            this._heading = this.querySelector('#modal-heading')
-            this._content = this.querySelector('#modal-content')
-            this._ok = this.querySelector('#modal-ok')
-            this._okText = this.querySelector('#modal-button-text')
-            this._cancel = this.querySelector('#modal-cancel')
-            this._spinner = this.querySelector('#modal-spinner')
+            this.#heading = this.querySelector('#modal-heading')
+            this.#content = this.querySelector('#modal-content')
+            this.#ok = this.querySelector('#modal-ok')
+            this.#okText = this.querySelector('#modal-button-text')
+            this.#cancel = this.querySelector('#modal-cancel')
+            this.#spinner = this.querySelector('#modal-spinner')
             state.setModal(modal => {
                 this.show(modal)
                 this.isClear = false
@@ -30,42 +33,46 @@ export default function modal() {
         }
 
         set isClear(value) {
-            this._isClear = value
+            this.#isClear = value
+            this.#isClear && this.clear()
         }
 
         get isClear() {
-            return this._isClear
+            return this.#isClear
         }
 
-        set active({ value, spinning = false }) {
-            this._active = value
+        set isActive({ value, spinning = false }) {
+            this.#isActive = value
             if (spinning) {
-                this._okText.classList.add('hidden')
-                this._spinner.classList.remove('hidden')
+                this.#okText.classList.add('hidden')
+                this.#spinner.classList.remove('hidden')
             } else if (!spinning) {
-                this._okText.classList.remove('hidden')
-                this._spinner.classList.add('hidden')
+                this.#okText.classList.remove('hidden')
+                this.#spinner.classList.add('hidden')
             }
-            if (this.active) {
-                this._ok.disabled = false
+            if (this.#isActive) {
+                this.#ok.disabled = false
             } else {
-                this._ok.disabled = true
+                this.#ok.disabled = true
             }
         }
 
-        get active() {
-            return this._active
+        get isActive() {
+            return this.#isActive
         }
 
         clear() {
-            this._heading.textContent = ''
-            this._content.textContent = ''
-            this._okText.textContent = ''
-            this._cancel.textContent = ''
+            this.#heading.textContent = ''
+            this.#content.textContent = ''
+            this.#okText.textContent = ''
+            this.#cancel.textContent = ''
             state.modal = null
         }
 
         hide() {
+            ;[(this.#heading, this.#ok, this.#cancel)].forEach(el =>
+                el.setAttribute('aria-hidden', true)
+            )
             blur.classList.remove('blur')
             nav.classList.remove('blur')
             document.body.classList.remove('hide-y')
@@ -73,54 +80,57 @@ export default function modal() {
         }
 
         show({ content, ok, heading, cancel }) {
+            ;[(this.#heading, this.#ok, this.#cancel)].forEach(el =>
+                el.setAttribute('aria-hidden', true)
+            )
             blur.classList.add('blur')
             nav.classList.add('blur')
             document.body.classList.add('hide-y')
             this.classList.remove('hidden')
 
             if (!this.isClear) return
-            this._heading.textContent = heading
+            this.#heading.textContent = heading
 
             if (typeof content === 'string')
-                this._content.appendChild(
+                this.#content.appendChild(
                     new ZircusElement('p', 'modal__text')
                         .addChild(content)
                         .render()
                 )
             else if (content instanceof HTMLElement)
-                this._content.appendChild(content)
+                this.#content.appendChild(content)
 
-            this._okText.textContent = ok.text
-            this._ok.setAttribute('title', ok.title)
-            this._ok.addEventListener('click', () => {
+            this.#okText.textContent = ok.text
+            this.#ok.setAttribute('title', ok.title)
+            this.#ok.addEventListener('click', () => {
                 ok.action({
-                    setActive: value => (this.active = value),
+                    setActive: value => (this.isActive = value),
                     close: () => this.hide(),
                     clear: () => this.clear(),
                     setCustomClose: cancel => {
-                        this._cancel.textContent = cancel.text
-                        this._cancel.setAttribute('title', cancel.title)
+                        this.#cancel.textContent = cancel.text
+                        this.#cancel.setAttribute('title', cancel.title)
                     },
                 })
             })
 
             if (cancel) {
-                this._cancel.classList.remove('hidden')
-                this._cancel.textContent = cancel.text
-                this._cancel.setAttribute('title', cancel.title)
-                this._cancel.addEventListener('click', () => {
+                this.#cancel.classList.remove('hidden')
+                this.#cancel.textContent = cancel.text
+                this.#cancel.setAttribute('title', cancel.title)
+                this.#cancel.addEventListener('click', () => {
                     cancel.action({
-                        setActive: value => (this.active = value),
+                        setActive: value => (this.isActive = value),
                         close: () => this.hide(),
                         clear: () => this.clear(),
                         setCustomClose: text =>
-                            (this._cancel.textContent = text),
+                            (this.#cancel.textContent = text),
                     })
                 })
-                this._cancel.focus()
+                this.#cancel.focus()
             } else {
-                this._ok.focus()
-                this._cancel.classList.add('hidden')
+                this.#ok.focus()
+                this.#cancel.classList.add('hidden')
             }
         }
 
@@ -128,7 +138,7 @@ export default function modal() {
             if (name === 'show' && newValue === 'true') {
                 this.show(state.modal)
             } else if (name === 'show' && newValue === 'false') {
-                ;() => this.hide()
+                this.#ok && this.hide()
             }
         }
 
