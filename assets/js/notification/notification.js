@@ -7,17 +7,18 @@ import { state, ZircusElement } from '../utils.js'
 
 export default function notification() {
     class Notification extends HTMLElement {
+        #isHidden = true
+        #notificationElement
+        #closeButton
+
         constructor() {
             super()
-            this._isHidden = true
-            this.notificationElement = this.querySelector('#notification')
-            this.notificationContent = this.querySelector(
+            this.#notificationElement = this.querySelector('#notification')
+            this.#notificationContent = this.querySelector(
                 '#notification-content'
             )
-            this.closeButton = this.querySelector('#notification-close')
-            this.closeButton.addEventListener('click', () => {
-                this.setAttribute('show', false)
-            })
+            this.#closeButton = this.querySelector('#notification-close')
+            this.#closeButton.addEventListener('click', () => this.hide())
         }
 
         connectedCallback() {
@@ -27,72 +28,54 @@ export default function notification() {
 
                 state.currentNotification = {
                     content,
-                    id: setTimeout(
-                        () => this.setAttribute('show', false),
-                        time
-                    ),
+                    id: setTimeout(() => (this.isHidden = true), time),
                 }
 
-                this.setAttribute('show', true)
+                this.isHidden = false
 
                 this.addEventListener('mouseenter', () =>
                     clearTimeout(state.currentNotification.id)
                 )
 
                 this.addEventListener('mouseleave', () =>
-                    setTimeout(
-                        () => this.setAttribute('show', false),
-                        time - time / 2
-                    )
+                    setTimeout(() => (this.isHidden = true), time - time / 2)
                 )
             })
         }
 
-        attributeChangedCallback(name, _, newValue) {
-            if (name === 'show') this.isHidden = newValue === 'false'
-        }
-
         get isHidden() {
-            return this._isHidden
+            return this.#isHidden
         }
 
         set isHidden(value) {
-            this._isHidden = value
-            this._isHidden ? this.hide() : this.show()
-        }
-
-        clear() {
-            this.notificationContent.textContent = ''
+            this.#isHidden = value
+            this.#isHidden ? this.hide() : this.show()
         }
 
         show() {
-            this.clear() // clear previous notification
             if (typeof state.currentNotification.content === 'string') {
-                this.notificationContent.appendChild(
+                this.#notificationContent.appendChild(
                     new ZircusElement('p', 'notification__text')
                         .addChild(state.currentNotification.content)
                         .render()
                 )
             } else if (Array.isArray(state.currentNotification.content)) {
                 state.currentNotification.content.forEach(el =>
-                    this.notificationContent.append(el)
+                    this.#notificationContent.append(el)
                 )
             } else {
-                this.notificationContent.textContent =
+                this.#notificationContent.textContent =
                     state.currentNotification.content
             }
-            this.notificationElement.classList.remove('hidden')
+            this.#notificationElement.classList.remove('hidden')
         }
 
         hide() {
             state.currentNotification &&
                 clearTimeout(state.currentNotification.id)
-            this.notificationElement.classList.add('hidden')
+            this.#notificationElement.classList.add('hidden')
+            this.#notificationContent.textContent = ''
             state.currentNotification = null
-        }
-
-        static get observedAttributes() {
-            return ['show']
         }
     }
 

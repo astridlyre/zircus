@@ -91,14 +91,6 @@ export default function product() {
             this.addToCartButton.addEventListener('click', () =>
                 this.handleAddToCart()
             )
-            this.gotoCartButton.addEventListener('click', () =>
-                location.assign(
-                    withLang({
-                        en: '/cart',
-                        fr: '/fr/panier',
-                    })
-                )
-            )
             document.addEventListener('inv-updated', () => this.updateStatus())
             document.addEventListener('cart-updated', () =>
                 this.updateCartBtnQty()

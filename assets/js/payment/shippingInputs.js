@@ -36,6 +36,11 @@ export default function shippingInputs({ shippingTypes }) {
                 this.container.appendChild(label)
             })
             this.inputsContainer.appendChild(this.container)
+            this.dispatchEvent(new CustomEvent('mounted'))
+        }
+
+        get value() {
+            return this.getAttribute('shipping-type')
         }
 
         inputHandler(event, value) {

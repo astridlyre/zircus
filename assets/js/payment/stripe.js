@@ -4,19 +4,7 @@ const stripe = Stripe(
     'pk_test_51J93KzDIzwSFHzdzCZtyRcjMvw8em0bhnMrVmkBHaMFHuc2nkJ156oJGNxuz0G7W4Jx0R6OCy2nBXYTt6U8bSYew00PIAPcntP'
 )
 
-export default function initStripe(form) {
-    const {
-        formName,
-        formEmail,
-        formStreetAddress,
-        formCity,
-        formCountry,
-        formState,
-        formZip,
-        formElement,
-        formShipping,
-    } = form
-
+export default function initStripe() {
     class ZircusStripe extends HTMLElement {
         constructor() {
             super()
@@ -26,15 +14,29 @@ export default function initStripe(form) {
         }
 
         connectedCallback() {
+            this.formElement = document.querySelector('#checkout-form')
+            this.formName = this.formElement.querySelector('#checkout-name')
+            this.formEmail = this.formElement.querySelector('#checkout-email')
+            this.formStreetAddress =
+                this.formElement.querySelector('#checkout-street')
+            this.formCity = this.formElement.querySelector('#checkout-city')
+            this.formState = this.formElement.querySelector('#checkout-state')
+            this.formCountry =
+                this.formElement.querySelector('#checkout-country')
+            this.formZip = this.formElement.querySelector('#checkout-zip')
+            this.formShipping = this.formElement.querySelector(
+                'zircus-shipping-inputs'
+            )
             this.classList.add('stripe-payment-form')
             this.paymentPrice = this.querySelector('#stripe-payment-price')
             this.resultMessage = this.querySelector('#result-message')
             this._cardElement = this.querySelector('#card-element')
 
-            formElement.addEventListener('submit', event => {
-                event.preventDefault()
-                this.createPaymentIntent()
-            })
+            this.formElement.addEventListener(
+                'submit',
+                event => this.createPaymentIntent(event),
+                { once: true }
+            )
         }
 
         showError(msg = this.getAttribute('failure'), setActive) {
@@ -48,24 +50,26 @@ export default function initStripe(form) {
             }, 4000)
         }
 
-        async createPaymentIntent() {
+        async createPaymentIntent(event) {
+            event.preventDefault()
             const { setActive } = state.showModal({
                 content: this,
                 heading: this.getAttribute('heading'),
                 ok: {
                     action: cbs => this.payWithCard(cbs),
                     text: this.getAttribute('buttontext'),
+                    title: 'Pay now',
                 },
                 cancel: {
-                    action: ({ close, clear }) => {
+                    action: ({ close }) => {
+                        close()
                         if (!state.cart.length)
                             location.assign(
                                 withLang({ en: '/thanks', fr: '/fr/merci' })
                             )
-                        close()
-                        if (this._paymentCompleted) clear()
                     },
                     text: this.getAttribute('canceltext'),
+                    title: 'Cancel',
                 },
             })
 
@@ -75,14 +79,14 @@ export default function initStripe(form) {
             const req = {
                 lang: lang(),
                 update: state.secret,
-                name: formName.value,
-                email: formEmail.value,
-                streetAddress: formStreetAddress.value,
-                city: formCity.value,
-                country: formCountry.value,
-                state: formState.value,
-                zip: formZip.value,
-                shippingMethod: formShipping.getAttribute('shipping-type'),
+                name: this.formName.value,
+                email: this.formEmail.value,
+                streetAddress: this.formStreetAddress.value,
+                city: this.formCity.value,
+                country: this.formCountry.value,
+                state: this.formState.value,
+                zip: this.formZip.value,
+                shippingMethod: this.formShipping.value,
                 items: state.cart.map(item => ({
                     images: item.images,
                     type: item.type,

@@ -119,6 +119,11 @@
     @include flexRow();
     @include res("sm") {
       justify-content: flex-end;
+
+      a {
+        text-decoration: none !important;
+        color: var(--dark) !important;
+      }
     }
     gap: 1rem;
   }

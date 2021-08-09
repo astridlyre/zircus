@@ -10,9 +10,8 @@ const US_ZIP_CODE = /^[0-9]{5}(-[0-9]{4})?$/
 
 export default function payment() {
     const formText = intText.checkout.formText
-    shippingInputs({
-        shippingTypes,
-    })
+    shippingInputs({ shippingTypes })
+    initStripe()
 
     class Payment extends HTMLElement {
         connectedCallback() {
@@ -38,21 +37,6 @@ export default function payment() {
             this.productList = this.querySelector('#checkout-products')
             this.placeOrderButton = this.querySelector('#place-order')
 
-            initStripe({
-                formName: this.formName,
-                formEmail: this.formEmail,
-                formStreetAddress: this.formStreetAddress,
-                formCity: this.formCity,
-                formState: this.formState,
-                formCountry: this.formCountry,
-                formZip: this.formZip,
-                formShipping: this.shippingInputs,
-                formElement: this.formElement,
-            })
-
-            // Set totals
-            this.setTotals()
-
             // Render Items
             this.renderCartItems()
             this.populateSelects(
@@ -77,12 +61,14 @@ export default function payment() {
             this.shippingInputs.addEventListener('method-changed', () =>
                 this.setTotals()
             )
+            this.shippingInputs.addEventListener('mounted', () =>
+                this.setTotals()
+            )
         }
 
         setTotals() {
             const shipping = Number(
-                shippingTypes[this.shippingInputs.getAttribute('shipping-type')]
-                    .price
+                shippingTypes[this.shippingInputs.value]?.price
             )
             const subtotal = state.cart.reduce(
                 (acc, item) => acc + item.price * item.quantity,

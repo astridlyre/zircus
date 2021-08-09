@@ -5,40 +5,27 @@ export default function modal() {
     const nav = q('nav')
 
     class Modal extends HTMLElement {
-        #heading
-        #content
-        #ok
-        #okText
-        #cancel
-        #spinner
         #isActive = false
-        #isClear = true
+        #modal
+        #okText
+        #okButton
+        #cancelButton
+        #content
+        #heading
+        #spinner
+        #template
 
         connectedCallback() {
-            this.#heading = this.querySelector('#modal-heading')
-            this.#content = this.querySelector('#modal-content')
-            this.#ok = this.querySelector('#modal-ok')
-            this.#okText = this.querySelector('#modal-button-text')
-            this.#cancel = this.querySelector('#modal-cancel')
-            this.#spinner = this.querySelector('#modal-spinner')
+            this.#modal = new ZircusElement('div', 'modal__container').render()
+            this.#template = this.querySelector('template')
+            this.appendChild(this.#modal)
             state.setModal(modal => {
                 this.show(modal)
-                this.isClear = false
                 return {
-                    setActive: value => (this.active = value),
+                    setActive: value => (this.isActive = value),
                     close: () => this.hide(),
-                    clear: () => this.clear(),
                 }
             })
-        }
-
-        set isClear(value) {
-            this.#isClear = value
-            this.#isClear && this.clear()
-        }
-
-        get isClear() {
-            return this.#isClear
         }
 
         set isActive({ value, spinning = false }) {
@@ -51,9 +38,9 @@ export default function modal() {
                 this.#spinner.classList.add('hidden')
             }
             if (this.#isActive) {
-                this.#ok.disabled = false
+                this.#okButton.disabled = false
             } else {
-                this.#ok.disabled = true
+                this.#okButton.disabled = true
             }
         }
 
@@ -61,18 +48,8 @@ export default function modal() {
             return this.#isActive
         }
 
-        clear() {
-            this.#heading.textContent = ''
-            this.#content.textContent = ''
-            this.#okText.textContent = ''
-            this.#cancel.textContent = ''
-            state.modal = null
-        }
-
         hide() {
-            ;[(this.#heading, this.#ok, this.#cancel)].forEach(el =>
-                el.setAttribute('aria-hidden', true)
-            )
+            this.#modal.textContent = ''
             blur.classList.remove('blur')
             nav.classList.remove('blur')
             document.body.classList.remove('hide-y')
@@ -80,15 +57,14 @@ export default function modal() {
         }
 
         show({ content, ok, heading, cancel }) {
-            ;[(this.#heading, this.#ok, this.#cancel)].forEach(el =>
-                el.setAttribute('aria-hidden', true)
-            )
-            blur.classList.add('blur')
-            nav.classList.add('blur')
-            document.body.classList.add('hide-y')
-            this.classList.remove('hidden')
+            const template = this.#template.content.cloneNode(true)
+            this.#heading = template.querySelector('#modal-heading')
+            this.#content = template.querySelector('#modal-content')
+            this.#okButton = template.querySelector('#modal-ok')
+            this.#okText = template.querySelector('#modal-button-text')
+            this.#cancelButton = template.querySelector('#modal-cancel')
+            this.#spinner = template.querySelector('#modal-spinner')
 
-            if (!this.isClear) return
             this.#heading.textContent = heading
 
             if (typeof content === 'string')
@@ -101,49 +77,56 @@ export default function modal() {
                 this.#content.appendChild(content)
 
             this.#okText.textContent = ok.text
-            this.#ok.setAttribute('title', ok.title)
-            this.#ok.addEventListener('click', () => {
-                ok.action({
-                    setActive: value => (this.isActive = value),
-                    close: () => this.hide(),
-                    clear: () => this.clear(),
-                    setCustomClose: cancel => {
-                        this.#cancel.textContent = cancel.text
-                        this.#cancel.setAttribute('title', cancel.title)
-                    },
-                })
-            })
-
-            if (cancel) {
-                this.#cancel.classList.remove('hidden')
-                this.#cancel.textContent = cancel.text
-                this.#cancel.setAttribute('title', cancel.title)
-                this.#cancel.addEventListener('click', () => {
-                    cancel.action({
+            this.#okButton.setAttribute('title', ok.title)
+            this.#okButton.addEventListener(
+                'click',
+                () => {
+                    ok.action({
                         setActive: value => (this.isActive = value),
                         close: () => this.hide(),
-                        clear: () => this.clear(),
-                        setCustomClose: text =>
-                            (this.#cancel.textContent = text),
+                        setCustomClose: cancel => {
+                            this.#cancelButton.textContent = cancel.text
+                            this.#cancelButton.setAttribute(
+                                'title',
+                                cancel.title
+                            )
+                        },
                     })
-                })
-                this.#cancel.focus()
+                },
+                { once: true }
+            )
+
+            blur.classList.add('blur')
+            nav.classList.add('blur')
+            document.body.classList.add('hide-y')
+            this.classList.remove('hidden')
+            this.#modal.appendChild(template)
+
+            if (cancel) {
+                this.#cancelButton.classList.remove('hidden')
+                this.#cancelButton.textContent = cancel.text
+                this.#cancelButton.setAttribute('title', cancel.title)
+                this.#cancelButton.addEventListener(
+                    'click',
+                    () => {
+                        cancel.action({
+                            setActive: value => (this.isActive = value),
+                            close: () => this.hide(),
+                            setCustomClose: cancel => {
+                                this.#cancelButton.textContent = cancel.text
+                                this.#cancelButton.setAttribute(
+                                    'title',
+                                    cancel.title
+                                )
+                            },
+                        })
+                    },
+                    { once: true }
+                )
+                this.#cancelButton.focus()
             } else {
-                this.#ok.focus()
-                this.#cancel.classList.add('hidden')
+                this.#okButton.focus()
             }
-        }
-
-        attributeChangedCallback(name, _, newValue) {
-            if (name === 'show' && newValue === 'true') {
-                this.show(state.modal)
-            } else if (name === 'show' && newValue === 'false') {
-                this.#ok && this.hide()
-            }
-        }
-
-        static get observedAttributes() {
-            return ['show']
         }
     }
 

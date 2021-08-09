@@ -1,5 +1,6 @@
 .modal {
   position: fixed;
+  padding: var(--base-spacing);
   top: 0;
   left: 0;
   width: 100%;
@@ -29,7 +30,7 @@
 
   &_buttons {
     display: grid;
-    @include res('md') {
+    @include res('sm') {
       grid-template-columns: 1fr 1fr;
     }
     grid-template-columns: 1fr;

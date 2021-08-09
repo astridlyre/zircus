@@ -1,4 +1,4 @@
-import { state, withLang } from '../utils.js'
+import { state, withLang, navigate } from '../utils.js'
 import cartProduct from './cartProduct.js'
 
 /*
@@ -13,22 +13,20 @@ export default function cart() {
             this.subtotalText = this.querySelector('#cart-subtotal')
             this.cartProductsList = this.querySelector('#cart-products')
             this.productTemplate = this.querySelector('#cart-product-template')
+            this.checkoutButton = this.querySelector('#cart-checkout')
             this.emptyCartPlaceholder = this.querySelector(
                 '#cart-products-none'
             )
 
             this.renderCartProducts()
-
-            // Add event listeners
-            this.checkoutButton.addEventListener('click', () => {
-                if (state.cart.length > 0)
-                    location.assign(
-                        withLang({
-                            en: '/checkout',
-                            fr: '/fr/la-caisse',
-                        })
-                    )
-            })
+            this.checkoutButton.addEventListener('click', () =>
+                navigate(
+                    withLang({
+                        en: '/checkout',
+                        fr: '/fr/la-caisse',
+                    })
+                )
+            )
         }
 
         enableButtons() {

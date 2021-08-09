@@ -104,16 +104,16 @@ layout: default
             >
               {{ page.label_add_to_cart }}
             </button>
-            <button
+            <a
               class="btn btn__secondary"
-              type="button"
               id="go-to-cart"
               name="Go to cart"
               aria-label="{{ page.label_go_to_cart_aria }}"
               title="{{ page.label_go_to_cart_aria }}"
+              href="{{ site.lang[page.lang].cart_link_path }}"
             >
               {{ page.label_go_to_cart }}<span id="go-to-cart-qty"></span>
-            </button>
+            </a>
           </div>
         </form>
         <div class="product__description">{{ content }}</div>

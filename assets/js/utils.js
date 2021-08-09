@@ -649,9 +649,7 @@ document.addEventListener('click', event => {
 
     if (el && !el.getAttribute('lang-link')) {
         event.preventDefault()
-        console.log('hello')
-        history.pushState(null, null, el.href)
-        changePage()
+        navigate(el.href)
         return el.blur()
     }
 })
@@ -665,7 +663,12 @@ async function loadPage(url) {
     return await res.text()
 }
 
-function changePage() {
+export function navigate(href) {
+    history.pushState(null, null, href)
+    changePage()
+}
+
+export function changePage() {
     const url = window.location.href
     const page = document.getElementById('blur')
 

@@ -3,10 +3,10 @@
   {% include head.html %}
   <body>
     <zircus-modal show="false" class="modal hidden">
-      <div class="modal__container">
+      <template id="modal-template">
         <h2 aria-hidden="true" id="modal-heading"></h2>
         <div id="modal-content"></div>
-        <div class="modal_buttons">
+        <div id="modal-buttons" class="modal_buttons">
           <button aria-hidden="true" id="modal-ok" class="btn__primary btn">
             <div class="spinner hidden" id="modal-spinner"></div>
             <span id="modal-button-text"></span>
@@ -17,7 +17,7 @@
             class="hidden btn btn__secondary"
           ></button>
         </div>
-      </div>
+      </template>
     </zircus-modal>
     {% include nav.html %}
     <div id="blur">
