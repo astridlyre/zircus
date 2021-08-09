@@ -4,6 +4,7 @@ export default function router() {
     class Router extends HTMLElement {
         #container
         #currentPage
+        #isThrottled = false
 
         connectedCallback() {
             this.#container = this.querySelector('#blur')
@@ -13,7 +14,11 @@ export default function router() {
             document.addEventListener('pointerover', event => {
                 let el = event.target
                 while (el && !el.href) el = el.parentNode
-                if (el && !el.getAttribute('router-ignore')) {
+                if (
+                    el &&
+                    !el.getAttribute('router-ignore') &&
+                    !this.#isThrottled
+                ) {
                     this.preload(el.href)
                 }
             })
@@ -41,13 +46,16 @@ export default function router() {
         }
 
         async preload(url) {
-            console.log('triggered')
-            if (cache.get(url)) return
+            this.#isThrottled = true
+            console.log('hello')
+            if (cache.get(url))
+                return setTimeout(() => (this.#isThrottled = false), 250)
             const res = await fetch(url, {
                 method: 'GET',
             })
             const text = await res.text()
             cache.set(url, text)
+            this.#isThrottled = false
         }
 
         navigate(href) {
