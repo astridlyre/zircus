@@ -9,6 +9,7 @@ export default function notification() {
     class Notification extends HTMLElement {
         #isHidden = true
         #notificationElement
+        #notificationContent
         #closeButton
 
         constructor() {
