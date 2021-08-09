@@ -32,7 +32,6 @@ export default function router() {
         attributeChangedCallback(name, oldValue, newValue) {
             if (oldValue === newValue) return
             if (name === 'page') {
-                document.documentElement.style.cursor = 'wait'
                 this.navigate(newValue)
                 this.#currentPage.focus()
             }
@@ -82,7 +81,6 @@ export default function router() {
             }
             this.#currentPage = newContent
             document.dispatchEvent(new CustomEvent('navigated'))
-            document.documentElement.style.cursor = 'unset'
             return window.scrollTo({ top: 0 })
         }
 
