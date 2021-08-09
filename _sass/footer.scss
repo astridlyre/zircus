@@ -12,11 +12,11 @@
   }
 
   @include res("md") {
-    padding: 5rem var(--base-spacing);
+    padding: 5rem 0;
   }
 
   @include res("xl") {
-    padding: 5rem var(--md-spacing);
+    padding: 5rem 0;
   }
 
   h4 {

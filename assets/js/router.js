@@ -17,7 +17,8 @@ export default function router() {
                 if (
                     el &&
                     !el.getAttribute('router-ignore') &&
-                    !this.#isThrottled
+                    !this.#isThrottled &&
+                    !el.href.startsWith('mailto')
                 ) {
                     this.preload(el.href)
                 }
@@ -27,7 +28,11 @@ export default function router() {
                 let el = event.target
                 while (el && !el.href) el = el.parentNode
 
-                if (el && !el.getAttribute('router-ignore')) {
+                if (
+                    el &&
+                    !el.getAttribute('router-ignore') &&
+                    !el.href.startsWith('mailto')
+                ) {
                     event.preventDefault()
                     this.page = el.href
                 }
@@ -40,9 +45,9 @@ export default function router() {
 
         set page(value) {
             this.setAttribute('page', value)
+            document.documentElement.style.cursor = 'wait'
             this.navigate(value)
             this.#currentPage.focus()
-            return window.scrollTo({ top: 0 })
         }
 
         async preload(url) {
@@ -87,6 +92,8 @@ export default function router() {
             this.#container.replaceChild(newContent, this.#currentPage)
             this.#currentPage = newContent
             document.dispatchEvent(new CustomEvent('navigated'))
+            document.documentElement.style.cursor = 'auto'
+            return window.scrollTo({ top: 0 })
         }
 
         static get observedAttributes() {

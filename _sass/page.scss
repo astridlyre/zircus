@@ -1,3 +1,13 @@
+zircus-router {
+  margin: 0 auto;
+  width: 100%;
+  @include res("md") {
+    width: calc(100vw - var(--md-spacing));
+  }
+  @include res("xl") {
+    width: calc(100vw - var(--lg-spacing));
+  }
+}
 main {
   outline: none;
 }
@@ -7,18 +17,12 @@ main {
   @include roundedBigTop();
   @include roundedBigBottom();
   overflow-x: hidden;
-  margin: 0 auto;
+  width: 100%;
   margin-top: var(--nav-height);
   padding-top: var(--y-padding);
   background: var(--light);
   color: var(--dark);
   width: 100%;
-  @include res("md") {
-    width: calc(100vw - var(--md-spacing));
-  }
-  @include res("xl") {
-    width: calc(100vw - var(--lg-spacing));
-  }
   justify-content: flex-start;
   align-items: center;
   flex-grow: 1;

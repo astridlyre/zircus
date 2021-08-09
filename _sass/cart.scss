@@ -117,15 +117,12 @@
 
   &__buttons {
     @include flexRow();
-    @include res("sm") {
-      justify-content: flex-end;
-
+    justify-content: flex-end;
+    gap: 1rem;
       a {
         text-decoration: none !important;
         color: var(--dark) !important;
       }
-    }
-    gap: 1rem;
   }
 }
 

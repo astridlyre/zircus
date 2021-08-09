@@ -64,9 +64,8 @@ export default function initStripe() {
                     action: ({ close }) => {
                         close()
                         if (!state.cart.length)
-                            location.assign(
+                            document.querySelector('zircus-router').page =
                                 withLang({ en: '/thanks', fr: '/fr/merci' })
-                            )
                     },
                     text: this.getAttribute('canceltext'),
                     title: 'Cancel',
