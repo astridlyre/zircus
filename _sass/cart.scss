@@ -19,8 +19,11 @@
       max-height: 4rem;
     }
 
-    &_flexcon {
+    zircus-router-link {
       flex-grow: 1;
+    }
+
+    &_flexcon {
       display: flex;
       gap: 1rem;
       align-items: center;
@@ -119,10 +122,10 @@
     @include flexRow();
     justify-content: flex-end;
     gap: 1rem;
-      a {
-        text-decoration: none !important;
-        color: var(--dark) !important;
-      }
+    a {
+      text-decoration: none !important;
+      color: var(--dark) !important;
+    }
   }
 }
 

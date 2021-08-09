@@ -125,12 +125,14 @@ layout: default
       </div>
       <div class="flex-col checkout__products__container">
         <template id="zircus-product-template">
-          <a href="" class="cart__product_flexcon">
-            <img src="" alt="" class="cart__product_image" />
-            <div class="cart__product_description">
-              <p></p>
-            </div>
-          </a>
+          <zircus-router-link>
+            <a href="" class="cart__product_flexcon">
+              <img src="" alt="" class="cart__product_image" />
+              <div class="cart__product_description">
+                <p></p>
+              </div>
+            </a>
+          </zircus-router-link>
           <div class="cart__product_inputs hidden">
             <span class="cart__product_price"></span>
             <label for=""

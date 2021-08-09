@@ -225,8 +225,7 @@ getInventory() // Get initial inventory
 setInterval(getInventory, 300_000) // Check every 5 minutes
 
 export function lang() {
-    let lang = null
-    return lang || (lang = document.documentElement.getAttribute('lang'))
+    return document.documentElement.getAttribute('lang')
 }
 
 export function withLang(obj) {

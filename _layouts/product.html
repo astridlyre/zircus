@@ -117,18 +117,20 @@ layout: default
             >
               {{ site.data.labels.product[page.lang].label_add_to_cart }}
             </button>
-            <a
-              class="btn btn__secondary"
-              id="go-to-cart"
-              name="Go to cart"
-              aria-label="{{ site.data.labels.product[page.lang].label_go_to_cart_aria }}"
-              title="{{ site.data.labels.product[page.lang].label_go_to_cart_aria }}"
-              href="{{ site.data.labels.product[page.lang].cart_link_path }}"
-            >
-              {{ site.data.labels.product[page.lang].label_go_to_cart }}<span
-                id="go-to-cart-qty"
-              ></span>
-            </a>
+            <zircus-router-link>
+              <a
+                class="btn btn__secondary"
+                id="go-to-cart"
+                name="Go to cart"
+                aria-label="{{ site.data.labels.product[page.lang].label_go_to_cart_aria }}"
+                title="{{ site.data.labels.product[page.lang].label_go_to_cart_aria }}"
+                href="{{ site.data.labels.product[page.lang].cart_link_path }}"
+              >
+                {{ site.data.labels.product[page.lang].label_go_to_cart }}<span
+                  id="go-to-cart-qty"
+                ></span>
+              </a>
+            </zircus-router-link>
           </div>
         </form>
         <div class="product__description">{{ content }}</div>

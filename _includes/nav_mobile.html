@@ -6,52 +6,56 @@
   <ul class="nav_mobile_list hide" id="menu-mobile-list">
     {% for item in site.data.nav[page.lang] %}
     <li class="nav_mobile_list_link container">
-      <a href="{{ item.link }}" id="{{ item.id }}-mobile">{{ item.name }}</a>
+      <zircus-router-link>
+        <a href="{{ item.link }}" id="{{ item.id }}-mobile">{{ item.name }}</a>
+      </zircus-router-link>
     </li>
     {% endfor %}
     <li class="nav_mobile_list_lang container">
       {% assign products=site.products | where:"ref", page.ref | sort:"lang" %}
       {% for product in products %}
-      <a
-        href="{{ product.url }}"
-        router-ignore="true"
-        class="
-          {%
-          if
-          page.lang
-          ==
-          product.lang
-          %}
-          active
-          {%
-          endif
-          %}
-          small-spaced-bold
-          border-hover
-        "
-        >{{ product.lang }}</a
-      >
+      <zircus-router-link>
+        <a
+          href="{{ product.url }}"
+          class="
+            {%
+            if
+            page.lang
+            ==
+            product.lang
+            %}
+            active
+            {%
+            endif
+            %}
+            small-spaced-bold
+            border-hover
+          "
+          >{{ product.lang }}</a
+        >
+      </zircus-router-link>
       {% endfor %} {% assign pages=site.pages | where:"ref", page.ref |
       sort:"lang" %} {% for link in pages %}
-      <a
-        href="{{ link.url }}"
-        router-ignore="true"
-        class="
-          {%
-          if
-          page.lang
-          ==
-          link.lang
-          %}
-          active
-          {%
-          endif
-          %}
-          small-spaced-bold
-          border-hover
-        "
-        >{{ link.lang }}</a
-      >
+      <zircus-router-link>
+        <a
+          href="{{ link.url }}"
+          class="
+            {%
+            if
+            page.lang
+            ==
+            link.lang
+            %}
+            active
+            {%
+            endif
+            %}
+            small-spaced-bold
+            border-hover
+          "
+          >{{ link.lang }}</a
+        >
+      </zircus-router-link>
       {% endfor %}
     </li>
   </ul>

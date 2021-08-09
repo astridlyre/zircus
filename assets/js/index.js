@@ -10,7 +10,7 @@ import contact from './contact/contact.js'
 import notification from './notification/notification.js'
 import langRedirect from './int/langRedirect.js'
 import modal from './modal/modal.js'
-import router from './router.js'
+import router from './router/router.js'
 
 product()
 payment()

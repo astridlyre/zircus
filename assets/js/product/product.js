@@ -66,10 +66,9 @@ export default function product() {
                 .updateSizeOptionText()
 
             // Add event listeners
-            this.colorInput.addEventListener('change', () => {
-                this.#needsUpdate = true
-                return this.updateStatus().updateSizeOptionText()
-            })
+            this.colorInput.addEventListener('change', () =>
+                this.updateStatus().updateSizeOptionText()
+            )
             this.quantityInput.addEventListener('change', () => {
                 const value = Number(this.quantityInput.value)
                 this.quantityInput.value =
@@ -88,10 +87,9 @@ export default function product() {
                         : this.currentItem.quantity
                 this.setProductPriceText()
             })
-            this.sizeInput.addEventListener('change', () => {
-                this.#needsUpdate = true
+            this.sizeInput.addEventListener('change', () =>
                 this.updateStatus().updateColorOptionText()
-            })
+            )
             this.addToCartButton.addEventListener('click', () =>
                 this.handleAddToCart()
             )
@@ -266,6 +264,7 @@ export default function product() {
                 this.colorInput.value = currentItem.color
                 state.currentItem = null
             }
+            this.#needsUpdate = true
             this.setImage() // must be before updating currentColor
             this.productAccent.classList.replace(
                 `${this.currentColor}-before`,

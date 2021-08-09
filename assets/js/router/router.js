@@ -1,44 +1,21 @@
+import routerLink from './routerLink.js'
+
 const cache = new Map()
 
 export default function router() {
+    routerLink()
     class Router extends HTMLElement {
         #container
         #currentPage
-        #isThrottled = false
 
         connectedCallback() {
             this.#container = this.querySelector('#blur')
             this.#currentPage = this.querySelector('main')
 
             window.addEventListener('popstate', () => this.changePage())
-            document.addEventListener('pointerover', event => {
-                if (this.#isThrottled) return
-                this.#isThrottled = true
-                let el = event.target
-                if (
-                    el.href &&
-                    !el.getAttribute('router-ignore') &&
-                    !el.href.startsWith('mailto')
-                ) {
-                    this.preload(el.href)
-                } else {
-                    setTimeout(() => (this.#isThrottled = false), 200)
-                }
-            })
-            document.addEventListener('click', event => {
-                if (event.ctrlKey) return
-                let el = event.target
-                while (el && !el.href) el = el.parentNode
-
-                if (
-                    el &&
-                    !el.getAttribute('router-ignore') &&
-                    !el.href.startsWith('mailto')
-                ) {
-                    event.preventDefault()
-                    this.page = el.href
-                }
-            })
+            document.addEventListener('preload', event =>
+                this.preload(event.detail)
+            )
         }
 
         get page() {
@@ -53,14 +30,12 @@ export default function router() {
         }
 
         async preload(url) {
-            if (cache.get(url))
-                return setTimeout(() => (this.#isThrottled = false), 1000)
+            if (cache.get(url)) return
             const res = await fetch(url, {
                 method: 'GET',
             })
             const text = await res.text()
             cache.set(url, text)
-            this.#isThrottled = false
         }
 
         navigate(href) {
