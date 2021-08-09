@@ -100,6 +100,7 @@ export default function cartProduct() {
             }
             this.appendChild(template)
         }
+
         createNotification(href) {
             const img = new ZircusElement('img', 'notification__image', {
                 src: this.item.images.sm_a,

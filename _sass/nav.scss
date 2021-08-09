@@ -104,8 +104,7 @@
 
   .nav_mobile_list {
     z-index: 25;
-    transform: translateX(0);
-    transition: transform 0.05s ease-out;
+    transition: transform 0.2s ease-out;
     opacity: 1;
     position: fixed;
     top: 0;
@@ -121,6 +120,7 @@
 
     &.hide {
       transform: translateX(100%) !important;
+      transition: transform 0.1s ease-out;
     }
   }
 
@@ -214,7 +214,6 @@
     color: var(--light) !important;
     text-align: center;
   }
-
 }
 
 // Nav Button

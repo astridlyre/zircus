@@ -17,12 +17,18 @@ export default function cart() {
             )
 
             this.renderCartProducts()
-            this.checkoutButton.addEventListener(
-                'click',
-                () =>
-                    (document.querySelector('zircus-router').page =
-                        this.getAttribute('checkoutpath'))
+            this.checkoutButton.addEventListener('click', () => this.navigate())
+        }
+
+        disconnectedCallback() {
+            this.checkoutButton.removeEventListener('click', () =>
+                this.navigate()
             )
+        }
+
+        navigate() {
+            document.querySelector('zircus-router').page =
+                this.getAttribute('checkoutpath')
         }
 
         enableButtons() {

@@ -174,15 +174,18 @@ export function setTextContent(els, content) {
     else els.textContent = content
 }
 
-export function appendPreloadLink(url) {
-    document.head.appendChild(
-        new ZircusElement('link', null, {
-            href: url,
-            rel: 'prefetch',
-            as: 'image',
-        }).render()
-    )
-    return url
+export function appendPreloadLinks(links) {
+    const fragment = new DocumentFragment()
+    links.forEach(link => {
+        fragment.appendChild(
+            new ZircusElement('link', null, {
+                href: link,
+                rel: 'prefetch',
+                as: 'image',
+            }).render()
+        )
+    })
+    document.head.appendChild(fragment)
 }
 
 export function setAttributes(el, attrs) {

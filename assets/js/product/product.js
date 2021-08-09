@@ -1,6 +1,6 @@
 import {
     state,
-    appendPreloadLink,
+    appendPreloadLinks,
     withLang,
     ZircusElement,
     setAttributes,
@@ -9,9 +9,9 @@ import productImage from './productImage.js'
 
 const IMAGE_BASE_PATH = '/assets/img/products/masked/'
 // Preload images
-const preloadImages = ({ prefix, color }) =>
-    ['a-400.png', 'b-400.png', 'a-1920.jpg'].forEach(image =>
-        appendPreloadLink(`${IMAGE_BASE_PATH}${prefix}-${color}-${image}`)
+const makeLinks = (prefix, color) =>
+    ['a-400.png', 'b-400.png', 'a-1920.jpg'].map(
+        image => `${IMAGE_BASE_PATH}${prefix}-${color}-${image}`
     )
 
 /* Path for masked product images. Images follow the convention:
@@ -45,14 +45,19 @@ export default function product() {
             this.#prefix = this.getAttribute('prefix')
             this.defaultColor = this.getAttribute('defaultcolor')
             this.currentColor = this.colorInput.value
-            ;[...this.colorInput.children].forEach(child => {
-                preloadImages({ color: child.value, prefix: this.#prefix })
-                if (child.value === this.defaultColor) {
-                    child.setAttribute('selected', true)
-                    this.productAccent.classList.add(`${child.value}-before`)
-                    this.currentColor = child.value // set currentColor
-                }
-            })
+
+            const colors = [...this.colorInput.children]
+            appendPreloadLinks(
+                colors.flatMap(color => makeLinks(this.#prefix, color.value))
+            )
+            const defaultColor = colors.find(
+                child => child.value === this.defaultColor
+            )
+            if (defaultColor) {
+                defaultColor.setAttribute('selected', true)
+                this.productAccent.classList.add(`${defaultColor.value}-before`)
+                this.currentColor = defaultColor.value // set currentColor
+            }
 
             // Initial updates
             this.updateStatus()
@@ -83,7 +88,7 @@ export default function product() {
                         : this.currentItem.quantity
                 this.setProductPriceText()
             })
-            this.sizeInput.addEventListener('input', () => {
+            this.sizeInput.addEventListener('change', () => {
                 this.#needsUpdate = true
                 this.updateStatus().updateColorOptionText()
             })

@@ -13,12 +13,18 @@ export default function SkipToContent() {
             this.appendChild(this.#button)
         }
 
+        focusMain() {
+            document.getElementById('main-content').focus()
+        }
+
         connectedCallback() {
             this.#button.setAttribute('title', this.getAttribute('text'))
             this.#button.textContent = this.getAttribute('text')
-            this.#button.addEventListener('click', () =>
-                document.getElementById('main-content').focus()
-            )
+            this.#button.addEventListener('click', this.focusMain)
+        }
+
+        disconnectedCallback() {
+            this.#button.removeEventListener('click', this.focusMain)
         }
     }
 

@@ -65,6 +65,25 @@ export default function payment() {
             )
         }
 
+        disconnectedCallback() {
+            this.formCountry.removeEventListener('input', () =>
+                this.handleCountry()
+            )
+            this.formState.removeEventListener('input', () => this.setTotals())
+            this.formZip.removeEventListener('input', e => {
+                e.target.value = this.normalizeZip(
+                    e.target.value,
+                    this.formCountry.value
+                )
+            })
+            this.shippingInputs.removeEventListener('method-changed', () =>
+                this.setTotals()
+            )
+            this.shippingInputs.removeEventListener('mounted', () =>
+                this.setTotals()
+            )
+        }
+
         setTotals() {
             const shipping = Number(
                 shippingTypes[this.shippingInputs.value]?.price

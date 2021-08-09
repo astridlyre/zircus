@@ -22,9 +22,9 @@ const withScrollState = (prevPos, currentPos) => {
 export default function menu() {
     class NavMenu extends HTMLElement {
         #MIN_SCROLL = 100
-        #isThrottled = false
         #isHidden = false
         #isFocused = false
+        #didUpdate = false
         #nav
         cartLink
 
@@ -78,26 +78,19 @@ export default function menu() {
 
         show() {
             this.#nav.classList.remove('slide-up')
-            this.#isThrottled = false
         }
 
         hide() {
             this.#nav.classList.add('slide-up')
-            this.#isThrottled = false
         }
 
         scrollHandler(isScrollingUp) {
-            return !this.#isThrottled
-                ? setTimeout(
-                      () =>
-                          isScrollingUp && this.isHidden
-                              ? (this.isHidden = false)
-                              : !isScrollingUp && !this.isHidden
-                              ? (this.isHidden = true)
-                              : false,
-                      100
-                  )
-                : (this.#isThrottled = true)
+            if (this.#didUpdate) return
+            this.#didUpdate = true
+            setTimeout(() => (this.#didUpdate = false), 250)
+            console.log(isScrollingUp)
+            if (isScrollingUp && this.isHidden) return (this.isHidden = false)
+            if (!isScrollingUp && !this.isHidden) return (this.isHidden = true)
         }
     }
 

@@ -53,7 +53,7 @@ export default function router() {
         async preload(url) {
             this.#isThrottled = true
             if (cache.get(url))
-                return setTimeout(() => (this.#isThrottled = false), 250)
+                return setTimeout(() => (this.#isThrottled = false), 1000)
             const res = await fetch(url, {
                 method: 'GET',
             })
