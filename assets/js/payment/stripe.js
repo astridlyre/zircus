@@ -39,6 +39,12 @@ export default function initStripe() {
             )
         }
 
+        disconnectedCallback() {
+            this.formElement.removeEventListener('submit', event =>
+                this.createPaymentIntent(event)
+            )
+        }
+
         showError(msg = this.getAttribute('failure'), setActive) {
             setActive({ value: false })
             this.resultMessage.textContent = msg

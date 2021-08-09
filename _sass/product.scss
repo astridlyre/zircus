@@ -35,7 +35,7 @@
   zircus-product-image {
       margin-left: auto;
       margin-right: auto;
-    .product__image {
+    .product__immg {
       @include res('sm') {
         max-width: 24rem;
       }
@@ -46,7 +46,6 @@
         max-width: 42rem;
       }
       object-fit: contain;
-      cursor: pointer;
       width: 100%;
     }
   }

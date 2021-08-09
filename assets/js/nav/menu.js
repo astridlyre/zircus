@@ -87,7 +87,7 @@ export default function menu() {
         scrollHandler(isScrollingUp) {
             if (this.#didUpdate) return
             this.#didUpdate = true
-            setTimeout(() => (this.#didUpdate = false), 250)
+            setTimeout(() => (this.#didUpdate = false), 100)
             console.log(isScrollingUp)
             if (isScrollingUp && this.isHidden) return (this.isHidden = false)
             if (!isScrollingUp && !this.isHidden) return (this.isHidden = true)

@@ -48,6 +48,7 @@ en:
   close_notification: 'Close notification'
   back_to_top: 'Back to top of page'
   close_full_image: 'Close full view'
+  view_full_image: 'Show full view'
 fr:
   name: 'fr'
   home_link_path: '/fr'
@@ -60,3 +61,4 @@ fr:
   close_notification: 'Fermez notification'
   back_to_top: 'Retour au haut de la page'
   close_full_image: 'Fermer la vue pleine grandeur'
+  view_full_image: 'Ouvre la vue pleine grandeur'

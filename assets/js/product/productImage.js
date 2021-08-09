@@ -6,6 +6,7 @@ export default function productImage() {
     class ProductImage extends HTMLElement {
         #image
         #isHovered = false
+        #didHover = false
         #fullImage
 
         constructor() {
@@ -27,15 +28,22 @@ export default function productImage() {
             )
             this.#image.src = this.getAttribute('src')
             this.#image.alt = this.getAttribute('alt')
-            this.#image.setAttribute('title', this.getAttribute('title'))
-            this.#image.addEventListener(
-                'pointerenter',
-                () => (this.isHovered = true)
+            this.#image.setAttribute(
+                'title',
+                `${this.getAttribute('title')} (${this.getAttribute(
+                    'viewfull'
+                )})`
             )
-            this.#image.addEventListener(
-                'pointerleave',
-                () => (this.isHovered = false)
-            )
+            this.#image.addEventListener('pointerenter', () => {
+                if (this.#didHover) return
+                this.isHovered = true
+                setTimeout(() => (this.#didHover = false), 200)
+            })
+            this.#image.addEventListener('pointerleave', () => {
+                if (this.#didHover) return
+                this.isHovered = false
+                setTimeout(() => (this.#didHover = false), 200)
+            })
             this.#image.addEventListener('click', () =>
                 this.#fullImage.setAttribute(
                     'src',
