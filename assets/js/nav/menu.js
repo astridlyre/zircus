@@ -53,7 +53,6 @@ export default function menu() {
             )
             document.addEventListener('navigated', () => {
                 this.isHidden = false
-                window.scrollTo({ top: 0 })
             })
         }
 

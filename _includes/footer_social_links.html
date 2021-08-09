@@ -6,6 +6,9 @@
       title="{{ link.label[page.lang] }}"
       aria-label="{{ link.url }}"
       href="{{ link.url }}"
+      router-ignore="true"
+      target="_blank"
+      rel="noopener"
     >
       {{ link.icon }}
     </a>

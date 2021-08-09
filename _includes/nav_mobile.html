@@ -11,7 +11,7 @@
       {% for product in products %}
       <a
         href="{{ product.url }}"
-        lang-link="true"
+        router-ignore="true"
         class="
           {%
           if
@@ -32,7 +32,7 @@
       sort:"lang" %} {% for link in pages %}
       <a
         href="{{ link.url }}"
-        lang-link="true"
+        router-ignore="true"
         class="
           {%
           if

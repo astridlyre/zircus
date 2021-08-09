@@ -9,6 +9,7 @@ import contact from './contact/contact.js'
 import notification from './notification/notification.js'
 import langRedirect from './int/langRedirect.js'
 import modal from './modal/modal.js'
+import router from './router.js'
 
 product()
 payment()
@@ -21,3 +22,4 @@ modal()
 notification()
 tagLine()
 langRedirect()
+router()

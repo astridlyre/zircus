@@ -18,13 +18,15 @@
   border: 2px solid transparent;
   outline: none;
   text-decoration: none !important;
-  background-color: var(--gray-20);
+  background-color: rgba(243,240,244,0.9);
   border-color: var(--gray-30);
   color: var(--dark) !important;
   @include fadeInUp(0.25s);
 
   &:hover {
-    background-color: var(--gray-30);
+    transition: all 0.1s ease-out;
+    background-color: var(--gray-05);
+    opacity: 1;
   }
 
   &__close {

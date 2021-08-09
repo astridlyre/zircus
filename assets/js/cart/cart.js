@@ -1,4 +1,4 @@
-import { state, withLang, navigate } from '../utils.js'
+import { state, withLang } from '../utils.js'
 import cartProduct from './cartProduct.js'
 
 /*
@@ -20,7 +20,8 @@ export default function cart() {
 
             this.renderCartProducts()
             this.checkoutButton.addEventListener('click', () =>
-                navigate(
+                document.querySelector('zircus-router').setAttribute(
+                    'href',
                     withLang({
                         en: '/checkout',
                         fr: '/fr/la-caisse',

@@ -34,12 +34,20 @@ export default function notification() {
 
                 this.isHidden = false
 
-                this.addEventListener('mouseenter', () =>
-                    clearTimeout(state.currentNotification.id)
+                this.addEventListener(
+                    'mouseenter',
+                    () => clearTimeout(state.currentNotification.id),
+                    { once: true }
                 )
 
-                this.addEventListener('mouseleave', () =>
-                    setTimeout(() => (this.isHidden = true), time - time / 2)
+                this.addEventListener(
+                    'mouseleave',
+                    () =>
+                        setTimeout(
+                            () => (this.isHidden = true),
+                            time - time / 2
+                        ),
+                    { once: true }
                 )
             })
         }
