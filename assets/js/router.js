@@ -29,25 +29,24 @@ export default function router() {
 
                 if (el && !el.getAttribute('router-ignore')) {
                     event.preventDefault()
-                    this.navigate(el.href)
-                    this.#currentPage.focus()
-                    return window.scrollTo({ top: 0 })
+                    this.page = el.href
                 }
             })
         }
 
-        get href() {
-            return this.getAttribute('href')
+        get page() {
+            return this.getAttribute('page')
         }
 
-        set href(value) {
-            this.setAttribute('href', value)
+        set page(value) {
+            this.setAttribute('page', value)
             this.navigate(value)
+            this.#currentPage.focus()
+            return window.scrollTo({ top: 0 })
         }
 
         async preload(url) {
             this.#isThrottled = true
-            console.log('hello')
             if (cache.get(url))
                 return setTimeout(() => (this.#isThrottled = false), 250)
             const res = await fetch(url, {
@@ -91,7 +90,7 @@ export default function router() {
         }
 
         static get observedAttributes() {
-            return ['href']
+            return ['page']
         }
     }
 

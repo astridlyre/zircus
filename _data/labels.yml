@@ -1,0 +1,62 @@
+---
+product:
+  en:
+    label_color: colour
+    label_color_yellow: yellow
+    label_color_teal: teal
+    label_color_purple: purple
+    label_color_stripe: striped
+    label_color_black: black
+    label_size: size
+    label_quantity: quantity
+    label_add_to_cart: add to cart
+    label_go_to_cart: cart
+    label_go_to_cart_aria: Go to shopping cart
+    label_out_of_stock: None available
+    label_in_stock: In stock
+    label_few_left: Only | left!
+    error_add: Unable to add to cart - not enough stock
+    success_add: Added | to cart
+    cart_link_path: "/cart"
+  fr:
+    label_color: couleur
+    label_color_yellow: jaune
+    label_color_teal: sarcelle
+    label_color_purple: pourpre
+    label_color_stripe: rayé
+    label_color_black: noir
+    label_size: taille
+    label_quantity: quantité
+    label_add_to_cart: ajouter au panier
+    label_go_to_cart: panier
+    label_go_to_cart_aria: Aller au panier
+    label_out_of_stock: Aucun disponible
+    label_in_stock: En stock
+    label_few_left: Il ne rest que |!
+    error_add: Impossible d'ajouter au panier, pas assez de stock
+    success_add: Ajouté des | au panier
+    cart_link_path: "/fr/panier"
+
+en:
+  name: 'en'
+  home_link_path: '/'
+  home_link: 'Zircus Home Page'
+  checkout_link_path: '/checkout'
+  footer_text: 'An inspiring underwear brand, queer owned & sewn on Vancouver Island.'
+  skip_link: 'Skip to main content'
+  lang_dropdown: 'Select language'
+  close_notification: 'Close notification'
+  back_to_top: 'Back to top of page'
+  close_full_image: 'Close full view'
+fr:
+  name: 'fr'
+  home_link_path: '/fr'
+  home_link: "Zircus Page d'accueil"
+  checkout_link_path: '/fr/la-caisse'
+  footer_text: "Une marque de sous-vêtements inspirante, queer appartenant et cousu 
+    sur l'île de Vancouver."
+  skip_link: 'Passer au contenu principal'
+  lang_dropdown: 'Sélectionnez la langue'
+  close_notification: 'Fermez notification'
+  back_to_top: 'Retour au haut de la page'
+  close_full_image: 'Fermer la vue pleine grandeur'

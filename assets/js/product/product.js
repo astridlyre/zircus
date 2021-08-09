@@ -5,8 +5,6 @@ import {
     ZircusElement,
     setAttributes,
 } from '../utils.js'
-import intText from '../int/intText.js'
-import inStockText from './inStockText.js'
 import productImage from './productImage.js'
 
 const IMAGE_BASE_PATH = '/assets/img/products/masked/'
@@ -26,13 +24,12 @@ const preloadImages = ({ prefix, color }) =>
   and size is the image size 400, 600 or 1000
 */
 export default function product() {
-    inStockText()
     productImage()
-    const addToCartText = intText.product.addToCart
-    const addNotificationText = intText.product.addNotificationText
 
     class Product extends HTMLElement {
         #prefix
+        #needsUpdate = true
+        #currentItem
 
         connectedCallback() {
             this.priceText = this.querySelector('#product-price-text')
@@ -44,7 +41,7 @@ export default function product() {
             this.gotoCartButton = this.querySelector('#go-to-cart')
             this.gotoCartButtonText = this.querySelector('#go-to-cart-qty')
             this.productAccent = this.querySelector('#product-accent')
-            this.stockStatusText = this.querySelector('zircus-in-stock-text')
+            this.productStatusText = this.querySelector('#product-status-text')
             this.#prefix = this.getAttribute('prefix')
             this.defaultColor = this.getAttribute('defaultcolor')
             this.currentColor = this.colorInput.value
@@ -64,9 +61,10 @@ export default function product() {
                 .updateSizeOptionText()
 
             // Add event listeners
-            this.colorInput.addEventListener('change', () =>
-                this.updateStatus().updateSizeOptionText()
-            )
+            this.colorInput.addEventListener('change', () => {
+                this.#needsUpdate = true
+                return this.updateStatus().updateSizeOptionText()
+            })
             this.quantityInput.addEventListener('change', () => {
                 const value = Number(this.quantityInput.value)
                 this.quantityInput.value =
@@ -85,9 +83,10 @@ export default function product() {
                         : this.currentItem.quantity
                 this.setProductPriceText()
             })
-            this.sizeInput.addEventListener('input', () =>
+            this.sizeInput.addEventListener('input', () => {
+                this.#needsUpdate = true
                 this.updateStatus().updateColorOptionText()
-            )
+            })
             this.addToCartButton.addEventListener('click', () =>
                 this.handleAddToCart()
             )
@@ -104,13 +103,17 @@ export default function product() {
         }
 
         get currentItem() {
-            return state.inv.find(
-                item =>
-                    item.type ===
-                    `${this.#prefix}-${this.colorInput.value}-${
-                        this.sizeInput.value
-                    }`
-            )
+            if (this.#needsUpdate) {
+                this.#needsUpdate = false
+                return (this.#currentItem = state.inv.find(
+                    item =>
+                        item.type ===
+                        `${this.#prefix}-${this.colorInput.value}-${
+                            this.sizeInput.value
+                        }`
+                ))
+            }
+            return this.#currentItem
         }
 
         setImage() {
@@ -130,14 +133,14 @@ export default function product() {
                         alt: this.currentItem.name,
                     }).render(),
                     new ZircusElement('a', 'notification__text', {
-                        href: withLang({ en: '/cart', fr: '/fr/panier' }),
-                        title: withLang({
-                            en: 'Go to cart',
-                            fr: 'Aller au panier',
-                        }),
+                        href: this.getAttribute('carthref'),
+                        title: this.getAttribute('carttitle'),
                     })
                         .addChild(
-                            withLang(addNotificationText(this.currentItem))
+                            this.getAttribute('successadd').replace(
+                                '|',
+                                withLang(this.currentItem.name)
+                            )
                         )
                         .render(),
                 ],
@@ -151,12 +154,7 @@ export default function product() {
                         .addChild('!')
                         .render(),
                     new ZircusElement('p', ['notification__text'])
-                        .addChild(
-                            withLang({
-                                en: 'Unable to add to cart - not enough stock',
-                                fr: "Impossible d'ajouter au panier, pas assez de stock",
-                            })
-                        )
+                        .addChild(this.getAttribute('erroradd'))
                         .render(),
                 ],
             })
@@ -210,7 +208,8 @@ export default function product() {
         outOfStock() {
             this.quantityInput.disabled = true
             this.addToCartButton.disabled = true
-            this.addToCartButton.textContent = withLang(addToCartText)[0]
+            this.addToCartButton.textContent =
+                this.getAttribute('outstock').toLowerCase()
         }
 
         inStock() {
@@ -218,7 +217,8 @@ export default function product() {
                 this.quantityInput.value = this.currentItem.quantity
             this.quantityInput.disabled = false
             this.addToCartButton.disabled = false
-            this.addToCartButton.textContent = withLang(addToCartText)[1]
+            this.addToCartButton.textContent =
+                this.getAttribute('addcarttext').toLowerCase()
         }
 
         updateOptionText({ input, test, alt }) {
@@ -227,8 +227,8 @@ export default function product() {
                     child.textContent.split(' - ')[0]
                 } - (${alt} ${
                     state.inv.find(item => test({ item, child }))?.quantity > 0
-                        ? withLang({ en: 'in stock', fr: 'en stock' })
-                        : withLang({ en: 'out of stock', fr: 'pas disponible' })
+                        ? this.getAttribute('instock').toLowerCase()
+                        : this.getAttribute('outstock').toLowerCase()
                 })`
             })
             return this
@@ -267,7 +267,15 @@ export default function product() {
                 `${this.colorInput.value}-before`
             )
             this.currentColor = this.colorInput.value
-            this.stockStatusText.quantity = this.currentItem.quantity
+            this.productStatusText.textContent =
+                this.currentItem.quantity <= 0
+                    ? this.getAttribute('outstock')
+                    : this.currentItem.quantity < 5
+                    ? this.getAttribute('fewleft').replace(
+                          '|',
+                          this.currentItem.quantity
+                      )
+                    : this.getAttribute('instock')
             this.setProductPriceText()
             !this.currentItem || this.currentItem.quantity <= 0
                 ? this.outOfStock()

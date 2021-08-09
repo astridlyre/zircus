@@ -1,4 +1,7 @@
-<zircus-nav-mobile class="nav_mobile">
+<zircus-nav-mobile
+  class="nav_mobile"
+  carttext="{{ site.data.labels.product[page.lang].label_go_to_cart }}"
+>
   {% include nav_mobile_button.html %}
   <ul class="nav_mobile_list hide" id="menu-mobile-list">
     {% for item in site.data.nav[page.lang] %}

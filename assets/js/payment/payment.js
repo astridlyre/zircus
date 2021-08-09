@@ -1,6 +1,5 @@
 import { state, ZircusElement, calculateTax, lang } from '../utils.js'
 import intText from '../int/intText.js'
-import cartProduct from '../cart/cartProduct.js'
 import initStripe from './stripe.js'
 import shippingInputs from './shippingInputs.js'
 import shippingTypes from './shippingTypes.js'
@@ -88,14 +87,11 @@ export default function payment() {
 
         renderCartItems() {
             const fragment = new DocumentFragment()
-            state.cart.forEach(item =>
-                fragment.appendChild(
-                    cartProduct({
-                        item,
-                        productTemplate: this.productTemplate,
-                    })
-                )
-            )
+            state.cart.forEach(item => {
+                const el = document.createElement('zircus-cart-product')
+                el.item = item
+                fragment.appendChild(el)
+            })
             this.productList.appendChild(fragment)
         }
 

@@ -11,19 +11,7 @@ default_color: teal
 description: a little extra space in the front
 image_alt: "Pouch front briefs: Underwear that offers a bit more space for what
 you're packing."
-label_color: colour
-label_color_yellow: yellow
-label_color_teal: teal
-label_color_purple: purple
-label_color_stripe: striped
-label_color_black: black
-label_size: size
-label_quantity: quantity
-label_add_to_cart: add to cart
 label_add_to_cart_aria: Add Pouch Front briefs to shopping the cart
-label_go_to_cart: cart
-label_go_to_cart_aria: Go to shopping cart
-label_out_of_stock: None available
 ---
 
 Retro briefs for your future comfort.

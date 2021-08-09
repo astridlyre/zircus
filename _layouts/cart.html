@@ -4,38 +4,35 @@ layout: default
 
 <div class="container">
   <h1 class="page__heading">{{ page.heading }}</h1>
-  <zircus-cart>
-    <template id="cart-product-template">
-      <div class="cart__product">
-        <a href="" class="cart__product_flexcon">
-          <img src="" alt="" class="cart__product_image" />
-          <div class="cart__product_description">
-            <p></p>
-          </div>
-        </a>
-        <div class="cart__product_inputs">
-          <span class="cart__product_price"></span>
-          <label for=""
-            ><span>{{ page.label_quantity }}</span>
-            <input
-              type="number"
-              name=""
-              value=""
-              min="1"
-              max="100"
-              step="1"
-              class="input w-4"
-          /></label>
-          <input type="hidden" name="type" value="" />
-          <button
-            type="button"
-            title="{{ page.label_remove }}"
-            class="btn btn__secondary"
-            aria-label=""
-          >
-            {{ page.label_remove }}
-          </button>
+  <zircus-cart checkoutpath="{{ page.label_checkout_path }}">
+    <template id="zircus-product-template">
+      <a href="" class="cart__product_flexcon">
+        <img src="" alt="" class="cart__product_image" />
+        <div class="cart__product_description">
+          <p></p>
         </div>
+      </a>
+      <div class="cart__product_inputs hidden">
+        <span class="cart__product_price"></span>
+        <label for=""
+          ><span>{{ page.label_quantity }}</span>
+          <input
+            type="number"
+            name=""
+            value=""
+            min="1"
+            max="100"
+            step="1"
+            class="input w-4"
+        /></label>
+        <button
+          type="button"
+          title="{{ page.label_remove }}"
+          class="btn btn__secondary"
+          aria-label=""
+        >
+          {{ page.label_remove }}
+        </button>
       </div>
     </template>
     <div id="cart-products">

@@ -1,5 +1,4 @@
-import { state, withLang } from '../utils.js'
-import cartProduct from './cartProduct.js'
+import { state } from '../utils.js'
 
 /*
     Cart performs the functions manage the shopping cart.
@@ -12,21 +11,17 @@ export default function cart() {
             this.checkoutButton = this.querySelector('#cart-checkout')
             this.subtotalText = this.querySelector('#cart-subtotal')
             this.cartProductsList = this.querySelector('#cart-products')
-            this.productTemplate = this.querySelector('#cart-product-template')
             this.checkoutButton = this.querySelector('#cart-checkout')
             this.emptyCartPlaceholder = this.querySelector(
                 '#cart-products-none'
             )
 
             this.renderCartProducts()
-            this.checkoutButton.addEventListener('click', () =>
-                document.querySelector('zircus-router').setAttribute(
-                    'href',
-                    withLang({
-                        en: '/checkout',
-                        fr: '/fr/la-caisse',
-                    })
-                )
+            this.checkoutButton.addEventListener(
+                'click',
+                () =>
+                    (document.querySelector('zircus-router').page =
+                        this.getAttribute('checkoutpath'))
             )
         }
 
@@ -51,17 +46,16 @@ export default function cart() {
             }
             this.emptyCartPlaceholder.style.display = 'none'
             const fragment = new DocumentFragment()
-            state.cart.forEach(item =>
-                fragment.appendChild(
-                    cartProduct({
-                        item,
-                        productTemplate: this.productTemplate,
-                        updateSubtotal: () => this.updateSubtotal(),
-                        renderCartProducts: () => this.renderCartProducts(),
-                        withActions: true,
-                    })
+            state.cart.forEach(item => {
+                const el = document.createElement('zircus-cart-product')
+                el.item = item
+                el.setAttribute('withactions', true)
+                el.addEventListener('update-totals', () =>
+                    this.updateSubtotal()
                 )
-            )
+                el.addEventListener('render', () => this.renderCartProducts())
+                fragment.appendChild(el)
+            })
             this.cartProductsList.appendChild(fragment)
             return this.updateSubtotal()
         }

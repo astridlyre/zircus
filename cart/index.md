@@ -7,6 +7,7 @@ label_quantity: quantity
 label_remove: remove
 label_subtotal: Subtotal
 label_checkout: checkout
+label_checkout_path: /checkout
 label_checkout_title: Go to checkout
 label_no_items: Nothing in cart.
 title: cart · zircus

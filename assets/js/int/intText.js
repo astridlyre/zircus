@@ -1,29 +1,4 @@
 const intText = {
-    nav: {
-        cartText: {
-            en: 'cart',
-            fr: 'panier',
-        },
-    },
-    product: {
-        addToCart: {
-            en: ['out of stock', 'add to cart'],
-            fr: ['non disponible', 'ajouter'],
-        },
-        addNotificationText: item => ({
-            en: `Added ${item.name['en']} to cart`,
-            fr: `Ajouté des ${item.name['fr']} au panier`,
-        }),
-        stockText: qty =>
-            qty > 5
-                ? {
-                      en: 'In stock',
-                      fr: 'En stock',
-                  }
-                : qty > 0
-                ? { en: `Only ${qty} left!`, fr: `Il n'en reste que ${qty}!` }
-                : { en: 'None available', fr: 'Non disponible' },
-    },
     cart: {
         removeNotificationText: item => ({
             en: `Removed ${item.name.en} from cart`,

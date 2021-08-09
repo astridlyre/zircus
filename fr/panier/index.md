@@ -6,6 +6,7 @@ heading: panier
 label_quantity: quantité
 label_remove: retirer
 label_subtotal: Sous-total
+label_checkout_path: /fr/la-caisse
 label_checkout: commander
 label_checkout_title: Passez à la caisse
 label_no_items: Rien dans le panier.

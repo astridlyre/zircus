@@ -62,6 +62,7 @@ export default function notification() {
         }
 
         show() {
+            this.#notificationContent.textContent = ''
             if (typeof state.currentNotification.content === 'string') {
                 this.#notificationContent.appendChild(
                     new ZircusElement('p', 'notification__text')
@@ -83,7 +84,6 @@ export default function notification() {
             state.currentNotification &&
                 clearTimeout(state.currentNotification.id)
             this.#notificationElement.classList.add('hidden')
-            this.#notificationContent.textContent = ''
             state.currentNotification = null
         }
     }
