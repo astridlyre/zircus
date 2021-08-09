@@ -36,7 +36,7 @@
 		  {% assign pages=site.pages | where:"ref", page.ref | sort:"lang" %}
 		  {% for link in pages %}
 		  {{link.lang}}="{{ link.url }}"
-		  {% endfor %}"
+		  {% endfor %}
         >
           {{ content }} {% include bottom-image.html %}
         </main>
