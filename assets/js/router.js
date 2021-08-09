@@ -12,15 +12,17 @@ export default function router() {
 
             window.addEventListener('popstate', () => this.changePage())
             document.addEventListener('pointerover', event => {
+                if (this.#isThrottled) return
+                this.#isThrottled = true
                 let el = event.target
-                while (el && !el.href) el = el.parentNode
                 if (
-                    el &&
+                    el.href &&
                     !el.getAttribute('router-ignore') &&
-                    !this.#isThrottled &&
                     !el.href.startsWith('mailto')
                 ) {
                     this.preload(el.href)
+                } else {
+                    setTimeout(() => (this.#isThrottled = false), 200)
                 }
             })
             document.addEventListener('click', event => {
@@ -51,7 +53,6 @@ export default function router() {
         }
 
         async preload(url) {
-            this.#isThrottled = true
             if (cache.get(url))
                 return setTimeout(() => (this.#isThrottled = false), 1000)
             const res = await fetch(url, {
@@ -92,7 +93,7 @@ export default function router() {
             this.#container.replaceChild(newContent, this.#currentPage)
             this.#currentPage = newContent
             document.dispatchEvent(new CustomEvent('navigated'))
-            document.documentElement.style.cursor = 'auto'
+            document.documentElement.style.cursor = 'unset'
             return window.scrollTo({ top: 0 })
         }
 
