@@ -16,8 +16,8 @@ export default function payment() {
         #formState
         #formStateLabel
         #formCountry
-        #formZip
-        #formZipLabel
+        #formPostalCode
+        #formPostalCodeLabel
         #checkoutSubtotal
         #checkoutTotal
         #checkoutTax
@@ -44,8 +44,10 @@ export default function payment() {
             this.#formState = this.querySelector('#checkout-state')
             this.#formStateLabel = this.querySelector('#checkout-state-text')
             this.#formCountry = this.querySelector('#checkout-country')
-            this.#formZip = this.querySelector('#checkout-zip')
-            this.#formZipLabel = this.querySelector('#checkout-zip-text')
+            this.#formPostalCode = this.querySelector('#checkout-postal-code')
+            this.#formPostalCodeLabel = this.querySelector(
+                '#checkout-postal-code-text'
+            )
             this.#checkoutSubtotal = this.querySelector('#checkout-subtotal')
             this.#checkoutTax = this.querySelector('#checkout-tax')
             this.#checkoutTotal = this.querySelector('#checkout-total')
@@ -62,8 +64,8 @@ export default function payment() {
                 this.handleCountry()
             )
             this.#formState.addEventListener('input', () => this.setTotals())
-            this.#formZip.addEventListener('input', event => {
-                this.#formZip.value = this.normalizeZip(
+            this.#formPostalCode.addEventListener('input', event => {
+                this.#formPostalCode.value = this.handlePostalCode(
                     event.target.value,
                     this.#formCountry.value
                 )
@@ -127,7 +129,7 @@ export default function payment() {
         handleCountry(country = this.#formCountry.value) {
             return requestAnimationFrame(() => {
                 this.#formState.textContent = ''
-                this.#formZip.value = ''
+                this.#formPostalCode.value = ''
                 this.populateSelects(
                     this.#formState,
                     state.countries[country].states,
@@ -136,18 +138,20 @@ export default function payment() {
                 this.#formStateLabel.textContent = withLang(
                     formText[country]
                 )[0]
-                this.#formZipLabel.textContent = withLang(formText[country])[1]
-                this.#formZip.setAttribute(
+                this.#formPostalCodeLabel.textContent = withLang(
+                    formText[country]
+                )[1]
+                this.#formPostalCode.setAttribute(
                     'pattern',
                     country === 'Canada'
                         ? CANADA_POSTAL_CODE.source
                         : US_ZIP_CODE.source
                 )
-                this.#formZip.setAttribute(
+                this.#formPostalCode.setAttribute(
                     'maxlength',
                     country === 'Canada' ? '7' : '10'
                 )
-                this.#formZip.setAttribute(
+                this.#formPostalCode.setAttribute(
                     'size',
                     country === 'Canada' ? '7' : '10'
                 )
@@ -155,7 +159,7 @@ export default function payment() {
             })
         }
 
-        normalizeZip(value) {
+        handlePostalCode(value) {
             value = value.toUpperCase()
             return this.#formCountry.value === 'Canada'
                 ? value.length === 6 && CANADA_POSTAL_CODE.test(value)

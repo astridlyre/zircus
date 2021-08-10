@@ -25,8 +25,8 @@ layout: default
     <h1 class="page__heading">{{ page.heading }}</h1>
     <form id="checkout-form">
       <div class="checkout__inputs">
-        <fieldset id="checkout-address" class="address">
-          <legend>{{ page.label_address }}</legend>
+        <fieldset id="checkout-customer" class="address">
+          <legend>{{ page.label_user }}</legend>
           <div class="flex-inputs">
             <label for="checkout-name" class="column"
               ><span>{{ page.label_form_name }}</span
@@ -54,11 +54,16 @@ layout: default
                 minlength="5"
                 maxlength="80"
             /></label>
-            <label for="checkout-street" class="column"
-              ><span>{{ page.label_form_address }}</span
+          </div>
+        </fieldset>
+        <fieldset id="checkout-address" class="address">
+          <legend>{{ page.label_address }}</legend>
+          <div class="flex-inputs">
+            <label for="checkout-address-line1" class="column"
+              ><span>{{ page.label_form_address_1 }}</span
               ><input
                 type="text"
-                name="streetAddress"
+                name="address-line1"
                 value=""
                 class="input"
                 required
@@ -67,11 +72,23 @@ layout: default
                 minlength="0"
                 maxlength="140"
             /></label>
+            <label for="checkout-address-line2" class="column"
+              ><span>{{ page.label_form_address_2 }}</span
+              ><input
+                type="text"
+                name="address-line2"
+                value=""
+                class="input"
+                id="checkout-address-line2"
+                autocomplete="on"
+                minlength="0"
+                maxlength="140"
+            /></label>
             <label for="checkout-city" class="column"
               ><span>{{ page.label_form_city }}</span
               ><input
                 type="text"
-                name="city"
+                name="address-city"
                 value=""
                 class="input"
                 required
@@ -83,7 +100,7 @@ layout: default
               ><span id="checkout-state-text">{{ page.label_form_state }}</span
               ><select
                 autocomplete="on"
-                name="state"
+                name="address-state"
                 value=""
                 class="input"
                 required
@@ -95,7 +112,7 @@ layout: default
               <select
                 autocomplete="on"
                 class="input"
-                name="country"
+                name="address-country"
                 id="checkout-country"
                 required
                 value="Canada"
@@ -104,16 +121,16 @@ layout: default
                 <option value="United States">United States</option>
               </select>
             </label>
-            <label for="checkout-zip" class="column"
-              ><span id="checkout-zip-text" class="max-w-10"
-                >{{ page.label_form_zip }}</span
+            <label for="checkout-postal-code" class="column"
+              ><span id="checkout-postal-code-text" class="max-w-10"
+                >{{ page.label_form_postal_code }}</span
               ><input
                 type="text"
-                name="zip"
+                name="address-postal_code"
                 value=""
                 class="input max-w-10"
                 required
-                id="checkout-zip"
+                id="checkout-postal-code"
                 autocomplete="on"
             /></label>
           </div>

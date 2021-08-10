@@ -95,20 +95,31 @@ export default function initStripe() {
             requestAnimationFrame(() => this.classList.remove('hidden'))
             setActive({ value: false, spinning: true })
 
-            const formData = Object.fromEntries(
-                new FormData(this.formElement).entries()
+            const formData = [
+                ...new FormData(this.formElement).entries(),
+            ].reduce(
+                (obj, [key, val]) =>
+                    key.startsWith('address-')
+                        ? {
+                              ...obj,
+                              address: {
+                                  ...obj.address,
+                                  [key.replace('address-', '')]: val,
+                              },
+                          }
+                        : {
+                              ...obj,
+                              [key]: val,
+                          },
+                { address: {} }
             )
+
             const req = {
                 ...formData,
                 lang: lang(),
                 update: state.secret,
                 items: state.cart.map(item => ({
-                    images: item.images,
                     type: item.type,
-                    prefix: item.prefix,
-                    size: item.size,
-                    name: item.name,
-                    color: item.color,
                     quantity: item.quantity,
                 })),
             }
