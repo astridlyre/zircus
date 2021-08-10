@@ -1,29 +1,13 @@
-import { API_ENDPOINT, lang, state } from '../utils.js'
+import {
+    API_ENDPOINT,
+    createNotificationFailure,
+    createNotificationSuccess,
+    lang,
+    state,
+} from '../utils.js'
 import intText from '../int/intText.js'
 
 const { contactText } = intText
-
-const handleFailure = error =>
-    state.showModal({
-        heading: contactText[lang()].error[0],
-        content: error,
-        ok: {
-            text: contactText[lang()].error[1],
-            title: contactText[lang()].error[2],
-            action: ({ close }) => close(),
-        },
-    })
-
-const handleSuccess = data =>
-    state.showModal({
-        heading: contactText[lang()].default[0],
-        content: contactText[lang()].message(data.name, data.email),
-        ok: {
-            text: contactText[lang()].default[1],
-            title: contactText[lang()].default[2],
-            action: ({ close }) => close(),
-        },
-    })
 
 export default function contact() {
     class ContactForm extends HTMLElement {
@@ -54,14 +38,22 @@ export default function contact() {
             this.#form.addEventListener('submit', e => {
                 e.preventDefault()
 
-                const message = {
-                    name: this.#nameInput.value,
-                    email: this.#emailInput.value,
-                    message: this.#messageText.value,
+                for (const el of [
+                    this.#nameInput,
+                    this.#emailInput,
+                    this.#messageText,
+                ]) {
+                    if (!el.value.length) {
+                        createNotificationFailure(this.getAttribute('fields'))
+                        return el.focus()
+                    }
                 }
 
+                const formData = Object.fromEntries(
+                    new FormData(this.#form).entries()
+                )
+
                 els.forEach(el => {
-                    el.value = ''
                     el.disabled = true
                 })
 
@@ -72,18 +64,58 @@ export default function contact() {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify(message),
+                    body: JSON.stringify(formData),
                 })
-                    .then(res => res.json())
-                    .then(data => {
-                        this.done()
-                        data.error
-                            ? handleFailure(data.error)
-                            : handleSuccess(data)
+                    .then(res => {
+                        if (!res.ok) throw new Error('Bad Response')
+                        return res.json()
                     })
-                    .then(() => els.forEach(el => (el.disabled = false)))
-                    .catch(e => console.log(e))
+                    .then(data => {
+                        data.error
+                            ? this.handleFailure(data.error)
+                            : this.handleSuccess(data)
+                    })
+                    .catch(e =>
+                        createNotificationFailure(`Fetch: ${e.message}`)
+                    )
+                    .finally(() => {
+                        this.done()
+                        els.forEach(el => {
+                            el.disabled = false
+                            el.value = ''
+                        })
+                    })
             })
+        }
+
+        handleFailure(error) {
+            state.showModal({
+                heading: contactText[lang()].error[0],
+                content: error,
+                ok: {
+                    text: contactText[lang()].error[1],
+                    title: contactText[lang()].error[2],
+                    action: ({ close }) => close(),
+                },
+            })
+            return createNotificationFailure(
+                `${this.getAttribute('failure')}: ${error.message}`
+            )
+        }
+
+        handleSuccess(data) {
+            state.showModal({
+                heading: contactText[lang()].default[0],
+                content: contactText[lang()].message(data.name, data.email),
+                ok: {
+                    text: contactText[lang()].default[1],
+                    title: contactText[lang()].default[2],
+                    action: ({ close }) => close(),
+                },
+            })
+            return createNotificationSuccess(
+                this.getAttribute('success').replace('|', data.name)
+            )
         }
 
         busy() {

@@ -20,7 +20,8 @@ export default function shippingInputs({ shippingTypes }) {
 
                 const input = new ZircusElement('input', null, {
                     type: 'radio',
-                    name: 'shipping',
+                    name: 'shippingMethod',
+                    value: type.name.en.toLowerCase(),
                     id: `shipping-${key}`,
                 })
                     .event('input', event => this.inputHandler(event, key))

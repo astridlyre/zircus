@@ -2,7 +2,11 @@
 layout: generic
 ---
 
-<zircus-contact-form>
+<zircus-contact-form
+  success="{{ page.label_success }}"
+  failure="{{ page.label_failure }}"
+  fields="{{ page.label_fields }}"
+>
   <form id="contact-form" class="form contact">
     <fieldset>
       <legend>{{ page.label_contact }}</legend>
@@ -21,7 +25,7 @@ layout: generic
         <input
           id="contact-email"
           type="email"
-          name="contact-email"
+          name="email"
           value=""
           class="input"
           maxlength="80"
@@ -30,7 +34,7 @@ layout: generic
       <label for="contact-message" class="label_lg">
         <span>{{ page.label_message }}</span>
         <textarea
-          name="contact-message"
+          name="message"
           rows="10"
           class="input"
           id="contact-message"

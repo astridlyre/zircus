@@ -10,6 +10,7 @@ layout: default
   class="stripe-payment-form"
   success="{{ page.label_success_message }}"
   failure="{{ page.label_failure_message }}"
+  complete="{{ site.data.labels[page.lang].order_complete }}"
 >
   <p id="stripe-payment-price"></p>
   <p id="result-message" class="result-message hidden">
@@ -31,7 +32,7 @@ layout: default
               ><span>{{ page.label_form_name }}</span
               ><input
                 type="text"
-                name="{{ page.label_form_name }}"
+                name="name"
                 value=""
                 class="input"
                 required
@@ -44,7 +45,7 @@ layout: default
               ><span>{{ page.label_form_email }}</span
               ><input
                 type="email"
-                name="{{ page.label_form_email }}"
+                name="email"
                 value=""
                 class="input min-w-15"
                 required
@@ -57,7 +58,7 @@ layout: default
               ><span>{{ page.label_form_address }}</span
               ><input
                 type="text"
-                name="{{ page.label_form_address }}"
+                name="streetAddress"
                 value=""
                 class="input"
                 required
@@ -70,7 +71,7 @@ layout: default
               ><span>{{ page.label_form_city }}</span
               ><input
                 type="text"
-                name="{{ page.label_form_city }}"
+                name="city"
                 value=""
                 class="input"
                 required
@@ -82,7 +83,7 @@ layout: default
               ><span id="checkout-state-text">{{ page.label_form_state }}</span
               ><select
                 autocomplete="on"
-                name="{{ page.label_form_state }}"
+                name="state"
                 value=""
                 class="input"
                 required
@@ -94,7 +95,7 @@ layout: default
               <select
                 autocomplete="on"
                 class="input"
-                name="{{ page.label_form_country }}"
+                name="country"
                 id="checkout-country"
                 required
                 value="Canada"
@@ -108,7 +109,7 @@ layout: default
                 >{{ page.label_form_zip }}</span
               ><input
                 type="text"
-                name="{{ page.label_form_zip }}"
+                name="zip"
                 value=""
                 class="input max-w-10"
                 required
@@ -133,28 +134,7 @@ layout: default
               </div>
             </a>
           </zircus-router-link>
-          <div class="cart__product_inputs hidden">
-            <span class="cart__product_price"></span>
-            <label for=""
-              ><span>{{ page.label_quantity }}</span>
-              <input
-                type="number"
-                name=""
-                value=""
-                min="1"
-                max="100"
-                step="1"
-                class="input w-4"
-            /></label>
-            <button
-              type="button"
-              title="{{ page.label_remove }}"
-              class="btn btn__secondary"
-              aria-label=""
-            >
-              {{ page.label_remove }}
-            </button>
-          </div>
+          <div class="cart__product_inputs hidden"></div>
         </template>
         <div id="checkout-products" class="checkout__products"></div>
         <div class="flex-grow flex-col">

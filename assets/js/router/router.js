@@ -1,5 +1,13 @@
 import routerLink from './routerLink.js'
-import { lang } from '../utils.js'
+import { createNotificationFailure, lang } from '../utils.js'
+
+class NavigationError extends Error {
+    constructor(message) {
+        super()
+        this.name = 'NavigationError'
+        this.message = message
+    }
+}
 
 const cache = new Map()
 
@@ -44,31 +52,47 @@ export default function router() {
 
         async loadPage(url, cached = cache.get(url)) {
             if (cached) return Promise.resolve(cached)
-            const res = await fetch(url, {
-                method: 'GET',
-            })
-            const text = await res.text()
-            cache.set(url, text)
-            return Promise.resolve(text)
+            try {
+                const res = await fetch(url, {
+                    method: 'GET',
+                })
+                if (!res.ok)
+                    throw new NavigationError(`Network response was not ok`)
+                const text = await res.text()
+                cache.set(url, text)
+                return text
+            } catch (e) {
+                cache.delete(url)
+                createNotificationFailure(`Oops! ${e.message}`)
+            }
         }
 
         async changePage() {
-            const res = await this.loadPage(window.location.href)
-            const { wrapper, newContent, lang, title } =
-                this.extractContent(res)
-            document.title = title
-            return lang === this.#lang
-                ? this.smallPageChange(newContent, this.querySelector('#blur'))
-                : this.bigPageChange(
-                      newContent,
-                      wrapper.querySelector('#page'),
-                      lang
-                  )
+            try {
+                const res = await this.loadPage(window.location.href)
+                const { wrapper, newContent, lang, title } =
+                    this.extractContent(res)
+                document.title = title
+                return lang === this.#lang
+                    ? this.smallPageChange(
+                          newContent,
+                          this.querySelector('#blur')
+                      )
+                    : this.bigPageChange(
+                          newContent,
+                          wrapper.querySelector('#page'),
+                          lang
+                      )
+            } catch (e) {
+                createNotificationFailure(`Oops! Network error: ${e.message}`)
+                history.back()
+            }
         }
 
         extractContent(res, wrapper = document.createElement('div')) {
             wrapper.innerHTML = res
             const newContent = wrapper.querySelector('main')
+            if (!newContent) throw new NavigationError('Prefetch failed')
             return {
                 wrapper,
                 newContent,

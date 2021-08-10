@@ -14,4 +14,7 @@ label_email: Email
 label_message: Message
 label_message_sent: Message sent
 label_button_text: send message
+label_success: Great! Thanks |, we got your message.
+label_failure: Oh dear, something went horribly wrong!
+label_fields: Oops! Please fill out all fields
 ---

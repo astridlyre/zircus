@@ -20,6 +20,21 @@ const intText = {
                 fr: ['État', 'Code postal'],
             },
         },
+        modalText: {
+            en: {
+                okText: 'go to shop',
+                okTitle: 'Visit the Zircus Shop',
+                heading: 'Empty cart',
+                content: 'No products in shopping cart. Why not add some?',
+            },
+            fr: {
+                okText: 'boutique',
+                okTitle: 'Visitez la boutique Zircus',
+                heading: 'Panier vide',
+                content:
+                    "Aucun produit dans le panier d'achat. Pourquoi ne pas en ajouter?",
+            },
+        },
     },
     contactText: {
         en: {

@@ -1,4 +1,11 @@
-import { lang, withLang, state, API_ENDPOINT } from '../utils.js'
+import {
+    lang,
+    withLang,
+    state,
+    API_ENDPOINT,
+    createNotificationFailure,
+    createNotificationSuccess,
+} from '../utils.js'
 
 const stripe = Stripe(
     'pk_test_51J93KzDIzwSFHzdzCZtyRcjMvw8em0bhnMrVmkBHaMFHuc2nkJ156oJGNxuz0G7W4Jx0R6OCy2nBXYTt6U8bSYew00PIAPcntP'
@@ -34,18 +41,6 @@ export default function initStripe() {
 
         connectedCallback() {
             this.formElement = document.querySelector('#checkout-form')
-            this.formName = this.formElement.querySelector('#checkout-name')
-            this.formEmail = this.formElement.querySelector('#checkout-email')
-            this.formStreetAddress =
-                this.formElement.querySelector('#checkout-street')
-            this.formCity = this.formElement.querySelector('#checkout-city')
-            this.formState = this.formElement.querySelector('#checkout-state')
-            this.formCountry =
-                this.formElement.querySelector('#checkout-country')
-            this.formZip = this.formElement.querySelector('#checkout-zip')
-            this.formShipping = this.formElement.querySelector(
-                'zircus-shipping-inputs'
-            )
             this.classList.add('stripe-payment-form')
             this.paymentPrice = this.querySelector('#stripe-payment-price')
             this.resultMessage = this.querySelector('#result-message')
@@ -100,17 +95,13 @@ export default function initStripe() {
             requestAnimationFrame(() => this.classList.remove('hidden'))
             setActive({ value: false, spinning: true })
 
+            const formData = Object.fromEntries(
+                new FormData(this.formElement).entries()
+            )
             const req = {
+                ...formData,
                 lang: lang(),
                 update: state.secret,
-                name: this.formName.value,
-                email: this.formEmail.value,
-                streetAddress: this.formStreetAddress.value,
-                city: this.formCity.value,
-                country: this.formCountry.value,
-                state: this.formState.value,
-                zip: this.formZip.value,
-                shippingMethod: this.formShipping.value,
                 items: state.cart.map(item => ({
                     images: item.images,
                     type: item.type,
@@ -143,7 +134,10 @@ export default function initStripe() {
                     )}`
                     return this.loadStripe(data, setActive)
                 })
-                .catch(e => this.showError(e.message, setActive))
+                .catch(e => {
+                    this.showError(e.message, setActive)
+                    createNotificationFailure(`Payment Intent: ${e.message}`)
+                })
         }
 
         loadStripe(data, setActive) {
@@ -179,7 +173,7 @@ export default function initStripe() {
             setActive({ value: false, spinning: false })
             state.cart = () => []
             state.secret = null
-            return requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
                 setCustomClose({
                     text: withLang({ en: 'finish', fr: 'complétez' }),
                     title: withLang({ en: 'finish', fr: 'complétez' }),
@@ -187,6 +181,9 @@ export default function initStripe() {
                 this.resultMessage.textContent = this.getAttribute('success')
                 this.resultMessage.classList.remove('hidden')
             })
+            createNotificationSuccess(
+                this.getAttribute('complete').replace('|', state.order.name)
+            )
         }
     }
 

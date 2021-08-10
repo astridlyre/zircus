@@ -245,7 +245,13 @@ export function createNotificationFailure(content) {
 // Get Inventory to set max quantities of items
 const getInventory = async () => {
     return fetch(`${API_ENDPOINT}/inv`)
-        .then(data => data.json())
+        .then(res => {
+            if (!res.ok) throw new Error('Connection error')
+            const contentType = res.headers.get('content-type')
+            if (!contentType || !contentType.includes('application/json'))
+                throw new TypeError('Not JSON data')
+            return res.json()
+        })
         .then(data => (state.inv = () => [...data.cf, ...data.pf, ...data.ff]))
         .catch(e =>
             createNotificationFailure(`Unable to get inventory: ${e.message}`)

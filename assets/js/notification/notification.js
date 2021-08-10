@@ -20,7 +20,7 @@ export default function notification() {
                 '#notification-content'
             )
             this.#closeButton = this.querySelector('#notification-close')
-            this.#closeButton.addEventListener('click', () => this.hide())
+            this.#closeButton.addEventListener('click', () => this.clear())
             this.addEventListener(
                 'pointerenter',
                 () =>
@@ -30,6 +30,7 @@ export default function notification() {
             this.addEventListener(
                 'pointerout',
                 () =>
+                    this.#currentNotification &&
                     (this.#currentNotification.id = setTimeout(
                         () => this.clear(),
                         DEFAULT_TIME
@@ -37,10 +38,9 @@ export default function notification() {
             )
 
             return state.setNotify(({ content, time = DEFAULT_TIME }) => {
-                if (this.#currentNotification) {
+                if (this.#currentNotification)
                     clearTimeout(this.#currentNotification.id)
-                    this.clear()
-                }
+                this.clear()
                 return this.show({
                     content,
                     id: setTimeout(() => this.clear(), time),

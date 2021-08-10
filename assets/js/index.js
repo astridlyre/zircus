@@ -12,11 +12,11 @@ import router from './router/router.js'
 import tagLine from './tagLine/tagLine.js'
 import thanks from './thanks/thanks.js'
 
+modal()
 cart()
 cartProduct()
 contact()
 hero()
-modal()
 nav()
 notification()
 payment()
