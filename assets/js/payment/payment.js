@@ -89,7 +89,7 @@ export default function payment() {
                 const tax =
                     (subtotal + shipping) *
                     calculateTax(this.#formCountry.value, this.#formState.value)
-                const total = subtotal + tax
+                const total = subtotal + shipping + tax
 
                 // Set text
                 this.#checkoutSubtotal.textContent = `$${subtotal.toFixed(2)}`
@@ -133,8 +133,10 @@ export default function payment() {
                     state.countries[country].states,
                     item => item.name
                 )
-                this.#formStateLabel.textContent = formText[country][lang()][0]
-                this.#formZipLabel.textContent = formText[country][lang()][1]
+                this.#formStateLabel.textContent = withLang(
+                    formText[country]
+                )[0]
+                this.#formZipLabel.textContent = withLang(formText[country])[1]
                 this.#formZip.setAttribute(
                     'pattern',
                     country === 'Canada'
