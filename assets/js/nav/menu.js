@@ -28,14 +28,9 @@ export default function menu() {
         #nav
         cartLink
 
-        constructor() {
-            super()
-            this.#nav = this.querySelector('#nav')
-            this.#nav.classList.add('slide-down') // show menu initially
-            this.cartLink = this.querySelector('#cart-link')
-        }
-
         connectedCallback() {
+            this.#nav = this.querySelector('#nav')
+            this.cartLink = this.querySelector('#cart-link')
             this.updateCartLink() // set cart text
             this.#nav.addEventListener('focusin', () => (this.isFocused = true))
             this.#nav.addEventListener(
@@ -62,9 +57,11 @@ export default function menu() {
 
         set isFocused(value) {
             this.#isFocused = value
-            this.#isFocused || window.scrollY < this.#MIN_SCROLL
-                ? this.show()
-                : this.hide()
+            requestAnimationFrame(() =>
+                this.#isFocused || window.scrollY < this.#MIN_SCROLL
+                    ? this.show()
+                    : this.hide()
+            )
         }
 
         get isHidden() {
@@ -74,18 +71,18 @@ export default function menu() {
         set isHidden(value) {
             this.#updating = true
             this.#isHidden = value
-            requestAnimationFrame(() => {
+            requestAnimationFrame(() =>
                 this.#isHidden ? this.hide() : this.show()
-            })
+            )
         }
 
         show() {
-            this.#nav.classList.remove('slide-up')
+            document.querySelector('#nav').classList.remove('slide-up')
             this.#updating = false
         }
 
         hide() {
-            this.#nav.classList.add('slide-up')
+            document.querySelector('#nav').classList.add('slide-up')
             this.#updating = false
         }
 

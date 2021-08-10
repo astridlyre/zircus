@@ -3,6 +3,7 @@
   {% include head.html %}
   <body>
     <zircus-router>
+	  <div id="page">
       <zircus-modal show="false" class="modal hidden">
         <template id="modal-template">
           <h2 aria-hidden="true" id="modal-heading"></h2>
@@ -42,6 +43,7 @@
         </main>
       </div>
       {% include footer.html %} {% include notification.html %}
+	</div>
     </zircus-router>
   </body>
 </html>

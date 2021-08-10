@@ -6,13 +6,11 @@ const cache = new Map()
 export default function router() {
     routerLink()
     class Router extends HTMLElement {
-        #container
         #currentPage
         #lang
 
         connectedCallback() {
             this.#lang = lang()
-            this.#container = this.querySelector('#blur')
             this.#currentPage = this.querySelector('main')
 
             window.addEventListener('popstate', () => this.changePage())
@@ -62,13 +60,17 @@ export default function router() {
             document.title = newContent.getAttribute('pagetitle')
 
             if (newLang === this.#lang) {
-                this.#container.replaceChild(newContent, this.#currentPage)
+                this.querySelector('#blur').replaceChild(
+                    newContent,
+                    this.#currentPage
+                )
             } else {
                 document.documentElement.setAttribute('lang', newLang)
                 this.#lang = newLang
-                this.textContent = ''
-                this.appendChild(wrapper.querySelector('zircus-router'))
-                this.#container = this.querySelector('#blur')
+                this.replaceChild(
+                    wrapper.querySelector('#page'),
+                    this.querySelector('#page')
+                )
             }
             this.#currentPage = newContent
             document.dispatchEvent(new CustomEvent('navigated'))

@@ -1,4 +1,4 @@
-import { ZircusElement } from '../utils.js'
+import { setAttributes, ZircusElement } from '../utils.js'
 import fullImage from './fullImage.js'
 
 export default function productImage() {
@@ -18,35 +18,35 @@ export default function productImage() {
         }
 
         connectedCallback() {
-            this.#fullImage.setAttribute('alt', this.getAttribute('alt'))
-            this.#fullImage.setAttribute(
-                'title',
-                this.getAttribute('fulltitle')
+            setAttributes(this.#fullImage, {
+                alt: this.getAttribute('alt'),
+                title: this.getAttribute('fulltitle'),
+                src: this.getAttribute('fullsrc'),
+                hidden: true,
+            })
+            this.#fullImage.addEventListener(
+                'click',
+                () => (this.#fullImage.hidden = true)
             )
-            this.#fullImage.addEventListener('click', () =>
-                this.#fullImage.removeAttribute('src')
-            )
-            this.#image.src = this.getAttribute('src')
-            this.#image.alt = this.getAttribute('alt')
-            this.#image.setAttribute(
-                'title',
-                `${this.getAttribute('title')} (${this.getAttribute(
+            setAttributes(this.#image, {
+                src: this.getAttribute('src'),
+                alt: this.getAttribute('alt'),
+                title: `${this.getAttribute('title')} (${this.getAttribute(
                     'viewfull'
-                )})`
+                )})`,
+            })
+
+            this.#image.addEventListener(
+                'pointerenter',
+                () => !this.#updating && (this.isHovered = true)
             )
-            this.#image.addEventListener('pointerenter', () => {
-                if (this.#updating) return
-                this.isHovered = true
-            })
-            this.#image.addEventListener('pointerleave', () => {
-                if (this.#updating) return
-                this.isHovered = false
-            })
-            this.#image.addEventListener('click', () =>
-                this.#fullImage.setAttribute(
-                    'src',
-                    this.getAttribute('fullsrc')
-                )
+            this.#image.addEventListener(
+                'pointerleave',
+                () => !this.#updating && (this.isHovered = false)
+            )
+            this.#image.addEventListener(
+                'click',
+                () => (this.#fullImage.hidden = false)
             )
         }
 
@@ -58,6 +58,8 @@ export default function productImage() {
                     return this.#image.setAttribute('title', newValue)
                 case 'src':
                     return (this.#image.src = newValue)
+                case 'fullsrc':
+                    return (this.#fullImage.src = newValue)
             }
         }
 
@@ -76,7 +78,7 @@ export default function productImage() {
         }
 
         static get observedAttributes() {
-            return ['src', 'hovered', 'alt', 'title']
+            return ['src', 'hovered', 'alt', 'title', 'fullsrc']
         }
     }
 

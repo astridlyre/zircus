@@ -6,7 +6,6 @@ export default function fullImage() {
     const { body } = document
 
     class FullImage extends HTMLElement {
-        #isHidden = true
         #image
 
         connectedCallback() {
@@ -18,13 +17,12 @@ export default function fullImage() {
             this.classList.add('full')
         }
 
-        set isHidden(value) {
-            this.#isHidden = value
-            this.#isHidden ? this.hide() : this.show()
+        set hidden(value) {
+            this.setAttribute('hidden', value)
         }
 
-        get isHidden() {
-            return this.#isHidden
+        get hidden() {
+            return this.getAttribute('hidden') === 'true'
         }
 
         show() {
@@ -45,11 +43,26 @@ export default function fullImage() {
         }
 
         attributeChangedCallback(name, _, newValue) {
-            if (name === 'src') this.isHidden = !newValue
+            switch (name) {
+                case 'src':
+                    return (this.#image.src = newValue)
+                case 'hidden':
+                    return requestAnimationFrame(() =>
+                        this.hidden ? this.hide() : this.show()
+                    )
+            }
+        }
+
+        set src(value) {
+            this.setAttribute('src', value)
+        }
+
+        get src() {
+            return this.getAttribute('src')
         }
 
         static get observedAttributes() {
-            return ['src']
+            return ['src', 'hidden']
         }
     }
 
