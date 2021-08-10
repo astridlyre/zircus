@@ -1,10 +1,6 @@
-import { ZircusElement, q } from '../utils.js'
+import { ZircusElement } from '../utils.js'
 
 export default function fullImage() {
-    const nav = q('nav')
-    const mobileButton = q('menu-mobile-btn')
-    const { body } = document
-
     class FullImage extends HTMLElement {
         #image
 
@@ -30,16 +26,18 @@ export default function fullImage() {
             this.#image.alt = this.getAttribute('alt')
             this.#image.title = this.getAttribute('title')
             this.style.display = 'flex'
-            nav.classList.add('hidden')
-            mobileButton.classList.add('hidden')
-            body.classList.add('hide-y')
+            document.getElementById('nav').classList.add('hidden')
+            document.getElementById('menu-mobile-btn').classList.add('hidden')
+            document.body.classList.add('hide-y')
         }
 
         hide() {
             this.style.display = 'none'
-            nav.classList.remove('hidden')
-            mobileButton.classList.remove('hidden')
-            body.classList.remove('hide-y')
+            document.getElementById('nav').classList.remove('hidden')
+            document
+                .getElementById('menu-mobile-btn')
+                .classList.remove('hidden')
+            document.body.classList.remove('hide-y')
         }
 
         attributeChangedCallback(name, _, newValue) {

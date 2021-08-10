@@ -27,33 +27,45 @@ const handleSuccess = data =>
 
 export default function contact() {
     class ContactForm extends HTMLElement {
+        #form
+        #nameInput
+        #emailInput
+        #sendButton
+        #messageText
+        #sendButtonText
+        #spinner
+
         connectedCallback() {
-            this._form = this.querySelector('#contact-form')
-            this._nameInput = this.querySelector('#contact-name')
-            this._emailInput = this.querySelector('#contact-email')
-            this._sendButton = this.querySelector('#contact-button')
-            this._messageText = this.querySelector('#contact-message')
+            this.#form = this.querySelector('#contact-form')
+            this.#nameInput = this.querySelector('#contact-name')
+            this.#emailInput = this.querySelector('#contact-email')
+            this.#sendButton = this.querySelector('#contact-button')
+            this.#messageText = this.querySelector('#contact-message')
+            this.#sendButtonText = this.querySelector('#contact-button-text')
+            this.#spinner = this.querySelector('#contact-spinner')
 
             const els = [
-                this._nameInput,
-                this._emailInput,
-                this._sendButton,
-                this._messageText,
+                this.#nameInput,
+                this.#emailInput,
+                this.#sendButton,
+                this.#messageText,
             ]
 
-            this._form.addEventListener('submit', e => {
+            this.#form.addEventListener('submit', e => {
                 e.preventDefault()
 
                 const message = {
-                    name: this._nameInput.value,
-                    email: this._emailInput.value,
-                    message: this._messageText.value,
+                    name: this.#nameInput.value,
+                    email: this.#emailInput.value,
+                    message: this.#messageText.value,
                 }
 
                 els.forEach(el => {
                     el.value = ''
                     el.disabled = true
                 })
+
+                this.busy()
 
                 fetch(`${API_ENDPOINT}/message`, {
                     method: 'POST',
@@ -63,17 +75,32 @@ export default function contact() {
                     body: JSON.stringify(message),
                 })
                     .then(res => res.json())
-                    .then(data =>
+                    .then(data => {
+                        this.done()
                         data.error
                             ? handleFailure(data.error)
                             : handleSuccess(data)
-                    )
+                    })
                     .then(() => els.forEach(el => (el.disabled = false)))
                     .catch(e => console.log(e))
             })
         }
+
+        busy() {
+            requestAnimationFrame(() => {
+                this.#spinner.classList.remove('hidden')
+                this.#sendButtonText.classList.add('hidden')
+            })
+        }
+
+        done() {
+            requestAnimationFrame(() => {
+                this.#sendButtonText.classList.remove('hidden')
+                this.#spinner.classList.add('hidden')
+            })
+        }
     }
 
-    if (!customElements.get('zircus-contact-form'))
+    customElements.get('zircus-contact-form') ||
         customElements.define('zircus-contact-form', ContactForm)
 }

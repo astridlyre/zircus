@@ -29,6 +29,7 @@ class State {
         this.#lastUpdated = this.#state.lastUpdated
 
         if (!this.#lastUpdated || Date.now() - this.#lastUpdated > ONE_DAY) {
+            localStorage.clear()
             this.#state = {
                 lastUpdated: Date.now(),
             }

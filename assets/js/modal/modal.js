@@ -1,9 +1,6 @@
-import { q, state, ZircusElement } from '../utils.js'
+import { state, ZircusElement } from '../utils.js'
 
 export default function modal() {
-    const blur = q('blur')
-    const nav = q('nav')
-
     class Modal extends HTMLElement {
         #isActive = false
         #modal
@@ -53,8 +50,8 @@ export default function modal() {
         hide() {
             requestAnimationFrame(() => {
                 this.#modal.textContent = ''
-                blur.classList.remove('blur')
-                nav.classList.remove('blur')
+                document.getElementById('blur').classList.remove('blur')
+                document.getElementById('nav').classList.remove('blur')
                 document.body.classList.remove('hide-y')
                 this.classList.add('hidden')
             })
@@ -100,8 +97,8 @@ export default function modal() {
                 { once: true }
             )
 
-            blur.classList.add('blur')
-            nav.classList.add('blur')
+            document.getElementById('blur').classList.add('blur')
+            document.getElementById('nav').classList.add('blur')
             document.body.classList.add('hide-y')
             this.classList.remove('hidden')
             this.#modal.appendChild(template)

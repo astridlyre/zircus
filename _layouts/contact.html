@@ -40,7 +40,8 @@ layout: generic
     <div class="button_container">
       <p id="contact-sent" class="hidden">{{ page.label_message_sent }}</p>
       <button type="submit" id="contact-button" class="btn btn__primary">
-        {{ page.label_button_text }}
+        <span id="contact-spinner" class="spinner hidden"></span>
+        <span id="contact-button-text"> {{ page.label_button_text }} </span>
       </button>
     </div>
   </form>
