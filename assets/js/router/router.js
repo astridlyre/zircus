@@ -51,7 +51,7 @@ export default function router() {
         }
 
         async loadPage(url, cached = cache.get(url)) {
-            if (cached) return Promise.resolve(cached)
+            if (cached) return cached
             try {
                 const res = await fetch(url, {
                     method: 'GET',
