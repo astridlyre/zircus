@@ -13,7 +13,9 @@ export default function router() {
             this.#lang = lang()
             this.#currentPage = this.querySelector('main')
 
-            window.addEventListener('popstate', () => this.changePage())
+            window.addEventListener('popstate', () =>
+                this.setAttribute('page', window.location.href)
+            )
             document.addEventListener('preload', event =>
                 this.loadPage(event.detail)
             )
@@ -40,8 +42,7 @@ export default function router() {
             this.changePage()
         }
 
-        async loadPage(url) {
-            const cached = cache.get(url)
+        async loadPage(url, cached = cache.get(url)) {
             if (cached) return Promise.resolve(cached)
             const res = await fetch(url, {
                 method: 'GET',
@@ -53,28 +54,49 @@ export default function router() {
 
         async changePage() {
             const res = await this.loadPage(window.location.href)
-            const wrapper = document.createElement('div')
+            const { wrapper, newContent, lang, title } =
+                this.extractContent(res)
+            document.title = title
+            return lang === this.#lang
+                ? this.smallPageChange(newContent, this.querySelector('#blur'))
+                : this.bigPageChange(
+                      newContent,
+                      wrapper.querySelector('#page'),
+                      lang
+                  )
+        }
+
+        extractContent(res, wrapper = document.createElement('div')) {
             wrapper.innerHTML = res
             const newContent = wrapper.querySelector('main')
-            const newLang = newContent.getAttribute('lang')
-            document.title = newContent.getAttribute('pagetitle')
-
-            if (newLang === this.#lang) {
-                this.querySelector('#blur').replaceChild(
-                    newContent,
-                    this.#currentPage
-                )
-            } else {
-                document.documentElement.setAttribute('lang', newLang)
-                this.#lang = newLang
-                this.replaceChild(
-                    wrapper.querySelector('#page'),
-                    this.querySelector('#page')
-                )
+            return {
+                wrapper,
+                newContent,
+                lang: newContent.getAttribute('lang'),
+                title: newContent.getAttribute('pagetitle'),
             }
+        }
+
+        notifyChanged(newContent) {
             this.#currentPage = newContent
             document.dispatchEvent(new CustomEvent('navigated'))
             return window.scrollTo({ top: 0 })
+        }
+
+        bigPageChange(newContent, page, lang) {
+            document.documentElement.setAttribute('lang', lang)
+            this.#lang = lang
+            return requestAnimationFrame(() => {
+                this.replaceChild(page, this.querySelector('#page'))
+                return this.notifyChanged(newContent)
+            })
+        }
+
+        smallPageChange(newContent, blur) {
+            return requestAnimationFrame(() => {
+                blur.replaceChild(newContent, this.#currentPage)
+                return this.notifyChanged(newContent)
+            })
         }
 
         static get observedAttributes() {

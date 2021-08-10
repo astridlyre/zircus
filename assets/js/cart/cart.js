@@ -1,4 +1,4 @@
-import { state } from '../utils.js'
+import { setAttributes, state, ZircusElement } from '../utils.js'
 
 /*
     Cart performs the functions manage the shopping cart.
@@ -50,24 +50,34 @@ export default function cart() {
         }
 
         renderCartProducts() {
-            if (!state.cart.length) {
-                this.emptyCartPlaceholder.style.display = 'block'
-                return this.updateSubtotal()
-            }
-            this.emptyCartPlaceholder.style.display = 'none'
-            const fragment = new DocumentFragment()
-            state.cart.forEach(item => {
-                const el = document.createElement('zircus-cart-product')
-                el.item = item
-                el.setAttribute('withactions', true)
-                el.addEventListener('update-totals', () =>
-                    this.updateSubtotal()
-                )
-                el.addEventListener('render', () => this.renderCartProducts())
-                fragment.appendChild(el)
-            })
-            this.cartProductsList.appendChild(fragment)
-            return this.updateSubtotal()
+            !state.cart.length
+                ? requestAnimationFrame(() => {
+                      this.emptyCartPlaceholder.classList.remove('hidden')
+                      return this.updateSubtotal()
+                  })
+                : requestAnimationFrame(() => {
+                      const fragment = new DocumentFragment()
+                      this.emptyCartPlaceholder.classList.add('hidden')
+                      state.cart.forEach(item => {
+                          const el = new ZircusElement(
+                              'zircus-cart-product',
+                              null,
+                              {
+                                  withactions: true,
+                              }
+                          ).render()
+                          el.item = item
+                          el.addEventListener('update-totals', () =>
+                              this.updateSubtotal()
+                          )
+                          el.addEventListener('render', () =>
+                              this.renderCartProducts()
+                          )
+                          fragment.appendChild(el)
+                      })
+                      this.cartProductsList.appendChild(fragment)
+                      return this.updateSubtotal()
+                  })
         }
     }
 

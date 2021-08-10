@@ -157,6 +157,7 @@ export default function cartProduct() {
 
         set item(item) {
             this.#item = item
+            return this
         }
 
         get item() {

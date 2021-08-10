@@ -26,7 +26,7 @@ layout: default
       <div class="checkout__inputs">
         <fieldset id="checkout-address" class="address">
           <legend>{{ page.label_address }}</legend>
-          <div class="grid-inputs">
+          <div class="flex-inputs">
             <label for="checkout-name" class="column"
               ><span>{{ page.label_form_name }}</span
               ><input
@@ -52,7 +52,6 @@ layout: default
                 autocomplete="on"
                 minlength="5"
                 maxlength="80"
-                size="28"
             /></label>
             <label for="checkout-street" class="column"
               ><span>{{ page.label_form_address }}</span
@@ -66,7 +65,6 @@ layout: default
                 autocomplete="on"
                 minlength="0"
                 maxlength="140"
-                size="28"
             /></label>
             <label for="checkout-city" class="column"
               ><span>{{ page.label_form_city }}</span
@@ -76,7 +74,6 @@ layout: default
                 value=""
                 class="input"
                 required
-                size="20"
                 id="checkout-city"
                 autocomplete="on"
               />
