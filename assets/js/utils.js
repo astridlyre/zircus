@@ -5,6 +5,7 @@ export const q = x => document.getElementById(x)
 export const API_ENDPOINT = 'https://zircus.herokuapp.com/api'
 
 const ONE_DAY = 86_400_000
+const FIVE_MINUTES = 300_000
 
 // Local Testing API
 // export const API_ENDPOINT = 'http://localhost:3000/api'
@@ -19,7 +20,6 @@ const ONE_DAY = 86_400_000
  */
 class State {
     #notify
-    #notification
     #modal
     #state
     #lastUpdated
@@ -34,10 +34,6 @@ class State {
             }
             localStorage.setItem('state', JSON.stringify(this.#state))
         }
-
-        this.#notification = null
-        this.#notify = null
-        this.#modal = null
     }
 
     static dispatch(event) {
@@ -117,16 +113,8 @@ class State {
         this.#notify = fn
     }
 
-    notify(text, color, onClick) {
-        return this.#notify && this.#notify(text, color, onClick)
-    }
-
-    set currentNotification(id) {
-        this.#notification = id
-    }
-
-    get currentNotification() {
-        return this.#notification
+    notify(notification) {
+        return this.#notify && this.#notify(notification)
     }
 }
 
@@ -181,13 +169,11 @@ export class ZircusElement {
     }
 }
 
-export function setTextContent(els, content) {
-    if (Array.isArray(els)) els.forEach(el => (el.textContent = content))
-    else els.textContent = content
-}
-
-export function appendPreloadLinks(links) {
-    const fragment = new DocumentFragment()
+export function appendPreloadLinks(
+    links,
+    fragment = new DocumentFragment(),
+    target = document.head
+) {
     links.forEach(link => {
         fragment.appendChild(
             new ZircusElement('link', null, {
@@ -197,7 +183,7 @@ export function appendPreloadLinks(links) {
             }).render()
         )
     })
-    document.head.appendChild(fragment)
+    return target.appendChild(fragment)
 }
 
 export function setAttributes(el, attrs) {
@@ -224,17 +210,51 @@ export const calculateTax = (country, state) => {
     }
 }
 
+export function createNotificationSuccess(content) {
+    if (typeof content === 'string') {
+        content = [
+            new ZircusElement('span', ['notification__prefix', 'green'])
+                .addChild('!')
+                .render(),
+            new ZircusElement('p', 'notification__text')
+                .addChild(content)
+                .render(),
+        ]
+    } else if (content instanceof ZircusElement) {
+        content = [content]
+    }
+    return state.notify({
+        content,
+    })
+}
+
+export function createNotificationFailure(content) {
+    return state.notify({
+        content: [
+            new ZircusElement('span', ['notification__prefix', 'red'])
+                .addChild('!')
+                .render(),
+            new ZircusElement('p', ['notification__text'])
+                .addChild(content)
+                .render(),
+        ],
+    })
+}
+
 // Get Inventory to set max quantities of items
 const getInventory = async () => {
-    return await fetch(`${API_ENDPOINT}/inv`)
+    return fetch(`${API_ENDPOINT}/inv`)
         .then(data => data.json())
         .then(data => (state.inv = () => [...data.cf, ...data.pf, ...data.ff]))
-        .catch(e => {
-            console.error('Unable to get inventory', e.message)
-        })
+        .catch(e =>
+            createNotificationFailure(`Unable to get inventory: ${e.message}`)
+        )
 }
+
 getInventory() // Get initial inventory
-setInterval(getInventory, 300_000) // Check every 5 minutes
+setInterval(() => {
+    getInventory().finally(() => createNotificationSuccess('Inventory updated'))
+}, FIVE_MINUTES) // Check every 5 minutes
 
 export function lang() {
     return document.documentElement.getAttribute('lang')

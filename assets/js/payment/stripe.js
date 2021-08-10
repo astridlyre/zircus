@@ -4,13 +4,32 @@ const stripe = Stripe(
     'pk_test_51J93KzDIzwSFHzdzCZtyRcjMvw8em0bhnMrVmkBHaMFHuc2nkJ156oJGNxuz0G7W4Jx0R6OCy2nBXYTt6U8bSYew00PIAPcntP'
 )
 
+const stripeStyle = {
+    base: {
+        color: '#211b22',
+        fontFamily: 'Nunito, sans-serif',
+        fontSmoothing: 'antialiased',
+        fontSize: '16px',
+        '::placeholder': {
+            color: '#8b808f',
+        },
+    },
+    invalid: {
+        fontFamily: 'Nunito, sans-serif',
+        color: '#8f3342',
+        iconColor: '#8f3342',
+    },
+}
+
 export default function initStripe() {
     class ZircusStripe extends HTMLElement {
+        #isLoaded = false
+        #card
+        #secret
+
         constructor() {
             super()
-            this.style.display = 'none'
-            this._isLoaded = false
-            this._paymentCompleted = false
+            this.classList.add('hidden')
         }
 
         connectedCallback() {
@@ -53,7 +72,7 @@ export default function initStripe() {
             setTimeout(() => {
                 this.resultMessage.classList.add('hidden')
                 this.resultMessage.classList.remove('red')
-            }, 4000)
+            }, 5000)
         }
 
         async createPaymentIntent(event) {
@@ -78,7 +97,7 @@ export default function initStripe() {
                 },
             })
 
-            this.style.display = 'flex'
+            requestAnimationFrame(() => this.classList.remove('hidden'))
             setActive({ value: false, spinning: true })
 
             const req = {
@@ -103,7 +122,7 @@ export default function initStripe() {
                 })),
             }
 
-            fetch(`${API_ENDPOINT}/orders/create-payment-intent`, {
+            return fetch(`${API_ENDPOINT}/orders/create-payment-intent`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -122,48 +141,32 @@ export default function initStripe() {
                     this.paymentPrice.textContent = `Calculated total: $${data.total.toFixed(
                         2
                     )}`
-                    this.loadStripe(data, setActive)
+                    return this.loadStripe(data, setActive)
                 })
+                .catch(e => this.showError(e.message, setActive))
         }
 
         loadStripe(data, setActive) {
             setActive({ value: false })
-            if (this._isLoaded) return
+            if (this.#isLoaded) return
             const elements = stripe.elements()
-            const style = {
-                base: {
-                    color: '#211b22',
-                    fontFamily: 'Nunito, sans-serif',
-                    fontSmoothing: 'antialiased',
-                    fontSize: '16px',
-                    '::placeholder': {
-                        color: '#8b808f',
-                    },
-                },
-                invalid: {
-                    fontFamily: 'Nunito, sans-serif',
-                    color: '#8f3342',
-                    iconColor: '#8f3342',
-                },
-            }
-
-            const card = elements.create('card', { style: style })
+            const card = elements.create('card', { style: stripeStyle })
             card.mount('#card-element')
             card.on('change', event => {
                 setActive({ value: !event.empty })
                 event.error?.message &&
                     this.showError(event.error.message, setActive)
             })
-            this._card = card
-            this._secret = data.clientSecret
-            this._isLoaded = true
+            this.#card = card
+            this.#secret = data.clientSecret
+            this.#isLoaded = true
         }
 
         payWithCard({ setActive, setCustomClose }) {
             setActive({ value: false, spinning: true })
-            stripe
-                .confirmCardPayment(this._secret, {
-                    payment_method: { card: this._card },
+            return stripe
+                .confirmCardPayment(this.#secret, {
+                    payment_method: { card: this.#card },
                 })
                 .then(result => {
                     if (result.error)
@@ -173,16 +176,17 @@ export default function initStripe() {
         }
 
         orderComplete({ setActive, setCustomClose }) {
-            this._paymentCompleted = true
             setActive({ value: false, spinning: false })
             state.cart = () => []
             state.secret = null
-            setCustomClose({
-                text: withLang({ en: 'finish', fr: 'complétez' }),
-                title: withLang({ en: 'finish', fr: 'complétez' }),
+            return requestAnimationFrame(() => {
+                setCustomClose({
+                    text: withLang({ en: 'finish', fr: 'complétez' }),
+                    title: withLang({ en: 'finish', fr: 'complétez' }),
+                })
+                this.resultMessage.textContent = this.getAttribute('success')
+                this.resultMessage.classList.remove('hidden')
             })
-            this.resultMessage.textContent = this.getAttribute('success')
-            this.resultMessage.classList.remove('hidden')
         }
     }
 

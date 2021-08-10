@@ -1,5 +1,7 @@
 import { state, ZircusElement } from '../utils.js'
 
+const DEFAULT_TIME = 4_000 // 4 seconds
+
 /*
  * notification sets the state.notify function and performs
  * the DOM manipulation to show and hide notifications
@@ -7,86 +9,69 @@ import { state, ZircusElement } from '../utils.js'
 
 export default function notification() {
     class Notification extends HTMLElement {
-        #isHidden = true
+        #currentNotification = null
         #notificationElement
         #notificationContent
         #closeButton
 
-        constructor() {
-            super()
+        connectedCallback() {
             this.#notificationElement = this.querySelector('#notification')
             this.#notificationContent = this.querySelector(
                 '#notification-content'
             )
             this.#closeButton = this.querySelector('#notification-close')
             this.#closeButton.addEventListener('click', () => this.hide())
-        }
+            this.addEventListener(
+                'pointerenter',
+                () =>
+                    this.#currentNotification &&
+                    clearTimeout(this.#currentNotification.id)
+            )
+            this.addEventListener(
+                'pointerout',
+                () =>
+                    (this.#currentNotification.id = setTimeout(
+                        () => this.clear(),
+                        DEFAULT_TIME
+                    ))
+            )
 
-        connectedCallback() {
-            state.setNotify(({ content, time = 4000 }) => {
-                state.currentNotification &&
-                    clearTimeout(state.currentNotification.id)
-
-                state.currentNotification = {
-                    content,
-                    id: setTimeout(() => (this.isHidden = true), time),
+            return state.setNotify(({ content, time = DEFAULT_TIME }) => {
+                if (this.#currentNotification) {
+                    clearTimeout(this.#currentNotification.id)
+                    this.clear()
                 }
-
-                this.isHidden = false
-
-                this.addEventListener(
-                    'mouseenter',
-                    () => clearTimeout(state.currentNotification.id),
-                    { once: true }
-                )
-
-                this.addEventListener(
-                    'mouseleave',
-                    () =>
-                        setTimeout(
-                            () => (this.isHidden = true),
-                            time - time / 2
-                        ),
-                    { once: true }
-                )
+                return this.show({
+                    content,
+                    id: setTimeout(() => this.clear(), time),
+                })
             })
         }
 
-        get isHidden() {
-            return this.#isHidden
+        show({ content, id }) {
+            return requestAnimationFrame(() => {
+                if (typeof content === 'string') {
+                    this.#notificationContent.appendChild(
+                        new ZircusElement('p', 'notification__text')
+                            .addChild(content)
+                            .render()
+                    )
+                } else if (Array.isArray(content)) {
+                    content.forEach(el => this.#notificationContent.append(el))
+                } else {
+                    this.#notificationContent.textContent = content
+                }
+                this.#notificationElement.classList.remove('hidden')
+                this.#currentNotification = { content, id }
+            })
         }
 
-        set isHidden(value) {
-            this.#isHidden = value
-            requestAnimationFrame(() =>
-                this.#isHidden ? this.hide() : this.show()
-            )
-        }
-
-        show() {
-            this.#notificationContent.textContent = ''
-            if (typeof state.currentNotification.content === 'string') {
-                this.#notificationContent.appendChild(
-                    new ZircusElement('p', 'notification__text')
-                        .addChild(state.currentNotification.content)
-                        .render()
-                )
-            } else if (Array.isArray(state.currentNotification.content)) {
-                state.currentNotification.content.forEach(el =>
-                    this.#notificationContent.append(el)
-                )
-            } else {
-                this.#notificationContent.textContent =
-                    state.currentNotification.content
-            }
-            this.#notificationElement.classList.remove('hidden')
-        }
-
-        hide() {
-            state.currentNotification &&
-                clearTimeout(state.currentNotification.id)
-            this.#notificationElement.classList.add('hidden')
-            state.currentNotification = null
+        clear() {
+            return requestAnimationFrame(() => {
+                this.#notificationContent.textContent = ''
+                this.#notificationElement.classList.add('hidden')
+                this.#currentNotification = null
+            })
         }
     }
 

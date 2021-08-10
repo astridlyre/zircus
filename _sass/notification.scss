@@ -21,7 +21,7 @@
   background-color: rgba(243,240,244,0.9);
   border-color: var(--gray-30);
   color: var(--dark) !important;
-  @include fadeInUp(0.25s);
+  @include fadeInUp(0.1s);
 
   &:hover {
     transition: all 0.1s ease-out;

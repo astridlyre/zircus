@@ -30,19 +30,16 @@ export default function payment() {
             this.checkoutTotal = this.querySelector('#checkout-total')
             this.checkoutShipping = this.querySelector('#checkout-shipping')
             this.shippingInputs = this.querySelector('zircus-shipping-inputs')
-            this.productTemplate = this.querySelector(
-                '#checkout-product-template'
-            )
             this.productList = this.querySelector('#checkout-products')
             this.placeOrderButton = this.querySelector('#place-order')
 
             // Render Items
             this.renderCartItems()
-            requestAnimationFrame(() => this.handleCountry())
+            this.handleCountry()
 
             // Add event listeners
             this.formCountry.addEventListener('input', () =>
-                requestAnimationFrame(() => this.handleCountry())
+                this.handleCountry()
             )
             this.formState.addEventListener('input', () => this.setTotals())
             this.formZip.addEventListener('input', e => {
@@ -62,7 +59,7 @@ export default function payment() {
 
         disconnectedCallback() {
             this.formCountry.removeEventListener('input', () =>
-                requestAnimationFrame(() => this.handleCountry())
+                this.handleCountry()
             )
             this.formState.removeEventListener('input', () => this.setTotals())
             this.formZip.removeEventListener('input', e => {
@@ -101,71 +98,72 @@ export default function payment() {
             })
         }
 
-        renderCartItems() {
-            const fragment = new DocumentFragment()
-            state.cart.forEach(item => {
-                const el = document.createElement('zircus-cart-product')
-                el.item = item
-                fragment.appendChild(el)
+        renderCartItems(fragment = new DocumentFragment()) {
+            return requestAnimationFrame(() => {
+                state.cart.forEach(item => {
+                    const el = document.createElement('zircus-cart-product')
+                    el.item = item
+                    fragment.appendChild(el)
+                })
+                this.productList.appendChild(fragment)
             })
-            this.productList.appendChild(fragment)
         }
 
         populateSelects(select, data = [], fn) {
-            requestAnimationFrame(() => {
-                select.textContent = '' // clear children
-                data.forEach((item, i) => {
-                    select.appendChild(
-                        new ZircusElement('option', null, {
-                            value: fn(item),
-                            selected: i === 0,
-                        })
-                            .addChild(fn(item))
-                            .render()
-                    )
-                })
+            select.textContent = '' // clear children
+            data.forEach((item, i) => {
+                select.appendChild(
+                    new ZircusElement('option', null, {
+                        value: fn(item),
+                        selected: i === 0,
+                    })
+                        .addChild(fn(item))
+                        .render()
+                )
             })
         }
 
-        handleCountry() {
-            const country = this.formCountry.value
-            this.formState.textContent = ''
-            this.formZip.value = ''
-            this.populateSelects(
-                this.formState,
-                state.countries[country].states,
-                item => item.name
-            )
-            this.formStateLabel.textContent = formText[country][lang()][0]
-            this.formZipLabel.textContent = formText[country][lang()][1]
-            this.formZip.setAttribute(
-                'pattern',
-                country === 'Canada'
-                    ? CANADA_POSTAL_CODE.source
-                    : US_ZIP_CODE.source
-            )
-            this.formZip.setAttribute(
-                'maxlength',
-                country === 'Canada' ? '7' : '10'
-            )
-            this.formZip.setAttribute('size', country === 'Canada' ? '7' : '10')
-            this.setTotals()
+        handleCountry(country = this.formCountry.value) {
+            return requestAnimationFrame(() => {
+                this.formState.textContent = ''
+                this.formZip.value = ''
+                this.populateSelects(
+                    this.formState,
+                    state.countries[country].states,
+                    item => item.name
+                )
+                this.formStateLabel.textContent = formText[country][lang()][0]
+                this.formZipLabel.textContent = formText[country][lang()][1]
+                this.formZip.setAttribute(
+                    'pattern',
+                    country === 'Canada'
+                        ? CANADA_POSTAL_CODE.source
+                        : US_ZIP_CODE.source
+                )
+                this.formZip.setAttribute(
+                    'maxlength',
+                    country === 'Canada' ? '7' : '10'
+                )
+                this.formZip.setAttribute(
+                    'size',
+                    country === 'Canada' ? '7' : '10'
+                )
+                return this.setTotals()
+            })
         }
 
         normalizeZip(value) {
             value = value.toUpperCase()
-            if (this.formCountry.value === 'Canada') {
-                if (value.length === 6 && CANADA_POSTAL_CODE.test(value))
-                    return value.substring(0, 3) + ' ' + value.substring(3, 6)
-                return value
-            } else {
-                if (value.length === 6 && value[5] !== '-')
-                    return value.substring(0, 5)
-                return value
-            }
+            return this.formCountry.value === 'Canada'
+                ? value.length === 6 && CANADA_POSTAL_CODE.test(value)
+                    ? value.substring(0, 3) + ' ' + value.substring(3, 6)
+                    : value
+                : value.length === 6 && value[5] !== '-'
+                ? value.substring(0, 5)
+                : value
         }
     }
 
-    if (!customElements.get('zircus-payment'))
+    customElements.get('zircus-payment') ||
         customElements.define('zircus-payment', Payment)
 }

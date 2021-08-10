@@ -4,6 +4,8 @@ import {
     withLang,
     ZircusElement,
     setAttributes,
+    createNotificationFailure,
+    createNotificationSuccess,
 } from '../utils.js'
 import productImage from './productImage.js'
 
@@ -137,40 +139,25 @@ export default function product() {
         }
 
         createNotificationSuccess() {
-            state.notify({
-                content: [
-                    new ZircusElement('img', 'notification__image', {
-                        src: this.currentItem.images.sm_a,
-                        alt: this.currentItem.name,
-                    }).render(),
-                    new ZircusElement('zircus-router-link')
-                        .addChild(
-                            new ZircusElement('a', 'notification__text', {
-                                href: this.getAttribute('carthref'),
-                                title: this.getAttribute('carttitle'),
-                            }).addChild(
-                                this.getAttribute('successadd').replace(
-                                    '|',
-                                    withLang(this.currentItem.name)
-                                )
+            return createNotificationSuccess([
+                new ZircusElement('img', 'notification__image', {
+                    src: this.currentItem.images.sm_a,
+                    alt: this.currentItem.name,
+                }).render(),
+                new ZircusElement('zircus-router-link')
+                    .addChild(
+                        new ZircusElement('a', 'notification__text', {
+                            href: this.getAttribute('carthref'),
+                            title: this.getAttribute('carttitle'),
+                        }).addChild(
+                            this.getAttribute('successadd').replace(
+                                '|',
+                                withLang(this.currentItem.name)
                             )
                         )
-                        .render(),
-                ],
-            })
-        }
-
-        createNotificationFailure() {
-            state.notify({
-                content: [
-                    new ZircusElement('span', ['notification__prefix', 'red'])
-                        .addChild('!')
-                        .render(),
-                    new ZircusElement('p', ['notification__text'])
-                        .addChild(this.getAttribute('erroradd'))
-                        .render(),
-                ],
-            })
+                    )
+                    .render(),
+            ])
         }
 
         itemsOfCurrentType(type) {
@@ -185,11 +172,11 @@ export default function product() {
             [cartItem, invItem] = this.itemsOfCurrentType(type)
         ) {
             quantity - this.quantity < 0 || !quantity
-                ? this.createNotificationFailure()
+                ? createNotificationFailure(this.getAttribute('erroradd'))
                 : cartItem
                 ? cartItem.quantity + this.quantity <= invItem.quantity
                     ? this.updateCartItem().createNotificationSuccess()
-                    : this.createNotificationFailure()
+                    : createNotificationFailure(this.getAttribute('erroradd'))
                 : this.addNewCartItem().createNotificationSuccess()
         }
 

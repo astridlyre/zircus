@@ -12,7 +12,7 @@ export default function routerLink() {
 
         connectedCallback() {
             this.#link = this.querySelector('a')
-            this.#link.addEventListener('pointerover', () => this.hovered(), {
+            this.#link.addEventListener('pointerenter', () => this.hovered(), {
                 once: true,
             })
             this.#link.addEventListener('click', event => this.clicked(event))
