@@ -45,7 +45,7 @@ export default function fullImage() {
         attributeChangedCallback(name, _, newValue) {
             switch (name) {
                 case 'src':
-                    return (this.#image?.src = newValue)
+                    return this.#image && (this.#image.src = newValue)
                 case 'hidden':
                     return requestAnimationFrame(() =>
                         this.hidden ? this.hide() : this.show()

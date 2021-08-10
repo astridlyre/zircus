@@ -53,13 +53,16 @@ export default function productImage() {
         attributeChangedCallback(name, _, newValue) {
             switch (name) {
                 case 'alt':
-                    return (this.#image?.alt = newValue)
+                    return this.#image && (this.#image.alt = newValue)
                 case 'title':
-                    return this.#image?.setAttribute('title', newValue)
+                    return (
+                        this.#image &&
+                        this.#image.setAttribute('title', newValue)
+                    )
                 case 'src':
-                    return (this.#image?.src = newValue)
+                    return this.#image && (this.#image.src = newValue)
                 case 'fullsrc':
-                    return (this.#fullImage?.src = newValue)
+                    return this.#fullImage && (this.#fullImage.src = newValue)
             }
         }
 
