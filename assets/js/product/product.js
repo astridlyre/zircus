@@ -44,23 +44,11 @@ export default function product() {
             this.productStatusText = this.querySelector('#product-status-text')
             this.#prefix = this.getAttribute('prefix')
             this.defaultColor = this.getAttribute('defaultcolor')
-            this.currentColor = this.colorInput.value
-
-            const colors = [...this.colorInput.children]
-            appendPreloadLinks(
-                colors.flatMap(color => makeLinks(this.#prefix, color.value))
-            )
-            const defaultColor = colors.find(
-                child => child.value === this.defaultColor
-            )
-            if (defaultColor) {
-                defaultColor.setAttribute('selected', true)
-                this.productAccent.classList.add(`${defaultColor.value}-before`)
-                this.currentColor = defaultColor.value // set currentColor
-            }
+            this.currentColor = this.color
 
             // Initial updates
-            this.updateStatus()
+            this.preloadImages()
+                .updateStatus()
                 .updateCartBtnQty()
                 .updateColorOptionText()
                 .updateSizeOptionText()
@@ -70,20 +58,18 @@ export default function product() {
                 this.updateStatus().updateSizeOptionText()
             )
             this.quantityInput.addEventListener('change', () => {
-                const value = Number(this.quantityInput.value)
                 this.quantityInput.value =
-                    value < this.currentItem.quantity
-                        ? value
+                    this.quantity < this.currentItem.quantity
+                        ? this.quantity
                         : this.currentItem.quantity
                 this.setProductPriceText()
             })
             this.quantityInput.addEventListener('blur', () => {
-                const value = Number(this.quantityInput.value)
                 this.quantityInput.value =
-                    value <= 0
+                    this.quantity <= 0
                         ? 1
-                        : value < this.currentItem.quantity
-                        ? value
+                        : this.quantity < this.currentItem.quantity
+                        ? this.quantity
                         : this.currentItem.quantity
                 this.setProductPriceText()
             })
@@ -103,10 +89,17 @@ export default function product() {
             requestAnimationFrame(
                 () =>
                     (this.priceText.textContent = `$${Math.abs(
-                        Number(this.quantityInput.value) *
-                            this.currentItem.price
+                        this.quantity * this.currentItem.price
                     )}`)
             )
+        }
+
+        get color() {
+            return this.colorInput.value
+        }
+
+        get quantity() {
+            return Number(this.quantityInput.value)
         }
 
         get currentItem() {
@@ -115,21 +108,34 @@ export default function product() {
                 return (this.#currentItem = state.inv.find(
                     item =>
                         item.type ===
-                        `${this.#prefix}-${this.colorInput.value}-${
-                            this.sizeInput.value
-                        }`
+                        `${this.#prefix}-${this.color}-${this.sizeInput.value}`
                 ))
             }
             return this.#currentItem
         }
 
+        preloadImages(
+            colors = [...this.colorInput.children],
+            defaultColor = colors.find(
+                child => child.value === this.defaultColor
+            )
+        ) {
+            appendPreloadLinks(
+                colors.flatMap(color => makeLinks(this.#prefix, color.value))
+            )
+            defaultColor.setAttribute('selected', true)
+            this.productAccent.classList.add(`${defaultColor.value}-before`)
+            this.currentColor = defaultColor.value // set currentColor
+            return this
+        }
+
         setImage() {
-            if (!this.currentItem) return
-            setAttributes(this.productImage, {
-                src: this.currentItem.images['sm_a'],
-                hovered: this.currentItem.images['sm_b'],
-                fullsrc: this.currentItem.images['lg_a'],
-            })
+            this.currentItem &&
+                setAttributes(this.productImage, {
+                    src: this.currentItem.images['sm_a'],
+                    hovered: this.currentItem.images['sm_b'],
+                    fullsrc: this.currentItem.images['lg_a'],
+                })
         }
 
         createNotificationSuccess() {
@@ -169,17 +175,21 @@ export default function product() {
             })
         }
 
-        handleAddToCart() {
-            const value = Number(this.quantityInput.value)
-            const { type, quantity } = this.currentItem
-            if (quantity - value < 0 || !quantity)
-                return this.createNotificationFailure()
+        itemsOfCurrentType(type) {
+            return [
+                state.cart.find(i => i.type === type),
+                state.inv.find(i => i.type === type),
+            ]
+        }
 
-            const item = state.cart.find(i => i.type == type)
-            const invItem = state.inv.find(i => i.type === type)
-
-            return item
-                ? item.quantity + value <= invItem.quantity
+        handleAddToCart(
+            { type, quantity } = this.currentItem,
+            [cartItem, invItem] = this.itemsOfCurrentType(type)
+        ) {
+            quantity - this.quantity < 0 || !quantity
+                ? this.createNotificationFailure()
+                : cartItem
+                ? cartItem.quantity + this.quantity <= invItem.quantity
                     ? this.updateCartItem().createNotificationSuccess()
                     : this.createNotificationFailure()
                 : this.addNewCartItem().createNotificationSuccess()
@@ -191,8 +201,7 @@ export default function product() {
                     i.type === this.currentItem.type
                         ? {
                               ...i,
-                              quantity:
-                                  i.quantity + Number(this.quantityInput.value),
+                              quantity: i.quantity + this.quantity,
                           }
                         : i
                 )
@@ -203,18 +212,21 @@ export default function product() {
             state.cart = cart =>
                 cart.concat({
                     ...this.currentItem,
-                    quantity: Number(this.quantityInput.value),
+                    quantity: this.quantity,
                 })
             return this
         }
 
-        updateCartBtnQty() {
+        updateCartBtnQty(
+            newQuantity = state.cart.reduce(
+                (acc, item) => acc + item.quantity,
+                0
+            )
+        ) {
             requestAnimationFrame(() => {
-                const qty = state.cart.reduce(
-                    (acc, item) => acc + item.quantity,
-                    0
-                )
-                this.gotoCartButtonText.textContent = qty ? `(${qty})` : ''
+                this.gotoCartButtonText.textContent = newQuantity
+                    ? `(${newQuantity})`
+                    : ''
             })
             return this
         }
@@ -227,7 +239,7 @@ export default function product() {
         }
 
         inStock() {
-            if (this.currentItem.quantity < Number(this.quantityInput.value))
+            if (this.currentItem.quantity < this.quantity)
                 this.quantityInput.value = this.currentItem.quantity
             this.quantityInput.disabled = false
             this.addToCartButton.disabled = false
@@ -254,10 +266,10 @@ export default function product() {
         updateSizeOptionText() {
             return this.updateOptionText({
                 input: this.sizeInput,
-                alt: this.colorInput.value,
+                alt: this.color,
                 test: ({ child, item }) =>
                     item.type ===
-                    `${this.#prefix}-${this.colorInput.value}-${child.value}`,
+                    `${this.#prefix}-${this.color}-${child.value}`,
             })
         }
 
@@ -272,39 +284,38 @@ export default function product() {
         }
 
         updateStockStatusText() {
-            requestAnimationFrame(
-                () =>
-                    (this.productStatusText.textContent =
-                        this.currentItem.quantity <= 0
-                            ? this.getAttribute('outstock')
-                            : this.currentItem.quantity < 5
-                            ? this.getAttribute('fewleft').replace(
-                                  '|',
-                                  this.currentItem.quantity
-                              )
-                            : this.getAttribute('instock'))
-            )
+            this.productStatusText.textContent =
+                this.currentItem.quantity <= 0
+                    ? this.getAttribute('outstock')
+                    : this.currentItem.quantity < 5
+                    ? this.getAttribute('fewleft').replace(
+                          '|',
+                          this.currentItem.quantity
+                      )
+                    : this.getAttribute('instock')
         }
 
         updateStatus({ inv, currentItem } = state) {
             if (!inv || !this.currentItem) return this
-            if (currentItem) {
-                this.sizeInput.value = currentItem.size
-                this.colorInput.value = currentItem.color
-                state.currentItem = null
-            }
-            this.#needsUpdate = true
-            this.setImage() // must be before updating currentColor
-            this.productAccent.classList.replace(
-                `${this.currentColor}-before`,
-                `${this.colorInput.value}-before`
-            )
-            this.currentColor = this.colorInput.value
-            this.setProductPriceText()
-            this.updateStockStatusText()
-            !this.currentItem || this.currentItem.quantity <= 0
-                ? this.outOfStock()
-                : this.inStock()
+            requestAnimationFrame(() => {
+                if (currentItem) {
+                    this.sizeInput.value = currentItem.size
+                    this.colorInput.value = currentItem.color
+                    state.currentItem = null
+                }
+                this.#needsUpdate = true
+                this.setImage() // must be before updating currentColor
+                this.productAccent.classList.replace(
+                    `${this.currentColor}-before`,
+                    `${this.color}-before`
+                )
+                this.currentColor = this.color
+                this.setProductPriceText()
+                this.updateStockStatusText()
+                !this.currentItem || this.currentItem.quantity <= 0
+                    ? this.outOfStock()
+                    : this.inStock()
+            })
             return this
         }
     }

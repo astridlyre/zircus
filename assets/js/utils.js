@@ -106,7 +106,7 @@ class State {
     }
 
     notify(text, color, onClick) {
-        return this.#notify(text, color, onClick)
+        return this.#notify && this.#notify(text, color, onClick)
     }
 
     set currentNotification(id) {
