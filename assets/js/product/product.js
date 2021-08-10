@@ -100,9 +100,13 @@ export default function product() {
         }
 
         setProductPriceText() {
-            this.priceText.textContent = `$${Math.abs(
-                Number(this.quantityInput.value) * this.currentItem.price
-            )}`
+            requestAnimationFrame(
+                () =>
+                    (this.priceText.textContent = `$${Math.abs(
+                        Number(this.quantityInput.value) *
+                            this.currentItem.price
+                    )}`)
+            )
         }
 
         get currentItem() {
@@ -205,8 +209,13 @@ export default function product() {
         }
 
         updateCartBtnQty() {
-            const qty = state.cart.reduce((acc, item) => acc + item.quantity, 0)
-            this.gotoCartButtonText.textContent = qty ? `(${qty})` : ''
+            requestAnimationFrame(() => {
+                const qty = state.cart.reduce(
+                    (acc, item) => acc + item.quantity,
+                    0
+                )
+                this.gotoCartButtonText.textContent = qty ? `(${qty})` : ''
+            })
             return this
         }
 
@@ -227,15 +236,18 @@ export default function product() {
         }
 
         updateOptionText({ input, test, alt }) {
-            ;[...input.children].forEach(child => {
-                child.textContent = `${
-                    child.textContent.split(' - ')[0]
-                } - (${alt} ${
-                    state.inv.find(item => test({ item, child }))?.quantity > 0
-                        ? this.getAttribute('instock').toLowerCase()
-                        : this.getAttribute('outstock').toLowerCase()
-                })`
-            })
+            requestAnimationFrame(() =>
+                [...input.children].forEach(child => {
+                    child.textContent = `${
+                        child.textContent.split(' - ')[0]
+                    } - (${alt} ${
+                        state.inv.find(item => test({ item, child }))
+                            ?.quantity > 0
+                            ? this.getAttribute('instock').toLowerCase()
+                            : this.getAttribute('outstock').toLowerCase()
+                    })`
+                })
+            )
             return this
         }
 
@@ -259,6 +271,21 @@ export default function product() {
             })
         }
 
+        updateStockStatusText() {
+            requestAnimationFrame(
+                () =>
+                    (this.productStatusText.textContent =
+                        this.currentItem.quantity <= 0
+                            ? this.getAttribute('outstock')
+                            : this.currentItem.quantity < 5
+                            ? this.getAttribute('fewleft').replace(
+                                  '|',
+                                  this.currentItem.quantity
+                              )
+                            : this.getAttribute('instock'))
+            )
+        }
+
         updateStatus({ inv, currentItem } = state) {
             if (!inv || !this.currentItem) return this
             if (currentItem) {
@@ -273,16 +300,8 @@ export default function product() {
                 `${this.colorInput.value}-before`
             )
             this.currentColor = this.colorInput.value
-            this.productStatusText.textContent =
-                this.currentItem.quantity <= 0
-                    ? this.getAttribute('outstock')
-                    : this.currentItem.quantity < 5
-                    ? this.getAttribute('fewleft').replace(
-                          '|',
-                          this.currentItem.quantity
-                      )
-                    : this.getAttribute('instock')
             this.setProductPriceText()
+            this.updateStockStatusText()
             !this.currentItem || this.currentItem.quantity <= 0
                 ? this.outOfStock()
                 : this.inStock()

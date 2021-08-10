@@ -8,7 +8,7 @@ const CANADA_POSTAL_CODE = /^[A-Za-z][0-9][A-Za-z] ?[0-9][A-Za-z][0-9]$/
 const US_ZIP_CODE = /^[0-9]{5}(-[0-9]{4})?$/
 
 export default function payment() {
-    const formText = intText.checkout.formText
+    const { formText } = intText.checkout
     shippingInputs({ shippingTypes })
     initStripe()
 
@@ -38,16 +38,11 @@ export default function payment() {
 
             // Render Items
             this.renderCartItems()
-            this.populateSelects(
-                this.formCountry,
-                Object.keys(state.countries),
-                item => item
-            )
-            this.handleCountry()
+            requestAnimationFrame(() => this.handleCountry())
 
             // Add event listeners
             this.formCountry.addEventListener('input', () =>
-                this.handleCountry()
+                requestAnimationFrame(() => this.handleCountry())
             )
             this.formState.addEventListener('input', () => this.setTotals())
             this.formZip.addEventListener('input', e => {
@@ -67,7 +62,7 @@ export default function payment() {
 
         disconnectedCallback() {
             this.formCountry.removeEventListener('input', () =>
-                this.handleCountry()
+                requestAnimationFrame(() => this.handleCountry())
             )
             this.formState.removeEventListener('input', () => this.setTotals())
             this.formZip.removeEventListener('input', e => {
@@ -85,23 +80,25 @@ export default function payment() {
         }
 
         setTotals() {
-            const shipping = Number(
-                shippingTypes[this.shippingInputs.value]?.price
-            )
-            const subtotal = state.cart.reduce(
-                (acc, item) => acc + item.price * item.quantity,
-                0
-            )
-            const tax =
-                (subtotal + shipping) *
-                calculateTax(this.formCountry.value, this.formState.value)
-            const total = subtotal + tax
+            requestAnimationFrame(() => {
+                const shipping = Number(
+                    shippingTypes[this.shippingInputs.value]?.price
+                )
+                const subtotal = state.cart.reduce(
+                    (acc, item) => acc + item.price * item.quantity,
+                    0
+                )
+                const tax =
+                    (subtotal + shipping) *
+                    calculateTax(this.formCountry.value, this.formState.value)
+                const total = subtotal + tax
 
-            // Set text
-            this.checkoutSubtotal.textContent = `$${subtotal.toFixed(2)}`
-            this.checkoutShipping.textContent = `$${shipping.toFixed(2)}`
-            this.checkoutTax.textContent = `$${tax.toFixed(2)}`
-            this.checkoutTotal.textContent = `$${total.toFixed(2)}`
+                // Set text
+                this.checkoutSubtotal.textContent = `$${subtotal.toFixed(2)}`
+                this.checkoutShipping.textContent = `$${shipping.toFixed(2)}`
+                this.checkoutTax.textContent = `$${tax.toFixed(2)}`
+                this.checkoutTotal.textContent = `$${total.toFixed(2)}`
+            })
         }
 
         renderCartItems() {
@@ -115,15 +112,18 @@ export default function payment() {
         }
 
         populateSelects(select, data = [], fn) {
-            select.textContent = '' // clear children
-            data.forEach(item => {
-                select.appendChild(
-                    new ZircusElement('option', null, {
-                        value: fn(item),
-                    })
-                        .addChild(fn(item))
-                        .render()
-                )
+            requestAnimationFrame(() => {
+                select.textContent = '' // clear children
+                data.forEach((item, i) => {
+                    select.appendChild(
+                        new ZircusElement('option', null, {
+                            value: fn(item),
+                            selected: i === 0,
+                        })
+                            .addChild(fn(item))
+                            .render()
+                    )
+                })
             })
         }
 

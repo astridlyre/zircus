@@ -3,10 +3,12 @@ import intText from './intText.js'
 
 const notify = lang => {
     const title = intText.redirect[lang]
-    const link = new ZircusElement('a', 'notification__text', {
-        href: `/${lang}`,
-        title,
-    }).addChild(title)
+    const link = new ZircusElement('zircus-router-link').addChild(
+        new ZircusElement('a', 'notification__text', {
+            href: `/${lang}`,
+            title,
+        }).addChild(title)
+    )
 
     const prefix = new ZircusElement('span', [
         'notification__prefix',

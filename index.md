@@ -2,7 +2,7 @@
 lang: en
 ref: home
 layout: home
-title: zircus
+title: zircus underwear
 bottom_image: /assets/img/products/1920/closeup-a-1920.jpg
 heading: queer owned & sewn
 description: "Queer owned & sewn underwear from Vancouver Island"

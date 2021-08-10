@@ -20,7 +20,7 @@ export default function modal() {
             this.#template = this.querySelector('template')
             this.appendChild(this.#modal)
             state.setModal(modal => {
-                this.show(modal)
+                requestAnimationFrame(() => this.show(modal))
                 return {
                     setActive: value => (this.isActive = value),
                     close: () => this.hide(),
@@ -29,19 +29,21 @@ export default function modal() {
         }
 
         set isActive({ value, spinning = false }) {
-            this.#isActive = value
-            if (spinning) {
-                this.#okText.classList.add('hidden')
-                this.#spinner.classList.remove('hidden')
-            } else if (!spinning) {
-                this.#okText.classList.remove('hidden')
-                this.#spinner.classList.add('hidden')
-            }
-            if (this.#isActive) {
-                this.#okButton.disabled = false
-            } else {
-                this.#okButton.disabled = true
-            }
+            requestAnimationFrame(() => {
+                this.#isActive = value
+                if (spinning) {
+                    this.#okText.classList.add('hidden')
+                    this.#spinner.classList.remove('hidden')
+                } else if (!spinning) {
+                    this.#okText.classList.remove('hidden')
+                    this.#spinner.classList.add('hidden')
+                }
+                if (this.#isActive) {
+                    this.#okButton.disabled = false
+                } else {
+                    this.#okButton.disabled = true
+                }
+            })
         }
 
         get isActive() {
@@ -49,11 +51,13 @@ export default function modal() {
         }
 
         hide() {
-            this.#modal.textContent = ''
-            blur.classList.remove('blur')
-            nav.classList.remove('blur')
-            document.body.classList.remove('hide-y')
-            this.classList.add('hidden')
+            requestAnimationFrame(() => {
+                this.#modal.textContent = ''
+                blur.classList.remove('blur')
+                nav.classList.remove('blur')
+                document.body.classList.remove('hide-y')
+                this.classList.add('hidden')
+            })
         }
 
         show({ content, ok, heading, cancel }) {

@@ -58,7 +58,9 @@ export default function notification() {
 
         set isHidden(value) {
             this.#isHidden = value
-            this.#isHidden ? this.hide() : this.show()
+            requestAnimationFrame(() =>
+                this.#isHidden ? this.hide() : this.show()
+            )
         }
 
         show() {
