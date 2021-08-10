@@ -4,6 +4,8 @@ export const q = x => document.getElementById(x)
 // Production API
 export const API_ENDPOINT = 'https://zircus.herokuapp.com/api'
 
+const ONE_DAY = 86_400_000
+
 // Local Testing API
 // export const API_ENDPOINT = 'http://localhost:3000/api'
 
@@ -20,9 +22,19 @@ class State {
     #notification
     #modal
     #state
+    #lastUpdated
 
     constructor() {
         this.#state = JSON.parse(localStorage.getItem('state')) || {}
+        this.#lastUpdated = this.#state.lastUpdated
+
+        if (!this.#lastUpdated || Date.now() - this.#lastUpdated > ONE_DAY) {
+            this.#state = {
+                lastUpdated: Date.now(),
+            }
+            localStorage.setItem('state', JSON.stringify(this.#state))
+        }
+
         this.#notification = null
         this.#notify = null
         this.#modal = null

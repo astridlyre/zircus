@@ -31,7 +31,7 @@ export default function router() {
             if (oldValue === newValue) return
             if (name === 'page') {
                 this.navigate(newValue)
-                this.#currentPage.focus()
+                this.#currentPage?.focus()
             }
         }
 

@@ -46,9 +46,9 @@ export default () => {
         attributeChangedCallback(name, _, newValue) {
             switch (name) {
                 case 'alt':
-                    return (this.#imageElement.alt = alt)
+                    return (this.#imageElement?.alt = alt)
                 case 'title':
-                    return this.#imageElement.setAttribute('title', newValue)
+                    return this.#imageElement?.setAttribute('title', newValue)
             }
         }
 
