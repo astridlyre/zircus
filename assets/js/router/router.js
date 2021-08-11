@@ -16,14 +16,16 @@ export default function router() {
     class Router extends HTMLElement {
         #currentPage
         #lang
+        #pushState = true
 
         connectedCallback() {
             this.#lang = lang()
             this.#currentPage = this.querySelector('main')
 
-            window.addEventListener('popstate', () =>
+            window.addEventListener('popstate', () => {
+                this.#pushState = false
                 this.setAttribute('page', window.location.href)
-            )
+            })
             document.addEventListener('preload', event =>
                 this.loadPage(event.detail)
             )
@@ -41,12 +43,13 @@ export default function router() {
             if (oldValue === newValue) return
             if (name === 'page') {
                 this.navigate(newValue)
+                this.#pushState = true
                 this.#currentPage?.focus()
             }
         }
 
         navigate(href) {
-            history.pushState(null, null, href)
+            this.#pushState && history.pushState(null, null, href)
             this.changePage()
         }
 

@@ -63,7 +63,6 @@ export default function cartProduct() {
             }
 
             this.#description.textContent = `${this.name} (${this.item.size})`
-            this.#actionsContainer.classList.remove('hidden')
             this.#price.textContent = `$${this.item.price * this.item.quantity}`
 
             setAttributes(this.#quantity, {

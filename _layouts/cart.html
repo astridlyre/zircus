@@ -14,7 +14,7 @@ layout: default
           </div>
         </a>
       </zircus-router-link>
-      <div class="cart__product_inputs hidden">
+      <div class="cart__product_inputs">
         <span class="cart__product_price"></span>
         <label for=""
           ><span>{{ page.label_quantity }}</span>
@@ -38,15 +38,13 @@ layout: default
       </div>
     </template>
     <div id="cart-products">
-      <p id="cart-products-none" class="dot hidden">
-        {{ page.label_no_items }}
-      </p>
+      <p id="cart-products-none" class="dot">{{ page.label_no_items }}</p>
     </div>
     <div class="cart__total">
       <ul class="cart__total_prices">
         <li class="cart__total_price bold">
           <span class="text">{{ page.label_subtotal }}:</span
-          ><span class="cart__total_price_item" id="cart-subtotal"></span>
+          ><span class="cart__total_price_item" id="cart-subtotal">$0.00</span>
         </li>
       </ul>
     </div>

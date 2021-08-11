@@ -38,15 +38,10 @@ export default function cart() {
         }
 
         updateSubtotal() {
-            requestAnimationFrame(() => {
-                this.subtotalText.textContent = `$${state.cart
-                    .reduce(
-                        (acc, item) => (acc += item.price * item.quantity),
-                        0
-                    )
-                    .toFixed(2)}`
-                return this.enableButtons() // Check if button should be enabled
-            })
+            this.subtotalText.textContent = `$${state.cart
+                .reduce((acc, item) => (acc += item.price * item.quantity), 0)
+                .toFixed(2)}`
+            return this.enableButtons() // Check if button should be enabled
         }
 
         renderCartProducts() {
