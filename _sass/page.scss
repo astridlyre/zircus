@@ -130,4 +130,12 @@ main {
 
 #blur {
   width: 100%;
+
+  &.blur {
+    user-select: none;
+
+    a {
+      user-select: none !important;
+    }
+  }
 }

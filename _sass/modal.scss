@@ -12,11 +12,27 @@
 
   &__text {
     margin: var(--base-spacing) 0;
+
+    &.flex {
+      display: flex;
+      gap: var(--base-spacing);
+      justify-content: space-between;
+
+      span {
+        flex-basis: 12rem;
+        flex-grow: 1;
+        display: block;
+      }
+
+      span ~ span {
+        text-align: right;
+      }
+    }
   }
 
   &__container {
     color: var(--dark);
-    @include res('md') {
+    @include res("md") {
       padding: var(--md-spacing);
     }
     padding: var(--base-spacing);
@@ -40,9 +56,12 @@
     flex-flow: row wrap;
     gap: var(--base-spacing);
 
-    button {
-      flex-basis: 8rem;
+    .grow {
+      flex-basis: 12rem;
       flex-grow: 1;
+    }
+    button {
+      min-width: 12rem;
     }
   }
 }

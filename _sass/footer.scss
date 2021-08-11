@@ -4,19 +4,18 @@
   width: 100%;
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--two-col-gap);
-  padding: 5rem 0;
-
   @include res("sm") {
     grid-template-columns: 1fr 1fr;
   }
+  gap: var(--two-col-gap);
+  padding: var(--y-padding) 0;
 
-  @include res("md") {
-    padding: 5rem 0;
-  }
+  &__container {
+    margin-bottom: var(--y-padding);
 
-  @include res("xl") {
-    padding: 5rem 0;
+    hr {
+      border-color: var(--dgray-60);
+    }
   }
 
   h4 {
@@ -24,37 +23,42 @@
     font-style: normal;
     padding-bottom: 0.75rem;
     margin-bottom: 0.75rem;
-    border-bottom: 1px solid var(--light);
+    border-bottom: 2px solid var(--dgray-60);
     display: inline-block;
   }
 
   p {
     font-size: var(--small-font-size);
-    max-width: 20rem;
   }
 
   .right {
+    flex-basis: 24rem;
+    flex-grow: 1;
+    flex-shrink: 1;
     display: flex;
     flex-flow: column nowrap;
     justify-content: flex-end;
-    margin-left: auto;
-
-    @include res("sm") {
-      max-width: 33vw;
-      align-items: flex-end;
+    @include res("md") {
+      max-width: 24rem;
     }
   }
 
-  aside {
-    margin-top: var(--md-spacing);
+  .left {
+    flex-basis: 16rem;
+    flex-grow: 1;
+    @include res("md") {
+      max-width: 16rem;
+    }
+  }
+
+  &__payment {
     display: flex;
-    flex-flow: row wrap;
-    align-items: center;
-    justify-content: flex-start;
+    width: 100%;
+    justify-content: center;
     gap: var(--base-spacing);
 
-    @include res("sm") {
-      justify-content: flex-end;
+    svg {
+      max-width: 3rem;
     }
   }
 }
@@ -87,9 +91,13 @@
 .footer_social {
   display: flex;
   align-items: center;
+  @include res("sm") {
+    justify-content: flex-end;
+  }
   font-size: 0.9rem;
   font-weight: 600;
   line-height: 1.2;
+  margin-top: var(--md-spacing) !important;
   margin-right: -0.5rem;
   margin-bottom: -0.5rem;
   gap: var(--base-unit);

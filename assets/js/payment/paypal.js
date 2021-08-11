@@ -17,7 +17,8 @@ const paypalStyle = {
     color: 'black',
     layout: 'horizontal',
     label: 'paypal',
-    height: 42,
+    height: 48,
+    tagline: false,
 }
 
 export default function initPaypal() {
@@ -62,10 +63,13 @@ export default function initPaypal() {
                 en: 'Please continue payment through PayPal order page:',
                 fr: 'Continuez votre order sur le site PayPal:',
             })
+            this.#message.textContent = `Calculated Total: ${
+                document.querySelector('#checkout-total').innerText
+            }`
             container.appendChild(template)
             state.showModal({
                 content: container,
-                heading: this.getAttribute('heading'),
+                heading: this.getAttribute('name'),
                 ok: {
                     text: this.getAttribute('canceltext'),
                     title: this.getAttribute('canceltext'),
@@ -90,7 +94,10 @@ export default function initPaypal() {
                 purchase_units: [
                     {
                         amount: {
-                            value: '77.44',
+                            value: state.cart.reduce(
+                                (acc, item) => acc + item.price * item.quantity,
+                                0
+                            ),
                         },
                     },
                 ],

@@ -1,4 +1,40 @@
-import { state, ZircusElement } from '../utils.js'
+import { setAttributes, state, ZircusElement } from '../utils.js'
+
+const disableElements = () => {
+    const blur = document.querySelector('#blur')
+    const nav = document.querySelector('zircus-nav-desktop')
+    const navMobile = document.querySelector('zircus-nav-mobile')
+    const toTopButton = document.querySelector('zircus-to-top-button')
+    const footer = document.querySelector('.footer__container')
+    const skipButton = document.querySelector('zircus-skip-to-content')
+
+    let els = []
+
+    for (const parent of [
+        blur,
+        nav,
+        navMobile,
+        toTopButton,
+        footer,
+        skipButton,
+    ]) {
+        const inputs = parent.querySelectorAll('input')
+        const buttons = parent.querySelectorAll('button')
+        const selects = parent.querySelectorAll('select')
+        const links = parent.querySelectorAll('a')
+        els = els.concat([...inputs, ...buttons, ...selects, ...links])
+    }
+
+    for (let i = 0; i < els.length; i++) {
+        els[i].setAttribute('tabindex', -1)
+    }
+
+    return () => {
+        for (let i = 0; i < els.length; i++) {
+            els[i].removeAttribute('tabindex')
+        }
+    }
+}
 
 export default function modal() {
     class Modal extends HTMLElement {
@@ -11,6 +47,7 @@ export default function modal() {
         #heading
         #spinner
         #template
+        #enable
 
         connectedCallback() {
             this.#modal = new ZircusElement('div', 'modal__container').render()
@@ -18,6 +55,7 @@ export default function modal() {
             this.appendChild(this.#modal)
             state.setModal(modal => {
                 requestAnimationFrame(() => this.show(modal))
+                this.#enable = disableElements()
                 return {
                     setActive: value => (this.isActive = value),
                     close: () => this.hide(),
@@ -49,6 +87,7 @@ export default function modal() {
 
         hide() {
             requestAnimationFrame(() => {
+                if (typeof this.#enable === 'function') this.#enable()
                 this.#modal.textContent = ''
                 document.getElementById('blur').classList.remove('blur')
                 document.getElementById('nav').classList.remove('blur')
@@ -67,6 +106,7 @@ export default function modal() {
             this.#spinner = template.querySelector('#modal-spinner')
 
             this.#heading.textContent = heading
+            this.#heading.setAttribute('aria-hidden', false)
 
             if (typeof content === 'string')
                 this.#content.appendChild(
@@ -78,7 +118,11 @@ export default function modal() {
                 this.#content.appendChild(content)
 
             this.#okText.textContent = ok.text
-            this.#okButton.setAttribute('title', ok.title)
+            setAttributes(this.#okButton, {
+                title: ok.title,
+                'aria-hidden': false,
+            })
+
             this.#okButton.addEventListener(
                 'click',
                 () => {
@@ -104,9 +148,13 @@ export default function modal() {
             this.#modal.appendChild(template)
 
             if (cancel) {
-                this.#cancelButton.classList.remove('hidden')
+                this.#okButton.classList.add('grow')
+                this.#cancelButton.classList.replace('hidden', 'grow')
                 this.#cancelButton.textContent = cancel.text
-                this.#cancelButton.setAttribute('title', cancel.title)
+                setAttributes(this.#cancelButton, {
+                    title: cancel.title,
+                    'aria-hidden': false,
+                })
                 this.#cancelButton.addEventListener(
                     'click',
                     () => {

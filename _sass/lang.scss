@@ -22,6 +22,7 @@
     padding: var(--input-padding);
     box-shadow: var(--box-shadow-sm);
     visibility: hidden;
+    min-height: var(--btn-height);
 
     &.top {
       top: calc(var(--md-spacing) + 0.1rem);

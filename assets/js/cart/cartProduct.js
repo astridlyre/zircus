@@ -34,7 +34,6 @@ export default function cartProduct() {
             this.#removeButton = this.#template.querySelector('button')
             this.#actionsContainer = this.#template.querySelector('.hidden')
             this.classList.add('cart__product')
-            this.#description.textContent = `${this.name} (${this.item.size})`
 
             // Set atttributes
             setAttributes(this.#link, {
@@ -58,9 +57,12 @@ export default function cartProduct() {
             )
 
             // If no actions, we're done
-            if (!this.getAttribute('withactions'))
+            if (!this.getAttribute('withactions')) {
+                this.#description.textContent = `${this.name} (${this.item.size}) x ${this.item.quantity}`
                 return this.appendChild(this.#template)
+            }
 
+            this.#description.textContent = `${this.name} (${this.item.size})`
             this.#actionsContainer.classList.remove('hidden')
             this.#price.textContent = `$${this.item.price * this.item.quantity}`
 
