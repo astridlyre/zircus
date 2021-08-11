@@ -77,6 +77,6 @@
   X-Frame-Options = "DENY"
   X-XSS-Protection = "1; mode=block"
   X-Content-Type-Options = "nosniff"
-  Content-Security-Policy = "default-src 'self' https://fonts.gstatic.com https://js.stripe.com https://www.paypal.com https://zircus.herokuapp.com *.cloudfront.net; img-src 'self' *.cloudfront.net data:; script-src 'self' https://js.stripe.com/ https://www.sandbox.paypal.com/ https://www.paypal.com/ *cloudfront.net;"
+  Content-Security-Policy = "default-src 'self' https://fonts.gstatic.com https://js.stripe.com https://www.paypal.com https://zircus.herokuapp.com *.cloudfront.net; img-src 'self' *.cloudfront.net data:; script-src 'self' https://js.stripe.com/ https://www.sandbox.paypal.com/ https://www.paypal.com/ *.cloudfront.net;"
   Cache-Control = "public, max-age=86400, immutable"
 

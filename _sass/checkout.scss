@@ -94,6 +94,7 @@ zircus-paypal {
   .paypal-button {
     background-color: var(--dark);
     width: 10rem;
+    height: var(--btn-height);
     border-radius: var(--radius);
     display: flex;
     justify-content: center;
