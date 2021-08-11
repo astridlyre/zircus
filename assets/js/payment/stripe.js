@@ -8,9 +8,9 @@ import {
     ZircusElement,
 } from '../utils.js'
 
-const stripe = Stripe(
+const src = 'https://js.stripe.com/v3/'
+const CLIENT_ID =
     'pk_test_51J93KzDIzwSFHzdzCZtyRcjMvw8em0bhnMrVmkBHaMFHuc2nkJ156oJGNxuz0G7W4Jx0R6OCy2nBXYTt6U8bSYew00PIAPcntP'
-)
 
 const stripeStyle = {
     base: {
@@ -40,6 +40,8 @@ export default function initStripe() {
         #paymentPrice
         #resultMessage
         #cardElement
+        #stripeLoaded
+        #stripe
 
         connectedCallback() {
             this.classList.add('stripe-payment-form')
@@ -71,8 +73,44 @@ export default function initStripe() {
 
             this.#formElement.addEventListener('form-submit', event => {
                 event.detail.method === 'stripe' &&
-                    this.createPaymentIntent(event.detail.formData)
+                    (this.#stripeLoaded && this.#stripe
+                        ? this.createPaymentIntent(event.detail.formData)
+                        : createNotificationFailure(`Stripe not yet loaded!`))
             })
+            this.loadScript()
+                .then(res => {
+                    res.ok
+                        ? (this.#stripeLoaded = true)
+                        : createNotificationFailure(res.error.message)
+                })
+                .then(() => (this.#stripe = Stripe(CLIENT_ID)))
+        }
+
+        disconnectedCallback() {
+            const scriptElement = document.getElementById('stripe-script')
+            scriptElement && scriptElement.remove()
+        }
+
+        async loadScript() {
+            return new Promise((resolve, reject) => {
+                const scriptElement = new ZircusElement('script', null, {
+                    src,
+                    type: 'text/javascript',
+                    async: true,
+                    id: 'stripe-script',
+                }).render()
+                document.head.appendChild(scriptElement)
+                scriptElement.addEventListener('load', () =>
+                    resolve({ ok: true })
+                )
+                scriptElement.addEventListener('error', () =>
+                    reject({
+                        error: `Failed to load Stripe from: ${src}`,
+                    })
+                )
+            }).catch(e =>
+                createNotificationFailure(`Load script failure: ${e.message}`)
+            )
         }
 
         disconnectedCallback() {
@@ -164,7 +202,7 @@ export default function initStripe() {
         loadStripe(data, setActive) {
             setActive({ value: false })
             if (this.#isLoaded) return
-            const elements = stripe.elements()
+            const elements = this.#stripe.elements()
             const card = elements.create('card', { style: stripeStyle })
             card.mount('#stripe-card-element')
             card.on('change', event => {
@@ -185,7 +223,7 @@ export default function initStripe() {
 
         payWithCard({ setActive, setCustomClose }) {
             setActive({ value: false, spinning: true })
-            return stripe
+            return this.#stripe
                 .confirmCardPayment(this.#secret, {
                     payment_method: { card: this.#card },
                 })

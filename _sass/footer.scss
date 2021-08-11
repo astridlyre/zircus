@@ -39,6 +39,7 @@
     flex-flow: column nowrap;
     justify-content: flex-end;
     @include res("md") {
+      margin-left: auto;
       max-width: 24rem;
     }
   }
@@ -101,6 +102,13 @@
   margin-right: -0.5rem;
   margin-bottom: -0.5rem;
   gap: var(--base-unit);
+
+
+  &_icon {
+    height: var(--base-spacing);
+    width: var(--base-spacing);
+    color: var(--light);
+  }
 
   a {
     color: var(--light);
