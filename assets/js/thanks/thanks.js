@@ -16,7 +16,7 @@ customer support, or if you have any questions, please contact us at
 <p>
 Merci, <span id="user-name">${name}</span>! Votre commande a été reçue et vous
 devrait obtenir un courriel de confirmation (envoyé à
-<span id="user-email">${email}</span>) dans quelques minutes avec vos informations
+<kbd id="user-email">${email}</kbd>) dans quelques minutes avec vos informations
 de commande. Votre numéro de commande est <kbd id="order-id">${orderId}</kbd>. Une
 fois votre commande expédiée, vous recevrez un numéro de suivi, ainsi qu'un
 lien pour voir l'état de votre commande. Dans le cas des soutien à la

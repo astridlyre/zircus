@@ -7,6 +7,7 @@ import {
     createNotificationSuccess,
     ZircusElement,
 } from '../utils.js'
+import withAsyncScript from './withAsyncScript.js'
 
 const src = 'https://js.stripe.com/v3/'
 const CLIENT_ID =
@@ -45,31 +46,8 @@ export default function initStripe() {
 
         connectedCallback() {
             this.classList.add('stripe-payment-form')
+            this.mountElements()
             this.#formElement = document.querySelector('zircus-checkout-form')
-            this.#modal = new ZircusElement('div').render()
-            this.#textContainer = new ZircusElement(
-                'div',
-                'stripe-payment-form-text'
-            ).render()
-            this.#paymentPrice = new ZircusElement('span', null, {
-                id: 'stripe-payment-price',
-            }).render()
-            this.#resultMessage = new ZircusElement(
-                'span',
-                ['result-message', 'hidden'],
-                { id: 'stripe-result-message' }
-            ).render()
-            this.#cardElement = new ZircusElement(
-                'div',
-                ['stripe-payment-form-card', 'hidden'],
-                { id: 'stripe-card-element' }
-            ).render()
-
-            this.#textContainer.appendChild(this.#paymentPrice)
-            this.#textContainer.appendChild(this.#resultMessage)
-            this.#modal.appendChild(this.#textContainer)
-            this.#modal.appendChild(this.#cardElement)
-            this.appendChild(this.#modal)
 
             this.#formElement.addEventListener('form-submit', event => {
                 event.detail.method === 'stripe' &&
@@ -77,7 +55,7 @@ export default function initStripe() {
                         ? this.createPaymentIntent(event.detail.formData)
                         : createNotificationFailure(`Stripe not yet loaded!`))
             })
-            this.loadScript()
+            this.loadScript({ src, id: 'stripe-script' })
                 .then(res => {
                     res.ok
                         ? (this.#stripeLoaded = true)
@@ -87,35 +65,9 @@ export default function initStripe() {
         }
 
         disconnectedCallback() {
-            const scriptElement = document.getElementById('stripe-script')
-            scriptElement && scriptElement.remove()
-        }
-
-        async loadScript() {
-            return new Promise((resolve, reject) => {
-                const scriptElement = new ZircusElement('script', null, {
-                    src,
-                    type: 'text/javascript',
-                    async: true,
-                    id: 'stripe-script',
-                }).render()
-                document.head.appendChild(scriptElement)
-                scriptElement.addEventListener('load', () =>
-                    resolve({ ok: true })
-                )
-                scriptElement.addEventListener('error', () =>
-                    reject({
-                        error: `Failed to load Stripe from: ${src}`,
-                    })
-                )
-            }).catch(e =>
-                createNotificationFailure(`Load script failure: ${e.message}`)
-            )
-        }
-
-        disconnectedCallback() {
             this.#isLoaded = false
             this.#cardElement.classList.add('hidden')
+            this.scriptElement?.remove()
         }
 
         handleCardError({ message = null, setActive }) {
@@ -249,13 +201,42 @@ export default function initStripe() {
                 this.#cardElement.textContent = ''
                 this.#cardElement.classList.add('disabled')
                 this.#resultMessage.textContent = this.getAttribute('success')
-                this.#resultMessage.classList.remove('hidden')
+                this.#resultMessage.classList.replace('hidden', 'green')
             })
             createNotificationSuccess(
                 this.getAttribute('complete').replace('|', state.order.name)
             )
         }
+
+        mountElements() {
+            this.#modal = new ZircusElement('div').render()
+            this.#textContainer = new ZircusElement(
+                'div',
+                'stripe-payment-form-text'
+            ).render()
+            this.#paymentPrice = new ZircusElement('span', null, {
+                id: 'stripe-payment-price',
+            }).render()
+            this.#resultMessage = new ZircusElement(
+                'span',
+                ['result-message', 'hidden'],
+                { id: 'stripe-result-message' }
+            ).render()
+            this.#cardElement = new ZircusElement(
+                'div',
+                ['stripe-payment-form-card', 'hidden'],
+                { id: 'stripe-card-element' }
+            ).render()
+
+            this.#textContainer.appendChild(this.#paymentPrice)
+            this.#textContainer.appendChild(this.#resultMessage)
+            this.#modal.appendChild(this.#textContainer)
+            this.#modal.appendChild(this.#cardElement)
+            this.appendChild(this.#modal)
+        }
     }
+
+    Object.assign(ZircusStripe.prototype, withAsyncScript())
 
     customElements.get('zircus-stripe') ||
         customElements.define('zircus-stripe', ZircusStripe)

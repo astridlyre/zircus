@@ -6,8 +6,11 @@ import {
     createNotificationFailure,
     createNotificationSuccess,
     ZircusElement,
+    calculateTax,
 } from '../utils.js'
 import paypalIcon from './paypalIcon.js'
+import withAsyncScript from './withAsyncScript.js'
+import shippingTypes from './shippingTypes.js'
 
 const CLIENT_ID =
     'Aef4eC1Xxfc-wTn_x-wNgMzYB44l7d61xBmi_xB4E_bSFhYjZHsmQudrj8pMB3dn-BxA_cK227PcBzNv'
@@ -29,7 +32,8 @@ export default function initPaypal() {
         #template
         #text
         #message
-        #paypalLoaded = false
+        #paymentComplete = false
+        #paypalButton
 
         connectedCallback() {
             this.#template = document.querySelector('#paypal-template')
@@ -46,23 +50,18 @@ export default function initPaypal() {
                 )
                 .render()
             this.appendChild(this.#button)
-            this.#formElement.addEventListener('form-submit', event => {
+            this.#formElement.addEventListener('form-submit', async event => {
                 if (event.detail.method === 'paypal') {
-                    return this.loadPaypal({ address: { country: 'Canada' } })
+                    await this.loadPaypal({ address: { country: 'Canada' } })
                         .then(res =>
                             res.ok
-                                ? (this.#paypalLoaded = true)
-                                : createNotificationFailure(res.error)
-                        )
-                        .then(() => {
-                            this.#paypalLoaded
                                 ? this.createPaymentIntent(
                                       event.detail.formData
                                   )
                                 : createNotificationFailure(
                                       `PayPal not yet loaded: ${e.message}`
                                   )
-                        })
+                        )
                         .catch(e =>
                             createNotificationFailure(
                                 `Form submit error: ${e.message}`
@@ -73,35 +72,108 @@ export default function initPaypal() {
         }
 
         disconnectedCallback() {
-            const scriptElement = document.getElementById('paypal-script')
-            scriptElement && scriptElement.remove()
+            this.scriptElement?.remove()
         }
 
         async loadPaypal({ address }) {
-            return new Promise((resolve, reject) => {
-                const scriptElement = new ZircusElement('script', null, {
-                    src: `${src}&currency=${
-                        address.country === 'Canada' ? 'CAD' : 'USD'
-                    }&enable-funding=venmo`,
-                    async: true,
-                    type: 'text/javascript',
-                    id: 'paypal-script',
-                }).render()
-                document.head.appendChild(scriptElement)
-                scriptElement.addEventListener('load', () =>
-                    resolve({ ok: true })
-                )
-                scriptElement.addEventListener('error', () =>
-                    reject({ error: `Error loading PayPal script` })
-                )
-            }).catch(e =>
-                createNotificationFailure(`Loading PayPal: ${e.message}`)
-            )
+            return this.loadScript({
+                src: `${src}&currency=${
+                    address.country === 'Canada' ? 'CAD' : 'USD'
+                }&enable-funding=venmo`,
+                id: 'paypal-script',
+            })
         }
 
         async createPaymentIntent(formData) {
-            const container = document.createElement('div')
+            state.showModal({
+                content: this.mountElements(),
+                heading: this.getAttribute('name'),
+                ok: {
+                    text: this.getAttribute('canceltext'),
+                    title: this.getAttribute('canceltext'),
+                    action: ({ close }) => {
+                        close()
+                        this.#paymentComplete &&
+                            (document.querySelector('zircus-router').page =
+                                withLang({ en: '/thanks', fr: '/fr/merci' }))
+                    },
+                },
+            })
+            requestAnimationFrame(() => {
+                paypal
+                    .Buttons({
+                        style: paypalStyle,
+                        createOrder: (data, actions) =>
+                            this.createOrder(data, actions, formData),
+                        onApprove: (data, actions) =>
+                            this.onApprove(data, actions),
+                    })
+                    .render('#paypal-button')
+            })
+        }
+
+        createOrder(data, actions, formData) {
+            const subtotal =
+                state.cart.reduce(
+                    (acc, item) => acc + item.price * item.quantity,
+                    0
+                ) + shippingTypes[formData.shippingMethod].price
+            const tax =
+                subtotal * calculateTax(formData.country, formData.state)
+            const total = subtotal + tax
+            return actions.order.create({
+                purchase_units: [
+                    {
+                        amount: {
+                            value: total.toFixed(2),
+                        },
+                    },
+                ],
+            })
+        }
+
+        onApprove(data, actions, setCustomClose) {
+            return actions.order
+                .capture()
+                .then(orderData => {
+                    createNotificationSuccess(
+                        this.getAttribute('complete').replace(
+                            '|',
+                            orderData.payer.name.given_name
+                        )
+                    )
+                    return requestAnimationFrame(() => {
+                        this.#text.textContent = this.getAttribute('success')
+                        this.#text.classList.add('green')
+                        this.#paypalButton.textContent = ''
+                        this.#paypalButton.classList.add('disabled')
+                        this.#paymentComplete = true
+                        document.getElementById(
+                            'modal-button-text'
+                        ).textContent = withLang({ en: 'close', fr: 'fermer' })
+                        state.cart = () => []
+                        state.order = {
+                            name: orderData.payer.name.given_name,
+                            email: orderData.payer.email_address,
+                            id: orderData.purchase_units[0].payments.captures[0]
+                                .id,
+                        }
+                    })
+                })
+                .catch(e => {
+                    this.#message.textContent = this.getAttribute('failure')
+                    this.#message.classList.add('red')
+                    createNotificationFailure(`Payment failed: ${e}`)
+                })
+        }
+
+        onError(error) {
+            createNotificationFailure(error)
+        }
+
+        mountElements(parent = document.createElement('div')) {
             const template = this.#template.content.cloneNode(true)
+            this.#paypalButton = template.querySelector('#paypal-button')
             this.#text = template.querySelector('#paypal-text')
             this.#message = template.querySelector('#paypal-message')
             this.#text.textContent = withLang({
@@ -111,59 +183,12 @@ export default function initPaypal() {
             this.#message.textContent = `Calculated Total: ${
                 document.querySelector('#checkout-total').innerText
             }`
-            container.appendChild(template)
-            state.showModal({
-                content: container,
-                heading: this.getAttribute('name'),
-                ok: {
-                    text: this.getAttribute('canceltext'),
-                    title: this.getAttribute('canceltext'),
-                    action: ({ close }) => close(),
-                },
-            })
-            requestAnimationFrame(() => {
-                paypal
-                    .Buttons({
-                        style: paypalStyle,
-                        createOrder: (data, actions) =>
-                            this.createOrder(data, actions),
-                        onApprove: (data, actions) =>
-                            this.onApprove(data, actions),
-                    })
-                    .render('#paypal-button')
-            })
-        }
-
-        createOrder(data, actions) {
-            return actions.order.create({
-                purchase_units: [
-                    {
-                        amount: {
-                            value: state.cart.reduce(
-                                (acc, item) => acc + item.price * item.quantity,
-                                0
-                            ),
-                        },
-                    },
-                ],
-            })
-        }
-
-        onApprove(data, actions) {
-            return actions.order.capture().then(orderData => {
-                console.log(
-                    'Capture result',
-                    orderData,
-                    JSON.stringify(orderData, null, 2)
-                )
-                const transaction =
-                    orderData.purchase_units[0].payments.captures[0]
-                createNotificationSuccess(
-                    `Transaction ${transaction.status}: ${transaction.id}`
-                )
-            })
+            parent.appendChild(template)
+            return parent
         }
     }
+
+    Object.assign(ZircusPayPal.prototype, withAsyncScript())
 
     customElements.get('zircus-paypal') ||
         customElements.define('zircus-paypal', ZircusPayPal)

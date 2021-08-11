@@ -83,7 +83,14 @@
 #paypal-button {
   display: flex;
   justify-content: center;
+  height: var(--btn-height)!important;
+  width: 100%;
 
+  &.disabled {
+    background: var(--gray-30);
+    border-color: var(--gray-50) !important;
+    cursor: not-allowed;
+  }
 }
 
 zircus-paypal {
