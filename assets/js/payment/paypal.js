@@ -148,9 +148,19 @@ export default function initPaypal() {
                         this.#paypalButton.textContent = ''
                         this.#paypalButton.classList.add('disabled')
                         this.#paymentComplete = true
-                        document.getElementById(
-                            'modal-button-text'
-                        ).textContent = withLang({ en: 'close', fr: 'fermer' })
+                        const button =
+                            document.getElementById('modal-button-text')
+                        button.textContent = withLang({
+                            en: 'close',
+                            fr: 'fermer',
+                        })
+                        button.setAttribute(
+                            'title',
+                            withLang({
+                                en: 'Close modal and finish order',
+                                fr: 'Fermez modal et completez votre commande',
+                            })
+                        )
                         state.cart = () => []
                         state.order = {
                             name: orderData.payer.name.given_name,
