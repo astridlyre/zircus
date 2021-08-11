@@ -678,5 +678,48 @@ const countries = {
     },
 }
 
+export function disableElements() {
+    const blur = document.querySelector('#blur')
+    const nav = document.querySelector('zircus-nav-desktop')
+    const navMobile = document.querySelector('zircus-nav-mobile')
+    const toTopButton = document.querySelector('zircus-to-top-button')
+    const footer = document.querySelector('.footer__container')
+    const skipButton = document.querySelector('zircus-skip-to-content')
+
+    let els = []
+
+    for (const parent of [
+        blur,
+        nav,
+        navMobile,
+        toTopButton,
+        footer,
+        skipButton,
+    ]) {
+        const textareas = parent.querySelectorAll('textarea')
+        const inputs = parent.querySelectorAll('input')
+        const buttons = parent.querySelectorAll('button')
+        const selects = parent.querySelectorAll('select')
+        const links = parent.querySelectorAll('a')
+        els = els.concat([
+            ...inputs,
+            ...buttons,
+            ...selects,
+            ...links,
+            ...textareas,
+        ])
+    }
+
+    for (let i = 0; i < els.length; i++) {
+        els[i].setAttribute('tabindex', -1)
+    }
+
+    return () => {
+        for (let i = 0; i < els.length; i++) {
+            els[i].removeAttribute('tabindex')
+        }
+    }
+}
+
 // Set countries
 state.countries = () => countries
