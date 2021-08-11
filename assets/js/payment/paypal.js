@@ -34,6 +34,7 @@ export default function initPaypal() {
         #message
         #paymentComplete = false
         #paypalButton
+        #scriptLoaded
 
         connectedCallback() {
             this.#template = document.querySelector('#paypal-template')
@@ -50,24 +51,14 @@ export default function initPaypal() {
                 )
                 .render()
             this.appendChild(this.#button)
-            this.#formElement.addEventListener('form-submit', async event => {
-                if (event.detail.method === 'paypal') {
-                    await this.loadPaypal({ address: { country: 'Canada' } })
-                        .then(res =>
-                            res.ok
-                                ? this.createPaymentIntent(
-                                      event.detail.formData
-                                  )
-                                : createNotificationFailure(
-                                      `PayPal not yet loaded: ${e.message}`
-                                  )
-                        )
-                        .catch(e =>
-                            createNotificationFailure(
-                                `Form submit error: ${e.message}`
-                            )
-                        )
-                }
+            this.#formElement.addEventListener('form-submit', event => {
+                event.detail.method === 'paypal' &&
+                    (this.#scriptLoaded
+                        ? this.createPaymentIntent(event.detail.formData)
+                        : createNotificationFailure(`Paypal is still loading`))
+            })
+            this.loadPaypal().then(res => {
+                if (res.ok) this.#scriptLoaded = true
             })
         }
 
@@ -75,11 +66,9 @@ export default function initPaypal() {
             this.scriptElement?.remove()
         }
 
-        async loadPaypal({ address }) {
-            return this.loadScript({
-                src: `${src}&currency=${
-                    address.country === 'Canada' ? 'CAD' : 'USD'
-                }&enable-funding=venmo`,
+        async loadPaypal() {
+            return await this.loadScript({
+                src: `${src}&currency=CAD&enable-funding=venmo`,
                 id: 'paypal-script',
             })
         }

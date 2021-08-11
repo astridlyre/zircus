@@ -41,7 +41,6 @@ export default function initStripe() {
         #paymentPrice
         #resultMessage
         #cardElement
-        #stripeLoaded
         #stripe
 
         connectedCallback() {
@@ -51,17 +50,21 @@ export default function initStripe() {
 
             this.#formElement.addEventListener('form-submit', event => {
                 event.detail.method === 'stripe' &&
-                    (this.#stripeLoaded && this.#stripe
+                    (this.#stripe
                         ? this.createPaymentIntent(event.detail.formData)
                         : createNotificationFailure(`Stripe not yet loaded!`))
             })
             this.loadScript({ src, id: 'stripe-script' })
                 .then(res => {
-                    res.ok
-                        ? (this.#stripeLoaded = true)
-                        : createNotificationFailure(res.error.message)
+                    if (res.ok && !res.loaded) {
+                        this.#stripe = Stripe(CLIENT_ID)
+                    }
                 })
-                .then(() => (this.#stripe = Stripe(CLIENT_ID)))
+                .catch(e =>
+                    createNotificationFailure(
+                        `Error loading Stripe: ${e.message}`
+                    )
+                )
         }
 
         disconnectedCallback() {
