@@ -1,6 +1,10 @@
 // Set default font-size
 html {
+  font-size: 16px;
   @include res("xl") {
+    font-size: 18px;
+  }
+  @include res("xxl") {
     font-size: 22px;
   }
   box-sizing: border-box;

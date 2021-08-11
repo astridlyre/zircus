@@ -21,7 +21,7 @@ const paypalStyle = {
     color: 'black',
     layout: 'horizontal',
     label: 'paypal',
-    height: 48,
+    height: window.innerWidth < 1920 ? 44 : window.innerWidth < 2160 ? 50 : 55,
     tagline: false,
 }
 
