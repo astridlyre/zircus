@@ -24,6 +24,10 @@
   background-color: var(--light);
 }
 
+.red {
+  color: var(--red);
+}
+
 .dark {
   color: var(--dark);
 }
@@ -139,6 +143,10 @@
 
 .mb-lg {
   margin-bottom: var(--y-padding) !important;
+}
+
+.mr-1 {
+  margin-right: var(--base-unit);
 }
 
 .hidden {

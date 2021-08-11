@@ -5,6 +5,7 @@ import {
     API_ENDPOINT,
     createNotificationFailure,
     createNotificationSuccess,
+    ZircusElement,
 } from '../utils.js'
 
 const stripe = Stripe(
@@ -33,47 +34,70 @@ export default function initStripe() {
         #isLoaded = false
         #card
         #secret
-
-        constructor() {
-            super()
-            this.classList.add('hidden')
-        }
+        #modal
+        #textContainer
+        #formElement
+        #paymentPrice
+        #resultMessage
+        #cardElement
 
         connectedCallback() {
-            this.formElement = document.querySelector('#checkout-form')
             this.classList.add('stripe-payment-form')
-            this.paymentPrice = this.querySelector('#stripe-payment-price')
-            this.resultMessage = this.querySelector('#result-message')
-            this._cardElement = this.querySelector('#card-element')
+            this.#formElement = document.querySelector('zircus-checkout-form')
+            this.#modal = new ZircusElement('div').render()
+            this.#textContainer = new ZircusElement(
+                'div',
+                'stripe-payment-form-text'
+            ).render()
+            this.#paymentPrice = new ZircusElement('span', null, {
+                id: 'stripe-payment-price',
+            }).render()
+            this.#resultMessage = new ZircusElement(
+                'span',
+                ['result-message', 'hidden'],
+                { id: 'stripe-result-message' }
+            ).render()
+            this.#cardElement = new ZircusElement(
+                'div',
+                ['stripe-payment-form-card', 'hidden'],
+                { id: 'stripe-card-element' }
+            ).render()
 
-            this.formElement.addEventListener(
-                'submit',
-                event => this.createPaymentIntent(event),
-                { once: true }
-            )
+            this.#textContainer.appendChild(this.#paymentPrice)
+            this.#textContainer.appendChild(this.#resultMessage)
+            this.#modal.appendChild(this.#textContainer)
+            this.#modal.appendChild(this.#cardElement)
+            this.appendChild(this.#modal)
+
+            this.#formElement.addEventListener('form-submit', event => {
+                event.detail.method === 'stripe' &&
+                    this.createPaymentIntent(event.detail.formData)
+            })
         }
 
         disconnectedCallback() {
-            this.formElement.removeEventListener('submit', event =>
-                this.createPaymentIntent(event)
-            )
+            this.#isLoaded = false
+            this.#cardElement.classList.add('hidden')
         }
 
-        showError(msg = this.getAttribute('failure'), setActive) {
-            setActive({ value: false })
-            this.resultMessage.textContent = msg
-            this.resultMessage.classList.remove('hidden')
-            this.resultMessage.classList.add('red')
-            setTimeout(() => {
-                this.resultMessage.classList.add('hidden')
-                this.resultMessage.classList.remove('red')
-            }, 5000)
+        handleCardError({ message = null, setActive }) {
+            return message
+                ? requestAnimationFrame(() => {
+                      setActive({ value: false })
+                      this.#resultMessage.textContent = message
+                      this.#resultMessage.classList.remove('hidden')
+                      this.#resultMessage.classList.add('red')
+                  })
+                : requestAnimationFrame(() => {
+                      setActive({ value: true })
+                      this.#resultMessage.classList.add('hidden')
+                      this.#resultMessage.classList.remove('red')
+                  })
         }
 
-        async createPaymentIntent(event) {
-            event.preventDefault()
+        async createPaymentIntent(formData) {
             const { setActive } = state.showModal({
-                content: this,
+                content: this.#modal,
                 heading: this.getAttribute('heading'),
                 ok: {
                     action: cbs => this.payWithCard(cbs),
@@ -81,7 +105,8 @@ export default function initStripe() {
                     title: 'Pay now',
                 },
                 cancel: {
-                    action: ({ close }) => {
+                    action: ({ close, setActive }) => {
+                        this.handleCardError({ setActive })
                         close()
                         if (!state.cart.length)
                             document.querySelector('zircus-router').page =
@@ -92,27 +117,11 @@ export default function initStripe() {
                 },
             })
 
-            requestAnimationFrame(() => this.classList.remove('hidden'))
-            setActive({ value: false, spinning: true })
+            requestAnimationFrame(() => {
+                this.#cardElement.classList.remove('hidden')
+            })
 
-            const formData = [
-                ...new FormData(this.formElement).entries(),
-            ].reduce(
-                (obj, [key, val]) =>
-                    key.startsWith('address-')
-                        ? {
-                              ...obj,
-                              address: {
-                                  ...obj.address,
-                                  [key.replace('address-', '')]: val,
-                              },
-                          }
-                        : {
-                              ...obj,
-                              [key]: val,
-                          },
-                { address: {} }
-            )
+            setActive({ value: false, spinning: true })
 
             const req = {
                 ...formData,
@@ -139,14 +148,15 @@ export default function initStripe() {
                         name: data.name,
                         email: data.email,
                     }
-                    if (data.error) return this.showError(data.error, setActive)
-                    this.paymentPrice.textContent = `Calculated total: $${data.total.toFixed(
+                    if (data.error)
+                        return this.handleCardError(data.error, setActive)
+                    this.#paymentPrice.textContent = `Calculated total: $${data.total.toFixed(
                         2
                     )}`
                     return this.loadStripe(data, setActive)
                 })
                 .catch(e => {
-                    this.showError(e.message, setActive)
+                    this.handleCardError(e.message, setActive)
                     createNotificationFailure(`Payment Intent: ${e.message}`)
                 })
         }
@@ -156,11 +166,17 @@ export default function initStripe() {
             if (this.#isLoaded) return
             const elements = stripe.elements()
             const card = elements.create('card', { style: stripeStyle })
-            card.mount('#card-element')
+            card.mount('#stripe-card-element')
             card.on('change', event => {
                 setActive({ value: !event.empty })
-                event.error?.message &&
-                    this.showError(event.error.message, setActive)
+                if (event.error) {
+                    this.handleCardError({
+                        message: event.error.message,
+                        setActive,
+                    })
+                } else {
+                    this.handleCardError({ message: null, setActive })
+                }
             })
             this.#card = card
             this.#secret = data.clientSecret
@@ -175,7 +191,10 @@ export default function initStripe() {
                 })
                 .then(result => {
                     if (result.error)
-                        return this.showError(result.error.message, setActive)
+                        return this.handleCardError(
+                            result.error.message,
+                            setActive
+                        )
                     return this.orderComplete({ setActive, setCustomClose })
                 })
         }
@@ -189,8 +208,10 @@ export default function initStripe() {
                     text: withLang({ en: 'finish', fr: 'complétez' }),
                     title: withLang({ en: 'finish', fr: 'complétez' }),
                 })
-                this.resultMessage.textContent = this.getAttribute('success')
-                this.resultMessage.classList.remove('hidden')
+                this.#cardElement.textContent = ''
+                this.#cardElement.classList.add('disabled')
+                this.#resultMessage.textContent = this.getAttribute('success')
+                this.#resultMessage.classList.remove('hidden')
             })
             createNotificationSuccess(
                 this.getAttribute('complete').replace('|', state.order.name)

@@ -32,7 +32,7 @@
       flex-grow: 1;
       flex-shrink: 1;
       flex-basis: 16rem;
-    }  
+    }
   }
 
   &__products__container {
@@ -41,25 +41,71 @@
     flex-shrink: 1;
     display: flex;
     flex-flow: row wrap;
+    gap: var(--two-col-gap);
 
-    @include res('lg') {
+    @include res("lg") {
       flex-flow: column nowrap;
     }
   }
 
-  &__products {
-    margin-bottom: var(--base-spacing);
+  &__total {
+    width: 100%;
+    flex-basis: 18rem;
+    @include res("lg") {
+      flex-basis: unset;
+    }
     flex-grow: 1;
+    flex-shrink: 1;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-end;
+  }
+
+  &__products {
+    flex-grow: 1;
+    flex-basis: 18rem;
   }
 
   &__button {
     margin-top: var(--base-spacing);
     display: flex;
+    flex-flow: row wrap;
     justify-content: flex-end;
-  }
+    gap: var(--base-unit);
 
-  &__total {
+    button {
+      height: 42px !important;
+      flex-basis: 12rem;
+      flex-grow: 1;
+    }
+  }
+}
+
+zircus-paypal {
+  display: flex;
+  flex-basis: 12rem;
+  flex-grow: 1;
+
+  .paypal-button {
+    background-color: var(--dark);
+    width: 10rem;
+    border-radius: var(--radius);
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid var(--dark);
+
+    &:focus,
+    &:hover {
+      background-color: var(--dgray-40);
+      border-color: var(--dgray-40);
+      cursor: pointer;
+    }
+
+    img {
+      width: 8rem;
+      height: 1rem;
+      object-fit: contain;
+    }
   }
 }

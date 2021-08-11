@@ -1,6 +1,8 @@
 import { state, ZircusElement, calculateTax, withLang } from '../utils.js'
 import intText from '../int/intText.js'
+import checkoutForm from './form.js'
 import initStripe from './stripe.js'
+import initPaypal from './paypal.js'
 import shippingInputs from './shippingInputs.js'
 import shippingTypes from './shippingTypes.js'
 
@@ -10,9 +12,12 @@ const US_ZIP_CODE = /^[0-9]{5}(-[0-9]{4})?$/
 export default function payment() {
     const { formText } = intText.checkout
     shippingInputs({ shippingTypes })
+    checkoutForm()
     initStripe()
+    initPaypal()
 
     class Payment extends HTMLElement {
+        #form
         #formState
         #formStateLabel
         #formCountry
@@ -24,6 +29,8 @@ export default function payment() {
         #checkoutShipping
         #shippingInputs
         #productList
+        #stripe
+        #paypal
 
         connectedCallback() {
             if (!state.cart.length) {
@@ -41,6 +48,7 @@ export default function payment() {
                     },
                 })
             }
+            this.#form = this.querySelector('#checkout-form')
             this.#formState = this.querySelector('#checkout-state')
             this.#formStateLabel = this.querySelector('#checkout-state-text')
             this.#formCountry = this.querySelector('#checkout-country')
@@ -54,6 +62,24 @@ export default function payment() {
             this.#checkoutShipping = this.querySelector('#checkout-shipping')
             this.#shippingInputs = this.querySelector('zircus-shipping-inputs')
             this.#productList = this.querySelector('#checkout-products')
+
+            const attrs = {
+                heading: this.getAttribute('heading'),
+                buttontext: this.getAttribute('buttontext'),
+                canceltext: this.getAttribute('canceltext'),
+                id: 'stripe-payment-modal',
+                success: this.getAttribute('success'),
+                failure: this.getAttribute('failure'),
+                complete: this.getAttribute('complete'),
+            }
+
+            this.#stripe = new ZircusElement(
+                'zircus-stripe',
+                'stripe-payment-form',
+                attrs
+            ).render()
+
+            this.appendChild(this.#stripe)
 
             // Render Items
             this.renderCartItems()

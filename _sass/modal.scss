@@ -26,14 +26,23 @@
     width: 100%;
     margin: 0 var(--base-unit);
     max-width: 40rem;
+
+    h2 {
+      margin-bottom: var(--base-spacing);
+    }
   }
 
   &_buttons {
-    display: grid;
-    @include res('sm') {
-      grid-template-columns: 1fr 1fr;
+    margin-top: var(--base-spacing);
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+    flex-flow: row wrap;
+    gap: var(--base-spacing);
+
+    button {
+      flex-basis: 8rem;
+      flex-grow: 1;
     }
-    grid-template-columns: 1fr;
-    gap: 1rem;
   }
 }

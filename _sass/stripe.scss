@@ -1,17 +1,32 @@
 .stripe-payment {
   &-form {
     width: 100%;
-    padding: var(--base-spacing) 0;
-    display: flex;
-    flex-flow: column nowrap;
+
+    &-text {
+      margin-bottom: var(--base-spacing);
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: space-between;
+      gap: var(--base-unit);
+
+      span:first-of-type {
+        @include smallSpacedBold();
+      }
+    }
 
     &-card {
       width: 100%;
-      margin-bottom: 1rem;
+      margin-bottom: var(--base-spacing);
       height: var(--btn-height);
       border: 2px solid var(--dark);
       border-radius: var(--radius);
       padding: var(--input-padding);
+
+      &.disabled {
+        background: var(--gray-30);
+        border-color: var(--gray-50) !important;
+        cursor: not-allowed;
+      }
     }
   }
 }
@@ -72,7 +87,8 @@
   animation: loading 2s infinite ease;
 }
 
-.spinner-primary::after, .spinner-primary::before {
+.spinner-primary::after,
+.spinner-primary::before {
   background: var(--gold) !important;
 }
 

@@ -20,6 +20,8 @@ label_subtotal: Subtotal
 label_estimated_tax: Estimated Tax
 label_shipping: Shipping
 label_total: Total
+label_paypal: Pay with PayPal
+label_paypal_title: Complete order with Paypal
 label_pay_with_card: pay with card
 label_pay_with_card_title: Complete order with Stripe
 label_card_details: Enter card details

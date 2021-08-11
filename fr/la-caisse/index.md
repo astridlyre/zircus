@@ -20,6 +20,8 @@ label_form_postal_code: Code postal
 label_subtotal: Sous-total
 label_estimated_tax: Estimation de l'impôt
 label_total: Total
+label_paypayl: Payer avec PayPal
+label_paypal_title: Complétez votre commande avec PayPal
 label_pay_with_card: payer par carte
 label_pay_with_card_title: Complétez votre commande avec Stripe
 label_card_details: Entrez les détails de la carte

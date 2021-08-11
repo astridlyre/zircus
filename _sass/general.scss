@@ -236,3 +236,8 @@ blockquote {
 .dot {
   @include dot();
 }
+
+.icon {
+  width: var(--base-spacing);
+  height: var(--base-spacing);
+}
