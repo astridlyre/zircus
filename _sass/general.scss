@@ -204,6 +204,9 @@ blockquote {
   @include res("xxl") {
     width: 75%;
   }
+  @media screen and (min-width: 3000px) {
+    width: 60%;
+  }
 }
 
 ::-webkit-scrollbar-track {

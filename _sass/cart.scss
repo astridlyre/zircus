@@ -118,12 +118,11 @@
   }
 
   &__buttons {
-    @include flexRow();
-    justify-content: flex-end;
-    gap: 1rem;
-    a {
-      text-decoration: none !important;
-      color: var(--dark) !important;
+    margin-left: auto;
+    width: fit-content;
+
+    button {
+      min-width: 12rem;
     }
   }
 }

@@ -74,11 +74,16 @@
     gap: var(--base-unit);
 
     button {
-      height: 42px !important;
       flex-basis: 12rem;
       flex-grow: 1;
     }
   }
+}
+
+#paypal-button {
+  display: flex;
+  justify-content: center;
+
 }
 
 zircus-paypal {

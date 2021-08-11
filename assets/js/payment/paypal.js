@@ -22,7 +22,6 @@ const paypalStyle = {
 
 export default function initPaypal() {
     class ZircusPayPal extends HTMLElement {
-        #container
         #formElement
         #button
         #template
@@ -111,12 +110,6 @@ export default function initPaypal() {
                     `Transaction ${transaction.status}: ${transaction.id}`
                 )
             })
-        }
-
-        disconnectedCallback() {
-            this.formElement.removeEventListener('submit', event =>
-                this.createPaymentIntent(event)
-            )
         }
     }
 

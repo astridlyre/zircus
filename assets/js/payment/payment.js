@@ -17,7 +17,6 @@ export default function payment() {
     initPaypal()
 
     class Payment extends HTMLElement {
-        #form
         #formState
         #formStateLabel
         #formCountry
@@ -30,7 +29,6 @@ export default function payment() {
         #shippingInputs
         #productList
         #stripe
-        #paypal
 
         connectedCallback() {
             if (!state.cart.length) {
@@ -48,7 +46,6 @@ export default function payment() {
                     },
                 })
             }
-            this.#form = this.querySelector('#checkout-form')
             this.#formState = this.querySelector('#checkout-state')
             this.#formStateLabel = this.querySelector('#checkout-state-text')
             this.#formCountry = this.querySelector('#checkout-country')
