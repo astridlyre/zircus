@@ -202,7 +202,7 @@ export default function initPaypal() {
                         state.order = {
                             name: order.name,
                             email: order.email,
-                            id: order.orderId,
+                            orderId: order.orderId,
                         }
                     })
                 })

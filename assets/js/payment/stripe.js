@@ -16,6 +16,8 @@ const src = 'https://js.stripe.com/v3/'
 const CLIENT_ID =
     'pk_test_51J93KzDIzwSFHzdzCZtyRcjMvw8em0bhnMrVmkBHaMFHuc2nkJ156oJGNxuz0G7W4Jx0R6OCy2nBXYTt6U8bSYew00PIAPcntP'
 
+let stripe = null
+
 const stripeStyle = {
     base: {
         color: '#211b22',
@@ -37,14 +39,12 @@ export default function initStripe() {
     class ZircusStripe extends HTMLElement {
         #isLoaded = false
         #card
-        #secret
         #modal
         #textContainer
         #formElement
         #paymentPrice
         #resultMessage
         #cardElement
-        #stripe
         #setActive
         #setCustomClose
 
@@ -57,7 +57,7 @@ export default function initStripe() {
             this.#formElement.addEventListener('form-submit', event => {
                 const { paymentMethod, formData } = event.detail
                 paymentMethod === 'stripe' &&
-                    (this.#stripe
+                    (stripe
                         ? this.createPaymentIntent({ paymentMethod, formData })
                         : createNotificationFailure(`Stripe not yet loaded!`))
             })
@@ -66,7 +66,7 @@ export default function initStripe() {
             this.loadScript({ src, id: 'stripe-script' })
                 .then(res => {
                     if (res.ok && !res.loaded) {
-                        this.#stripe = Stripe(CLIENT_ID)
+                        stripe = Stripe(CLIENT_ID)
                     }
                 })
                 .catch(error =>
@@ -95,6 +95,8 @@ export default function initStripe() {
                 cancel: {
                     action: ({ close, setActive }) => {
                         this.handleCardError({ setActive })
+                        if (!state.order.completed)
+                            return this.cancelPaymentIntent({ close })
                         close()
                         if (!state.cart.length)
                             document.querySelector('zircus-router').page =
@@ -122,12 +124,8 @@ export default function initStripe() {
             })
                 .then(isJson)
                 .then(isError)
-                .then(data =>
-                    this.updateOrderState({
-                        data,
-                        name: formData.name,
-                        email: formData.email,
-                    })
+                .then(({ order, clientSecret }) =>
+                    this.updateOrderState({ order, clientSecret })
                 )
                 .catch(error => {
                     this.handleCardError({
@@ -139,18 +137,44 @@ export default function initStripe() {
                 })
         }
 
-        updateOrderState({ data, name, email }) {
-            state.secret = data.clientSecret
+        async cancelPaymentIntent({ close }) {
+            close()
+            await fetch(`${API_ENDPOINT}/orders/cancel-payment-intent`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    clientSecret: state.secret,
+                    orderId: state.order.orderId,
+                }),
+            })
+                .then(isJson)
+                .then(isError)
+                .then(() => {
+                    createNotificationSuccess('Canceled Stripe Payment-Intent')
+                })
+                .catch(error => {
+                    createNotificationFailure(
+                        `Unable to cancel Payment Intent: ${error}`
+                    )
+                })
+        }
+
+        updateOrderState({ clientSecret, order }) {
+            const { hasPaid, orderId, name, email, total } = order
+            state.secret = clientSecret
             state.order = {
-                id: data.orderId,
+                completed: hasPaid,
+                orderId,
                 name,
                 email,
             }
-            this.#paymentPrice.textContent = `Calculated total: $${data.total.toFixed(
+            this.#paymentPrice.textContent = `Calculated total: $${total.toFixed(
                 2
             )}`
             this.#setActive({ value: false })
-            return !this.#isLoaded && this.loadStripe({ data })
+            return !this.#isLoaded && this.loadStripe({ clientSecret, orderId })
         }
 
         handleCardError({ message = null } = {}) {
@@ -168,8 +192,8 @@ export default function initStripe() {
                   })
         }
 
-        loadStripe({ data }) {
-            const elements = this.#stripe.elements()
+        loadStripe() {
+            const elements = stripe.elements()
             const card = elements.create('card', { style: stripeStyle })
             card.mount('#stripe-card-element')
             card.on('change', event => {
@@ -183,14 +207,13 @@ export default function initStripe() {
                 }
             })
             this.#card = card
-            this.#secret = data.clientSecret
             this.#isLoaded = true
         }
 
         payWithCard() {
             this.#setActive({ value: false, spinning: true })
-            return this.#stripe
-                .confirmCardPayment(this.#secret, {
+            return stripe
+                .confirmCardPayment(state.secret, {
                     payment_method: { card: this.#card },
                 })
                 .then(result => {
@@ -204,6 +227,7 @@ export default function initStripe() {
             this.#setActive({ value: false, spinning: false })
             state.cart = () => []
             state.secret = null
+            state.order.completed = true
             requestAnimationFrame(() => {
                 this.#setCustomClose({
                     text: withLang({ en: 'finish', fr: 'complétez' }),

@@ -31,14 +31,10 @@ export default function thanks() {
         #text
 
         connectedCallback() {
-            const { order } = state
-            !order && (document.querySelector('zircus-router').page = '/')
+            const { orderId, name, email } = state.order
+            !state.order && (document.querySelector('zircus-router').page = '/')
             this.#text = new ZircusElement('p').render()
-            this.#text.innerHTML = withLang(thanksText)(
-                order.name,
-                order.email,
-                order.id
-            )
+            this.#text.innerHTML = withLang(thanksText)(name, email, orderId)
             this.appendChild(this.#text)
         }
     }
