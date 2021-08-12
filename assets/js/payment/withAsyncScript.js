@@ -5,7 +5,7 @@ export default function withAsyncScript() {
     return {
         async loadScript({ src, type = 'text/javascript', async = true }) {
             return loaded
-                ? Promise.resolve({ loaded })
+                ? Promise.resolve({ ok: true, loaded })
                 : new Promise((resolve, reject) => {
                       this.scriptElement = new ZircusElement('script', null, {
                           src,
@@ -14,8 +14,8 @@ export default function withAsyncScript() {
                       }).render()
                       document.head.appendChild(this.scriptElement)
                       this.scriptElement.addEventListener('load', () => {
+                          resolve({ ok: true, loaded })
                           loaded = true
-                          resolve({ ok: true })
                       })
                       this.scriptElement.addEventListener('error', () =>
                           reject({

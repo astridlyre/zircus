@@ -29,7 +29,7 @@ export default function checkoutForm() {
                 this.dispatchEvent(
                     new CustomEvent('form-submit', {
                         detail: {
-                            method: event.submitter.value,
+                            paymentMethod: event.submitter.value,
                             formData: this.getFormData(),
                         },
                     })

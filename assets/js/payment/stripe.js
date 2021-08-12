@@ -6,6 +6,9 @@ import {
     createNotificationFailure,
     createNotificationSuccess,
     ZircusElement,
+    isJson,
+    isError,
+    createOrderRequest,
 } from '../utils.js'
 import withAsyncScript from './withAsyncScript.js'
 
@@ -42,28 +45,32 @@ export default function initStripe() {
         #resultMessage
         #cardElement
         #stripe
+        #setActive
+        #setCustomClose
 
         connectedCallback() {
             this.classList.add('stripe-payment-form')
             this.mountElements()
             this.#formElement = document.querySelector('zircus-checkout-form')
 
+            // Listen for custom form submission
             this.#formElement.addEventListener('form-submit', event => {
-                event.detail.method === 'stripe' &&
+                const { paymentMethod, formData } = event.detail
+                paymentMethod === 'stripe' &&
                     (this.#stripe
-                        ? this.createPaymentIntent(event.detail.formData)
+                        ? this.createPaymentIntent({ paymentMethod, formData })
                         : createNotificationFailure(`Stripe not yet loaded!`))
             })
+
+            // Load stripe third-party script
             this.loadScript({ src, id: 'stripe-script' })
                 .then(res => {
                     if (res.ok && !res.loaded) {
                         this.#stripe = Stripe(CLIENT_ID)
                     }
                 })
-                .catch(e =>
-                    createNotificationFailure(
-                        `Error loading Stripe: ${e.message}`
-                    )
+                .catch(error =>
+                    createNotificationFailure(`Error loading Stripe: ${error}`)
                 )
         }
 
@@ -73,29 +80,17 @@ export default function initStripe() {
             this.scriptElement?.remove()
         }
 
-        handleCardError({ message = null, setActive }) {
-            return message
-                ? requestAnimationFrame(() => {
-                      setActive({ value: false })
-                      this.#resultMessage.textContent = message
-                      this.#resultMessage.classList.remove('hidden')
-                      this.#resultMessage.classList.add('red')
-                  })
-                : requestAnimationFrame(() => {
-                      setActive({ value: true })
-                      this.#resultMessage.classList.add('hidden')
-                      this.#resultMessage.classList.remove('red')
-                  })
-        }
-
-        async createPaymentIntent(formData) {
+        async createPaymentIntent({ paymentMethod, formData }) {
             const { setActive } = state.showModal({
                 content: this.#modal,
                 heading: this.getAttribute('heading'),
                 ok: {
-                    action: cbs => this.payWithCard(cbs),
+                    action: ({ setCustomClose }) => {
+                        this.#setCustomClose = setCustomClose
+                        this.payWithCard()
+                    },
                     text: this.getAttribute('buttontext'),
-                    title: 'Pay now',
+                    title: this.getAttribute('buttontext'),
                 },
                 cancel: {
                     action: ({ close, setActive }) => {
@@ -109,66 +104,82 @@ export default function initStripe() {
                     title: 'Cancel',
                 },
             })
-
+            this.#setActive = setActive
+            this.#setActive({ value: false, spinning: true })
             requestAnimationFrame(() => {
                 this.#cardElement.classList.remove('hidden')
             })
-
-            setActive({ value: false, spinning: true })
-
-            const req = {
-                ...formData,
-                lang: lang(),
-                update: state.secret,
-                items: state.cart.map(item => ({
-                    type: item.type,
-                    quantity: item.quantity,
-                })),
-            }
 
             return fetch(`${API_ENDPOINT}/orders/create-payment-intent`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(req),
+                body: JSON.stringify({
+                    ...createOrderRequest({ formData, paymentMethod }),
+                    clientSecret: state.secret,
+                }),
             })
-                .then(data => data.json())
-                .then(data => {
-                    state.secret = data.clientSecret
-                    state.order = {
-                        id: data.id,
-                        name: data.name,
-                        email: data.email,
-                    }
-                    if (data.error)
-                        return this.handleCardError(data.error, setActive)
-                    this.#paymentPrice.textContent = `Calculated total: $${data.total.toFixed(
-                        2
-                    )}`
-                    return this.loadStripe(data, setActive)
-                })
-                .catch(e => {
-                    this.handleCardError(e.message, setActive)
-                    createNotificationFailure(`Payment Intent: ${e.message}`)
+                .then(isJson)
+                .then(isError)
+                .then(data =>
+                    this.updateOrderState({
+                        data,
+                        name: formData.name,
+                        email: formData.email,
+                    })
+                )
+                .catch(error => {
+                    this.handleCardError({
+                        message: `Error creating payment intent: ${error}`,
+                    })
+                    createNotificationFailure(
+                        `Error Creating Payment Intent: ${error}`
+                    )
                 })
         }
 
-        loadStripe(data, setActive) {
-            setActive({ value: false })
-            if (this.#isLoaded) return
+        updateOrderState({ data, name, email }) {
+            state.secret = data.clientSecret
+            state.order = {
+                id: data.orderId,
+                name,
+                email,
+            }
+            this.#paymentPrice.textContent = `Calculated total: $${data.total.toFixed(
+                2
+            )}`
+            this.#setActive({ value: false })
+            return !this.#isLoaded && this.loadStripe({ data })
+        }
+
+        handleCardError({ message = null } = {}) {
+            return message
+                ? requestAnimationFrame(() => {
+                      this.#setActive({ value: false })
+                      this.#resultMessage.textContent = message
+                      this.#resultMessage.classList.remove('hidden')
+                      this.#resultMessage.classList.add('red')
+                  })
+                : requestAnimationFrame(() => {
+                      this.#setActive({ value: true })
+                      this.#resultMessage.classList.add('hidden')
+                      this.#resultMessage.classList.remove('red')
+                  })
+        }
+
+        loadStripe({ data }) {
             const elements = this.#stripe.elements()
             const card = elements.create('card', { style: stripeStyle })
             card.mount('#stripe-card-element')
             card.on('change', event => {
-                setActive({ value: !event.empty })
+                this.#setActive({ value: !event.empty })
                 if (event.error) {
                     this.handleCardError({
                         message: event.error.message,
-                        setActive,
                     })
                 } else {
-                    this.handleCardError({ message: null, setActive })
+                    this.handleCardError()
                 }
             })
             this.#card = card
@@ -176,28 +187,25 @@ export default function initStripe() {
             this.#isLoaded = true
         }
 
-        payWithCard({ setActive, setCustomClose }) {
-            setActive({ value: false, spinning: true })
+        payWithCard() {
+            this.#setActive({ value: false, spinning: true })
             return this.#stripe
                 .confirmCardPayment(this.#secret, {
                     payment_method: { card: this.#card },
                 })
                 .then(result => {
                     if (result.error)
-                        return this.handleCardError(
-                            result.error.message,
-                            setActive
-                        )
-                    return this.orderComplete({ setActive, setCustomClose })
+                        return this.handleCardError(result.error.message)
+                    return this.orderComplete()
                 })
         }
 
-        orderComplete({ setActive, setCustomClose }) {
-            setActive({ value: false, spinning: false })
+        orderComplete() {
+            this.#setActive({ value: false, spinning: false })
             state.cart = () => []
             state.secret = null
             requestAnimationFrame(() => {
-                setCustomClose({
+                this.#setCustomClose({
                     text: withLang({ en: 'finish', fr: 'complétez' }),
                     title: withLang({ en: 'finish', fr: 'complétez' }),
                 })

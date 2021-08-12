@@ -2,13 +2,13 @@
 export const q = x => document.getElementById(x)
 
 // Production API
-export const API_ENDPOINT = 'https://zircus.herokuapp.com/api'
+// export const API_ENDPOINT = 'https://zircus.herokuapp.com/api'
 
 const ONE_DAY = 86_400_000
 const FIVE_MINUTES = 300_000
 
 // Local Testing API
-// export const API_ENDPOINT = 'http://localhost:3000/api'
+export const API_ENDPOINT = 'http://localhost:3000/api'
 
 /*
  * State class, exposes two functions, 'set' and 'get'.
@@ -30,10 +30,7 @@ class State {
 
         if (!this.#lastUpdated || Date.now() - this.#lastUpdated > ONE_DAY) {
             localStorage.clear()
-            this.#state = {
-                lastUpdated: Date.now(),
-            }
-            localStorage.setItem('state', JSON.stringify(this.#state))
+            this.#set('lastUpdated', Date.now())
         }
     }
 
@@ -677,6 +674,8 @@ const countries = {
         ],
     },
 }
+// Set countries
+state.countries = () => countries
 
 export function disableElements() {
     const blur = document.querySelector('#blur')
@@ -721,5 +720,38 @@ export function disableElements() {
     }
 }
 
-// Set countries
-state.countries = () => countries
+export function isJson(data) {
+    return new Promise(async (resolve, reject) => {
+        if (
+            data.headers.has('content-type') &&
+            data.headers.get('content-type').includes('application/json')
+        ) {
+            resolve(await data.json())
+        } else {
+            reject('Data is not JSON!')
+        }
+    })
+}
+
+export function isError(data) {
+    return new Promise(resolve => {
+        if (data.error) {
+            reject(data.error)
+        } else {
+            resolve(data)
+        }
+    })
+}
+
+export function createOrderRequest({ formData, paymentMethod }) {
+    return {
+        ...formData,
+        paymentMethod,
+        lang: lang(),
+        items: state.cart.map(item => ({
+            type: item.type,
+            quantity: item.quantity,
+            price: item.price,
+        })),
+    }
+}

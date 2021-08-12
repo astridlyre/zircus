@@ -1,16 +1,16 @@
 import {
-    lang,
     withLang,
     state,
     API_ENDPOINT,
     createNotificationFailure,
     createNotificationSuccess,
     ZircusElement,
-    calculateTax,
+    createOrderRequest,
+    isJson,
+    isError,
 } from '../utils.js'
 import paypalIcon from './paypalIcon.js'
 import withAsyncScript from './withAsyncScript.js'
-import shippingTypes from './shippingTypes.js'
 
 const CLIENT_ID =
     'Aef4eC1Xxfc-wTn_x-wNgMzYB44l7d61xBmi_xB4E_bSFhYjZHsmQudrj8pMB3dn-BxA_cK227PcBzNv'
@@ -37,26 +37,21 @@ export default function initPaypal() {
         #scriptLoaded
 
         connectedCallback() {
-            this.#template = document.querySelector('#paypal-template')
-            this.#formElement = document.querySelector('zircus-checkout-form')
-            this.#button = new ZircusElement('button', 'paypal-button', {
-                title: this.getAttribute('title'),
-                value: 'paypal',
-                name: this.getAttribute('name'),
-            })
-                .addChild(
-                    new ZircusElement('img', null, {
-                        src: paypalIcon,
-                    })
-                )
-                .render()
-            this.appendChild(this.#button)
+            this.createElements()
+
+            // Listen for custom form submit
             this.#formElement.addEventListener('form-submit', event => {
-                event.detail.method === 'paypal' &&
+                const { paymentMethod, formData } = event.detail
+                paymentMethod === 'paypal' &&
                     (this.#scriptLoaded
-                        ? this.createPaymentIntent(event.detail.formData)
+                        ? this.showModal().mountPayPal({
+                              formData,
+                              paymentMethod,
+                          })
                         : createNotificationFailure(`Paypal is still loading`))
             })
+
+            // Load PayPal third-party script
             this.loadPaypal().then(res => {
                 if (res.ok) this.#scriptLoaded = true
             })
@@ -73,7 +68,7 @@ export default function initPaypal() {
             })
         }
 
-        async createPaymentIntent(formData) {
+        showModal() {
             state.showModal({
                 content: this.mountElements(),
                 heading: this.getAttribute('name'),
@@ -88,48 +83,113 @@ export default function initPaypal() {
                     },
                 },
             })
-            requestAnimationFrame(() => {
+            return this
+        }
+
+        async mountPayPal({ formData, paymentMethod }) {
+            const orderData = createOrderRequest({ formData, paymentMethod })
+            const { amount } = await this.getTotal({ orderData })
+            this.#message.textContent = `Calculated Total: $${amount.value}`
+            requestAnimationFrame(() =>
                 paypal
                     .Buttons({
                         style: paypalStyle,
                         createOrder: (data, actions) =>
-                            this.createOrder(data, actions, formData),
+                            this.createOrder(data, actions, amount),
                         onApprove: (data, actions) =>
-                            this.onApprove(data, actions),
+                            this.onApprove(data, actions, orderData),
                     })
                     .render('#paypal-button')
-            })
+            )
         }
 
-        createOrder(data, actions, formData) {
-            const subtotal =
-                state.cart.reduce(
-                    (acc, item) => acc + item.price * item.quantity,
-                    0
-                ) + shippingTypes[formData.shippingMethod].price
-            const tax =
-                subtotal * calculateTax(formData.country, formData.state)
-            const total = subtotal + tax
+        createOrder(data, actions, amount) {
             return actions.order.create({
                 purchase_units: [
                     {
-                        amount: {
-                            value: total.toFixed(2),
-                        },
+                        amount,
                     },
                 ],
             })
         }
 
-        onApprove(data, actions, setCustomClose) {
+        async getTotal({ orderData }) {
+            return await fetch(`${API_ENDPOINT}/orders/price`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(orderData),
+            })
+                .then(isJson)
+                .then(isError)
+                .catch(error =>
+                    createNotificationFailure(
+                        `Error getting order total: ${error}`
+                    )
+                )
+        }
+
+        async createPaymentIntent({ orderData }) {
+            await fetch(`${API_ENDPOINT}/orders/create-payment-intent`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(orderData),
+            })
+                .then(isJson)
+                .then(isError)
+                .catch(
+                    createNotificationFailure(
+                        `Error creating payment intent: ${error}`
+                    )
+                )
+        }
+
+        changeButtonText() {
+            const button = document.getElementById('modal-button-text')
+            button.textContent = withLang({
+                en: 'close',
+                fr: 'fermer',
+            })
+            button.setAttribute(
+                'title',
+                withLang({
+                    en: 'Close modal and finish order',
+                    fr: 'Fermez modal et completez votre commande',
+                })
+            )
+        }
+
+        onApprove(data, actions, orderData) {
             return actions.order
                 .capture()
-                .then(orderData => {
-                    createNotificationSuccess(
-                        this.getAttribute('complete').replace(
-                            '|',
-                            orderData.payer.name.given_name
+                .then(async res => {
+                    const capture = res.purchase_units[0].payments.captures[0]
+                    const order = await fetch(
+                        `${API_ENDPOINT}/orders/create-payment-intent`,
+                        {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                ...orderData,
+                                orderId: capture.id,
+                                amount: capture.amount,
+                            }),
+                        }
+                    )
+                        .then(isJson)
+                        .then(isError)
+                        .catch(error =>
+                            createNotificationFailure(
+                                `Error creating order: ${error}. Please contact support (Order id: ${capture.id}`
+                            )
                         )
+                    createNotificationSuccess(
+                        this.getAttribute('complete').replace('|', order.name)
                     )
                     return requestAnimationFrame(() => {
                         this.#text.textContent = this.getAttribute('success')
@@ -137,25 +197,12 @@ export default function initPaypal() {
                         this.#paypalButton.textContent = ''
                         this.#paypalButton.classList.add('disabled')
                         this.#paymentComplete = true
-                        const button =
-                            document.getElementById('modal-button-text')
-                        button.textContent = withLang({
-                            en: 'close',
-                            fr: 'fermer',
-                        })
-                        button.setAttribute(
-                            'title',
-                            withLang({
-                                en: 'Close modal and finish order',
-                                fr: 'Fermez modal et completez votre commande',
-                            })
-                        )
+                        this.changeButtonText()
                         state.cart = () => []
                         state.order = {
-                            name: orderData.payer.name.given_name,
-                            email: orderData.payer.email_address,
-                            id: orderData.purchase_units[0].payments.captures[0]
-                                .id,
+                            name: order.name,
+                            email: order.email,
+                            id: order.orderId,
                         }
                     })
                 })
@@ -179,11 +226,25 @@ export default function initPaypal() {
                 en: 'Please continue payment through PayPal order page:',
                 fr: 'Continuez votre order sur le site PayPal:',
             })
-            this.#message.textContent = `Calculated Total: ${
-                document.querySelector('#checkout-total').innerText
-            }`
             parent.appendChild(template)
             return parent
+        }
+
+        createElements() {
+            this.#template = document.querySelector('#paypal-template')
+            this.#formElement = document.querySelector('zircus-checkout-form')
+            this.#button = new ZircusElement('button', 'paypal-button', {
+                title: this.getAttribute('title'),
+                value: 'paypal',
+                name: this.getAttribute('name'),
+            })
+                .addChild(
+                    new ZircusElement('img', null, {
+                        src: paypalIcon,
+                    })
+                )
+                .render()
+            this.appendChild(this.#button)
         }
     }
 
