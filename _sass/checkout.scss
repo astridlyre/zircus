@@ -83,13 +83,19 @@
 #paypal-button {
   display: flex;
   justify-content: center;
-  height: var(--btn-height)!important;
+  height: var(--btn-height) !important;
   width: 100%;
+  background: var(--gray-30);
+  border-color: var(--gray-50) !important;
+  cursor: not-allowed;
+  position: relative;
 
-  &.disabled {
-    background: var(--gray-30);
-    border-color: var(--gray-50) !important;
-    cursor: not-allowed;
+  span {
+    position: absolute;
+    left: calc(50% - 10px);
+    right: calc(50% - 10px);
+    top: 10px;
+
   }
 }
 

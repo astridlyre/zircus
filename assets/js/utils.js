@@ -728,7 +728,7 @@ export function isJson(data) {
         ) {
             resolve(await data.json())
         } else {
-            reject('Data is not JSON!')
+            reject(`Data is not JSON: ${await data.text().substring(0, 12)}...`)
         }
     })
 }

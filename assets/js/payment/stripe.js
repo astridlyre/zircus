@@ -156,7 +156,10 @@ export default function initStripe() {
                 })
                 .catch(error => {
                     createNotificationFailure(
-                        `Unable to cancel Payment Intent: ${error}`
+                        `Unable to cancel Payment Intent: ${error.substring(
+                            0,
+                            12
+                        )}...`
                     )
                 })
         }

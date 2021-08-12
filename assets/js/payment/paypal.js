@@ -41,24 +41,31 @@ export default function initPaypal() {
 
             // Listen for custom form submit
             this.#formElement.addEventListener('form-submit', event => {
-                const { paymentMethod, formData } = event.detail
-                paymentMethod === 'paypal' &&
-                    (this.#scriptLoaded
-                        ? this.showModal().mountPayPal({
-                              formData,
-                              paymentMethod,
-                          })
-                        : createNotificationFailure(`Paypal is still loading`))
+                event.detail.paymentMethod === 'paypal' &&
+                    this.handleSubmit(event.detail)
             })
 
             // Load PayPal third-party script
-            this.loadPaypal().then(res => {
-                if (res.ok) this.#scriptLoaded = true
-            })
+            if (!this.loaded)
+                this.loadPaypal().then(res => {
+                    if (res.ok) this.#scriptLoaded = true
+                })
+            else this.#scriptLoaded = true
         }
 
-        disconnectedCallback() {
-            this.scriptElement?.remove()
+        get loaded() {
+            return (
+                !!document.getElementById('paypal-script') && this.#scriptLoaded
+            )
+        }
+
+        handleSubmit({ paymentMethod, formData }) {
+            return this.#scriptLoaded
+                ? this.showModal().mountPayPal({
+                      formData,
+                      paymentMethod,
+                  })
+                : createNotificationFailure(`PayPal is still loading`)
         }
 
         async loadPaypal() {
@@ -89,28 +96,23 @@ export default function initPaypal() {
         async mountPayPal({ formData, paymentMethod }) {
             const orderData = createOrderRequest({ formData, paymentMethod })
             const { amount } = await this.getTotal({ orderData })
-            this.#message.textContent = `Calculated Total: $${amount.value}`
             requestAnimationFrame(() => {
+                this.#message.textContent = `Calculated Total: $${amount.value}`
                 paypal
                     .Buttons({
                         style: paypalStyle,
-                        createOrder: (data, actions) =>
-                            this.createOrder(data, actions, amount),
+                        createOrder: (_, actions) =>
+                            actions.order.create({
+                                purchase_units: [
+                                    {
+                                        amount,
+                                    },
+                                ],
+                            }),
                         onApprove: (data, actions) =>
                             this.onApprove(data, actions, orderData),
                     })
                     .render('#paypal-button')
-                console.clear()
-            })
-        }
-
-        createOrder(data, actions, amount) {
-            return actions.order.create({
-                purchase_units: [
-                    {
-                        amount,
-                    },
-                ],
             })
         }
 
@@ -131,23 +133,6 @@ export default function initPaypal() {
                 )
         }
 
-        async createPaymentIntent({ orderData }) {
-            await fetch(`${API_ENDPOINT}/orders/create-payment-intent`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(orderData),
-            })
-                .then(isJson)
-                .then(isError)
-                .catch(
-                    createNotificationFailure(
-                        `Error creating payment intent: ${error}`
-                    )
-                )
-        }
-
         changeButtonText() {
             const button = document.getElementById('modal-button-text')
             button.textContent = withLang({
@@ -163,59 +148,69 @@ export default function initPaypal() {
             )
         }
 
-        onApprove(data, actions, orderData) {
+        async createPaymentIntent({ orderData, orderId, amount }) {
+            return await fetch(`${API_ENDPOINT}/orders/create-payment-intent`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    ...orderData,
+                    orderId,
+                    amount,
+                }),
+            })
+                .then(isJson)
+                .then(isError)
+                .catch(error =>
+                    createNotificationFailure(
+                        `Error creating order: ${error}. Please contact support (Order id: ${capture.id}`
+                    )
+                )
+        }
+
+        async handleCapture({ res, orderData }) {
+            const capture = res.purchase_units[0].payments.captures[0]
+            return await this.createPaymentIntent({
+                orderData,
+                orderId: capture.id,
+                amount: capture.amount,
+            })
+                .then(order => this.handleSuccess({ order }))
+                .catch(error =>
+                    createNotificationFailure(`Capture Error: ${error}`)
+                )
+        }
+
+        handleSuccess({ order }) {
+            createNotificationSuccess(
+                this.getAttribute('complete').replace('|', order.name)
+            )
+            return requestAnimationFrame(() => {
+                this.#text.textContent = this.getAttribute('success')
+                this.#text.classList.add('green')
+                this.#paypalButton.textContent = ''
+                this.#paypalButton.classList.add('disabled')
+                this.#paymentComplete = true
+                this.changeButtonText()
+                state.cart = () => []
+                state.order = {
+                    name: order.name,
+                    email: order.email,
+                    orderId: order.orderId,
+                }
+            })
+        }
+
+        onApprove(_, actions, orderData) {
             return actions.order
                 .capture()
-                .then(async res => {
-                    const capture = res.purchase_units[0].payments.captures[0]
-                    const order = await fetch(
-                        `${API_ENDPOINT}/orders/create-payment-intent`,
-                        {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({
-                                ...orderData,
-                                orderId: capture.id,
-                                amount: capture.amount,
-                            }),
-                        }
-                    )
-                        .then(isJson)
-                        .then(isError)
-                        .catch(error =>
-                            createNotificationFailure(
-                                `Error creating order: ${error}. Please contact support (Order id: ${capture.id}`
-                            )
-                        )
-                    createNotificationSuccess(
-                        this.getAttribute('complete').replace('|', order.name)
-                    )
-                    return requestAnimationFrame(() => {
-                        this.#text.textContent = this.getAttribute('success')
-                        this.#text.classList.add('green')
-                        this.#paypalButton.textContent = ''
-                        this.#paypalButton.classList.add('disabled')
-                        this.#paymentComplete = true
-                        this.changeButtonText()
-                        state.cart = () => []
-                        state.order = {
-                            name: order.name,
-                            email: order.email,
-                            orderId: order.orderId,
-                        }
-                    })
-                })
+                .then(async res => await this.handleCapture({ res, orderData }))
                 .catch(e => {
                     this.#message.textContent = this.getAttribute('failure')
                     this.#message.classList.add('red')
                     createNotificationFailure(`Payment failed: ${e}`)
                 })
-        }
-
-        onError(error) {
-            createNotificationFailure(error)
         }
 
         mountElements(parent = document.createElement('div')) {
