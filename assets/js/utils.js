@@ -2,13 +2,13 @@
 export const q = x => document.getElementById(x)
 
 // Production API
-// export const API_ENDPOINT = 'https://zircus.herokuapp.com/api'
+export const API_ENDPOINT = 'https://zircus.herokuapp.com/api'
 
 const ONE_DAY = 86_400_000
 const FIVE_MINUTES = 300_000
 
 // Local Testing API
-export const API_ENDPOINT = 'http://localhost:3000/api'
+// export const API_ENDPOINT = 'http://localhost:3000/api'
 
 /*
  * State class, exposes two functions, 'set' and 'get'.
