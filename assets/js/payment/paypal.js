@@ -90,7 +90,7 @@ export default function initPaypal() {
             const orderData = createOrderRequest({ formData, paymentMethod })
             const { amount } = await this.getTotal({ orderData })
             this.#message.textContent = `Calculated Total: $${amount.value}`
-            requestAnimationFrame(() =>
+            requestAnimationFrame(() => {
                 paypal
                     .Buttons({
                         style: paypalStyle,
@@ -100,7 +100,8 @@ export default function initPaypal() {
                             this.onApprove(data, actions, orderData),
                     })
                     .render('#paypal-button')
-            )
+                console.clear()
+            })
         }
 
         createOrder(data, actions, amount) {
