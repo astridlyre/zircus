@@ -734,7 +734,7 @@ export function isJson(data) {
 }
 
 export function isError(data) {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
         if (data.error) {
             reject(data.error)
         } else {
