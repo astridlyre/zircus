@@ -128,8 +128,7 @@ export default function initStripe() {
       })
         .then(isJson)
         .then(isError)
-        .then(({ error, order, clientSecret }) =>
-          !error &&
+        .then(({ order, clientSecret }) =>
           this.updateOrderState({ order, clientSecret })
         )
         .catch((error) => {

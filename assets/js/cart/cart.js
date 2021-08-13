@@ -1,4 +1,4 @@
-import { setAttributes, state, ZircusElement } from "../utils.js";
+import { state, withLang, ZircusElement } from "../utils.js";
 
 /*
     Cart performs the functions manage the shopping cart.
@@ -18,6 +18,14 @@ export default function cart() {
 
       this.renderCartProducts();
       this.checkoutButton.addEventListener("click", () => this.navigate());
+      document.dispatchEvent(
+        new CustomEvent("preload", {
+          detail: withLang({
+            en: `https://${window.location.hostname}/cart`,
+            fr: `https://${window.location.hostname}/fr/la-caisse`,
+          }),
+        }),
+      );
     }
 
     disconnectedCallback() {
