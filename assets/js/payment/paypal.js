@@ -12,6 +12,7 @@ import {
 import paypalIcon from "./paypalIcon.js";
 import withAsyncScript from "./withAsyncScript.js";
 
+const ENDPOINT = `${API_ENDPOINT}/paypal`;
 const CLIENT_ID =
   "Aef4eC1Xxfc-wTn_x-wNgMzYB44l7d61xBmi_xB4E_bSFhYjZHsmQudrj8pMB3dn-BxA_cK227PcBzNv";
 const src = `https://www.paypal.com/sdk/js?client-id=${CLIENT_ID}`;
@@ -122,7 +123,7 @@ export default function initPaypal() {
     }
 
     async getTotal({ orderData }) {
-      return await fetch(`${API_ENDPOINT}/orders/price`, {
+      return await fetch(`${ENDPOINT}/validate-price`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -155,7 +156,7 @@ export default function initPaypal() {
     }
 
     async createPaymentIntent({ orderData, orderId, amount }) {
-      return await fetch(`${API_ENDPOINT}/orders/create-payment-intent`, {
+      return await fetch(`${ENDPOINT}/create-payment-intent`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

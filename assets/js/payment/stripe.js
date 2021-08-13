@@ -11,6 +11,7 @@ import {
 } from "../utils.js";
 import withAsyncScript from "./withAsyncScript.js";
 
+const ENDPOINT = `${API_ENDPOINT}/stripe/`;
 const src = "https://js.stripe.com/v3/";
 const CLIENT_ID =
   "pk_test_51J93KzDIzwSFHzdzCZtyRcjMvw8em0bhnMrVmkBHaMFHuc2nkJ156oJGNxuz0G7W4Jx0R6OCy2nBXYTt6U8bSYew00PIAPcntP";
@@ -115,7 +116,7 @@ export default function initStripe() {
         this.#cardElement.classList.remove("hidden");
       });
 
-      return await fetch(`${API_ENDPOINT}/orders/create-payment-intent`, {
+      return await fetch(`${ENDPOINT}/create-payment-intent`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -141,7 +142,7 @@ export default function initStripe() {
 
     async cancelPaymentIntent({ close }) {
       close();
-      await fetch(`${API_ENDPOINT}/orders/cancel-payment-intent`, {
+      await fetch(`${ENDPOINT}/stripe/cancel-payment-intent`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
