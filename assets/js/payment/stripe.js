@@ -142,7 +142,7 @@ export default function initStripe() {
 
     async cancelPaymentIntent({ close }) {
       close();
-      await fetch(`${ENDPOINT}/cancel-payment-intent`, {
+      await fetch(`${ENDPOINT}/cancel-payment-intent/${state.order.id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -155,6 +155,7 @@ export default function initStripe() {
         .then(isJson)
         .then(isError)
         .then(() => {
+          state.order = null;
           createNotificationSuccess("Canceled Stripe Payment-Intent");
         })
         .catch((error) => {
@@ -170,13 +171,14 @@ export default function initStripe() {
     }
 
     updateOrderState({ clientSecret, order }) {
-      const { hasPaid, orderId, name, email, total } = order;
+      const { id, hasPaid, orderId, name, email, total } = order;
       state.secret = clientSecret;
       state.order = {
         completed: hasPaid,
         orderId,
         name,
         email,
+        id,
       };
       this.#paymentPrice.textContent = `Calculated total: $${
         total.toFixed(

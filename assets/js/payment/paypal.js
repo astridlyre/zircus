@@ -33,7 +33,6 @@ export default function initPaypal() {
     #template;
     #text;
     #message;
-    #paymentComplete = false;
     #paypalButton;
     #scriptLoaded;
 
@@ -88,11 +87,14 @@ export default function initPaypal() {
           title: this.getAttribute("canceltext"),
           action: ({ close }) => {
             close();
-            this.#paymentComplete &&
-              (document.querySelector("zircus-router").page = withLang({
+            if (state.order.completed) {
+              return document.querySelector("zircus-router").page = withLang({
                 en: "/thanks",
                 fr: "/fr/merci",
-              }));
+              });
+            } else {
+              this.cancelPaymentIntent();
+            }
           },
         },
       }));
@@ -144,11 +146,29 @@ export default function initPaypal() {
             name: data.name,
             email: data.email,
             orderId: data.orderId,
+            id: data.id,
+            completed: data.hasPaid,
           };
           return data.orderId;
         }).catch((error) => {
           createNotificationFailure(error);
         });
+    }
+
+    async cancelPaymentIntent() {
+      return await fetch(
+        `${ENDPOINT}/cancel-payment-intent/${state.order.id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ orderId: state.orderId }),
+        },
+      ).then(isJson).then(isError).then(({ response }) => {
+        state.order = null;
+        createNotificationSuccess(`Payment intent ${response}`);
+      }).catch((error) => createNotificationFailure(`Error: ${error}`));
     }
 
     handleSuccess() {
@@ -160,9 +180,9 @@ export default function initPaypal() {
         this.#text.classList.add("green");
         this.#paypalButton.textContent = "";
         this.#paypalButton.classList.add("disabled");
-        this.#paymentComplete = true;
         this.changeButtonText();
         state.cart = () => [];
+        state.order.completed = true;
       });
     }
 
