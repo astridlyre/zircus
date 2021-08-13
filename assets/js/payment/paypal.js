@@ -151,6 +151,7 @@ export default function initPaypal() {
           };
           return data.orderId;
         }).catch((error) => {
+          state.order = null;
           createNotificationFailure(error);
         });
     }
