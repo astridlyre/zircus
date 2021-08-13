@@ -2,6 +2,8 @@ import {
   API_ENDPOINT,
   createNotificationFailure,
   createNotificationSuccess,
+  isError,
+  isJson,
   lang,
   state,
 } from "../utils.js";
@@ -68,22 +70,22 @@ export default function contact() {
           },
           body: JSON.stringify(formData),
         })
-          .then((res) => {
-            if (!res.ok) throw new Error("Bad Response");
-            return res.json();
-          })
+          .then(isJson)
+          .then(isError)
           .then((data) => {
-            data.error
-              ? this.handleFailure(data.error)
-              : this.handleSuccess(data);
-          })
-          .catch((e) => createNotificationFailure(`Fetch: ${e.message}`))
-          .finally(() => {
+            this.handleSuccess(data);
             this.done();
             els.forEach((el) => {
               el.disabled = false;
               el.value = "";
             });
+          })
+          .catch((error) => {
+            this.done();
+            els.forEach((el) => {
+              el.disabled = false;
+            });
+            createNotificationFailure(error);
           });
       });
     }
@@ -94,7 +96,7 @@ export default function contact() {
         content: error,
         ok: {
           text: contactText[lang()].error[1],
-          title: contactText[lang()].error[2],
+          title: contactText[lang()].error[0],
           action: ({ close }) => close(),
         },
       });
