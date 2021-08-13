@@ -32,6 +32,21 @@ layout: default
                   autocomplete="on"
                   minlength="2"
                   maxlength="140"
+                  pattern="^[A-Za-z][A-Za-z ]+$"
+              /></label>
+              <label for="checkout-phone" class="column"
+                ><span>{{ page.label_form_phone }}</span
+                ><input
+                  type="tel"
+                  name="phone"
+                  value=""
+                  class="input min-w-15"
+                  required
+                  id="checkout-phone"
+                  autocomplete="on"
+                  minlength="12"
+                  maxlength="12"
+                  pattern="^[0-9]{3} [0-9]{3} [0-9]{4}$"
               /></label>
               <label for="checkout-email" class="column"
                 ><span>{{ page.label_form_email }}</span
@@ -119,7 +134,7 @@ layout: default
                   >{{ page.label_form_postal_code }}</span
                 ><input
                   type="text"
-                  name="address-postal_code"
+                  name="address-postalCode"
                   value=""
                   class="input max-w-10"
                   required

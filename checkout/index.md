@@ -10,6 +10,7 @@ label_user: Personal details
 label_address: Address
 label_form_name: Name
 label_form_email: Email
+label_form_phone: Phone
 label_form_address_1: Line 1
 label_form_address_2: Line 2
 label_form_city: City
