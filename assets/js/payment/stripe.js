@@ -142,7 +142,7 @@ export default function initStripe() {
 
     async cancelPaymentIntent({ close }) {
       close();
-      await fetch(`${ENDPOINT}/stripe/cancel-payment-intent`, {
+      await fetch(`${ENDPOINT}/cancel-payment-intent`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

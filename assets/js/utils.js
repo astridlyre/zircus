@@ -725,7 +725,7 @@ export async function isJson(data) {
     return Promise.resolve(await data.json());
   } else {
     return Promise.reject(
-      `Data is not JSON: ${await data.text().substring(0, 12)}...`,
+      `Data is not JSON: ${await data.text()}...`,
     );
   }
 }

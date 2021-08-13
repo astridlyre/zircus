@@ -168,12 +168,7 @@ export default function initPaypal() {
         }),
       })
         .then(isJson)
-        .then(isError)
-        .catch((error) =>
-          createNotificationFailure(
-            `Error creating order: ${error}. Please contact support (Order id: ${capture.id}`,
-          )
-        );
+        .then(isError);
     }
 
     async handleCapture({ res, orderData }) {
@@ -183,7 +178,13 @@ export default function initPaypal() {
         orderId: capture.id,
         amount: capture.amount,
       })
-        .then((order) => this.handleSuccess({ order }))
+        .then((order) => {
+          if (order.error) {
+            throw new Error(order.error);
+          } else {
+            this.handleSuccess({ order });
+          }
+        })
         .catch((error) => createNotificationFailure(`Capture Error: ${error}`));
     }
 
