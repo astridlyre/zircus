@@ -98,46 +98,20 @@ export default function initPaypal() {
       }));
     }
 
-    async mountPayPal({ formData, paymentMethod, close }) {
+    mountPayPal({ formData, paymentMethod }) {
       const orderData = createOrderRequest({ formData, paymentMethod });
-      const { amount } = await this.getTotal({ orderData });
-      if (!amount) return close();
       requestAnimationFrame(() => {
-        this.#message.textContent = `Calculated Total: $${amount.value}`;
+        this.#message.textContent = `Calculated Total: ${
+          document.querySelector("#checkout-total").textContent
+        }`;
         paypal
           .Buttons({
             style: paypalStyle,
-            createOrder: (_, actions) =>
-              actions.order.create({
-                purchase_units: [
-                  {
-                    amount,
-                  },
-                ],
-              }),
-            onApprove: (data, actions) =>
-              this.onApprove(data, actions, orderData),
+            createOrder: () => this.createPaymentIntent({ orderData }),
+            onApprove: (data, actions) => this.onApprove(data, actions),
           })
           .render("#paypal-button");
       });
-    }
-
-    async getTotal({ orderData }) {
-      return await fetch(`${ENDPOINT}/validate-price`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(orderData),
-      })
-        .then(isJson)
-        .then(isError)
-        .catch((error) => {
-          createNotificationFailure(
-            `Form validation failed: ${error}`,
-          );
-          return error;
-        });
     }
 
     changeButtonText() {
@@ -155,42 +129,31 @@ export default function initPaypal() {
       );
     }
 
-    async createPaymentIntent({ orderData, orderId, amount }) {
+    async createPaymentIntent({ orderData }) {
       return await fetch(`${ENDPOINT}/create-payment-intent`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          ...orderData,
-          orderId,
-          amount,
-        }),
+        body: JSON.stringify(orderData),
       })
         .then(isJson)
-        .then(isError);
+        .then(isError)
+        .then((data) => {
+          state.order = {
+            name: data.name,
+            email: data.email,
+            orderId: data.orderId,
+          };
+          return data.orderId;
+        }).catch((error) => {
+          createNotificationFailure(error);
+        });
     }
 
-    async handleCapture({ res, orderData }) {
-      const capture = res.purchase_units[0].payments.captures[0];
-      return await this.createPaymentIntent({
-        orderData,
-        orderId: capture.id,
-        amount: capture.amount,
-      })
-        .then((order) => {
-          if (order.error) {
-            throw new Error(order.error);
-          } else {
-            this.handleSuccess({ order });
-          }
-        })
-        .catch((error) => createNotificationFailure(`Capture Error: ${error}`));
-    }
-
-    handleSuccess({ order }) {
+    handleSuccess() {
       createNotificationSuccess(
-        this.getAttribute("complete").replace("|", order.name),
+        this.getAttribute("complete").replace("|", state.order.name),
       );
       return requestAnimationFrame(() => {
         this.#text.textContent = this.getAttribute("success");
@@ -200,22 +163,18 @@ export default function initPaypal() {
         this.#paymentComplete = true;
         this.changeButtonText();
         state.cart = () => [];
-        state.order = {
-          name: order.name,
-          email: order.email,
-          orderId: order.orderId,
-        };
       });
     }
 
-    onApprove(_, actions, orderData) {
+    onApprove(_, actions) {
       return actions.order
         .capture()
-        .then(async (res) => await this.handleCapture({ res, orderData }))
-        .catch((e) => {
+        .then(() => this.handleSuccess())
+        .catch((error) => {
+          state.order = null;
           this.#message.textContent = this.getAttribute("failure");
           this.#message.classList.add("red");
-          createNotificationFailure(`Payment failed: ${e}`);
+          createNotificationFailure(`Payment failed: ${error}`);
         });
     }
 

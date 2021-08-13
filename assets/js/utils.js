@@ -748,7 +748,6 @@ export function createOrderRequest({ formData, paymentMethod }) {
     items: state.cart.map((item) => ({
       type: item.type,
       quantity: item.quantity,
-      price: item.price,
     })),
   };
 }
