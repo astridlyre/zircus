@@ -1,4 +1,4 @@
-import { createNotificationFailure, ZircusElement } from "../utils.js";
+import { notifyFailure, ZircusElement } from "../utils.js";
 
 // Mixin to asyncronously load a SDK script file
 export default function withAsyncScript() {
@@ -23,7 +23,7 @@ export default function withAsyncScript() {
               error: `Error loading script from ${src}`,
             }));
         }).catch((e) =>
-          createNotificationFailure(`Script loading failed: ${e}`)
+          notifyFailure(`Script loading failed: ${e}`)
         );
     },
   };

@@ -1,4 +1,4 @@
-import { createNotificationFailure, lang } from "../utils.js";
+import { notifyFailure, lang } from "../utils.js";
 
 // Error for RouterNavigation
 class NavigationError extends Error {
@@ -71,7 +71,7 @@ export default class ZircusRouter extends HTMLElement {
       return text;
     } catch (e) {
       cache.delete(url);
-      createNotificationFailure(`Oops! ${e.message}`);
+      notifyFailure(`Oops! ${e.message}`);
     }
   }
 
@@ -91,7 +91,7 @@ export default class ZircusRouter extends HTMLElement {
           lang,
         );
     } catch (e) {
-      createNotificationFailure(`Oops! Network error: ${e.message}`);
+      notifyFailure(`Oops! Network error: ${e.message}`);
       history.back();
     }
   }

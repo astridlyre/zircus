@@ -208,7 +208,7 @@ export const calculateTax = (country, state) => {
   }
 };
 
-export function createNotificationSuccess(content) {
+export function notifySuccess(content) {
   if (typeof content === "string") {
     content = [
       new ZircusElement("span", ["notification__prefix", "green"])
@@ -226,7 +226,7 @@ export function createNotificationSuccess(content) {
   });
 }
 
-export function createNotificationFailure(content) {
+export function notifyFailure(content) {
   return state.notify({
     content: [
       new ZircusElement("span", ["notification__prefix", "red"])
@@ -252,13 +252,13 @@ const getInventory = async () => {
     })
     .then((data) => (state.inv = () => [...data.cf, ...data.pf, ...data.ff]))
     .catch((e) =>
-      createNotificationFailure(`Unable to get inventory: ${e.message}`)
+      notifyFailure(`Unable to get inventory: ${e.message}`)
     );
 };
 
 getInventory(); // Get initial inventory
 setInterval(() => {
-  getInventory().finally(() => createNotificationSuccess("Inventory updated"));
+  getInventory().finally(() => notifySuccess("Inventory updated"));
 }, FIVE_MINUTES); // Check every 5 minutes
 
 export function lang() {

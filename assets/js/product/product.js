@@ -1,7 +1,7 @@
 import {
   appendPreloadLinks,
-  createNotificationFailure,
-  createNotificationSuccess,
+  notifyFailure,
+  notifySuccess,
   setAttributes,
   state,
   withLang,
@@ -141,8 +141,8 @@ export default class Product extends HTMLElement {
       });
   }
 
-  createNotificationSuccess() {
-    return createNotificationSuccess([
+  notifySuccess() {
+    return notifySuccess([
       new ZircusElement("img", "notification__image", {
         src: this.currentItem.images.sm_a,
         alt: this.currentItem.name,
@@ -175,12 +175,12 @@ export default class Product extends HTMLElement {
     [cartItem, invItem] = this.itemsOfCurrentType(type),
   ) {
     quantity - this.quantity < 0 || !quantity
-      ? createNotificationFailure(this.getAttribute("erroradd"))
+      ? notifyFailure(this.getAttribute("erroradd"))
       : cartItem
       ? cartItem.quantity + this.quantity <= invItem.quantity
-        ? this.updateCartItem().createNotificationSuccess()
-        : createNotificationFailure(this.getAttribute("erroradd"))
-      : this.addNewCartItem().createNotificationSuccess();
+        ? this.updateCartItem().notifySuccess()
+        : notifyFailure(this.getAttribute("erroradd"))
+      : this.addNewCartItem().notifySuccess();
   }
 
   updateCartItem() {

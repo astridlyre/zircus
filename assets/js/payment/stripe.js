@@ -1,7 +1,7 @@
 import {
   API_ENDPOINT,
-  createNotificationFailure,
-  createNotificationSuccess,
+  notifyFailure,
+  notifySuccess,
   createOrderRequest,
   isError,
   isJson,
@@ -64,7 +64,7 @@ export default class ZircusStripe extends HTMLElement {
               setButtonState,
             })
           )
-          : createNotificationFailure(`Stripe not yet loaded!`));
+          : notifyFailure(`Stripe not yet loaded!`));
     });
 
     // Load stripe third-party script
@@ -76,7 +76,7 @@ export default class ZircusStripe extends HTMLElement {
           }
         })
         .catch((error) =>
-          createNotificationFailure(`Error loading Stripe: ${error}`)
+          notifyFailure(`Error loading Stripe: ${error}`)
         );
     }
   }
@@ -144,7 +144,7 @@ export default class ZircusStripe extends HTMLElement {
       )
       .catch((error) => {
         closeModal();
-        createNotificationFailure(
+        notifyFailure(
           `Error Creating Payment Intent: ${error}`,
         );
       });
@@ -166,10 +166,10 @@ export default class ZircusStripe extends HTMLElement {
       .then(isError)
       .then(() => {
         state.order = null; // clear order
-        createNotificationSuccess("Canceled Stripe Payment-Intent");
+        notifySuccess("Canceled Stripe Payment-Intent");
       })
       .catch((error) => {
-        createNotificationFailure(
+        notifyFailure(
           `Unable to cancel Payment Intent: ${
             error.substring(
               0,
@@ -261,7 +261,7 @@ export default class ZircusStripe extends HTMLElement {
       this.#resultMessage.textContent = this.getAttribute("success");
       this.#resultMessage.classList.replace("hidden", "green");
     });
-    createNotificationSuccess(
+    notifySuccess(
       this.getAttribute("complete").replace("|", state.order.name),
     );
   }

@@ -1,7 +1,7 @@
 import {
   API_ENDPOINT,
-  createNotificationFailure,
-  createNotificationSuccess,
+  notifyFailure,
+  notifySuccess,
   createOrderRequest,
   isError,
   isJson,
@@ -65,7 +65,7 @@ export default class ZircusPayPal extends HTMLElement {
           closeModal,
         })
       )
-      : createNotificationFailure(`PayPal is still loading`);
+      : notifyFailure(`PayPal is still loading`);
   }
 
   async loadPaypalScript() {
@@ -154,7 +154,7 @@ export default class ZircusPayPal extends HTMLElement {
         // If error creating intent, bail
         state.order = null;
         closeModal(); // Close modal
-        createNotificationFailure(error);
+        notifyFailure(error);
       });
   }
 
@@ -170,12 +170,12 @@ export default class ZircusPayPal extends HTMLElement {
       },
     ).then(isJson).then(isError).then(({ response }) => {
       state.order = null;
-      createNotificationSuccess(`Payment intent ${response}`);
-    }).catch((error) => createNotificationFailure(`Error: ${error}`));
+      notifySuccess(`Payment intent ${response}`);
+    }).catch((error) => notifyFailure(`Error: ${error}`));
   }
 
   handlePaymentSuccess() { // update UI after successful payment
-    createNotificationSuccess(
+    notifySuccess(
       this.getAttribute("complete").replace("|", state.order.name),
     );
     return requestAnimationFrame(() => {
@@ -194,7 +194,7 @@ export default class ZircusPayPal extends HTMLElement {
     state.order = null;
     this.#message.textContent = this.getAttribute("failure");
     this.#message.classList.add("red");
-    createNotificationFailure(`Payment failed: ${error}`);
+    notifyFailure(`Payment failed: ${error}`);
   }
 
   onApprove(_, actions) { // capture payment

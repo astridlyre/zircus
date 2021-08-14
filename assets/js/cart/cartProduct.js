@@ -1,5 +1,6 @@
 import {
   lang,
+  notifySuccess,
   setAttributes,
   state,
   withLang,
@@ -130,7 +131,7 @@ export default class ZircusCartProduct extends HTMLElement {
 
   handleRemoveItem() {
     state.cart = (cart) => cart.filter((i) => i.id !== this.item.id);
-    state.notify(this.createNotificationElements(this.#link.href));
+    notifySuccess(this.createNotificationElements(this.#link.href));
     this.dispatchEvent(new CustomEvent("update-totals"));
     !state.cart.length &&
       this.dispatchEvent(new CustomEvent("render"));
@@ -147,28 +148,25 @@ export default class ZircusCartProduct extends HTMLElement {
   }
 
   createNotificationElements(href) {
-    return {
-      content: [
-        new ZircusElement("img", "notification__image", {
-          src: this.item.images.sm_a,
-          alt: this.name,
-        }).render(),
-        new ZircusElement("zircus-router-link")
-          .addChild(
-            new ZircusElement("a", "notification__text", {
-              href,
-              title: withLang({
-                en: "Go to product page",
-                fr: "Aller au page du produit",
-              }),
-            }).addChild(
-              withLang(removeNotificationText(this.item)),
-            ),
-          )
-          .render(),
-      ],
-      color: "gray",
-    };
+    return [
+      new ZircusElement("img", "notification__image", {
+        src: this.item.images.sm_a,
+        alt: this.name,
+      }).render(),
+      new ZircusElement("zircus-router-link")
+        .addChild(
+          new ZircusElement("a", "notification__text", {
+            href,
+            title: withLang({
+              en: "Go to product page",
+              fr: "Aller au page du produit",
+            }),
+          }).addChild(
+            withLang(removeNotificationText(this.item)),
+          ),
+        )
+        .render(),
+    ];
   }
 }
 

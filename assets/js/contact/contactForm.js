@@ -1,7 +1,7 @@
 import {
   API_ENDPOINT,
-  createNotificationFailure,
-  createNotificationSuccess,
+  notifyFailure,
+  notifySuccess,
   isError,
   isJson,
   lang,
@@ -47,7 +47,7 @@ export default class ZircusContactForm extends HTMLElement {
         ]
       ) {
         if (!element.value.length) {
-          createNotificationFailure(this.getAttribute("fields"));
+          notifyFailure(this.getAttribute("fields"));
           return element.focus();
         }
       }
@@ -86,7 +86,7 @@ export default class ZircusContactForm extends HTMLElement {
           formElements.forEach((element) => {
             element.disabled = false;
           });
-          createNotificationFailure(error);
+          notifyFailure(error);
         });
     });
   }
@@ -101,7 +101,7 @@ export default class ZircusContactForm extends HTMLElement {
         action: ({ closeModal }) => closeModal(),
       },
     });
-    return createNotificationFailure(
+    return notifyFailure(
       `${this.getAttribute("failure")}: ${error.message}`,
     );
   }
@@ -116,7 +116,7 @@ export default class ZircusContactForm extends HTMLElement {
         action: ({ closeModal }) => closeModal(),
       },
     });
-    return createNotificationSuccess(
+    return notifySuccess(
       this.getAttribute("success").replace("|", data.name),
     );
   }
