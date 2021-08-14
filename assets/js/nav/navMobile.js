@@ -1,55 +1,49 @@
 import withCartQty from "./withCartQty.js";
 
-export default function navMobile() {
-  class NavMobile extends HTMLElement {
-    cartLink;
-    #list;
-    #button;
-    #isHidden = true;
+export default class NavMobile extends HTMLElement {
+  cartLink;
+  #list;
+  #button;
+  #isHidden = true;
 
-    constructor() {
-      super();
-      this.classList.add("nav_mobile");
-      this.cartLink = this.querySelector("#cart-link-mobile");
-      this.#list = this.querySelector("#menu-mobile-list");
-      this.#button = this.querySelector("#menu-mobile-btn");
-    }
-
-    connectedCallback() {
-      this.updateCartLink();
-      this.#list.addEventListener("click", (event) => {
-        if (event.target === this.#list) this.isHidden = true;
-      });
-      this.#button.addEventListener(
-        "click",
-        () => (this.isHidden = !this.isHidden),
-      );
-      document.addEventListener("cart-updated", () => this.updateCartLink());
-      document.addEventListener("navigated", () => (this.isHidden = true));
-    }
-
-    set isHidden(value) {
-      this.#isHidden = value;
-      requestAnimationFrame(() => this.#isHidden ? this.hide() : this.show());
-    }
-
-    get isHidden() {
-      return this.#isHidden;
-    }
-
-    // Mobile menu functionality
-    hide() {
-      this.#list.classList.add("hide");
-      // document.body.classList.remove('hide-y')
-    }
-    show() {
-      this.#list.classList.remove("hide");
-      // document.body.classList.add('hide-y')
-    }
+  connectedCallback() {
+    this.classList.add("nav_mobile");
+    this.cartLink = this.querySelector("#cart-link-mobile");
+    this.#list = this.querySelector("#menu-mobile-list");
+    this.#button = this.querySelector("#menu-mobile-btn");
+    this.updateCartLink();
+    this.#list.addEventListener("click", (event) => {
+      if (event.target === this.#list) this.isHidden = true;
+    });
+    this.#button.addEventListener(
+      "click",
+      () => (this.isHidden = !this.isHidden),
+    );
+    document.addEventListener("cart-updated", () => this.updateCartLink());
+    document.addEventListener("navigated", () => (this.isHidden = true));
   }
 
-  Object.assign(NavMobile.prototype, withCartQty());
+  set isHidden(value) {
+    this.#isHidden = value;
+    requestAnimationFrame(() => this.#isHidden ? this.hide() : this.show());
+  }
 
-  customElements.get("zircus-nav-mobile") ||
-    customElements.define("zircus-nav-mobile", NavMobile);
+  get isHidden() {
+    return this.#isHidden;
+  }
+
+  // Mobile menu functionality
+  hide() {
+    this.#list.classList.add("hide");
+    // document.body.classList.remove('hide-y')
+  }
+  show() {
+    this.#list.classList.remove("hide");
+    // document.body.classList.add('hide-y')
+  }
 }
+
+Object.assign(NavMobile.prototype, withCartQty());
+
+customElements.get("zircus-nav-mobile") ||
+  customElements.define("zircus-nav-mobile", NavMobile);

@@ -1,33 +1,27 @@
 import { ZircusElement } from "../utils.js";
 
-export default function SkipToContent() {
-  class SkipButton extends HTMLElement {
-    #button;
+export default class SkipButton extends HTMLElement {
+  #button;
 
-    constructor() {
-      super();
-      this.#button = new ZircusElement("button", [
-        "skip-to-content",
-        "small-spaced-bold",
-      ]).render();
-      this.appendChild(this.#button);
-    }
-
-    focusMain() {
-      document.getElementById("main-content").focus();
-    }
-
-    connectedCallback() {
-      this.#button.setAttribute("title", this.getAttribute("text"));
-      this.#button.textContent = this.getAttribute("text");
-      this.#button.addEventListener("click", this.focusMain);
-    }
-
-    disconnectedCallback() {
-      this.#button.removeEventListener("click", this.focusMain);
-    }
+  connectedCallback() {
+    this.#button = new ZircusElement("button", [
+      "skip-to-content",
+      "small-spaced-bold",
+    ], {
+      title: this.getAttribute("text"),
+    }).event("click", this.focusMain).render();
+    this.appendChild(this.#button);
+    this.#button.textContent = this.getAttribute("text");
   }
 
-  customElements.get("zircus-skip-to-content") ||
-    customElements.define("zircus-skip-to-content", SkipButton);
+  disconnectedCallback() {
+    this.#button.removeEventListener("click", this.focusMain);
+  }
+
+  focusMain() {
+    document.getElementById("main-content").focus();
+  }
 }
+
+customElements.get("zircus-skip-to-content") ||
+  customElements.define("zircus-skip-to-content", SkipButton);
