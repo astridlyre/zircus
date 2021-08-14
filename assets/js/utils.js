@@ -747,7 +747,7 @@ export function isError(data) {
   });
 }
 
-export function createOrderRequest({ formData, paymentMethod }) {
+export function toOrderData({ formData, paymentMethod }) {
   return {
     ...formData,
     paymentMethod,

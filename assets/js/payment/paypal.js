@@ -2,7 +2,7 @@ import {
   API_ENDPOINT,
   notifyFailure,
   notifySuccess,
-  createOrderRequest,
+  toOrderData,
   isError,
   isJson,
   state,
@@ -98,7 +98,7 @@ export default class ZircusPayPal extends HTMLElement {
   }
 
   mountPayPalButton({ formData, paymentMethod, closeModal }) {
-    const orderData = createOrderRequest({ formData, paymentMethod });
+    const orderData = toOrderData({ formData, paymentMethod });
     requestAnimationFrame(() => {
       this.#message.textContent = `Calculated Total: ${
         document.querySelector("#checkout-total").textContent

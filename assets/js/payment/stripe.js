@@ -2,7 +2,7 @@ import {
   API_ENDPOINT,
   notifyFailure,
   notifySuccess,
-  createOrderRequest,
+  toOrderData,
   isError,
   isJson,
   state,
@@ -133,7 +133,7 @@ export default class ZircusStripe extends HTMLElement {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        ...createOrderRequest({ formData, paymentMethod }),
+        ...toOrderData({ formData, paymentMethod }),
         clientSecret: state.secret,
       }),
     })
