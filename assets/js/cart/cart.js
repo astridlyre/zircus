@@ -5,7 +5,7 @@ import { state, withLang, ZircusElement } from "../utils.js";
     Uses the 'state' object to store state in localStorage
     and updates the 'cart' nav-link upon changes.
 */
-export default class Cart extends HTMLElement {
+export default class ZircusCart extends HTMLElement {
   #checkoutButton;
   #subtotalText;
   #cartProductsList;
@@ -20,7 +20,7 @@ export default class Cart extends HTMLElement {
     );
 
     this.renderCartProducts();
-    this.#checkoutButton.addEventListener("click", () => this.navigate());
+    this.#checkoutButton.addEventListener("click", () => this.goToCheckout());
     document.dispatchEvent(
       new CustomEvent("preload", {
         detail: withLang({
@@ -32,57 +32,66 @@ export default class Cart extends HTMLElement {
   }
 
   disconnectedCallback() {
-    this.#checkoutButton.removeEventListener("click", () => this.navigate());
+    this.#checkoutButton.removeEventListener(
+      "click",
+      () => this.goToCheckout(),
+    );
   }
 
-  navigate() {
+  goToCheckout() {
     document.querySelector("zircus-router").page = this.getAttribute(
       "checkoutpath",
     );
   }
 
-  enableButtons() {
+  setCheckoutButtonStatus() {
     return state.cart.length > 0
       ? (this.#checkoutButton.disabled = false)
       : (this.#checkoutButton.disabled = true);
   }
 
-  updateSubtotal() {
+  updateSubtotalText() {
     this.#subtotalText.textContent = `$${
       state.cart
         .reduce((acc, item) => (acc += item.price * item.quantity), 0)
         .toFixed(2)
     }`;
-    return this.enableButtons(); // Check if button should be enabled
+    return this.setCheckoutButtonStatus();
   }
 
   renderCartProducts() {
     !state.cart.length
       ? requestAnimationFrame(() => {
         this.#emptyCartPlaceholder.classList.remove("hidden");
-        this.updateSubtotal();
+        this.updateSubtotalText();
       })
       : requestAnimationFrame(() => {
         const fragment = new DocumentFragment();
         this.#emptyCartPlaceholder.classList.add("hidden");
         state.cart.forEach((item) => {
-          const el = new ZircusElement(
+          const aCartProduct = new ZircusElement(
             "zircus-cart-product",
             null,
             {
               withactions: true,
             },
           ).render();
-          el.item = item;
-          el.addEventListener("update-totals", () => this.updateSubtotal());
-          el.addEventListener("render", () => this.renderCartProducts());
-          fragment.appendChild(el);
+          aCartProduct.item = item;
+          aCartProduct.addEventListener(
+            "update-totals",
+            () => this.updateSubtotalText(),
+          );
+          aCartProduct.addEventListener(
+            "render",
+            () => this.renderCartProducts(),
+          );
+          fragment.appendChild(aCartProduct);
         });
         this.#cartProductsList.appendChild(fragment);
-        this.updateSubtotal();
+        this.updateSubtotalText();
       });
   }
 }
 
 customElements.get("zircus-cart") ||
-  customElements.define("zircus-cart", Cart);
+  customElements.define("zircus-cart", ZircusCart);

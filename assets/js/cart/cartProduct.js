@@ -7,8 +7,9 @@ import {
 } from "../utils.js";
 import intText from "../int/intText.js";
 
-const { removeBtnText, removeNotificationText } = intText.cart;
-export default class CartProduct extends HTMLElement {
+const { removeButtonText, removeNotificationText } = intText.cart;
+
+export default class ZircusCartProduct extends HTMLElement {
   #item;
   #template;
   #link;
@@ -52,62 +53,12 @@ export default class CartProduct extends HTMLElement {
       }),
     );
 
-    // If no actions, we're done
     if (!this.getAttribute("withactions")) {
       this.#description.textContent =
         `${this.name} (${this.item.size}) x ${this.item.quantity}`;
-      return this.appendChild(this.#template);
+    } else {
+      this.addCartProductActions();
     }
-
-    this.#description.textContent = `${this.name} (${this.item.size})`;
-    this.#price.textContent = `$${this.item.price * this.item.quantity}`;
-
-    setAttributes(this.#quantity, {
-      value: this.item.quantity,
-      id: this.item.type,
-      name: `${this.name} ${this.item.size} ${this.item.color}`,
-    });
-
-    this.#label.setAttribute("for", this.item.type);
-
-    this.#quantity.addEventListener("input", () => {
-      this.#quantity.value = Math.max(
-        Math.min(
-          state.inv.find((i) => i.type === this.item.type).quantity,
-          this.quantity,
-        ),
-        1,
-      );
-      state.cart = (cart) =>
-        cart.map((i) =>
-          i.id === this.item.id ? { ...i, quantity: this.quantity } : i
-        );
-      this.#price.textContent = `$${this.item.price * this.quantity}`;
-      this.#removeButton.setAttribute(
-        "title",
-        withLang(
-          removeBtnText({
-            ...this.item,
-            quantity: this.quantity,
-          }),
-        ),
-      );
-      this.dispatchEvent(new CustomEvent("update-totals"));
-    });
-
-    // Add remove button functionality
-    setAttributes(this.#removeButton, {
-      title: withLang(removeBtnText(this.item)),
-      "aria-label": withLang(removeBtnText(this.item)),
-    });
-    this.#removeButton.addEventListener("click", () => {
-      state.cart = (cart) => cart.filter((i) => i.id !== this.item.id);
-      state.notify(this.createNotification(this.#link.href));
-      this.dispatchEvent(new CustomEvent("update-totals"));
-      !state.cart.length &&
-        this.dispatchEvent(new CustomEvent("render"));
-      this.remove();
-    });
     this.appendChild(this.#template);
   }
 
@@ -119,6 +70,73 @@ export default class CartProduct extends HTMLElement {
     return Number(this.#quantity.value);
   }
 
+  set item(item) {
+    this.#item = item;
+  }
+
+  get item() {
+    return this.#item;
+  }
+
+  addCartProductActions() {
+    this.#description.textContent = `${this.name} (${this.item.size})`;
+    this.#price.textContent = `$${this.item.price * this.item.quantity}`;
+
+    // quantity input
+    this.#label.setAttribute("for", this.item.type);
+    setAttributes(this.#quantity, {
+      value: this.item.quantity,
+      id: this.item.type,
+      name: `${this.name} ${this.item.size} ${this.item.color}`,
+    });
+    this.#quantity.addEventListener(
+      "input",
+      (event) => this.handleUpdateItemQuantity(event),
+    );
+
+    // Add remove button functionality
+    setAttributes(this.#removeButton, {
+      title: withLang(removeButtonText(this.item)),
+      "aria-label": withLang(removeButtonText(this.item)),
+    });
+    this.#removeButton.addEventListener("click", () => this.handleRemoveItem());
+  }
+
+  handleUpdateItemQuantity(event) {
+    event.target.value = Math.max( // set value within bounds
+      Math.min(
+        state.inv.find((i) => i.type === this.item.type).quantity,
+        this.quantity,
+      ),
+      1,
+    );
+    state.cart = (cart) =>
+      //update cart quantities
+      cart.map((i) =>
+        i.id === this.item.id ? { ...i, quantity: this.quantity } : i
+      );
+    this.#price.textContent = `$${this.item.price * this.quantity}`;
+    this.#removeButton.setAttribute(
+      "title",
+      withLang(
+        removeButtonText({
+          ...this.item,
+          quantity: this.quantity,
+        }),
+      ),
+    );
+    this.dispatchEvent(new CustomEvent("update-totals"));
+  }
+
+  handleRemoveItem() {
+    state.cart = (cart) => cart.filter((i) => i.id !== this.item.id);
+    state.notify(this.createNotificationElements(this.#link.href));
+    this.dispatchEvent(new CustomEvent("update-totals"));
+    !state.cart.length &&
+      this.dispatchEvent(new CustomEvent("render"));
+    this.remove();
+  }
+
   createLinkHref(item) {
     return `/products/${
       item.name.en
@@ -128,7 +146,7 @@ export default class CartProduct extends HTMLElement {
     }${lang() !== "en" ? `-${lang()}` : ""}.html`;
   }
 
-  createNotification(href) {
+  createNotificationElements(href) {
     return {
       content: [
         new ZircusElement("img", "notification__image", {
@@ -152,15 +170,7 @@ export default class CartProduct extends HTMLElement {
       color: "gray",
     };
   }
-
-  set item(item) {
-    this.#item = item;
-  }
-
-  get item() {
-    return this.#item;
-  }
 }
 
 customElements.get("zircus-cart-product") ||
-  customElements.define("zircus-cart-product", CartProduct);
+  customElements.define("zircus-cart-product", ZircusCartProduct);

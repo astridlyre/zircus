@@ -56,6 +56,7 @@ export default class Product extends HTMLElement {
       "change",
       () => this.updateStatus().updateSizeOptionText(),
     );
+
     this.quantityInput.addEventListener("change", () => {
       this.quantityInput.value = Math.min(
         this.quantity,
@@ -63,6 +64,7 @@ export default class Product extends HTMLElement {
       );
       this.setProductPriceText();
     });
+
     this.quantityInput.addEventListener("blur", () => {
       this.quantityInput.value = Math.max(
         Math.min(this.quantity, this.currentItem.quantity),
@@ -70,26 +72,19 @@ export default class Product extends HTMLElement {
       );
       this.setProductPriceText();
     });
+
     this.sizeInput.addEventListener(
       "change",
       () => this.updateStatus().updateColorOptionText(),
     );
+
     this.addToCartButton.addEventListener(
       "click",
       () => this.handleAddToCart(),
     );
+
     document.addEventListener("inv-updated", () => this.updateStatus());
     document.addEventListener("cart-updated", () => this.updateCartBtnQty());
-  }
-
-  setProductPriceText() {
-    requestAnimationFrame(
-      () => (this.priceText.textContent = `$${
-        Math.abs(
-          this.quantity * this.currentItem.price,
-        )
-      }`),
-    );
   }
 
   get color() {
@@ -110,6 +105,16 @@ export default class Product extends HTMLElement {
       ));
     }
     return this.#currentItem;
+  }
+
+  setProductPriceText() {
+    requestAnimationFrame(
+      () => (this.priceText.textContent = `$${
+        Math.abs(
+          this.quantity * this.currentItem.price,
+        )
+      }`),
+    );
   }
 
   preloadImages(

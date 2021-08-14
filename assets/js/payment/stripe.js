@@ -12,13 +12,13 @@ import {
 import withAsyncScript from "./withAsyncScript.js";
 
 const ENDPOINT = `${API_ENDPOINT}/stripe/`;
-const src = "https://js.stripe.com/v3/";
+const STRIPE_SDK_SRC = "https://js.stripe.com/v3/";
 const CLIENT_ID =
   "pk_test_51J93KzDIzwSFHzdzCZtyRcjMvw8em0bhnMrVmkBHaMFHuc2nkJ156oJGNxuz0G7W4Jx0R6OCy2nBXYTt6U8bSYew00PIAPcntP";
 
 let stripe = null; // A "global" variable, I'm naughty
 
-const stripeStyle = {
+const STRIPE_STYLE = {
   base: {
     color: "#211b22",
     fontFamily: "Nunito, sans-serif",
@@ -36,7 +36,7 @@ const stripeStyle = {
 };
 
 export default class ZircusStripe extends HTMLElement {
-  #isLoaded = false;
+  #isMounted = false;
   #card;
   #modal;
   #textContainer;
@@ -44,11 +44,11 @@ export default class ZircusStripe extends HTMLElement {
   #paymentPrice;
   #resultMessage;
   #cardElement;
-  #setActive;
+  #setButtonState;
 
   connectedCallback() {
     this.classList.add("stripe-payment-form");
-    this.mountElements();
+    this.createInitialElements(); // create modal elements
     this.#formElement = document.querySelector("zircus-checkout-form");
 
     // Listen for custom form submission
@@ -56,20 +56,20 @@ export default class ZircusStripe extends HTMLElement {
       const { paymentMethod, formData } = event.detail;
       paymentMethod === "stripe" &&
         (stripe // if global exists, we're loaded
-          ? this.showModal().then(({ close, setActive }) =>
+          ? this.showModal().then(({ closeModal, setButtonState }) =>
             this.createPaymentIntent({
               paymentMethod,
               formData,
-              close,
-              setActive,
+              closeModal,
+              setButtonState,
             })
           )
           : createNotificationFailure(`Stripe not yet loaded!`));
     });
 
     // Load stripe third-party script
-    if (!this.loaded) {
-      this.loadScript({ src, id: "stripe-script" })
+    if (!this.scriptLoaded) {
+      this.loadScript({ src: STRIPE_SDK_SRC, id: "stripe-script" })
         .then((res) => {
           if (res.ok && !res.loaded) {
             stripe = Stripe(CLIENT_ID); // set global stripe variable
@@ -82,11 +82,11 @@ export default class ZircusStripe extends HTMLElement {
   }
 
   disconnectedCallback() {
-    this.#isLoaded = false;
+    this.#isMounted = false;
     this.#cardElement.classList.add("hidden");
   }
 
-  get loaded() { // Return true if script element exists and global stripe is not null
+  get scriptLoaded() { // Return true if script element exists and global stripe is not null
     return !!document.getElementById("stripe-script") && stripe;
   }
 
@@ -95,23 +95,23 @@ export default class ZircusStripe extends HTMLElement {
       content: this.#modal,
       heading: this.getAttribute("heading"),
       ok: {
-        action: ({ setCustomClose }) => {
-          this.payWithCard({ setCustomClose }); // pay with card
+        action: ({ setCustomCloseText }) => {
+          this.confirmCardPayment({ setCustomCloseText }); // pay with card
         },
         text: this.getAttribute("buttontext"),
         title: this.getAttribute("buttontext"),
       },
       cancel: {
-        action: ({ close, setActive }) => {
-          this.handleCardError({ setActive }); // cancel
-          close();
+        action: ({ closeModal, setButtonState }) => {
+          this.setErrorMessage({ setButtonState }); // cancel
+          closeModal();
           if (state.order.completed && !state.cart.length) {
             return document.querySelector("zircus-router").page = withLang({
               en: "/thanks",
               fr: "/fr/merci",
             });
           }
-          return this.cancelPaymentIntent({ close });
+          return this.cancelPaymentIntent({ closeModal });
         },
         text: this.getAttribute("canceltext"),
         title: this.getAttribute("canceltext"),
@@ -119,9 +119,11 @@ export default class ZircusStripe extends HTMLElement {
     }));
   }
 
-  async createPaymentIntent({ paymentMethod, formData, setActive }) {
-    this.#setActive = setActive; // set private prop because we use this so much
-    this.#setActive({ value: false, spinning: true });
+  async createPaymentIntent(
+    { paymentMethod, formData, setButtonState, closeModal },
+  ) {
+    this.#setButtonState = setButtonState; // set private prop because we use this so much
+    this.#setButtonState({ isActive: false, isSpinning: true });
     requestAnimationFrame(() => {
       this.#cardElement.classList.remove("hidden");
     });
@@ -138,18 +140,18 @@ export default class ZircusStripe extends HTMLElement {
       .then(isJson)
       .then(isError)
       .then(({ order, clientSecret }) =>
-        this.updateOrderState({ order, clientSecret })
+        this.setPendingOrderState({ order, clientSecret })
       )
       .catch((error) => {
-        close();
+        closeModal();
         createNotificationFailure(
           `Error Creating Payment Intent: ${error}`,
         );
       });
   }
 
-  async cancelPaymentIntent({ close }) {
-    close(); // close modal
+  async cancelPaymentIntent({ closeModal }) {
+    closeModal(); // close modal
     await fetch(`${ENDPOINT}/cancel-payment-intent/${state.order.id}`, {
       method: "POST",
       headers: {
@@ -178,7 +180,7 @@ export default class ZircusStripe extends HTMLElement {
       });
   }
 
-  updateOrderState({ clientSecret, order }) {
+  setPendingOrderState({ clientSecret, order }) {
     const { id, hasPaid, orderId, name, email, total, identifier } = order;
     state.secret = clientSecret;
     state.order = {
@@ -194,65 +196,63 @@ export default class ZircusStripe extends HTMLElement {
         2,
       )
     }`;
-    this.#setActive({ value: false });
-    // load mount stripe elements if not loaded
-    return !this.#isLoaded && this.loadStripe({ clientSecret, orderId });
+    this.#setButtonState({ isActive: false });
+    !this.#isMounted && this.mountStripeElements(); // load mount stripe elements if not loaded
   }
 
-  handleCardError({ message = null } = {}) {
+  setErrorMessage({ message = null } = {}) {
     return message
       ? requestAnimationFrame(() => {
-        this.#setActive({ value: false });
+        this.#setButtonState({ isActive: false });
         this.#resultMessage.textContent = message;
         this.#resultMessage.classList.remove("hidden");
         this.#resultMessage.classList.add("red");
       })
       : requestAnimationFrame(() => {
-        this.#setActive({ value: true });
+        this.#setButtonState({ isActive: true });
         this.#resultMessage.classList.add("hidden");
         this.#resultMessage.classList.remove("red");
       });
   }
 
-  loadStripe() {
+  mountStripeElements() {
     const elements = stripe.elements();
-    const card = elements.create("card", { style: stripeStyle });
+    const card = elements.create("card", { style: STRIPE_STYLE });
     card.mount("#stripe-card-element");
     card.on("change", (event) => {
-      this.#setActive({ value: !event.empty });
+      this.#setButtonState({ isActive: !event.empty });
       if (event.error) {
-        this.handleCardError({
+        return this.setErrorMessage({
           message: event.error.message,
         });
-      } else {
-        this.handleCardError();
       }
+      return this.setErrorMessage();
     });
     this.#card = card; // card element
-    this.#isLoaded = true; // stripe is now loaded
+    this.#isMounted = true; // stripe is now loaded
   }
 
-  payWithCard({ setCustomClose }) {
-    this.#setActive({ value: false, spinning: true });
+  confirmCardPayment({ setCustomCloseText }) {
+    this.#setButtonState({ isActive: false, isSpinning: true });
     return stripe
       .confirmCardPayment(state.secret, {
         payment_method: { card: this.#card },
       })
       .then((result) => {
         if (result.error) {
-          return this.handleCardError(result.error.message);
+          return this.setErrorMessage(result.error.message);
         }
-        return this.orderComplete({ setCustomClose });
+        return this.handlePaymentSuccess({ setCustomCloseText });
       });
   }
 
-  orderComplete({ setCustomClose }) {
-    this.#setActive({ value: false, spinning: false });
+  handlePaymentSuccess({ setCustomCloseText }) {
+    this.#setButtonState({ isActive: false, isSpinning: false });
     state.cart = () => [];
     state.secret = null;
     state.order.completed = true;
     requestAnimationFrame(() => {
-      setCustomClose({
+      setCustomCloseText({
         text: withLang({ en: "finish", fr: "complétez" }),
         title: withLang({ en: "finish", fr: "complétez" }),
       });
@@ -266,7 +266,7 @@ export default class ZircusStripe extends HTMLElement {
     );
   }
 
-  mountElements() {
+  createInitialElements() {
     this.#modal = new ZircusElement("div").render();
     this.#textContainer = new ZircusElement(
       "div",
@@ -285,7 +285,6 @@ export default class ZircusStripe extends HTMLElement {
       ["stripe-payment-form-card", "hidden"],
       { id: "stripe-card-element" },
     ).render();
-
     this.#textContainer.appendChild(this.#paymentPrice);
     this.#textContainer.appendChild(this.#resultMessage);
     this.#modal.appendChild(this.#textContainer);

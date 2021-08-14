@@ -1,44 +1,44 @@
 import { lang, ZircusElement } from "../utils.js";
 
-export default class LangLinks extends HTMLElement {
-  #links;
+export default class ZircusLangLinks extends HTMLElement {
+  #langLinks;
 
   connectedCallback() {
-    this.#links = new ZircusElement("ul", "lang__list").render();
-    this.#links.classList.add(this.getAttribute("type"));
-    this.appendChild(this.#links);
-    this.getLangLinks();
+    this.#langLinks = new ZircusElement("ul", "lang__list").render();
+    this.#langLinks.classList.add(this.getAttribute("type"));
+    this.appendChild(this.#langLinks);
+    this.renderLangLinks();
 
     document.addEventListener("navigated", () => {
-      this.#links.textContent = ""; // refresh lang links after navigation
-      this.getLangLinks();
+      this.#langLinks.textContent = ""; // refresh lang links after navigation
+      this.renderLangLinks();
     });
   }
 
-  getLangLinks() {
+  renderLangLinks() {
     this.getAttribute("langs")
       .split(",")
-      .map((lang) => [
-        lang,
+      .map((language) => [
+        language,
         document.querySelector("main").getAttribute(lang),
       ])
-      .forEach(([key, value]) => {
+      .forEach(([language, href]) => {
         const li = document.createElement("li");
-        const link = document.createElement("zircus-router-link");
-        link.active = () => lang() === key;
-        const a = new ZircusElement(
+        const routerLink = document.createElement("zircus-router-link");
+        routerLink.active = () => lang() === language;
+        const anchor = new ZircusElement(
           "a",
           ["small-spaced-bold", "border-hover"],
           {
-            href: value,
+            href,
           },
-        ).addChild(key);
-        link.appendChild(a.render());
-        li.appendChild(link);
-        this.#links.appendChild(li);
+        ).addChild(language);
+        routerLink.appendChild(anchor.render());
+        li.appendChild(routerLink);
+        this.#langLinks.appendChild(li);
       });
   }
 }
 
 customElements.get("zircus-lang-links") ||
-  customElements.define("zircus-lang-links", LangLinks);
+  customElements.define("zircus-lang-links", ZircusLangLinks);

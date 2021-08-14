@@ -16,22 +16,9 @@ export default class Payment extends HTMLElement {
 
   connectedCallback() {
     if (!state.cart.length) {
-      return state.showModal({
-        content: withLang(intText.checkout.modalText).content,
-        heading: withLang(intText.checkout.modalText).heading,
-        ok: {
-          text: withLang(intText.checkout.modalText).okText,
-          title: withLang(intText.checkout.modalText).okTitle,
-          action: ({ close }) => {
-            close();
-            document.querySelector("zircus-router").page = withLang({
-              en: "/shop",
-              fr: "/fr/boutique",
-            });
-          },
-        },
-      });
+      this.showEmptyCartModal();
     }
+
     this.#form = this.querySelector("zircus-checkout-form");
     this.#formState = this.querySelector("#checkout-state");
     this.#formCountry = this.querySelector("#checkout-country");
@@ -42,20 +29,18 @@ export default class Payment extends HTMLElement {
     this.#shippingInputs = this.querySelector("zircus-shipping-inputs");
     this.#productList = this.querySelector("#checkout-products");
 
-    const attrs = {
-      heading: this.getAttribute("heading"),
-      buttontext: this.getAttribute("buttontext"),
-      canceltext: this.getAttribute("canceltext"),
-      id: "stripe-payment-modal",
-      success: this.getAttribute("success"),
-      failure: this.getAttribute("failure"),
-      complete: this.getAttribute("complete"),
-    };
-
     this.#stripe = new ZircusElement(
       "zircus-stripe",
       "stripe-payment-form",
-      attrs,
+      {
+        heading: this.getAttribute("heading"),
+        buttontext: this.getAttribute("buttontext"),
+        canceltext: this.getAttribute("canceltext"),
+        id: "stripe-payment-modal",
+        success: this.getAttribute("success"),
+        failure: this.getAttribute("failure"),
+        complete: this.getAttribute("complete"),
+      },
     ).render();
 
     this.appendChild(this.#stripe);
@@ -71,6 +56,24 @@ export default class Payment extends HTMLElement {
       () => this.setTotals(),
     );
     this.#shippingInputs.addEventListener("mounted", () => this.setTotals());
+  }
+
+  showEmptyCartModal() { // redirects user to shop page if no items in cart
+    return state.showModal({
+      content: withLang(intText.checkout.modalText).content,
+      heading: withLang(intText.checkout.modalText).heading,
+      ok: {
+        text: withLang(intText.checkout.modalText).okText,
+        title: withLang(intText.checkout.modalText).okTitle,
+        action: ({ closeModal }) => {
+          closeModal();
+          document.querySelector("zircus-router").page = withLang({
+            en: "/shop",
+            fr: "/fr/boutique",
+          });
+        },
+      },
+    });
   }
 
   setTotals() {

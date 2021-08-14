@@ -25,25 +25,33 @@ export default class ZircusCheckoutForm extends HTMLElement {
     this.#stateInput = this.querySelector("#checkout-state");
     this.#stateLabel = this.querySelector("#checkout-state-text");
 
-    this.handleCountry();
+    this.handleCountryChange();
 
     this.#phoneInput.addEventListener(
       "input",
       (event) => this.validatePhone(event),
     );
+
     this.#phoneInput.addEventListener(
       "blur",
       (event) => this.validatePhone(event),
     );
+
     this.#postalCodeInput.addEventListener(
       "input",
       (event) => this.validatePostalCode(event, this.#countryInput.value),
     );
+
     this.#postalCodeInput.addEventListener(
       "blur",
       (event) => this.validatePostalCode(event, this.#countryInput.value),
     );
-    this.#countryInput.addEventListener("input", () => this.handleCountry());
+
+    this.#countryInput.addEventListener(
+      "input",
+      () => this.handleCountryChange(),
+    );
+
     this.#stateInput.addEventListener(
       "input",
       () => this.dispatchEvent(new CustomEvent("state-changed")),
@@ -55,14 +63,14 @@ export default class ZircusCheckoutForm extends HTMLElement {
         new CustomEvent("form-submit", {
           detail: {
             paymentMethod: event.submitter.value,
-            formData: this.getFormData(),
+            formData: this.processFormData(),
           },
         }),
       );
     });
   }
 
-  getFormData() {
+  processFormData() {
     return [...new FormData(this.#form).entries()].reduce(
       (obj, [key, val]) =>
         key.startsWith("address-")
@@ -95,7 +103,7 @@ export default class ZircusCheckoutForm extends HTMLElement {
     });
   }
 
-  handleCountry(country = this.#countryInput.value) {
+  handleCountryChange(country = this.#countryInput.value) {
     return requestAnimationFrame(() => {
       this.#stateInput.textContent = "";
       this.#postalCodeInput.value = "";

@@ -15,9 +15,8 @@ import withAsyncScript from "./withAsyncScript.js";
 const ENDPOINT = `${API_ENDPOINT}/paypal`;
 const CLIENT_ID =
   "Aef4eC1Xxfc-wTn_x-wNgMzYB44l7d61xBmi_xB4E_bSFhYjZHsmQudrj8pMB3dn-BxA_cK227PcBzNv";
-const src = `https://www.paypal.com/sdk/js?client-id=${CLIENT_ID}`;
-
-const paypalStyle = {
+const PAYPAL_SDK_SRC = `https://www.paypal.com/sdk/js?client-id=${CLIENT_ID}`;
+const PAYPAL_STYLE = {
   shape: "rect",
   color: "black",
   layout: "horizontal",
@@ -36,7 +35,7 @@ export default class ZircusPayPal extends HTMLElement {
   #scriptLoaded;
 
   connectedCallback() {
-    this.createElements(); // Create initial elements for our paypal button
+    this.createInitialElements(); // Create initial elements for our paypal button
 
     // Listen for custom form submit
     this.#formElement.addEventListener("form-submit", (event) => {
@@ -44,14 +43,14 @@ export default class ZircusPayPal extends HTMLElement {
         this.handleSubmit(event.detail);
     });
 
-    if (!this.loaded) { // Load PayPal third-party script
-      this.loadPaypal().then((res) => {
+    if (!this.scriptElementAttached) { // Load PayPal third-party script
+      this.loadPaypalScript().then((res) => {
         if (res.ok) this.#scriptLoaded = true;
       });
     } else this.#scriptLoaded = true;
   }
 
-  get loaded() { // Return true if paypal script tag has been attached
+  get scriptElementAttached() { // Return true if paypal script tag has been attached
     return (
       !!document.getElementById("paypal-script") && this.#scriptLoaded
     );
@@ -59,32 +58,32 @@ export default class ZircusPayPal extends HTMLElement {
 
   handleSubmit({ paymentMethod, formData }) {
     return this.#scriptLoaded
-      ? this.showModal().then(({ close }) =>
-        this.mountPayPal({
+      ? this.showModal().then(({ closeModal }) =>
+        this.mountPayPalButton({
           formData,
           paymentMethod,
-          close,
+          closeModal,
         })
       )
       : createNotificationFailure(`PayPal is still loading`);
   }
 
-  async loadPaypal() {
+  async loadPaypalScript() {
     return await this.loadScript({
-      src: `${src}&currency=CAD&enable-funding=venmo`,
+      src: `${PAYPAL_SDK_SRC}&currency=CAD&enable-funding=venmo`,
       id: "paypal-script",
     });
   }
 
   showModal() { // Show modal asking to redirect to PayPal
     return Promise.resolve(state.showModal({
-      content: this.mountElements(),
+      content: this.createPayPalModalElements(),
       heading: this.getAttribute("name"),
       ok: {
         text: this.getAttribute("canceltext"),
         title: this.getAttribute("canceltext"),
-        action: ({ close }) => {
-          close(); // Close modal
+        action: ({ closeModal }) => {
+          closeModal(); // Close modal
           if (state.order?.completed && !state.cart.length) {
             return document.querySelector("zircus-router").page = withLang({
               en: "/thanks",
@@ -98,7 +97,7 @@ export default class ZircusPayPal extends HTMLElement {
     }));
   }
 
-  mountPayPal({ formData, paymentMethod, close }) {
+  mountPayPalButton({ formData, paymentMethod, closeModal }) {
     const orderData = createOrderRequest({ formData, paymentMethod });
     requestAnimationFrame(() => {
       this.#message.textContent = `Calculated Total: ${
@@ -106,8 +105,9 @@ export default class ZircusPayPal extends HTMLElement {
       }`;
       paypal
         .Buttons({
-          style: paypalStyle,
-          createOrder: () => this.createPaymentIntent({ orderData, close }),
+          style: PAYPAL_STYLE,
+          createOrder: () =>
+            this.createPaymentIntent({ orderData, closeModal }),
           onApprove: (_, actions) => this.onApprove(_, actions),
         })
         .render("#paypal-button");
@@ -129,7 +129,7 @@ export default class ZircusPayPal extends HTMLElement {
     );
   }
 
-  async createPaymentIntent({ orderData, close }) {
+  async createPaymentIntent({ orderData, closeModal }) {
     return await fetch(`${ENDPOINT}/create-payment-intent`, {
       method: "POST",
       headers: {
@@ -153,7 +153,7 @@ export default class ZircusPayPal extends HTMLElement {
       }).catch((error) => {
         // If error creating intent, bail
         state.order = null;
-        close(); // Close modal
+        closeModal(); // Close modal
         createNotificationFailure(error);
       });
   }
@@ -174,7 +174,7 @@ export default class ZircusPayPal extends HTMLElement {
     }).catch((error) => createNotificationFailure(`Error: ${error}`));
   }
 
-  handleSuccess() { // update UI after successful payment
+  handlePaymentSuccess() { // update UI after successful payment
     createNotificationSuccess(
       this.getAttribute("complete").replace("|", state.order.name),
     );
@@ -189,20 +189,22 @@ export default class ZircusPayPal extends HTMLElement {
     });
   }
 
+  handlePaymentFailure() {
+    // oh dear - something went wrong
+    state.order = null;
+    this.#message.textContent = this.getAttribute("failure");
+    this.#message.classList.add("red");
+    createNotificationFailure(`Payment failed: ${error}`);
+  }
+
   onApprove(_, actions) { // capture payment
     return actions.order
       .capture()
-      .then(() => this.handleSuccess()) // no error?
-      .catch((error) => {
-        // oh dear - something went wrong
-        state.order = null;
-        this.#message.textContent = this.getAttribute("failure");
-        this.#message.classList.add("red");
-        createNotificationFailure(`Payment failed: ${error}`);
-      });
+      .then(() => this.handlePaymentSuccess()) // no error?
+      .catch((error) => this.handlePaymentFailure(error));
   }
 
-  mountElements(parent = document.createElement("div")) {
+  createPayPalModalElements(parent = document.createElement("div")) {
     const template = this.#template.content.cloneNode(true);
     this.#paypalButton = template.querySelector("#paypal-button");
     this.#text = template.querySelector("#paypal-text");
@@ -215,7 +217,7 @@ export default class ZircusPayPal extends HTMLElement {
     return parent;
   }
 
-  createElements() {
+  createInitialElements() {
     this.#template = document.querySelector("#paypal-template");
     this.#formElement = document.querySelector("zircus-checkout-form");
     this.#button = new ZircusElement("button", "paypal-button", {

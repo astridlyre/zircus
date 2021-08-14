@@ -11,12 +11,11 @@ export default class Hero extends HTMLElement {
       .fill("")
       .map((_, i) => `${this.getAttribute("image-path")}${i + 1}.jpg`);
     appendPreloadLinks(this.#images);
-
     this.#imageElement = new ZircusElement(
       "img",
       "section__hero_image",
+      { src: this.src },
     ).render();
-
     this.appendChild(this.#imageElement);
     this.appendChild(
       new ZircusElement("div", [
@@ -28,7 +27,6 @@ export default class Hero extends HTMLElement {
       ]).render(),
     );
     this.classList.add("section__hero");
-    this.#imageElement.src = this.src;
     this.#interval = setInterval(() => {
       this.#imageElement.src = this.src;
     }, 4500);

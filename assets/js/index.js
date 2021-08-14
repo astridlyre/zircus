@@ -1,15 +1,16 @@
 // modal and notification
 import zircusModal from "./modal/modal.js";
 import zircusNotification from "./notification/notification.js";
+
 // cart
 import zircusCart from "./cart/cart.js";
 import zircusCartProduct from "./cart/cartProduct.js";
 
 // navigation
-import zircusMenu from "./nav/menu.js";
-import zircusSkipBtn from "./nav/skipBtn.js";
-import zircusNavMobile from "./nav/navMobile.js";
-import zircusToTopButton from "./nav/toTopBtn.js";
+import zircusDesktopMenu from "./nav/desktopMenu.js";
+import zircusSkipButton from "./nav/skipButton.js";
+import zircusMobileMenu from "./nav/mobileMenu.js";
+import zircusToTopButton from "./nav/toTopButton.js";
 import zircusLangLinks from "./nav/langLinks.js";
 
 // checkout page
@@ -22,7 +23,7 @@ import zircusShippingInputs from "./payment/shippingInputs.js";
 // product page
 import zircusProduct from "./product/product.js";
 import zircusProductImage from "./product/productImage.js";
-import zircusFullImage from "./product/fullImage.js";
+import zircusProductFullImage from "./product/productFullImage.js";
 
 // router
 import zircusRouter from "./router/router.js";

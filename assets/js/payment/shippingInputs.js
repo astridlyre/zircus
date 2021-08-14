@@ -11,7 +11,7 @@ export default class ShippingInputs extends HTMLElement {
     );
     this.#container = new ZircusElement("div", "flex-inputs").render();
     Object.entries(shippingTypes).forEach(([key, type]) => {
-      const text = new ZircusElement("span", null)
+      const labelText = new ZircusElement("span", null)
         .addChild(
           `${withLang(type.name)} - $${type.price.toFixed(2)}`,
         )
@@ -36,7 +36,7 @@ export default class ShippingInputs extends HTMLElement {
       }
 
       label.appendChild(input);
-      label.appendChild(text);
+      label.appendChild(labelText);
       this.#container.appendChild(label);
     });
     this.#fieldset.appendChild(this.#container);

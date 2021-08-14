@@ -36,16 +36,18 @@ export default class Notification extends HTMLElement {
         )),
     );
 
-    return state.setNotify(({ content, time = DEFAULT_TIME }) => {
-      if (this.#currentNotification) {
-        clearTimeout(this.#currentNotification.id);
-      }
-      this.clear();
-      return this.show({
-        content,
-        id: setTimeout(() => this.clear(), time),
-      });
-    });
+    return state._setNotificationFunction(
+      ({ content, time = DEFAULT_TIME }) => {
+        if (this.#currentNotification) {
+          clearTimeout(this.#currentNotification.id);
+        }
+        this.clear();
+        return this.show({
+          content,
+          id: setTimeout(() => this.clear(), time),
+        });
+      },
+    );
   }
 
   show({ content, id }) {

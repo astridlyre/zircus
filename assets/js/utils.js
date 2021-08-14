@@ -20,8 +20,8 @@ const FIVE_MINUTES = 300_000;
  * 'get' returns the state from localStorage.
  */
 class State {
-  #notify;
-  #modal;
+  #notificationFunction;
+  #modalFunction;
   #state;
   #lastUpdated;
 
@@ -95,21 +95,22 @@ class State {
     this.#set("order", order);
   }
 
-  setModal(modalFunc) {
-    this.#modal = modalFunc;
+  _setModalFunction(func) {
+    this.#modalFunction = func;
     return this;
   }
 
   showModal(modal) {
-    return this.#modal(modal);
+    return this.#modalFunction(modal);
   }
 
-  setNotify(fn) {
-    this.#notify = fn;
+  _setNotificationFunction(func) {
+    this.#notificationFunction = func;
   }
 
   notify(notification) {
-    return this.#notify && this.#notify(notification);
+    return this.#notificationFunction &&
+      this.#notificationFunction(notification);
   }
 }
 

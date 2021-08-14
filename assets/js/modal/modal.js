@@ -5,7 +5,7 @@ import {
   ZircusElement,
 } from "../utils.js";
 
-export default class Modal extends HTMLElement {
+export default class ZircusModal extends HTMLElement {
   #isActive = false;
   #modal;
   #okText;
@@ -15,29 +15,29 @@ export default class Modal extends HTMLElement {
   #heading;
   #spinner;
   #template;
-  #enable;
+  #enableElements;
 
   connectedCallback() {
     this.#modal = new ZircusElement("div", "modal__container").render();
     this.#template = this.querySelector("template");
     this.appendChild(this.#modal);
-    state.setModal((modal) => {
+    state._setModalFunction((modal) => {
       requestAnimationFrame(() => this.show(modal));
-      this.#enable = disableElements();
+      this.#enableElements = disableElements();
       return {
-        setActive: (value) => (this.isActive = value),
-        close: () => this.hide(),
+        setButtonState: (value) => (this.isActive = value),
+        closeModal: () => this.hide(),
       };
     });
   }
 
-  set isActive({ value, spinning = false }) {
+  set isActive({ isActive, isSpinning = false }) {
     requestAnimationFrame(() => {
-      this.#isActive = value;
-      if (spinning) {
+      this.#isActive = isActive;
+      if (isSpinning) {
         this.#okText.classList.add("hidden");
         this.#spinner.classList.remove("hidden");
-      } else if (!spinning) {
+      } else if (!isSpinning) {
         this.#okText.classList.remove("hidden");
         this.#spinner.classList.add("hidden");
       }
@@ -55,7 +55,9 @@ export default class Modal extends HTMLElement {
 
   hide() {
     requestAnimationFrame(() => {
-      if (typeof this.#enable === "function") this.#enable();
+      if (typeof this.#enableElements === "function") {
+        this.#enableElements();
+      }
       this.#modal.textContent = "";
       document.getElementById("blur").classList.remove("blur");
       document.getElementById("nav").classList.remove("blur");
@@ -96,9 +98,9 @@ export default class Modal extends HTMLElement {
       "click",
       () => {
         ok.action({
-          setActive: (value) => (this.isActive = value),
-          close: () => this.hide(),
-          setCustomClose: (cancel) => {
+          setButtonState: (value) => (this.isActive = value),
+          closeModal: () => this.hide(),
+          setCustomCloseText: (cancel) => {
             this.#cancelButton.textContent = cancel.text;
             this.#cancelButton.setAttribute(
               "title",
@@ -128,9 +130,9 @@ export default class Modal extends HTMLElement {
         "click",
         () => {
           cancel.action({
-            setActive: (value) => (this.isActive = value),
-            close: () => this.hide(),
-            setCustomClose: (cancel) => {
+            setButtonState: (value) => (this.isActive = value),
+            closeModal: () => this.hide(),
+            setCustomCloseText: (cancel) => {
               this.#cancelButton.textContent = cancel.text;
               this.#cancelButton.setAttribute(
                 "title",
@@ -149,4 +151,4 @@ export default class Modal extends HTMLElement {
 }
 
 customElements.get("zircus-modal") ||
-  customElements.define("zircus-modal", Modal);
+  customElements.define("zircus-modal", ZircusModal);

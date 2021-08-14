@@ -4,7 +4,7 @@ const intText = {
       en: `Removed ${item.name.en} from cart`,
       fr: `${item.name.fr} retiré du panier`,
     }),
-    removeBtnText: (item) => ({
+    removeButtonText: (item) => ({
       en:
         `Remove ${item.name.en} (size: ${item.size} quantity: ${item.quantity}) from cart`,
       fr:

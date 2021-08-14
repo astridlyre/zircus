@@ -11,7 +11,7 @@ import intText from "../int/intText.js";
 
 const { contactText } = intText;
 
-export default class ContactForm extends HTMLElement {
+export default class ZircusContactForm extends HTMLElement {
   #form;
   #nameInput;
   #emailInput;
@@ -29,7 +29,7 @@ export default class ContactForm extends HTMLElement {
     this.#sendButtonText = this.querySelector("#contact-button-text");
     this.#spinner = this.querySelector("#contact-spinner");
 
-    const els = [
+    const formElements = [
       this.#nameInput,
       this.#emailInput,
       this.#sendButton,
@@ -40,15 +40,15 @@ export default class ContactForm extends HTMLElement {
       event.preventDefault();
 
       for (
-        const el of [
+        const element of [
           this.#nameInput,
           this.#emailInput,
           this.#messageText,
         ]
       ) {
-        if (!el.value.length) {
+        if (!element.value.length) {
           createNotificationFailure(this.getAttribute("fields"));
-          return el.focus();
+          return element.focus();
         }
       }
 
@@ -56,11 +56,11 @@ export default class ContactForm extends HTMLElement {
         new FormData(this.#form).entries(),
       ); // this must be before inputs are disabled
 
-      els.forEach((el) => {
-        el.disabled = true;
+      formElements.forEach((element) => {
+        element.disabled = true;
       });
 
-      this.busy(); // UI feedback
+      this.setBusyState(); // UI feedback
 
       fetch(`${API_ENDPOINT}/message`, {
         method: "POST",
@@ -75,16 +75,16 @@ export default class ContactForm extends HTMLElement {
         .then(isError)
         .then((data) => {
           this.handleSuccess(data);
-          this.done();
-          els.forEach((el) => {
-            el.disabled = false;
-            el.value = "";
+          this.setDoneState();
+          formElements.forEach((element) => {
+            element.disabled = false;
+            element.value = "";
           });
         })
         .catch((error) => {
-          this.done();
-          els.forEach((el) => {
-            el.disabled = false;
+          this.setDoneState();
+          formElements.forEach((element) => {
+            element.disabled = false;
           });
           createNotificationFailure(error);
         });
@@ -98,7 +98,7 @@ export default class ContactForm extends HTMLElement {
       ok: {
         text: contactText[lang()].error[1],
         title: contactText[lang()].error[0],
-        action: ({ close }) => close(),
+        action: ({ closeModal }) => closeModal(),
       },
     });
     return createNotificationFailure(
@@ -113,7 +113,7 @@ export default class ContactForm extends HTMLElement {
       ok: {
         text: contactText[lang()].default[1],
         title: contactText[lang()].default[2],
-        action: ({ close }) => close(),
+        action: ({ closeModal }) => closeModal(),
       },
     });
     return createNotificationSuccess(
@@ -121,14 +121,14 @@ export default class ContactForm extends HTMLElement {
     );
   }
 
-  busy() {
+  setBusyState() {
     requestAnimationFrame(() => {
       this.#spinner.classList.remove("hidden");
       this.#sendButtonText.classList.add("hidden");
     });
   }
 
-  done() {
+  setDoneState() {
     requestAnimationFrame(() => {
       this.#sendButtonText.classList.remove("hidden");
       this.#spinner.classList.add("hidden");
@@ -137,4 +137,4 @@ export default class ContactForm extends HTMLElement {
 }
 
 customElements.get("zircus-contact-form") ||
-  customElements.define("zircus-contact-form", ContactForm);
+  customElements.define("zircus-contact-form", ZircusContactForm);

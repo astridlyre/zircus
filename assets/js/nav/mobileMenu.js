@@ -1,6 +1,6 @@
 import withCartQty from "./withCartQty.js";
 
-export default class NavMobile extends HTMLElement {
+export default class ZircusMobileMenu extends HTMLElement {
   cartLink;
   #list;
   #button;
@@ -32,18 +32,16 @@ export default class NavMobile extends HTMLElement {
     return this.#isHidden;
   }
 
-  // Mobile menu functionality
   hide() {
     this.#list.classList.add("hide");
-    // document.body.classList.remove('hide-y')
   }
+
   show() {
     this.#list.classList.remove("hide");
-    // document.body.classList.add('hide-y')
   }
 }
 
-Object.assign(NavMobile.prototype, withCartQty());
+Object.assign(ZircusMobileMenu.prototype, withCartQty());
 
 customElements.get("zircus-nav-mobile") ||
-  customElements.define("zircus-nav-mobile", NavMobile);
+  customElements.define("zircus-nav-mobile", ZircusMobileMenu);
