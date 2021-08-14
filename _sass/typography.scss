@@ -1,14 +1,45 @@
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--heading-font-family);
 }
 
-h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p {
+h1 + p,
+h2 + p,
+h3 + p,
+h4 + p,
+h5 + p,
+h6 + p {
   margin-top: var(--base-spacing);
 }
 
-p + h1, p + h2, p + h3, p + h4, p + h5, p + h6,
-ul + h1, ul + h2, ul + h3, ul + h4, ul + h5, ul + h6,
-ol + h1, ol + h2, ol + h3, ol + h4, ol + h5, ol + h6 {
+p + h1,
+p + h2,
+p + h3,
+p + h4,
+p + h5,
+p + h6,
+zircus-router-page-link + h1,
+zircus-router-page-link + h2,
+zircus-router-page-link + h3,
+zircus-router-page-link + h4,
+zircus-router-page-link + h5,
+zircus-router-page-link + h6,
+ul + h1,
+ul + h2,
+ul + h3,
+ul + h4,
+ul + h5,
+ul + h6,
+ol + h1,
+ol + h2,
+ol + h3,
+ol + h4,
+ol + h5,
+ol + h6 {
   margin-top: var(--md-spacing);
 }
 
@@ -56,11 +87,13 @@ p {
   @include readable-line-length();
 }
 
-ul, ol {
+ul,
+ol {
   @include readable-line-length();
 }
 
-ul[class], ol[class] {
+ul[class],
+ol[class] {
   max-width: unset;
 }
 
@@ -101,4 +134,3 @@ a:visited {
     }
   }
 }
-

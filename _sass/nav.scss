@@ -266,3 +266,27 @@
     transition: transform 0.2s ease-out;
   }
 }
+
+zircus-scroll-icon {
+  position: fixed;
+  top: calc(50% - 0.8rem);
+  margin-left: var(--base-unit);
+  z-index: 10;
+  background-color: var(--teal);
+  color: var(--dark);
+  width: 1.6rem;
+  height: 1.6rem;
+  display: flex;
+  border-radius: var(--radius);
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transform: translateX(-25%);
+  transition: all 0.125s ease-out;
+
+  &.show {
+    opacity: 1;
+    transform: translateX(0);
+    transition: all 0.25s ease-out;
+  }
+}

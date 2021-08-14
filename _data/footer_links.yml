@@ -8,9 +8,6 @@ en:
   - name: accessibility
     link: /accessibility
     label: Read our statement on accessibility
-  - name: terms & conditions
-    link: /terms
-    label: View site terms and conditions
   - name: contact
     link: /contact
     label: Contact Zircus
@@ -24,9 +21,6 @@ fr:
   - name: l'accessibilité
     link: /fr/accessibilite
     label: Lire notre déclaration sur l'accessibilité
-  - name: conditions générales
-    link: /fr/conditions
-    label: Consulter les modalités du site
   - name: contactez-nous
     link: /fr/contactez-nous
     label: Contactez Zircus

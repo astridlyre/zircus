@@ -12,6 +12,7 @@ import zircusSkipButton from "./nav/skipButton.js";
 import zircusMobileMenu from "./nav/mobileMenu.js";
 import zircusToTopButton from "./nav/toTopButton.js";
 import zircusLangLinks from "./nav/langLinks.js";
+import zircusScrollIcon from "./nav/scrollIcon.js";
 
 // checkout page
 import zircusPayment from "./payment/payment.js";
@@ -28,6 +29,7 @@ import zircusProductFullImage from "./product/productFullImage.js";
 // router
 import zircusRouter from "./router/router.js";
 import zircusRouterLink from "./router/routerLink.js";
+import zircusRouterPageLink from "./router/routerPageLink.js";
 
 // home page
 import zircusHero from "./hero/hero.js";

@@ -1,0 +1,7 @@
+<aside class="footer__misc">
+  {% for item in site.data.footer_misc_links[page.lang] %}
+  <a class="footer__misc__link" href="{{ item.link }}" title="{{ item.label }}"
+    >{{ item.name }}</a
+  >
+  {% endfor %}
+</aside>

@@ -4,9 +4,6 @@ export default class ZircusLangLinks extends HTMLElement {
   #langLinks;
 
   connectedCallback() {
-    this.#langLinks = new ZircusElement("ul", "lang__list").render();
-    this.#langLinks.classList.add(this.getAttribute("type"));
-    this.appendChild(this.#langLinks);
     this.renderLangLinks();
 
     document.addEventListener("navigated", () => {
@@ -16,11 +13,13 @@ export default class ZircusLangLinks extends HTMLElement {
   }
 
   renderLangLinks() {
+    this.#langLinks = new ZircusElement("ul", "lang__list").render();
+    this.#langLinks.classList.add(this.getAttribute("type"));
     this.getAttribute("langs")
       .split(",")
       .map((language) => [
         language,
-        document.querySelector("main").getAttribute(lang),
+        document.querySelector("main").getAttribute(language),
       ])
       .forEach(([language, href]) => {
         const li = document.createElement("li");
@@ -37,6 +36,7 @@ export default class ZircusLangLinks extends HTMLElement {
         li.appendChild(routerLink);
         this.#langLinks.appendChild(li);
       });
+    this.appendChild(this.#langLinks);
   }
 }
 

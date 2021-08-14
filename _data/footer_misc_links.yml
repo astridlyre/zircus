@@ -1,0 +1,14 @@
+en:
+  - name: terms & conditions
+    link: /terms
+    label: View site terms and conditions
+  - name: privacy policy
+    link: /privacy
+    label: View site privacy policy
+fr:
+  - name: conditions générales
+    link: /fr/conditions
+    label: Consulter les modalités du site
+  - name: confidentialité
+    link: /fr/confidentialité
+    label: Politique de confidentialité
