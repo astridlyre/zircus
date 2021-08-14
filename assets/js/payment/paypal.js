@@ -37,7 +37,7 @@ export default function initPaypal() {
     #scriptLoaded;
 
     connectedCallback() {
-      this.createElements();
+      this.createElements(); // Create initial elements for our paypal button
 
       // Listen for custom form submit
       this.#formElement.addEventListener("form-submit", (event) => {
@@ -45,15 +45,14 @@ export default function initPaypal() {
           this.handleSubmit(event.detail);
       });
 
-      // Load PayPal third-party script
-      if (!this.loaded) {
+      if (!this.loaded) { // Load PayPal third-party script
         this.loadPaypal().then((res) => {
           if (res.ok) this.#scriptLoaded = true;
         });
       } else this.#scriptLoaded = true;
     }
 
-    get loaded() {
+    get loaded() { // Return true if paypal script tag has been attached
       return (
         !!document.getElementById("paypal-script") && this.#scriptLoaded
       );
@@ -78,7 +77,7 @@ export default function initPaypal() {
       });
     }
 
-    showModal() {
+    showModal() { // Show modal asking to redirect to PayPal
       return Promise.resolve(state.showModal({
         content: this.mountElements(),
         heading: this.getAttribute("name"),
@@ -86,21 +85,21 @@ export default function initPaypal() {
           text: this.getAttribute("canceltext"),
           title: this.getAttribute("canceltext"),
           action: ({ close }) => {
-            close();
+            close(); // Close modal
             if (state.order.completed) {
               return document.querySelector("zircus-router").page = withLang({
                 en: "/thanks",
                 fr: "/fr/merci",
               });
-            } else {
-              this.cancelPaymentIntent();
             }
+            // Cancel payment intent if order not completed
+            return this.cancelPaymentIntent();
           },
         },
       }));
     }
 
-    mountPayPal({ formData, paymentMethod }) {
+    mountPayPal({ formData, paymentMethod, close }) {
       const orderData = createOrderRequest({ formData, paymentMethod });
       requestAnimationFrame(() => {
         this.#message.textContent = `Calculated Total: ${
@@ -109,14 +108,14 @@ export default function initPaypal() {
         paypal
           .Buttons({
             style: paypalStyle,
-            createOrder: () => this.createPaymentIntent({ orderData }),
-            onApprove: (data, actions) => this.onApprove(data, actions),
+            createOrder: () => this.createPaymentIntent({ orderData, close }),
+            onApprove: (_, actions) => this.onApprove(_, actions),
           })
           .render("#paypal-button");
       });
     }
 
-    changeButtonText() {
+    changeButtonText() { // Handle post-payment UI change
       const button = document.getElementById("modal-button-text");
       button.textContent = withLang({
         en: "close",
@@ -131,7 +130,7 @@ export default function initPaypal() {
       );
     }
 
-    async createPaymentIntent({ orderData }) {
+    async createPaymentIntent({ orderData, close }) {
       return await fetch(`${ENDPOINT}/create-payment-intent`, {
         method: "POST",
         headers: {
@@ -142,21 +141,25 @@ export default function initPaypal() {
         .then(isJson)
         .then(isError)
         .then((data) => {
+          // Set order details in state
           state.order = {
             name: data.name,
             email: data.email,
             orderId: data.orderId,
             id: data.id,
             completed: data.hasPaid,
+            identifier: data.identifier,
           };
-          return data.orderId;
+          return data.orderId; // return orderId to client for next step
         }).catch((error) => {
+          // If error creating intent, bail
           state.order = null;
+          close(); // Close modal
           createNotificationFailure(error);
         });
     }
 
-    async cancelPaymentIntent() {
+    async cancelPaymentIntent() { // Cancel payment intent & pending order
       return await fetch(
         `${ENDPOINT}/cancel-payment-intent/${state.order.id}`,
         {
@@ -172,7 +175,7 @@ export default function initPaypal() {
       }).catch((error) => createNotificationFailure(`Error: ${error}`));
     }
 
-    handleSuccess() {
+    handleSuccess() { // update UI after successful payment
       createNotificationSuccess(
         this.getAttribute("complete").replace("|", state.order.name),
       );
@@ -187,11 +190,12 @@ export default function initPaypal() {
       });
     }
 
-    onApprove(_, actions) {
+    onApprove(_, actions) { // capture payment
       return actions.order
         .capture()
-        .then(() => this.handleSuccess())
+        .then(() => this.handleSuccess()) // no error?
         .catch((error) => {
+          // oh dear - something went wrong
           state.order = null;
           this.#message.textContent = this.getAttribute("failure");
           this.#message.classList.add("red");

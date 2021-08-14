@@ -16,7 +16,7 @@ const src = "https://js.stripe.com/v3/";
 const CLIENT_ID =
   "pk_test_51J93KzDIzwSFHzdzCZtyRcjMvw8em0bhnMrVmkBHaMFHuc2nkJ156oJGNxuz0G7W4Jx0R6OCy2nBXYTt6U8bSYew00PIAPcntP";
 
-let stripe = null;
+let stripe = null; // A "global" variable, I'm naughty
 
 const stripeStyle = {
   base: {
@@ -46,7 +46,6 @@ export default function initStripe() {
     #resultMessage;
     #cardElement;
     #setActive;
-    #setCustomClose;
 
     connectedCallback() {
       this.classList.add("stripe-payment-form");
@@ -57,65 +56,76 @@ export default function initStripe() {
       this.#formElement.addEventListener("form-submit", (event) => {
         const { paymentMethod, formData } = event.detail;
         paymentMethod === "stripe" &&
-          (stripe
-            ? this.createPaymentIntent({ paymentMethod, formData })
+          (stripe // if global exists, we're loaded
+            ? this.showModal().then(({ close, setActive }) =>
+              this.createPaymentIntent({
+                paymentMethod,
+                formData,
+                close,
+                setActive,
+              })
+            )
             : createNotificationFailure(`Stripe not yet loaded!`));
       });
 
       // Load stripe third-party script
-      this.loadScript({ src, id: "stripe-script" })
-        .then((res) => {
-          if (res.ok && !res.loaded) {
-            stripe = Stripe(CLIENT_ID);
-          }
-        })
-        .catch((error) =>
-          createNotificationFailure(`Error loading Stripe: ${error}`)
-        );
+      if (!this.loaded) {
+        this.loadScript({ src, id: "stripe-script" })
+          .then((res) => {
+            if (res.ok && !res.loaded) {
+              stripe = Stripe(CLIENT_ID); // set global stripe variable
+            }
+          })
+          .catch((error) =>
+            createNotificationFailure(`Error loading Stripe: ${error}`)
+          );
+      }
     }
 
     disconnectedCallback() {
       this.#isLoaded = false;
       this.#cardElement.classList.add("hidden");
-      this.scriptElement?.remove();
     }
 
-    async createPaymentIntent({ paymentMethod, formData }) {
-      const { setActive, close } = state.showModal({
+    get loaded() { // Return true if script element exists and global stripe is not null
+      return !!document.getElementById("stripe-script") && stripe;
+    }
+
+    async showModal() {
+      return await Promise.resolve(state.showModal({
         content: this.#modal,
         heading: this.getAttribute("heading"),
         ok: {
           action: ({ setCustomClose }) => {
-            this.#setCustomClose = setCustomClose;
-            this.payWithCard();
+            this.payWithCard({ setCustomClose }); // pay with card
           },
           text: this.getAttribute("buttontext"),
           title: this.getAttribute("buttontext"),
         },
         cancel: {
           action: ({ close, setActive }) => {
-            this.handleCardError({ setActive });
-            if (!state.order.completed) {
-              return this.cancelPaymentIntent({ close });
-            }
+            this.handleCardError({ setActive }); // cancel
             close();
-            if (!state.cart.length) {
-              document.querySelector("zircus-router").page = withLang({
+            if (state.order.completed) {
+              return document.querySelector("zircus-router").page = withLang({
                 en: "/thanks",
                 fr: "/fr/merci",
               });
             }
+            return this.cancelPaymentIntent({ close });
           },
           text: this.getAttribute("canceltext"),
-          title: "Cancel",
+          title: this.getAttribute("canceltext"),
         },
-      });
-      this.#setActive = setActive;
+      }));
+    }
+
+    async createPaymentIntent({ paymentMethod, formData, setActive }) {
+      this.#setActive = setActive; // set private prop because we use this so much
       this.#setActive({ value: false, spinning: true });
       requestAnimationFrame(() => {
         this.#cardElement.classList.remove("hidden");
       });
-
       return await fetch(`${ENDPOINT}/create-payment-intent`, {
         method: "POST",
         headers: {
@@ -140,7 +150,8 @@ export default function initStripe() {
     }
 
     async cancelPaymentIntent({ close }) {
-      close();
+      close(); // close modal
+      state.order = null; // clear order
       await fetch(`${ENDPOINT}/cancel-payment-intent/${state.order.id}`, {
         method: "POST",
         headers: {
@@ -153,16 +164,13 @@ export default function initStripe() {
       })
         .then(isJson)
         .then(isError)
-        .then(() => {
-          state.order = null;
-          createNotificationSuccess("Canceled Stripe Payment-Intent");
-        })
+        .then(() => createNotificationSuccess("Canceled Stripe Payment-Intent"))
         .catch((error) => {
           createNotificationFailure(
             `Unable to cancel Payment Intent: ${
               error.substring(
                 0,
-                28,
+                24,
               )
             }...`,
           );
@@ -170,7 +178,7 @@ export default function initStripe() {
     }
 
     updateOrderState({ clientSecret, order }) {
-      const { id, hasPaid, orderId, name, email, total } = order;
+      const { id, hasPaid, orderId, name, email, total, identifier } = order;
       state.secret = clientSecret;
       state.order = {
         completed: hasPaid,
@@ -178,6 +186,7 @@ export default function initStripe() {
         name,
         email,
         id,
+        identifier,
       };
       this.#paymentPrice.textContent = `Calculated total: $${
         total.toFixed(
@@ -185,6 +194,7 @@ export default function initStripe() {
         )
       }`;
       this.#setActive({ value: false });
+      // load mount stripe elements if not loaded
       return !this.#isLoaded && this.loadStripe({ clientSecret, orderId });
     }
 
@@ -217,11 +227,11 @@ export default function initStripe() {
           this.handleCardError();
         }
       });
-      this.#card = card;
-      this.#isLoaded = true;
+      this.#card = card; // card element
+      this.#isLoaded = true; // stripe is now loaded
     }
 
-    payWithCard() {
+    payWithCard({ setCustomClose }) {
       this.#setActive({ value: false, spinning: true });
       return stripe
         .confirmCardPayment(state.secret, {
@@ -231,17 +241,17 @@ export default function initStripe() {
           if (result.error) {
             return this.handleCardError(result.error.message);
           }
-          return this.orderComplete();
+          return this.orderComplete({ setCustomClose });
         });
     }
 
-    orderComplete() {
+    orderComplete({ setCustomClose }) {
       this.#setActive({ value: false, spinning: false });
       state.cart = () => [];
       state.secret = null;
       state.order.completed = true;
       requestAnimationFrame(() => {
-        this.#setCustomClose({
+        setCustomClose({
           text: withLang({ en: "finish", fr: "complétez" }),
           title: withLang({ en: "finish", fr: "complétez" }),
         });

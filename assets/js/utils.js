@@ -4,7 +4,6 @@ const ENV = window.location.hostname.includes("zircus")
   ? "production"
   : "development";
 
-console.log(window.location.hostname);
 export const API_ENDPOINT = ENV === "production"
   ? "https://zircus.herokuapp.com/api"
   : "http://localhost:3000/api";

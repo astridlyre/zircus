@@ -11,6 +11,7 @@ label_user: Détails personnels
 label_address: Adresse
 label_form_name: Nom
 label_form_email: Courriel
+label_form_phone: Téléphone
 label_form_address_1: Ligne 1
 label_form_address_2: Ligne 2
 label_form_city: Ville
