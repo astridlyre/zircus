@@ -106,7 +106,7 @@ export default function initStripe() {
           action: ({ close, setActive }) => {
             this.handleCardError({ setActive }); // cancel
             close();
-            if (state.order.completed) {
+            if (state.order.completed && !state.cart.length) {
               return document.querySelector("zircus-router").page = withLang({
                 en: "/thanks",
                 fr: "/fr/merci",

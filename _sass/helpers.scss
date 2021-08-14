@@ -102,14 +102,14 @@
 
 .rounded-big-top {
   width: 100%;
-  height: var(--y-padding);
+  height: var(--big-radius);
   border-top-left-radius: var(--big-radius);
   border-top-right-radius: var(--big-radius);
 }
 
 .rounded-big-bottom {
   width: 100%;
-  height: var(--y-padding);
+  height: var(--big-radius);
   border-bottom-left-radius: var(--big-radius);
   border-bottom-right-radius: var(--big-radius);
 }

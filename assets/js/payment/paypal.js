@@ -86,7 +86,7 @@ export default function initPaypal() {
           title: this.getAttribute("canceltext"),
           action: ({ close }) => {
             close(); // Close modal
-            if (state.order.completed) {
+            if (state.order.completed && !state.cart.length) {
               return document.querySelector("zircus-router").page = withLang({
                 en: "/thanks",
                 fr: "/fr/merci",

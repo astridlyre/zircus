@@ -15,6 +15,9 @@ export default function routerLink() {
       this.#link.addEventListener("pointerenter", () => this.hovered(), {
         once: true,
       });
+      this.#link.addEventListener("focus", () => this.hovered(), {
+        once: true,
+      });
       this.#link.addEventListener("click", (event) => this.clicked(event));
       document.addEventListener("navigated", () => this.setStatus());
       this.setStatus();

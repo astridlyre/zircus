@@ -27,7 +27,7 @@
   }
 
   &__products {
-    padding: var(--y-padding) 0 !important;
+    padding-top: var(--y-padding) !important;
     display: flex;
     gap: var(--base-spacing);
     flex-flow: row wrap;

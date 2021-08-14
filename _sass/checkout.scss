@@ -113,12 +113,17 @@ zircus-paypal {
     justify-content: center;
     align-items: center;
     border: 2px solid var(--dark);
+    outline: none;
 
     &:focus,
     &:hover {
-      background-color: var(--dgray-40);
-      border-color: var(--dgray-40);
+      background-color: var(--teal);
+      border-color: var(--dark);
       cursor: pointer;
+
+      img {
+        filter: invert(1);
+      }
     }
 
     img {

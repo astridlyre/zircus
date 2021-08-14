@@ -10,6 +10,7 @@ zircus-router {
 }
 main {
   outline: none;
+  position: relative;
 }
 
 .page {
@@ -39,23 +40,27 @@ main {
     top: 0;
     object-fit: cover;
     width: 35vw;
-    height: 50%;
+    height: calc(45% - var(--y-padding));
     @media screen and (min-width: 1556px) {
       opacity: 1;
     }
     opacity: 0.1;
-    border-bottom-left-radius: var(--big-radius);
     z-index: -1;
+    border-bottom-left-radius: var(--big-radius);
   }
 
   &__container {
-    min-height: 45vh;
-    @include res('lg') {
+    @include res("md") {
+      min-height: 35vh;
+    }
+    @include res("xl") {
+      min-height: 50vh;
+    }
+    @include res("xxl") {
       min-height: 60vh;
     }
-    @include res('xl') {
-      min-height: 75vh;
-    }
+    padding-bottom: var(--y-padding) !important;
+    @include roundedBigBottom();
   }
 
   &__heading {
@@ -89,15 +94,10 @@ main {
   &__bottom_image {
     @include flexCol();
     @include roundedBigBottom();
-    @include res("xl") {
-      max-height: calc(40vh + var(--y-padding));
-    }
     min-height: calc(40vh + var(--y-padding));
     flex-grow: 1;
     flex-shrink: 1;
-    position: relative;
     width: 100%;
-    z-index: -1;
     @include res("md") {
       width: calc(100vw - var(--md-spacing));
     }
@@ -105,16 +105,8 @@ main {
       width: calc(100vw - var(--lg-spacing));
     }
     background: var(--light);
-
-    .rounded {
-      @include roundedBigBottom();
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: var(--y-padding);
-      background: var(--light);
-      position: absolute;
-    }
+    padding-bottom: var(--y-padding);
+    position: relative;
 
     img {
       @include roundedBigBottom();
@@ -123,7 +115,6 @@ main {
       object-fit: cover;
       vertical-align: middle;
       max-height: 50vh;
-      margin-bottom: var(--y-padding);
     }
   }
 }
