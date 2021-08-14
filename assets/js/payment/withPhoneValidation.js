@@ -1,3 +1,11 @@
+/*
+  * withPhoneValidation - validates text input telephone type
+  *
+  * - adds a space after the first 3 numbers
+  * - adds a space after the next 3 numbers
+  * - makes sure if the phone number is 9 or 10 characters long that it is
+  *   reformatted correctly.
+*/
 export default function withPhoneValidation() {
   const isNums = (str) => /^[0-9]+$/.test(str);
   const addSpaces = (num) =>

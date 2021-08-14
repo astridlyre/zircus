@@ -1,4 +1,4 @@
-export default class RouterLink extends HTMLElement {
+export default class ZircusRouterLink extends HTMLElement {
   #link;
   #isActive = false;
   #activeFunction;
@@ -19,6 +19,10 @@ export default class RouterLink extends HTMLElement {
     this.#link.addEventListener("click", (event) => this.clicked(event));
     document.addEventListener("navigated", () => this.setStatus());
     this.setStatus();
+  }
+
+  disconnectedCallback() {
+    this.#link.removeEventListener("click", (event) => this.clicked(event));
   }
 
   set isActive(value) {
@@ -44,10 +48,6 @@ export default class RouterLink extends HTMLElement {
     this.#activeFunction() ? (this.isActive = true) : (this.isActive = false);
   }
 
-  disconnectedCallback() {
-    this.#link.removeEventListener("click", (event) => this.clicked(event));
-  }
-
   clicked(event) {
     event.preventDefault();
     document.querySelector("zircus-router").page = this.#link.href;
@@ -61,4 +61,4 @@ export default class RouterLink extends HTMLElement {
 }
 
 customElements.get("zircus-router-link") ||
-  customElements.define("zircus-router-link", RouterLink);
+  customElements.define("zircus-router-link", ZircusRouterLink);

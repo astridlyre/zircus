@@ -1,12 +1,13 @@
 import { createNotificationFailure, ZircusElement } from "../utils.js";
 
+// Mixin to asyncronously load a SDK script file
 export default function withAsyncScript() {
   let loaded = false;
   return {
     async loadScript({ src, type = "text/javascript", async = true }) {
       return loaded
-        ? Promise.resolve({ ok: true, loaded })
-        : new Promise((resolve, reject) => {
+        ? await Promise.resolve({ ok: true, loaded })
+        : await new Promise((resolve, reject) => {
           this.scriptElement = new ZircusElement("script", null, {
             src,
             async,

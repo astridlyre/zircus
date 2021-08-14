@@ -15,7 +15,7 @@ import zircusLangLinks from "./nav/langLinks.js";
 
 // checkout page
 import zircusPayment from "./payment/payment.js";
-import zircusCheckoutForm from "./payment/form.js";
+import zircusCheckoutForm from "./payment/checkoutForm.js";
 import zircusStripe from "./payment/stripe.js";
 import zircusPaypal from "./payment/paypal.js";
 import zircusShippingInputs from "./payment/shippingInputs.js";
@@ -37,7 +37,7 @@ import zircusTagLine from "./tagLine/tagLine.js";
 import zircusThanks from "./thanks/thanks.js";
 
 // contact page
-import zircusContact from "./contact/contact.js";
+import zircusContactForm from "./contact/contactForm.js";
 
 // handle one time language redirect
 import zircusLangRedirect from "./int/langRedirect.js";

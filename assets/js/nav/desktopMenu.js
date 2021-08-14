@@ -1,4 +1,4 @@
-import withCartQty from "./withCartQty.js";
+import withCartQuantity from "./withCartQuantity.js";
 
 const withScrollState = (prevPos, currentPos) => {
   function* scrollState() {
@@ -13,13 +13,11 @@ const withScrollState = (prevPos, currentPos) => {
 /*
  *   Menu for Zircus
  *
- *   createMenuFunc() creates the mobile menu functionality,
- *   toggling state from hidden to not hidden.
+ *   In desktop (above 900px wide) menu shrinks on scroll down, while on
+ *   mobile the menu slides up leaving only the hamburger menu button.
  *
- *   updateNavLink() sets the textContent of the Desktop and
- *   Mobile 'cart' nav link to the number of cart items.
  */
-export default class NavMenu extends HTMLElement {
+export default class ZircusDesktopMenu extends HTMLElement {
   #MIN_SCROLL = 100;
   #isHidden = false;
   #isFocused = false;
@@ -88,7 +86,11 @@ export default class NavMenu extends HTMLElement {
   }
 }
 
-Object.assign(NavMenu.prototype, withCartQty(), withScrollState(0, 0));
+Object.assign(
+  ZircusDesktopMenu.prototype,
+  withCartQuantity(),
+  withScrollState(0, 0),
+);
 
-customElements.get("zircus-nav-desktop") ||
-  customElements.define("zircus-nav-desktop", NavMenu);
+customElements.get("zircus-desktop-menu") ||
+  customElements.define("zircus-desktop-menu", ZircusDesktopMenu);

@@ -7,7 +7,7 @@ const DEFAULT_TIME = 4_000; // 4 seconds
  * the DOM manipulation to show and hide notifications
  */
 
-export default class Notification extends HTMLElement {
+export default class ZircusNotification extends HTMLElement {
   #currentNotification = null;
   #notificationElement;
   #notificationContent;
@@ -78,4 +78,4 @@ export default class Notification extends HTMLElement {
 }
 
 customElements.get("zircus-notification") ||
-  customElements.define("zircus-notification", Notification);
+  customElements.define("zircus-notification", ZircusNotification);

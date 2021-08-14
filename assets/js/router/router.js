@@ -1,5 +1,6 @@
 import { createNotificationFailure, lang } from "../utils.js";
 
+// Error for RouterNavigation
 class NavigationError extends Error {
   constructor(message) {
     super();
@@ -10,23 +11,33 @@ class NavigationError extends Error {
 
 const cache = new Map();
 
-export default class Router extends HTMLElement {
+export default class ZircusRouter extends HTMLElement {
   #currentPage;
-  #lang;
-  #pushState = true;
+  #currentLanguage;
+  #pushState = true; // keep track of whether to change history state
 
   connectedCallback() {
-    this.#lang = lang();
+    this.#currentLanguage = lang();
     this.#currentPage = this.querySelector("main");
 
     window.addEventListener("popstate", () => {
       this.#pushState = false;
       this.setAttribute("page", window.location.href);
     });
+
     document.addEventListener(
       "preload",
       (event) => this.loadPage(event.detail),
     );
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (oldValue === newValue) return;
+    if (name === "page") {
+      this.navigate(newValue);
+      this.#pushState = true;
+      this.#currentPage?.focus();
+    }
   }
 
   get page() {
@@ -37,13 +48,8 @@ export default class Router extends HTMLElement {
     this.setAttribute("page", value);
   }
 
-  attributeChangedCallback(name, oldValue, newValue) {
-    if (oldValue === newValue) return;
-    if (name === "page") {
-      this.navigate(newValue);
-      this.#pushState = true;
-      this.#currentPage?.focus();
-    }
+  static get observedAttributes() {
+    return ["page"];
   }
 
   navigate(href) {
@@ -74,7 +80,7 @@ export default class Router extends HTMLElement {
       const res = await this.loadPage(window.location.href);
       const { wrapper, newContent, lang, title } = this.extractContent(res);
       document.title = title;
-      return lang === this.#lang
+      return lang === this.#currentLanguage
         ? this.smallPageChange(
           newContent,
           this.querySelector("#blur"),
@@ -110,7 +116,7 @@ export default class Router extends HTMLElement {
 
   bigPageChange(newContent, page, lang) {
     document.documentElement.setAttribute("lang", lang);
-    this.#lang = lang;
+    this.#currentLanguage = lang;
     return requestAnimationFrame(() => {
       this.replaceChild(page, this.querySelector("#page"));
       return this.notifyChanged(newContent);
@@ -123,11 +129,7 @@ export default class Router extends HTMLElement {
       return this.notifyChanged(newContent);
     });
   }
-
-  static get observedAttributes() {
-    return ["page"];
-  }
 }
 
 customElements.get("zircus-router") ||
-  customElements.define("zircus-router", Router);
+  customElements.define("zircus-router", ZircusRouter);

@@ -1,5 +1,3 @@
-// Production API
-// const ENV = 'production'
 const ENV = window.location.hostname.includes("zircus")
   ? "production"
   : "development";
@@ -12,12 +10,16 @@ const ONE_DAY = 86_400_000;
 const FIVE_MINUTES = 300_000;
 
 /*
- * State class, exposes two functions, 'set' and 'get'.
+ * State class, for centrally managing application state.
  *
- * 'set' takes a function as argument that sets the state to the
- * return value.
+ * _setModalFunction sets the function for showing a modal
+ * _setNotificationFunction sets the function for showing a notification
  *
- * 'get' returns the state from localStorage.
+ * Various getters and setters exist for the necessary properties.
+ *
+ * If saved storage is older than ONE_DAY, localStorage is cleared during
+ * initialization.
+ *
  */
 class State {
   #notificationFunction;
@@ -201,8 +203,8 @@ export const calculateTax = (country, state) => {
       default:
         return 0.05;
     }
-  } else {
-    return 0.05;
+  } else { // US Tax rate??
+    return 0.07;
   }
 };
 

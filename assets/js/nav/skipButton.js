@@ -1,6 +1,6 @@
 import { ZircusElement } from "../utils.js";
 
-export default class SkipButton extends HTMLElement {
+export default class ZircusSkipButton extends HTMLElement {
   #button;
 
   connectedCallback() {
@@ -23,5 +23,5 @@ export default class SkipButton extends HTMLElement {
   }
 }
 
-customElements.get("zircus-skip-to-content") ||
-  customElements.define("zircus-skip-to-content", SkipButton);
+customElements.get("zircus-skip-button") ||
+  customElements.define("zircus-skip-button", ZircusSkipButton);

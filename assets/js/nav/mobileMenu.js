@@ -1,4 +1,4 @@
-import withCartQty from "./withCartQty.js";
+import withCartQuantity from "./withCartQuantity.js";
 
 export default class ZircusMobileMenu extends HTMLElement {
   cartLink;
@@ -41,7 +41,7 @@ export default class ZircusMobileMenu extends HTMLElement {
   }
 }
 
-Object.assign(ZircusMobileMenu.prototype, withCartQty());
+Object.assign(ZircusMobileMenu.prototype, withCartQuantity());
 
-customElements.get("zircus-nav-mobile") ||
-  customElements.define("zircus-nav-mobile", ZircusMobileMenu);
+customElements.get("zircus-mobile-menu") ||
+  customElements.define("zircus-mobile-menu", ZircusMobileMenu);

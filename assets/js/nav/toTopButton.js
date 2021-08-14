@@ -1,8 +1,8 @@
-export default class ToTopButton extends HTMLElement {
+export default class ZircusToTopButton extends HTMLElement {
   #MIN_SCROLL = 400;
   #button;
   #isHidden = true;
-  #updating = false;
+  #isUpdating = false;
 
   connectedCallback() {
     this.#button = this.querySelector("#to-top-button");
@@ -27,24 +27,24 @@ export default class ToTopButton extends HTMLElement {
 
   show() {
     this.#button.classList.add("show");
-    this.#updating = false;
+    this.#isUpdating = false;
   }
 
   hide() {
     this.#button.classList.remove("show");
-    this.#updating = false;
+    this.#isUpdating = false;
   }
 
   scrollHandler(shouldShow) {
-    if (this.#updating) return;
-    this.#updating = true;
+    if (this.#isUpdating) return;
+    this.#isUpdating = true;
     return shouldShow && this.isHidden
       ? (this.isHidden = false)
       : !shouldShow && !this.isHidden
       ? (this.isHidden = true)
-      : (this.#updating = false);
+      : (this.#isUpdating = false);
   }
 }
 
 customElements.get("zircus-to-top-button") ||
-  customElements.define("zircus-to-top-button", ToTopButton);
+  customElements.define("zircus-to-top-button", ZircusToTopButton);

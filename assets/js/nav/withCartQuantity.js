@@ -1,6 +1,7 @@
 import { state } from "../utils.js";
 
-export default function withCartQty() {
+// Function to update a menu's cart link with current quantity of items
+export default function withCartQuantity() {
   return {
     updateCartLink() {
       return state.cart.length > 0
