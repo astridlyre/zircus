@@ -21,8 +21,8 @@ export default function cart() {
       document.dispatchEvent(
         new CustomEvent("preload", {
           detail: withLang({
-            en: `https://${window.location.hostname}/cart`,
-            fr: `https://${window.location.hostname}/fr/la-caisse`,
+            en: `/checkout`,
+            fr: `/fr/la-caisse`,
           }),
         }),
       );

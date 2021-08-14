@@ -1,11 +1,16 @@
 // Production API
-export const API_ENDPOINT = "https://zircus.herokuapp.com/api";
+// const ENV = 'production'
+const ENV = window.location.hostname.includes("zircus")
+  ? "production"
+  : "development";
+
+console.log(window.location.hostname);
+export const API_ENDPOINT = ENV === "production"
+  ? "https://zircus.herokuapp.com/api"
+  : "http://localhost:3000/api";
 
 const ONE_DAY = 86_400_000;
 const FIVE_MINUTES = 300_000;
-
-// Local Testing API
-// export const API_ENDPOINT = "http://localhost:3000/api";
 
 /*
  * State class, exposes two functions, 'set' and 'get'.
