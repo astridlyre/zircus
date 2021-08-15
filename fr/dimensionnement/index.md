@@ -3,7 +3,7 @@ lang: fr
 ref: sizing
 layout: generic
 title: dimensionnement · zircus
-bottom_image: /assets/img/products/1920/group-d-1920.jpg
+bottom_image: /assets/img/products/1920/group-a-1920.jpg
 bg_image: /assets/img/people/atana-b.jpg
 bg_image_alt: "Un gros plan d'un modèle tirant leur salopet vers le bas pour
   montrer leurs sous-vêtements violets de Zircus. Il semble grand à côté de leur
