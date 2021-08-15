@@ -89,8 +89,12 @@
   }
 
   &__methods {
-    text-align: right;
+    @include res("md") {
+      text-align: right;
+      margin-top: auto;
+    }
+    text-align: left;
     height: 100%;
-    margin-top: auto;
+    margin-top: var(--base-spacing);
   }
 }
