@@ -12,7 +12,7 @@
   right: var(--base-unit);
   max-width: calc(100% - var(--base-unit) * 2);
   z-index: 1000;
-  padding: var(--base-spacing) var(--md-spacing);
+  padding: var(--base-spacing);
   border-radius: var(--radius);
   box-shadow: var(--box-shadow-sm);
   border: 2px solid transparent;
@@ -63,7 +63,7 @@
   }
 
   &__text {
-    margin: 0 !important;
+    margin: 0 var(--base-spacing) 0 0 !important;
     @include smallSpaced();
     font-weight: 600;
     text-decoration: none !important;
