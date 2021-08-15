@@ -3,44 +3,40 @@
   carttext="{{ site.data.labels.product[page.lang].label_go_to_cart }}"
 >
   {% include nav_mobile_button.html %}
-  <ul class="nav_mobile_list hide" id="menu-mobile-list">
+  <div class="nav_mobile_list hide" id="menu-mobile-list">
     {% for item in site.data.nav[page.lang] %}
-    <li class="nav_mobile_list_link">
-      <zircus-router-link>
-        <a href="{{ item.link }}" id="{{ item.id }}-mobile">{{ item.name }}</a>
-      </zircus-router-link>
-    </li>
+    <zircus-router-link class="nav_mobile_list_link">
+      <a href="{{ item.link }}" id="{{ item.id }}-mobile">{{ item.name }}</a>
+    </zircus-router-link>
     {% endfor %}
-    <li class="nav_mobile_list_lang">
-      <zircus-lang-links
-        class="lang"
+    <zircus-lang-links
+      class="lang nav_mobile_list_lang"
+      title="{{ site.data.labels[page.lang].lang_dropdown }}"
+      type="top"
+      langs="en,fr"
+    >
+      <button
+        class="btn__icon"
         title="{{ site.data.labels[page.lang].lang_dropdown }}"
-        type="top"
-        langs="en,fr"
+        type="menu"
       >
-        <button
-          class="btn__icon"
-          title="{{ site.data.labels[page.lang].lang_dropdown }}"
-          type="menu"
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="icon"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="icon"
-          >
-            <circle cx="12" cy="12" r="10"></circle>
-            <line x1="2" y1="12" x2="22" y2="12"></line>
-            <path
-              d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
-            ></path>
-          </svg>
-        </button>
-      </zircus-lang-links>
-    </li>
-  </ul>
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="2" y1="12" x2="22" y2="12"></line>
+          <path
+            d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
+          ></path>
+        </svg>
+      </button>
+    </zircus-lang-links>
+  </div>
 </zircus-mobile-menu>

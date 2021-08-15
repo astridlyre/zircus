@@ -1,20 +1,16 @@
-<div class="nav_desktop">
-  <ul class="nav_desktop_links">
-    {% for item in site.data.nav[page.lang] %}
-    <li>
-      <zircus-router-link>
-        <a
-          class="small-spaced-bold border-hover nav_desktop_link"
-          href="{{ item.link }}"
-          id="{{ item.id }}"
-          title="{{ item.label }}"
-          aria-label="{{ item.label }}"
-          >{{ item.name }}</a
-        >
-      </zircus-router-link>
-    </li>
-    {% endfor %}
-  </ul>
+<div class="nav_desktop_links">
+  {% for item in site.data.nav[page.lang] %}
+  <zircus-router-link>
+    <a
+      class="small-spaced-bold border-hover nav_desktop_link"
+      href="{{ item.link }}"
+      id="{{ item.id }}"
+      title="{{ item.label }}"
+      aria-label="{{ item.label }}"
+      >{{ item.name }}</a
+    >
+  </zircus-router-link>
+  {% endfor %}
   <zircus-lang-links
     class="lang"
     title="{{ site.data.labels[page.lang].lang_dropdown }}"

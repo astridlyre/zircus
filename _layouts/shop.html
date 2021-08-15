@@ -5,22 +5,20 @@ layout: default
 <div class="container page__container">
   <h1 class="page__heading">{{ page.heading }}</h1>
   <p class="page__subheading">{{ page.subheading }}</p>
-  <ul class="home__products">
+  <div class="home__products">
     {% assign products=site.products | where:"lang", page.lang %} {% for product
     in products %}
-    <li class="home__products_product">
-      <zircus-router-link>
-        <a
-          class="home__products_product_link"
-          href="{{ product.url }}"
-          aria-label="{{ product.image_alt }}"
-          title="{{ product.name }} - {{ product.description }}"
-        >
-          <img src="{{ product.image }}" alt="{{ product.image_alt }}" />
-          <p class="home__products_product_text">{{ product.name }}</p>
-        </a>
-      </zircus-router-link>
-    </li>
+    <zircus-router-link class="home__products_product">
+      <a
+        class="home__products_product_link"
+        href="{{ product.url }}"
+        aria-label="{{ product.image_alt }}"
+        title="{{ product.name }} - {{ product.description }}"
+      >
+        <img src="{{ product.image }}" alt="{{ product.image_alt }}" />
+        <p class="home__products_product_text">{{ product.name }}</p>
+      </a>
+    </zircus-router-link>
     {% endfor %}
-  </ul>
+  </div>
 </div>

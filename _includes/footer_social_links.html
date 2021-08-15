@@ -1,17 +1,14 @@
-<ul class="footer_social">
+<div class="footer_social">
   {% for link in site.data.social %}
-  <li>
-    <a
-      class="btn__icon"
-      title="{{ link.label[page.lang] }}"
-      aria-label="{{ link.url }}"
-      href="{{ link.url }}"
-      target="_blank"
-      rel="noopener"
-    >
-      {{ link.icon }}
-    </a>
-  </li>
-  {% endfor %}
-  <li>{% include footer_lang_links.html %}</li>
-</ul>
+  <a
+    class="btn__icon"
+    title="{{ link.label[page.lang] }}"
+    aria-label="{{ link.url }}"
+    href="{{ link.url }}"
+    target="_blank"
+    rel="noopener"
+  >
+    {{ link.icon }}
+  </a>
+  {% endfor %} {% include footer_lang_links.html %}
+</div>

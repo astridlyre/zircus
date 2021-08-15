@@ -3,7 +3,7 @@ layout: default
 ---
 
 <zircus-payment
-  class="checkout"
+  class="checkout container page__container"
   heading="{{ page.label_card_details }}"
   buttontext="{{ page.label_pay_now }}"
   class="stripe-payment-form"
@@ -12,229 +12,226 @@ layout: default
   failure="{{ page.label_failure_message }}"
   complete="{{ site.data.labels[page.lang].order_complete }}"
 >
-  <div class="container page__container">
-    <h1 class="page__heading">{{ page.heading }}</h1>
-    <zircus-checkout-form>
-      <form id="checkout-form">
-        <div class="checkout__inputs">
-          <fieldset id="checkout-customer" class="address">
-            <legend>{{ page.label_user }}</legend>
-            <div class="flex-inputs">
-              <label for="checkout-name" class="column"
-                ><span>{{ page.label_form_name }}</span
-                ><input
-                  type="text"
-                  name="name"
-                  value=""
-                  class="input"
-                  required
-                  id="checkout-name"
-                  autocomplete="on"
-                  minlength="2"
-                  maxlength="140"
-              /></label>
-              <label for="checkout-phone" class="column"
-                ><span>{{ page.label_form_phone }}</span
-                ><input
-                  type="tel"
-                  name="phone"
-                  value=""
-                  class="input min-w-15"
-                  required
-                  id="checkout-phone"
-                  autocomplete="on"
-                  minlength="12"
-                  maxlength="12"
-                  pattern="^[0-9]{3} [0-9]{3} [0-9]{4}$"
-              /></label>
-              <label for="checkout-email" class="column"
-                ><span>{{ page.label_form_email }}</span
-                ><input
-                  type="email"
-                  name="email"
-                  value=""
-                  class="input min-w-15"
-                  required
-                  id="checkout-email"
-                  autocomplete="on"
-                  minlength="5"
-                  maxlength="80"
-              /></label>
-            </div>
+  <h1 class="page__heading">{{ page.heading }}</h1>
+  <zircus-checkout-form>
+    <form id="checkout-form">
+      <div class="checkout__inputs">
+        <fieldset id="checkout-customer" class="address">
+          <legend>{{ page.label_user }}</legend>
+          <div class="flex-inputs">
+            <label for="checkout-name" class="column"
+              ><span>{{ page.label_form_name }}</span
+              ><input
+                type="text"
+                name="name"
+                value=""
+                class="input"
+                required
+                id="checkout-name"
+                autocomplete="on"
+                minlength="2"
+                maxlength="140"
+            /></label>
+            <label for="checkout-phone" class="column"
+              ><span>{{ page.label_form_phone }}</span
+              ><input
+                type="tel"
+                name="phone"
+                value=""
+                class="input min-w-15"
+                required
+                id="checkout-phone"
+                autocomplete="on"
+                minlength="12"
+                maxlength="12"
+                pattern="^[0-9]{3} [0-9]{3} [0-9]{4}$"
+            /></label>
+            <label for="checkout-email" class="column"
+              ><span>{{ page.label_form_email }}</span
+              ><input
+                type="email"
+                name="email"
+                value=""
+                class="input min-w-15"
+                required
+                id="checkout-email"
+                autocomplete="on"
+                minlength="5"
+                maxlength="80"
+            /></label>
+          </div>
+        </fieldset>
+        <fieldset id="checkout-address" class="address">
+          <legend>{{ page.label_address }}</legend>
+          <div class="flex-inputs">
+            <label for="checkout-address-line1" class="column"
+              ><span>{{ page.label_form_address_1 }}</span
+              ><input
+                type="text"
+                name="address-line1"
+                value=""
+                class="input"
+                required
+                id="checkout-street"
+                autocomplete="on"
+                minlength="0"
+                maxlength="140"
+            /></label>
+            <label for="checkout-address-line2" class="column"
+              ><span>{{ page.label_form_address_2 }}</span
+              ><input
+                type="text"
+                name="address-line2"
+                value=""
+                class="input"
+                id="checkout-address-line2"
+                autocomplete="on"
+                minlength="0"
+                maxlength="140"
+            /></label>
+            <label for="checkout-city" class="column"
+              ><span>{{ page.label_form_city }}</span
+              ><input
+                type="text"
+                name="address-city"
+                value=""
+                class="input"
+                required
+                id="checkout-city"
+                autocomplete="on"
+              />
+            </label>
+            <label for="checkout-state" class="column"
+              ><span id="checkout-state-text">{{ page.label_form_state }}</span
+              ><select
+                autocomplete="on"
+                name="address-state"
+                value=""
+                class="input"
+                required
+                id="checkout-state"
+              ></select>
+            </label>
+            <label for="checkout-country" class="column"
+              ><span>{{ page.label_form_country }}</span>
+              <select
+                autocomplete="on"
+                class="input"
+                name="address-country"
+                id="checkout-country"
+                required
+                value="Canada"
+              >
+                <option value="Canada" selected="true">Canada</option>
+                <option value="United States">United States</option>
+              </select>
+            </label>
+            <label for="checkout-postal-code" class="column"
+              ><span id="checkout-postal-code-text" class="max-w-10"
+                >{{ page.label_form_postal_code }}</span
+              ><input
+                type="text"
+                name="address-postalCode"
+                value=""
+                class="input max-w-10"
+                required
+                id="checkout-postal-code"
+                autocomplete="on"
+            /></label>
+          </div>
+        </fieldset>
+        <zircus-shipping-inputs>
+          <fieldset id="checkout-shipping-inputs">
+            <legend>{{ page.label_shipping }}</legend>
           </fieldset>
-          <fieldset id="checkout-address" class="address">
-            <legend>{{ page.label_address }}</legend>
-            <div class="flex-inputs">
-              <label for="checkout-address-line1" class="column"
-                ><span>{{ page.label_form_address_1 }}</span
-                ><input
-                  type="text"
-                  name="address-line1"
-                  value=""
-                  class="input"
-                  required
-                  id="checkout-street"
-                  autocomplete="on"
-                  minlength="0"
-                  maxlength="140"
-              /></label>
-              <label for="checkout-address-line2" class="column"
-                ><span>{{ page.label_form_address_2 }}</span
-                ><input
-                  type="text"
-                  name="address-line2"
-                  value=""
-                  class="input"
-                  id="checkout-address-line2"
-                  autocomplete="on"
-                  minlength="0"
-                  maxlength="140"
-              /></label>
-              <label for="checkout-city" class="column"
-                ><span>{{ page.label_form_city }}</span
-                ><input
-                  type="text"
-                  name="address-city"
-                  value=""
-                  class="input"
-                  required
-                  id="checkout-city"
-                  autocomplete="on"
-                />
-              </label>
-              <label for="checkout-state" class="column"
-                ><span id="checkout-state-text"
-                  >{{ page.label_form_state }}</span
-                ><select
-                  autocomplete="on"
-                  name="address-state"
-                  value=""
-                  class="input"
-                  required
-                  id="checkout-state"
-                ></select>
-              </label>
-              <label for="checkout-country" class="column"
-                ><span>{{ page.label_form_country }}</span>
-                <select
-                  autocomplete="on"
-                  class="input"
-                  name="address-country"
-                  id="checkout-country"
-                  required
-                  value="Canada"
-                >
-                  <option value="Canada" selected="true">Canada</option>
-                  <option value="United States">United States</option>
-                </select>
-              </label>
-              <label for="checkout-postal-code" class="column"
-                ><span id="checkout-postal-code-text" class="max-w-10"
-                  >{{ page.label_form_postal_code }}</span
-                ><input
-                  type="text"
-                  name="address-postalCode"
-                  value=""
-                  class="input max-w-10"
-                  required
-                  id="checkout-postal-code"
-                  autocomplete="on"
-              /></label>
-            </div>
-          </fieldset>
-          <zircus-shipping-inputs>
-            <fieldset id="checkout-shipping-inputs">
-              <legend>{{ page.label_shipping }}</legend>
-            </fieldset>
-          </zircus-shipping-inputs>
-        </div>
-        <div class="checkout__products__container">
-          <template id="zircus-product-template">
-            <zircus-router-link>
-              <a href="" class="cart__product_flexcon">
-                <img src="" alt="" class="cart__product_image" />
-                <div class="cart__product_description">
-                  <p></p>
+        </zircus-shipping-inputs>
+      </div>
+      <div class="checkout__products__container">
+        <template id="zircus-product-template">
+          <zircus-router-link>
+            <a href="" class="cart__product_flexcon">
+              <img src="" alt="" class="cart__product_image" />
+              <div class="cart__product_description">
+                <p></p>
+              </div>
+            </a>
+          </zircus-router-link>
+          <div class="cart__product_inputs hidden"></div>
+        </template>
+        <div id="checkout-products" class="checkout__products"></div>
+        <div class="checkout__total">
+          <ul class="cart__total_prices">
+            <li class="cart__total_price">
+              <span class="text">{{ page.label_subtotal }}:</span
+              ><span
+                class="cart__total_price_item"
+                id="checkout-subtotal"
+              ></span>
+            </li>
+            <li class="cart__total_price">
+              <span class="text">{{ page.label_shipping }}:</span
+              ><span
+                class="cart__total_price_item"
+                id="checkout-shipping"
+              ></span>
+            </li>
+            <li class="cart__total_price">
+              <span class="text">{{ page.label_estimated_tax }}:</span
+              ><span class="cart__total_price_item" id="checkout-tax"></span>
+            </li>
+            <li class="cart__total_price bold">
+              {{ page.label_total }}:<span
+                class="cart__total_price_item"
+                id="checkout-total"
+              ></span>
+            </li>
+          </ul>
+          <div class="checkout__button">
+            <zircus-paypal
+              heading="{{ page.label_card_details }}"
+              canceltext="{{ page.label_cancel }}"
+              success="{{ page.label_success_message }}"
+              failure="{{ page.label_failure_message }}"
+              complete="{{ site.data.labels[page.lang].order_complete }}"
+              name="{{ page.label_paypal }}"
+              title="{{ page.label_paypal_title }}"
+            >
+              <template id="paypal-template">
+                <div class="modal__text flex">
+                  <span id="paypal-text" class="small-spaced-bold"></span>
+                  <span id="paypal-message" class="small-spaced-bold"></span>
                 </div>
-              </a>
-            </zircus-router-link>
-            <div class="cart__product_inputs hidden"></div>
-          </template>
-          <div id="checkout-products" class="checkout__products"></div>
-          <div class="checkout__total">
-            <ul class="cart__total_prices">
-              <li class="cart__total_price">
-                <span class="text">{{ page.label_subtotal }}:</span
-                ><span
-                  class="cart__total_price_item"
-                  id="checkout-subtotal"
-                ></span>
-              </li>
-              <li class="cart__total_price">
-                <span class="text">{{ page.label_shipping }}:</span
-                ><span
-                  class="cart__total_price_item"
-                  id="checkout-shipping"
-                ></span>
-              </li>
-              <li class="cart__total_price">
-                <span class="text">{{ page.label_estimated_tax }}:</span
-                ><span class="cart__total_price_item" id="checkout-tax"></span>
-              </li>
-              <li class="cart__total_price bold">
-                {{ page.label_total }}:<span
-                  class="cart__total_price_item"
-                  id="checkout-total"
-                ></span>
-              </li>
-            </ul>
-            <div class="checkout__button">
-              <zircus-paypal
-                heading="{{ page.label_card_details }}"
-                canceltext="{{ page.label_cancel }}"
-                success="{{ page.label_success_message }}"
-                failure="{{ page.label_failure_message }}"
-                complete="{{ site.data.labels[page.lang].order_complete }}"
-                name="{{ page.label_paypal }}"
-                title="{{ page.label_paypal_title }}"
+                <div id="paypal-button">
+                  <span class="spinner"></span>
+                </div>
+              </template>
+            </zircus-paypal>
+            <button
+              class="btn btn__primary"
+              type="submit"
+              value="stripe"
+              name="Pay with Card"
+              id="pay-with-card"
+              title="{{ page.label_pay_with_card_title }}"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="icon mr-1"
               >
-                <template id="paypal-template">
-                  <div class="modal__text flex">
-                    <span id="paypal-text" class="small-spaced-bold"></span>
-                    <span id="paypal-message" class="small-spaced-bold"></span>
-                  </div>
-                  <div id="paypal-button">
-                    <span class="spinner"></span>
-                  </div>
-                </template>
-              </zircus-paypal>
-              <button
-                class="btn btn__primary"
-                type="submit"
-                value="stripe"
-                name="Pay with Card"
-                id="pay-with-card"
-                title="{{ page.label_pay_with_card_title }}"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  class="icon mr-1"
-                >
-                  <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
-                  <line x1="1" y1="10" x2="23" y2="10"></line>
-                </svg>
-                {{ page.label_pay_with_card }}
-              </button>
-            </div>
+                <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                <line x1="1" y1="10" x2="23" y2="10"></line>
+              </svg>
+              {{ page.label_pay_with_card }}
+            </button>
           </div>
         </div>
-      </form>
-    </zircus-checkout-form>
-  </div>
+      </div>
+    </form>
+  </zircus-checkout-form>
 </zircus-payment>

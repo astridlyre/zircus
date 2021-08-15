@@ -1,15 +1,13 @@
-<ul class="footer_links">
+<div class="footer_links">
   {% for item in site.data.footer_links[page.lang] %}
-  <li>
-    <zircus-router-link>
-      <a
-        class="small-spaced-bold border-hover"
-        href="{{ item.link }}"
-        aria-label="{{ item.label }}"
-        title="{{ item.label }}"
-        >{{ item.name }}</a
-      >
-    </zircus-router-link>
-  </li>
+  <zircus-router-link>
+    <a
+      class="small-spaced-bold border-hover"
+      href="{{ item.link }}"
+      aria-label="{{ item.label }}"
+      title="{{ item.label }}"
+      >{{ item.name }}</a
+    >
+  </zircus-router-link>
   {% endfor %}
-</ul>
+</div>

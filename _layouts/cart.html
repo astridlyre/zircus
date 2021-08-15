@@ -2,63 +2,64 @@
 layout: default
 ---
 
-<div class="container page__container">
+<zircus-cart
+  class="container page__container"
+  checkoutpath="{{ page.label_checkout_path }}"
+>
   <h1 class="page__heading mb-lg">{{ page.heading }}</h1>
-  <zircus-cart checkoutpath="{{ page.label_checkout_path }}">
-    <template id="zircus-product-template">
-      <zircus-router-link>
-        <a href="" class="cart__product_flexcon">
-          <img src="" alt="" class="cart__product_image" />
-          <div class="cart__product_description">
-            <p></p>
-          </div>
-        </a>
-      </zircus-router-link>
-      <div class="cart__product_inputs">
-        <span class="cart__product_price"></span>
-        <label for=""
-          ><span>{{ page.label_quantity }}</span>
-          <input
-            type="number"
-            name=""
-            value=""
-            min="1"
-            max="100"
-            step="1"
-            class="input w-4"
-        /></label>
-        <button
-          type="button"
-          title="{{ page.label_remove }}"
-          class="btn btn__secondary"
-          aria-label=""
-        >
-          {{ page.label_remove }}
-        </button>
-      </div>
-    </template>
-    <div id="cart-products">
-      <p id="cart-products-none" class="dot">{{ page.label_no_items }}</p>
-    </div>
-    <div class="cart__total">
-      <ul class="cart__total_prices">
-        <li class="cart__total_price bold">
-          <span class="text">{{ page.label_subtotal }}:</span
-          ><span class="cart__total_price_item" id="cart-subtotal">$0.00</span>
-        </li>
-      </ul>
-    </div>
-    <div class="cart__buttons">
+  <div id="cart-products">
+    <p id="cart-products-none" class="dot">{{ page.label_no_items }}</p>
+  </div>
+  <div class="cart__total">
+    <ul class="cart__total_prices">
+      <li class="cart__total_price bold">
+        <span class="text">{{ page.label_subtotal }}:</span
+        ><span class="cart__total_price_item" id="cart-subtotal">$0.00</span>
+      </li>
+    </ul>
+  </div>
+  <div class="cart__buttons">
+    <button
+      name="{{ page.label_checkout }}"
+      class="btn btn__primary"
+      type="button"
+      id="cart-checkout"
+      disabled
+      title="{{ page.label_checkout_title }}"
+    >
+      {{ page.label_checkout }}
+    </button>
+  </div>
+  <template id="zircus-product-template">
+    <zircus-router-link>
+      <a href="" class="cart__product_flexcon">
+        <img src="" alt="" class="cart__product_image" />
+        <div class="cart__product_description">
+          <p></p>
+        </div>
+      </a>
+    </zircus-router-link>
+    <div class="cart__product_inputs">
+      <span class="cart__product_price"></span>
+      <label for=""
+        ><span>{{ page.label_quantity }}</span>
+        <input
+          type="number"
+          name=""
+          value=""
+          min="1"
+          max="100"
+          step="1"
+          class="input w-4"
+      /></label>
       <button
-        name="{{ page.label_checkout }}"
-        class="btn btn__primary"
         type="button"
-        id="cart-checkout"
-        disabled
-        title="{{ page.label_checkout_title }}"
+        title="{{ page.label_remove }}"
+        class="btn btn__secondary"
+        aria-label=""
       >
-        {{ page.label_checkout }}
+        {{ page.label_remove }}
       </button>
-    </div></zircus-cart
-  >
-</div>
+    </div>
+  </template>
+</zircus-cart>
