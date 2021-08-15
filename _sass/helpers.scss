@@ -116,6 +116,7 @@
 
 .hide-y {
   overflow-y: hidden;
+  padding-right: 10px; // for scroll bar
   position: fixed;
   top: 0;
   left: 0;

@@ -34,10 +34,12 @@ export default class ZircusMobileMenu extends HTMLElement {
 
   hide() {
     this.#list.classList.add("hide");
+    document.body.classList.remove("hide-y");
   }
 
   show() {
     this.#list.classList.remove("hide");
+    document.body.classList.add("hide-y");
   }
 }
 
