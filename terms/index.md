@@ -8,34 +8,41 @@ heading: terms and conditions
 subheading: Last updated July 07 2021
 ---
 
-- <zircus-router-page-link href="terms-of-use" text="Terms of Use" title="Go to
-  Terms of Use"></zircus-router-page-link>
-- <zircus-router-page-link href="general-conditions-of-sale" text="General
+<fieldset>
+<legend>Jump to Section</legend>
+<ul>
+<li><zircus-router-page-link href="terms-of-use" text="Terms of Use" title="Go to
+  Terms of Use"></zircus-router-page-link></li>
+<li><zircus-router-page-link href="general-conditions-of-sale" text="General
   Conditions of Sale" title="Go to General Conditions of
-  Sale"></zircus-router-page-link>
-- <zircus-router-page-link href="placing-an-order" text="Placing an Order"
-  title="Go to Placing an Order"></zircus-router-page-link>
-- <zircus-router-page-link href="change-or-cancel-order" text="Change or Cancel
-  Order" title="Go to Change or Cancel Order"></zircus-router-page-link>
-- <zircus-router-page-link href="payment" text="Payment" title="Go to
-  Payment"></zircus-router-page-link>
-- <zircus-router-page-link href="pricing-and-taxes" text="Pricing and Taxes"
-  title="Go to Pricing and Taxes"></zircus-router-page-link>
-- <zircus-router-page-link href="shipping" text="Shipping" title="Go to
-  Shipping"></zircus-router-page-link>
-- <zircus-router-page-link href="responsibility" text="Responsibility" title="Go
-  to Responsibility"></zircus-router-page-link>
-- <zircus-router-page-link href="errors-and-inaccuracies" text="Errors and
-  Inaccuracies" title="Go to Errors and Inaccuracies"></zircus-router-page-link>
-- <zircus-router-page-link href="security" text="Security" title="Go to
-  Security"></zircus-router-page-link>
-- <zircus-router-page-link href="trademarks-logos-photos" text="Trademarks,
+  Sale"></zircus-router-page-link></li>
+<li><zircus-router-page-link href="placing-an-order" text="Placing an Order"
+  title="Go to Placing an Order"></zircus-router-page-link></li>
+<li><zircus-router-page-link href="change-or-cancel-order" text="Change or Cancel
+  Order" title="Go to Change or Cancel Order"></zircus-router-page-link></li>
+<li><zircus-router-page-link href="payment" text="Payment" title="Go to
+  Payment"></zircus-router-page-link></li>
+<li><zircus-router-page-link href="pricing-and-taxes" text="Pricing and Taxes"
+  title="Go to Pricing and Taxes"></zircus-router-page-link></li>
+<li><zircus-router-page-link href="shipping" text="Shipping" title="Go to
+  Shipping"></zircus-router-page-link></li>
+<li><zircus-router-page-link href="responsibility" text="Responsibility" title="Go
+  to Responsibility"></zircus-router-page-link></li>
+<li><zircus-router-page-link href="errors-and-inaccuracies" text="Errors and
+  Inaccuracies" title="Go to Errors and
+  Inaccuracies"></zircus-router-page-link></li>
+<li><zircus-router-page-link href="security" text="Security" title="Go to
+  Security"></zircus-router-page-link></li>
+<li><zircus-router-page-link href="trademarks-logos-photos" text="Trademarks,
   Logos, Photos" title="Go to Trademarks, Logos,
-  Photos"></zircus-router-page-link>
-- <zircus-router-page-link href="limitation-of-liability" text="Limitation of
-  Liability" title="Go to Limitation of Liability"></zircus-router-page-link>
-- <zircus-router-page-link href="contacting-us" text="Contacting Us" title="Go
-  to Contacting Us"></zircus-router-page-link>
+  Photos"></zircus-router-page-link></li>
+<li><zircus-router-page-link href="limitation-of-liability" text="Limitation of
+  Liability" title="Go to Limitation of
+  Liability"></zircus-router-page-link></li>
+<li><zircus-router-page-link href="contacting-us" text="Contacting Us" title="Go
+  to Contacting Us"></zircus-router-page-link></li>
+</ul>
+</fieldset>
 
 ## terms of use
 

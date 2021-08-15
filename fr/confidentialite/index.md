@@ -8,6 +8,48 @@ heading: politique de confidentialite
 subheading: Last updated July 07 2021
 ---
 
+<fieldset>
+<legend>Sautez au Section</legend>
+<ul>
+<li><zircus-router-page-link href="collection-of-information" text="Collection of
+  Information" title="Go to Collection of
+  Information"></zircus-router-page-link></li>
+<li><zircus-router-page-link href="text-marketing-and-notifications" text="Text
+  Marketing and Notifications" title="Go to Text Marketing and
+  Notifications"></zircus-router-page-link></li>
+<li><zircus-router-page-link href="use-of-information" text="Use of Information"
+  title="Go to Use of Information"></zircus-router-page-link>
+
+  <ul>
+  <li><zircus-router-page-link href="providing-and-improving-our-services"
+    text="Providing and Improving Our Services" title="Go to Providing and
+    Improving Our Services"></zircus-router-page-link></li>
+  <li><zircus-router-page-link href="disclosure-of-information" text="Disclosure
+    of Information" title="Go to Disclosure of
+    Information"></zircus-router-page-link></li>
+  <li><zircus-router-page-link href="cookies-and-other-tracking-mechanisms"
+    text="Cookies and Other Tracking Mechanisms" title="Go to Cookies and Other
+    Tracking Mechanisms"></zircus-router-page-link></li>
+</ul>
+</li>
+
+<li><zircus-router-page-link href="third-party-sites-and-services"
+  text="Third-Party Sites and Services" title="Go to Third-Party Sites and
+  Services"></zircus-router-page-link></li>
+<li><zircus-router-page-link href="security" text="Security" title="Go to Security
+  Information"></zircus-router-page-link></li>
+<li><zircus-router-page-link href="children" text="Children" title="Go to
+  Children"></zircus-router-page-link></li>
+<li><zircus-router-page-link href="international-transfers" text="International
+  Transfers" title="Go to International
+  Transfers"></zircus-router-page-link></li>
+<li><zircus-router-page-link href="changes-to-this-policy" text="Changes To This
+  Policy" title="Go to Changes to This Policy"></zircus-router-page-link></li>
+<li><zircus-router-page-link href="contact-us" text="Contact Us" title="Go to
+  Contact Us"></zircus-router-page-link></li>
+</ul>
+</fieldset>
+
 Zircus Underwear, Inc. (« Zircus », « La Société », « nous » ou « notre »)
 valorise votre la protection de la vie privée. Nous offrons des sous-vêtements
 et des vêtements dans lequel tout le monde pourrait se sentir à l'aise, peu
@@ -24,37 +66,6 @@ sont soumis à la présente Politique et à nos Conditions du Service, y compris
 ses limitations applicables sur les dommages et la résolution nombre de
 différends. Nos conditions d'utilisation sont incorporées par référence dans ce
 Politique.
-
-- <zircus-router-page-link href="collection-of-information" text="Collection of
-  Information" title="Go to Collection of
-  Information"></zircus-router-page-link>
-- <zircus-router-page-link href="text-marketing-and-notifications" text="Text
-  Marketing and Notifications" title="Go to Text Marketing and
-  Notifications"></zircus-router-page-link>
-- <zircus-router-page-link href="use-of-information" text="Use of Information"
-  title="Go to Use of Information"></zircus-router-page-link>
-
-  - <zircus-router-page-link href="providing-and-improving-our-services"
-    text="Providing and Improving Our Services" title="Go to Providing and
-    Improving Our Services"></zircus-router-page-link>
-  - <zircus-router-page-link href="disclosure-of-information" text="Disclosure
-    of Information" title="Go to Disclosure of
-    Information"></zircus-router-page-link>
-  - <zircus-router-page-link href="cookies-and-other-tracking-mechanisms"
-    text="Cookies and Other Tracking Mechanisms" title="Go to Cookies and Other
-    Tracking Mechanisms"></zircus-router-page-link>
-
-- <zircus-router-page-link href="third-party-sites-and-services"
-  text="Third-Party Sites and Services" title="Go to Third-Party Sites and
-  Services"></zircus-router-page-link>
-- <zircus-router-page-link href="security" text="Security" title="Go to Security
-  Information"></zircus-router-page-link>
-- <zircus-router-page-link href="children" text="Children" title="Go to
-  Children"></zircus-router-page-link>
-- <zircus-router-page-link href="international-transfers" text="International
-  Transfers" title="Go to International Transfers"></zircus-router-page-link>
-- <zircus-router-page-link href="changes-to-this-policy" text="Changes To This
-  Policy" title="Go to Changes to This Policy"></zircus-router-page-link>
 
 ## Collection Of Information
 
@@ -199,7 +210,9 @@ information we have previously collected from you, we will endeavour to provide
 you with notice in advance of such change, such as via email or prominent notice
 on the Site.
 
-CONTACT US If you have questions about the privacy aspects of our Services or
+## Contact Us
+
+If you have questions about the privacy aspects of our Services or
 would like to make a complaint, please contact us at
 [privacy@zircus.ca](mailto:privacy@zircus.ca) or:
 

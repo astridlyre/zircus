@@ -11,6 +11,12 @@ h6 {
   }
 }
 
+fieldset + p,
+fieldset + p,
+fieldset + p,
+fieldset + p,
+fieldset + p,
+fieldset + p,
 h1 + p,
 h2 + p,
 h3 + p,
@@ -32,6 +38,12 @@ zircus-router-page-link + h3,
 zircus-router-page-link + h4,
 zircus-router-page-link + h5,
 zircus-router-page-link + h6,
+fieldset + h1,
+fieldset + h2,
+fieldset + h3,
+fieldset + h4,
+fieldset + h5,
+fieldset + h6,
 ul + h1,
 ul + h2,
 ul + h3,
@@ -58,7 +70,13 @@ h5 {
 h3,
 h4,
 h5 {
-  font-weight: normal;
+  font-weight: 600;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: 500;
 }
 
 h4,
