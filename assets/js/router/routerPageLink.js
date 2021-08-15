@@ -24,7 +24,14 @@ export default class ZircusRouterPageLink extends HTMLElement {
       block: "center",
       behavior: "smooth",
     });
-    document.dispatchEvent(new CustomEvent("scrolled-to-heading"));
+    requestAnimationFrame(() => {
+      target.classList.add("scrolled");
+      document.addEventListener(
+        "scroll",
+        () => target.classList.remove("scrolled"),
+        { once: true },
+      );
+    });
   }
 }
 

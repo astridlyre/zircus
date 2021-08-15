@@ -12,7 +12,6 @@ import zircusSkipButton from "./nav/skipButton.js";
 import zircusMobileMenu from "./nav/mobileMenu.js";
 import zircusToTopButton from "./nav/toTopButton.js";
 import zircusLangLinks from "./nav/langLinks.js";
-import zircusScrollIcon from "./nav/scrollIcon.js";
 
 // checkout page
 import zircusPayment from "./payment/payment.js";

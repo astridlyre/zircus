@@ -8,6 +8,42 @@ heading: conditions generales
 subheading: Dernière mise à jour le 7 juillet 2021
 ---
 
+- <zircus-router-page-link href="conditions-dutilisation" text="Conditions
+  d’Utilisation" title="Voir conditions
+  d’utilisation"></zircus-router-page-link>
+- <zircus-router-page-link href="conditions-générales-de-vente" text="Conditions
+  Générales de Vente" title="Voir conditions générales de
+  vente"></zircus-router-page-link>
+- <zircus-router-page-link href="passer-une-commande" text="Passer une Commande"
+  title="Voir Passer une Commande"></zircus-router-page-link>
+- <zircus-router-page-link href="modifier-ou-annuler-une-commande"
+  text="Modifier ou Annuler une Commande" title="Voir modifier ou annuler une
+  commande"></zircus-router-page-link>
+- <zircus-router-page-link href="modifier-ou-annuler-une-commande"
+  text="Modifier ou Annuler une Commande" title="Voir modifier ou annuler une
+  commande"></zircus-router-page-link>
+- <zircus-router-page-link href="le-paiement" text="Le Paiement" title="Voir le
+  Paiement"></zircus-router-page-link>
+- <zircus-router-page-link href="prix-et-taxes" text="Prix et Taxes" title="Voir
+  Prix et Taxes"></zircus-router-page-link>
+- <zircus-router-page-link href="expédition" text="Expédition" title="Voir
+  Expédition"></zircus-router-page-link>
+- <zircus-router-page-link href="la-responsabilité" text="La Responsabilité"
+  title="Voir la Responsabilité"></zircus-router-page-link>
+- <zircus-router-page-link href="erreurs-et-inexactitudes" text="Erreurs et
+  Inexactitudes" title="Voir Erreurs et
+  Inexactitudes"></zircus-router-page-link>
+- <zircus-router-page-link href="la-sécurité" text="La Sécurité" title="Voir la
+  sécurité"></zircus-router-page-link>
+- <zircus-router-page-link href="marques-de-commerce-logos-et-photos"
+  text="Marques de Commerce, Logos et Photos" title="Voir marques de commerce,
+  logos et photos"></zircus-router-page-link>
+- <zircus-router-page-link href="limitation-de-responsabilité" text="Limitation
+  de Responsabilité" title="Voir limitation de
+  responsabilité"></zircus-router-page-link>
+- <zircus-router-page-link href="nous-contacter" text="Nous Contacter"
+  title="Voir Nous Contacter"></zircus-router-page-link>
+
 ## conditions d'utilisation
 
 Zircus Underwear (« Zircus ») fonctionne en ligne sur le site web www.zircus.ca
@@ -87,7 +123,7 @@ la preuve d'achat et nous vous recommandons fortement d'enregistrer une copie de
 ce document pour référence future. Zircus doit recevoir le paiement intégral de
 la commande avant que la commande puisse être embarquée.
 
-# prix et taxes
+## prix et taxes
 
 <ol type="i">
 <li>Le prix facturé pour chaque article commandé sera le prix qui est en vigueur au moment où la commande est passée sur le Site.</li>
