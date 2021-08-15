@@ -14,6 +14,7 @@
   &__products {
     display: flex;
     flex-flow: column nowrap;
+    align-items: flex-start;
     gap: var(--base-spacing);
     margin: var(--md-spacing) 0 !important;
   }
@@ -26,6 +27,8 @@
     @include res("sm") {
       justify-content: space-between;
     }
+    width: 100%;
+    @include readable-line-length();
     gap: var(--base-spacing);
     padding: var(--base-spacing);
     border-radius: var(--radius);
@@ -45,8 +48,8 @@
     }
 
     &__description {
-      line-height: var(--heading-line-height);
       color: var(--dgray-20);
+      @include smallSpacedBold();
     }
 
     &__container {
@@ -55,13 +58,9 @@
     }
 
     img {
-      flex-basis: 12rem;
-      max-height: var(--xl-spacing);
+      flex-basis: 8rem;
+      max-height: var(--md-spacing);
       object-fit: contain;
-    }
-
-    h3 {
-      margin-top: var(--base-spacing);
     }
 
     span {
@@ -76,6 +75,7 @@
     flex-flow: row wrap;
     justify-content: space-between;
     align-items: flex-end;
+    @include readable-line-length();
 
     h4 {
       width: 100%;
@@ -95,6 +95,6 @@
     }
     text-align: left;
     height: 100%;
-    margin-top: var(--base-spacing);
+    margin-top: var(--base-spacing) !important;
   }
 }

@@ -21,8 +21,7 @@ const template = (order) => `
       <h5 class="order__product__quantity">${item.quantity}</h5>
       <img class="order__image" src="${item.image}" alt="${item.name}" title="${item.name}" />
       <div class="order__product__container">
-        <h4 class="order__product__heading">${item.name} - $${item.price}/ea.</h4>
-        <p class="order__product__description">${item.description}</p>
+        <hp class="order__product__description">${item.name} - $${item.price}/ea.</hp>
       </div>
     </li>
     `).join("\n")
@@ -40,7 +39,7 @@ ${order.email}<br />
 ${order.phone}<br />
 ${order.address.line1}<br>
 ${order.address.line2 ? `${order.address.line2}<br />` : ""}
-${order.address.city} ${order.address.state}
+${order.address.city} ${order.address.state}<br />
 ${order.address.country} ${order.address.postalCode}
     </address>
     <ul class="order__methods">
