@@ -5,10 +5,10 @@ const thanksText = {
 Thanks, <span id="user-name">${name}</span>! Your order has been recieved and you
 should get a confirmation email sent to <kbd id="user-email">${email}</kbd> within a
 few minutes with your order information. Your unique order identifier is
-<kbd id="order-id">${identifier}</kbd>. Once your order ships, you will recieve a
-tracking number, along with a link to view the status of your order. For
-customer support, or if you have any questions, please contact us at
-<a href="mailto:support@zircus.ca">support@zircus.ca</a>.
+<kbd id="order-id">${identifier}</kbd> (save this, because you'll need it to view your
+order status. Once your order ships, you will recieve a tracking number, along with a 
+link to view the status of your order. For customer support, or if you have any 
+questions, please contact us at <a href="mailto:support@zircus.ca">support@zircus.ca</a>.
 `,
   fr: (name, email, identifier) => `
 Merci, <span id="user-name">${name}</span>! Votre commande a été reçue et vous
