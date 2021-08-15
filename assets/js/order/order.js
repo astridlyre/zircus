@@ -86,17 +86,16 @@ export default class ZircusOrder extends HTMLElement {
         text: this.getAttribute("oktext"),
         title: this.getAttribute("oktext"),
         action: ({ closeModal, setButtonState }) => {
-          setButtonState({ isActive: true, isSpinning: true });
+          setButtonState({ isActive: false, isSpinning: true });
           this.authenticate({
             ...this.#searchParams,
             identifier: this.#identifierInput.value,
           }).then(isJson).then(isError).then((order) => {
             this.#orderContainer.innerHTML = template(order);
             notifySuccess(this.getAttribute("success"));
-            setButtonState({ isActive: false });
             closeModal();
           }).catch((error) => {
-            setButtonState({ isActive: false });
+            setButtonState({ isActive: true });
             notifyFailure(error);
           });
         },
