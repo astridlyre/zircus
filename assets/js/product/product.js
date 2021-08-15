@@ -25,24 +25,22 @@ const makeLinks = (prefix, color) =>
   and size is the image size 400, 600 or 1000
 */
 export default class Product extends HTMLElement {
-  #prefix;
   #needsUpdate = true;
   #currentItem;
+  #sizeInput;
+  #quantityInput;
+  #colorInput;
+  #defaultColor;
+  #currentColor;
+  #addToCartButton;
 
   connectedCallback() {
-    this.priceText = this.querySelector("#product-price-text");
-    this.sizeInput = this.querySelector("#product-size");
-    this.productImage = this.querySelector("zircus-product-image");
-    this.quantityInput = this.querySelector("#product-quantity");
-    this.colorInput = this.querySelector("#product-color");
-    this.addToCartButton = this.querySelector("#add-to-cart");
-    this.gotoCartButton = this.querySelector("#go-to-cart");
-    this.gotoCartButtonText = this.querySelector("#go-to-cart-qty");
-    this.productAccent = this.querySelector("#product-accent");
-    this.productStatusText = this.querySelector("#product-status-text");
-    this.#prefix = this.getAttribute("prefix");
-    this.defaultColor = this.getAttribute("defaultcolor");
-    this.currentColor = this.color;
+    this.#sizeInput = this.querySelector("#product-size");
+    this.#quantityInput = this.querySelector("#product-quantity");
+    this.#colorInput = this.querySelector("#product-color");
+    this.#addToCartButton = this.querySelector("#add-to-cart");
+    this.#defaultColor = this.getAttribute("defaultcolor");
+    this.#currentColor = this.color;
 
     // Initial updates
     this.preloadImages()
@@ -52,33 +50,33 @@ export default class Product extends HTMLElement {
       .updateSizeOptionText();
 
     // Add event listeners
-    this.colorInput.addEventListener(
+    this.#colorInput.addEventListener(
       "change",
       () => this.updateStatus().updateSizeOptionText(),
     );
 
-    this.quantityInput.addEventListener("change", () => {
-      this.quantityInput.value = Math.min(
+    this.#quantityInput.addEventListener("change", () => {
+      this.#quantityInput.value = Math.min(
         this.quantity,
         this.currentItem.quantity,
       );
       this.setProductPriceText();
     });
 
-    this.quantityInput.addEventListener("blur", () => {
-      this.quantityInput.value = Math.max(
+    this.#quantityInput.addEventListener("blur", () => {
+      this.#quantityInput.value = Math.max(
         Math.min(this.quantity, this.currentItem.quantity),
         1,
       );
       this.setProductPriceText();
     });
 
-    this.sizeInput.addEventListener(
+    this.#sizeInput.addEventListener(
       "change",
       () => this.updateStatus().updateColorOptionText(),
     );
 
-    this.addToCartButton.addEventListener(
+    this.#addToCartButton.addEventListener(
       "click",
       () => this.handleAddToCart(),
     );
@@ -88,11 +86,15 @@ export default class Product extends HTMLElement {
   }
 
   get color() {
-    return this.colorInput.value;
+    return this.#colorInput.value;
   }
 
   get quantity() {
-    return Number(this.quantityInput.value);
+    return Number(this.#quantityInput.value);
+  }
+
+  get prefix() {
+    return this.getAttribute("prefix");
   }
 
   get currentItem() {
@@ -101,7 +103,7 @@ export default class Product extends HTMLElement {
       return (this.#currentItem = state.inv.find(
         (item) =>
           item.type ===
-            `${this.#prefix}-${this.color}-${this.sizeInput.value}`,
+            `${this.prefix}-${this.color}-${this.#sizeInput.value}`,
       ));
     }
     return this.#currentItem;
@@ -109,7 +111,7 @@ export default class Product extends HTMLElement {
 
   setProductPriceText() {
     requestAnimationFrame(
-      () => (this.priceText.textContent = `$${
+      () => (this.querySelector("#product-price-text").textContent = `$${
         Math.abs(
           this.quantity * this.currentItem.price,
         )
@@ -118,23 +120,25 @@ export default class Product extends HTMLElement {
   }
 
   preloadImages(
-    colors = [...this.colorInput.children],
+    colors = [...this.#colorInput.children],
     defaultColor = colors.find(
-      (child) => child.value === this.defaultColor,
+      (child) => child.value === this.#defaultColor,
     ),
   ) {
     appendPreloadLinks(
-      colors.flatMap((color) => makeLinks(this.#prefix, color.value)),
+      colors.flatMap((color) => makeLinks(this.prefix, color.value)),
     );
     defaultColor.setAttribute("selected", true);
-    this.productAccent.classList.add(`${defaultColor.value}-before`);
-    this.currentColor = defaultColor.value; // set currentColor
+    this.querySelector("#product-accent").classList.add(
+      `${defaultColor.value}-before`,
+    );
+    this.#currentColor = defaultColor.value; // set currentColor
     return this;
   }
 
   setImage() {
     this.currentItem &&
-      setAttributes(this.productImage, {
+      setAttributes(this.querySelector("zircus-product-image"), {
         src: this.currentItem.images["sm_a"],
         hovered: this.currentItem.images["sm_b"],
         fullsrc: this.currentItem.images["lg_a"],
@@ -212,7 +216,7 @@ export default class Product extends HTMLElement {
     ),
   ) {
     requestAnimationFrame(() => {
-      this.gotoCartButtonText.textContent = newQuantity
+      this.querySelector("#go-to-cart-qty").textContent = newQuantity
         ? `(${newQuantity})`
         : "";
     });
@@ -220,19 +224,19 @@ export default class Product extends HTMLElement {
   }
 
   outOfStock() {
-    this.quantityInput.disabled = true;
-    this.addToCartButton.disabled = true;
-    this.addToCartButton.textContent = this.getAttribute("outstock")
+    this.#quantityInput.disabled = true;
+    this.#addToCartButton.disabled = true;
+    this.#addToCartButton.textContent = this.getAttribute("outstock")
       .toLowerCase();
   }
 
   inStock() {
     if (this.currentItem.quantity < this.quantity) {
-      this.quantityInput.value = this.currentItem.quantity;
+      this.#quantityInput.value = this.currentItem.quantity;
     }
-    this.quantityInput.disabled = false;
-    this.addToCartButton.disabled = false;
-    this.addToCartButton.textContent = this.getAttribute("addcarttext")
+    this.#quantityInput.disabled = false;
+    this.#addToCartButton.disabled = false;
+    this.#addToCartButton.textContent = this.getAttribute("addcarttext")
       .toLowerCase();
   }
 
@@ -252,50 +256,51 @@ export default class Product extends HTMLElement {
 
   updateSizeOptionText() {
     return this.updateOptionText({
-      input: this.sizeInput,
+      input: this.#sizeInput,
       alt: this.color,
       test: ({ child, item }) =>
         item.type ===
-          `${this.#prefix}-${this.color}-${child.value}`,
+          `${this.prefix}-${this.color}-${child.value}`,
     });
   }
 
   updateColorOptionText() {
     return this.updateOptionText({
-      input: this.colorInput,
-      alt: this.sizeInput.value,
+      input: this.#colorInput,
+      alt: this.#sizeInput.value,
       test: ({ child, item }) =>
         item.type ===
-          `${this.#prefix}-${child.value}-${this.sizeInput.value}`,
+          `${this.prefix}-${child.value}-${this.#sizeInput.value}`,
     });
   }
 
   updateStockStatusText() {
-    this.productStatusText.textContent = this.currentItem.quantity <= 0
-      ? this.getAttribute("outstock")
-      : this.currentItem.quantity < 5
-      ? this.getAttribute("fewleft").replace(
-        "|",
-        this.currentItem.quantity,
-      )
-      : this.getAttribute("instock");
+    this.querySelector("#product-status-text").textContent =
+      this.currentItem.quantity <= 0
+        ? this.getAttribute("outstock")
+        : this.currentItem.quantity < 5
+        ? this.getAttribute("fewleft").replace(
+          "|",
+          this.currentItem.quantity,
+        )
+        : this.getAttribute("instock");
   }
 
   updateStatus({ inv, currentItem } = state) {
     if (!inv || !this.currentItem) return this;
     requestAnimationFrame(() => {
       if (currentItem) {
-        this.sizeInput.value = currentItem.size;
-        this.colorInput.value = currentItem.color;
+        this.#sizeInput.value = currentItem.size;
+        this.#colorInput.value = currentItem.color;
         state.currentItem = null;
       }
       this.#needsUpdate = true;
       this.setImage(); // must be before updating currentColor
-      this.productAccent.classList.replace(
-        `${this.currentColor}-before`,
+      this.querySelector("#product-accent").classList.replace(
+        `${this.#currentColor}-before`,
         `${this.color}-before`,
       );
-      this.currentColor = this.color;
+      this.#currentColor = this.color;
       this.setProductPriceText();
       this.updateStockStatusText();
       !this.currentItem || this.currentItem.quantity <= 0

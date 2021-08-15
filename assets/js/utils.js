@@ -251,9 +251,7 @@ const getInventory = async () => {
       return res.json();
     })
     .then((data) => (state.inv = () => [...data.cf, ...data.pf, ...data.ff]))
-    .catch((e) =>
-      notifyFailure(`Unable to get inventory: ${e.message}`)
-    );
+    .catch((e) => notifyFailure(`Unable to get inventory: ${e.message}`));
 };
 
 getInventory(); // Get initial inventory
@@ -681,11 +679,15 @@ state.countries = () => countries;
 
 export function disableElements() {
   const blur = document.querySelector("#blur");
-  const nav = document.querySelector("zircus-nav-desktop");
-  const navMobile = document.querySelector("zircus-nav-mobile");
-  const toTopButton = document.querySelector("zircus-to-top-button");
+  const nav = document.querySelector("zircus-desktop-menu");
+  const navMobile = document.querySelector("zircus-mobile-menu");
+  const toTopButton = document.querySelector(
+    "zircus-to-top-button",
+  );
   const footer = document.querySelector(".footer__container");
-  const skipButton = document.querySelector("zircus-skip-to-content");
+  const skipButton = document.querySelector(
+    "zircus-skip-button",
+  );
 
   let els = [];
 
