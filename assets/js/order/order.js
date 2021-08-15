@@ -29,7 +29,7 @@ const template = (order) => `
 }
   </ul>
   <div class="order__details">
-    <h4>Shipped to</h4>
+    <h4>Status: ${order.hasShipped ? "shipped to" : "not yet shipped"}</h4>
     <address class="order__address">
 ${order.name}<br />
 ${order.email}<br />
