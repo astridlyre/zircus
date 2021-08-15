@@ -58,7 +58,6 @@ export default class ZircusOrder extends HTMLElement {
     this.#searchParams = Object.fromEntries([
       ...new URLSearchParams(document.location.search),
     ]);
-
     this.showModal();
   }
 
@@ -86,15 +85,20 @@ export default class ZircusOrder extends HTMLElement {
       ok: {
         text: this.getAttribute("oktext"),
         title: this.getAttribute("oktext"),
-        action: ({ closeModal }) => {
+        action: ({ closeModal, setButtonState }) => {
+          setButtonState({ isActive: true, isSpinning: true });
           this.authenticate({
             ...this.#searchParams,
             identifier: this.#identifierInput.value,
           }).then(isJson).then(isError).then((order) => {
             this.#orderContainer.innerHTML = template(order);
             notifySuccess(this.getAttribute("success"));
+            setButtonState({ isActive: false });
             closeModal();
-          }).catch((error) => notifyFailure(error));
+          }).catch((error) => {
+            setButtonState({ isActive: false });
+            notifyFailure(error);
+          });
         },
       },
     });
