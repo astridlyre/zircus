@@ -18,19 +18,19 @@ const template = (order) => `
   ${
   order.items.map((item) => `
     <li class="order__product">
-    <h5 class="order__product__quantity">${item.quantity}</h5>
-    <img class="order__image" src="${item.image}" alt="${item.name}" title="${item.name}" />
-    <div class="order__product__container">
-    <h4 class="order__product__heading">${item.name} - $${item.price}/ea.</h4>
-    <p class="order__product__description">${item.description}</p>
-    </div>
+      <h5 class="order__product__quantity">${item.quantity}</h5>
+      <img class="order__image" src="${item.image}" alt="${item.name}" title="${item.name}" />
+      <div class="order__product__container">
+        <h4 class="order__product__heading">${item.name} - $${item.price}/ea.</h4>
+        <p class="order__product__description">${item.description}</p>
+      </div>
     </li>
     `).join("\n")
 }
-</ul>
-<div class="order__details">
-<h4>Shipped to</h4>
-<address class="order__address">
+  </ul>
+  <div class="order__details">
+    <h4>Shipped to</h4>
+    <address class="order__address">
 ${order.name}<br />
 ${order.email}<br />
 ${order.phone}<br />
@@ -38,13 +38,13 @@ ${order.address.line1}<br>
 ${order.address.line2 ? `${order.address.line2}<br />` : ""}
 ${order.address.city} ${order.address.state}
 ${order.address.country} ${order.address.postalCode}
-</address>
-<ul class="order__methods">
-<li class="order__method">Paid by: ${order.paymentMethod}</li>
-<li class="order__method">Shipping: ${order.shipping.method}</li>
-<li class="order__method"><strong>Total: $${order.total}</strong></li>
-</ul>
-</div>
+    </address>
+    <ul class="order__methods">
+      <li class="order__method">Paid by: ${order.paymentMethod}</li>
+      <li class="order__method">Shipping: ${order.shipping.method}</li>
+      <li class="order__method"><strong>Total: $${order.total}</strong></li>
+    </ul>
+  </div>
 </article>
 `;
 
@@ -91,9 +91,11 @@ export default class ZircusOrder extends HTMLElement {
             ...this.#searchParams,
             identifier: this.#identifierInput.value,
           }).then(isJson).then(isError).then((order) => {
-            this.#orderContainer.innerHTML = template(order);
-            notifySuccess(this.getAttribute("success"));
+            requestAnimationFrame(() => {
+              this.#orderContainer.innerHTML = template(order);
+            });
             closeModal();
+            notifySuccess(this.getAttribute("success"));
           }).catch((error) => {
             setButtonState({ isActive: true });
             notifyFailure(error);
