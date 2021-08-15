@@ -40,8 +40,10 @@ ${order.address.city} ${order.address.state}
 ${order.address.country} ${order.address.postalCode}
     </address>
     <ul class="order__methods">
-      <li class="order__method">Paid by: ${order.paymentMethod}</li>
-      <li class="order__method">Shipping: ${order.shipping.method}</li>
+      <li class="order__method">Paid by: ${order.paymentMethod[0]
+  .toUpperCase() + order.paymentMethod.substring(1)}</li>
+      <li class="order__method">Shipping: ${order.shipping.method[0]
+  .toUpperCase() + order.shipping.method.substring(1)}</li>
       <li class="order__method"><strong>Total: $${order.total}</strong></li>
     </ul>
   </div>
