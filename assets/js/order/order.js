@@ -60,7 +60,25 @@ export default class ZircusOrder extends HTMLElement {
     this.#searchParams = Object.fromEntries([
       ...new URLSearchParams(document.location.search),
     ]);
-    this.showModal();
+    if (this.#searchParams.email && this.#searchParams.orderId) {
+      this.showModal();
+    } else {
+      this.handleFailure();
+    }
+  }
+
+  handleFailure({ closeModal } = {}) {
+    document.querySelector("zircus-router").page = withLang({
+      en: "/",
+      fr: "/fr",
+    });
+    closeModal && closeModal();
+    notifyFailure(
+      withLang({
+        en: "Unable to find order",
+        fr: "Impossible de continuer",
+      }),
+    );
   }
 
   showModal() {
@@ -70,19 +88,7 @@ export default class ZircusOrder extends HTMLElement {
       cancel: {
         text: this.getAttribute("canceltext"),
         title: this.getAttribute("canceltext"),
-        action: ({ closeModal }) => {
-          document.querySelector("zircus-router").page = withLang({
-            en: "/",
-            fr: "/fr",
-          });
-          closeModal();
-          notifyFailure(
-            withLang({
-              en: "Unable to find order",
-              fr: "Impossible de continuer",
-            }),
-          );
-        },
+        action: ({ closeModal }) => this.handleFailure({ closeModal }),
       },
       ok: {
         text: this.getAttribute("oktext"),

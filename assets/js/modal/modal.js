@@ -109,7 +109,6 @@ export default class ZircusModal extends HTMLElement {
           },
         });
       },
-      { once: true },
     );
 
     document.getElementById("blur").classList.add("blur");
@@ -141,7 +140,6 @@ export default class ZircusModal extends HTMLElement {
             },
           });
         },
-        { once: true },
       );
       this.#cancelButton.focus();
     } else {
