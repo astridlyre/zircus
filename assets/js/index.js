@@ -40,6 +40,9 @@ import zircusThanks from "./thanks/thanks.js";
 // contact page
 import zircusContactForm from "./contact/contactForm.js";
 
+// order page
+import zircusOrder from "./order/order.js";
+
 // handle one time language redirect
 import zircusLangRedirect from "./int/langRedirect.js";
 zircusLangRedirect();

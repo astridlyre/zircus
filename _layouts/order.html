@@ -1,0 +1,28 @@
+---
+layout: generic
+---
+
+<zircus-order
+  heading="{{ page.label_heading }}"
+  success="{{ page.label_success }}"
+  failure="{{ page.label_failure }}"
+  modaltext="{{ page.label_modal_text }}"
+  label="{{ page.label_title }}"
+  oktext="{{ page.label_ok_text }}"
+  canceltext="{{ page.label_cancel_text }}"
+>
+  <template id="order-modal">
+    <label for="identifier" class="column">
+      <span></span>
+      <input
+        id="identifier"
+        type="text"
+        name="identifier"
+        value=""
+        class="input"
+        required
+      />
+    </label>
+  </template>
+  <div id="order-container"></div>
+</zircus-order>
