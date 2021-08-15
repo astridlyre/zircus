@@ -29,7 +29,11 @@ const template = (order) => `
 }
   </ul>
   <div class="order__details">
-    <h4>Status: ${order.hasShipped ? "shipped to" : "not yet shipped"}</h4>
+    <h4>${withLang({ en: "Status", fr: "État" })}: ${
+  order.hasShipped
+    ? withLang({ en: "shipped", fr: "expédié" })
+    : withLang({ en: "not yet shipped", fr: "pas encore expédié" })
+}</h4>
     <address class="order__address">
 ${order.name}<br />
 ${order.email}<br />
@@ -40,9 +44,13 @@ ${order.address.city} ${order.address.state}
 ${order.address.country} ${order.address.postalCode}
     </address>
     <ul class="order__methods">
-      <li class="order__method">Paid by: ${order.paymentMethod[0]
+      <li class="order__method">${
+  withLang({ en: "Paid by", fr: "Payé par" })
+}: ${order.paymentMethod[0]
   .toUpperCase() + order.paymentMethod.substring(1)}</li>
-      <li class="order__method">Shipping: ${order.shipping.method[0]
+      <li class="order__method">${
+  withLang({ en: "Shipping", fr: "Expédition" })
+}: ${order.shipping.method[0]
   .toUpperCase() + order.shipping.method.substring(1)}</li>
       <li class="order__method"><strong>Total: $${order.total}</strong></li>
     </ul>
