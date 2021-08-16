@@ -23,7 +23,8 @@ hr {
 
 address {
   border-left: var(--base-unit) solid var(--gray-30);
-  padding-left: var(--base-unit);
+  padding-left: var(--base-spacing);
+  color: var(--dgray-30);
 }
 
 kbd {

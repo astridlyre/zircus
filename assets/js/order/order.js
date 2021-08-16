@@ -11,9 +11,9 @@ import {
 
 const template = (order) => `
 <article class="order">
-  <h3 class="order__heading">${
+  <p class="order__heading small-spaced-bold">${
   new Date(order.createdOn).toLocaleDateString()
-} - ID: ${order.orderId}</h3>
+} - ID: ${order.orderId}</p>
   <ul class="order__products">
   ${
   order.items.map((item) => `
@@ -34,7 +34,7 @@ const template = (order) => `
     : withLang({ en: "not yet shipped", fr: "pas encore expédié" })
 }</h4>
     <address class="order__address">
-${order.name}<br />
+<strong>${order.name}</strong><br />
 ${order.email}<br />
 ${order.phone}<br />
 ${order.address.line1}<br>
