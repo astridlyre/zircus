@@ -7,7 +7,7 @@ layout: generic
   failure="{{ page.label_failure }}"
   fields="{{ page.label_fields }}"
 >
-  <form id="contact-form" class="form contact">
+  <form id="contact-form" class="contact__form">
     <fieldset>
       <legend>{{ page.label_contact }}</legend>
       <label for="contact-name" class="label_sm">
@@ -42,7 +42,7 @@ layout: generic
         ></textarea>
       </label>
     </fieldset>
-    <div class="button_container">
+    <div class="contact__button">
       <p id="contact-sent" class="hidden">{{ page.label_message_sent }}</p>
       <button type="submit" id="contact-button" class="btn btn__primary">
         <span id="contact-spinner" class="spinner hidden"></span>

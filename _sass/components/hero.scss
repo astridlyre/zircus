@@ -1,0 +1,27 @@
+.hero {
+  @include roundedBigTop();
+  background: var(--dark);
+  width: 100%;
+
+  &__image {
+    @include roundedBigTop();
+    width: 100%;
+    height: 95vh;
+    display: block;
+    object-fit: cover;
+  }
+
+  &__rounded {
+    @include roundedBigTop();
+    background-color: var(--light);
+    height: var(--big-radius);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+
+  &__container {
+    position: relative;
+  }
+}

@@ -11,7 +11,7 @@
     }
   }
 
-  .lang__list {
+  &__list {
     display: flex;
     align-items: center;
     gap: var(--base-unit);

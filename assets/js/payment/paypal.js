@@ -1,11 +1,11 @@
 import {
   API_ENDPOINT,
-  notifyFailure,
-  notifySuccess,
-  toOrderData,
   isError,
   isJson,
+  notifyFailure,
+  notifySuccess,
   state,
+  toOrderData,
   withLang,
   ZircusElement,
 } from "../utils.js";
@@ -218,7 +218,7 @@ export default class ZircusPayPal extends HTMLElement {
   }
 
   createInitialElements() {
-    this.#template = document.querySelector("#paypal-template");
+    this.#template = this.querySelector("template");
     this.#formElement = document.querySelector("zircus-checkout-form");
     this.#button = new ZircusElement("button", "paypal-button", {
       title: this.getAttribute("title"),

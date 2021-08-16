@@ -1,11 +1,11 @@
 import {
   API_ENDPOINT,
-  notifyFailure,
-  notifySuccess,
-  toOrderData,
   isError,
   isJson,
+  notifyFailure,
+  notifySuccess,
   state,
+  toOrderData,
   withLang,
   ZircusElement,
 } from "../utils.js";
@@ -39,7 +39,6 @@ export default class ZircusStripe extends HTMLElement {
   #isMounted = false;
   #card;
   #modal;
-  #textContainer;
   #formElement;
   #paymentPrice;
   #resultMessage;
@@ -48,7 +47,7 @@ export default class ZircusStripe extends HTMLElement {
 
   connectedCallback() {
     this.classList.add("stripe-payment-form");
-    this.createInitialElements(); // create modal elements
+    this.#modal = this.createInitialElements(); // create modal elements
     this.#formElement = document.querySelector("zircus-checkout-form");
 
     // Listen for custom form submission
@@ -75,9 +74,7 @@ export default class ZircusStripe extends HTMLElement {
             stripe = Stripe(CLIENT_ID); // set global stripe variable
           }
         })
-        .catch((error) =>
-          notifyFailure(`Error loading Stripe: ${error}`)
-        );
+        .catch((error) => notifyFailure(`Error loading Stripe: ${error}`));
     }
   }
 
@@ -266,30 +263,13 @@ export default class ZircusStripe extends HTMLElement {
     );
   }
 
-  createInitialElements() {
-    this.#modal = new ZircusElement("div").render();
-    this.#textContainer = new ZircusElement(
-      "div",
-      "stripe-payment-form-text",
-    ).render();
-    this.#paymentPrice = new ZircusElement("span", null, {
-      id: "stripe-payment-price",
-    }).render();
-    this.#resultMessage = new ZircusElement(
-      "span",
-      ["result-message", "hidden"],
-      { id: "stripe-result-message" },
-    ).render();
-    this.#cardElement = new ZircusElement(
-      "div",
-      ["stripe-payment-form-card", "hidden"],
-      { id: "stripe-card-element" },
-    ).render();
-    this.#textContainer.appendChild(this.#paymentPrice);
-    this.#textContainer.appendChild(this.#resultMessage);
-    this.#modal.appendChild(this.#textContainer);
-    this.#modal.appendChild(this.#cardElement);
-    this.appendChild(this.#modal);
+  createInitialElements(parent = document.createElement("div")) {
+    const template = this.querySelector("template").content.cloneNode(true);
+    this.#paymentPrice = template.querySelector("#stripe-payment-price");
+    this.#cardElement = template.querySelector("#stripe-card-element");
+    this.#resultMessage = template.querySelector("#stripe-result-message");
+    parent.appendChild(template);
+    return parent;
   }
 }
 

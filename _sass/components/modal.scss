@@ -31,7 +31,6 @@
   }
 
   &__container {
-    color: var(--dark);
     @include res("md") {
       padding: var(--md-spacing);
     }
@@ -42,13 +41,14 @@
     width: 100%;
     margin: 0 var(--base-unit);
     max-width: 40rem;
-
-    h2 {
-      margin-bottom: var(--base-spacing);
-    }
+    color: var(--dark);
   }
 
-  &_buttons {
+  &__heading {
+    margin-bottom: var(--base-spacing);
+  }
+
+  &__buttons {
     margin-top: var(--base-spacing);
     display: flex;
     width: 100%;
@@ -60,6 +60,7 @@
       flex-basis: 12rem;
       flex-grow: 1;
     }
+
     button {
       min-width: 12rem;
     }

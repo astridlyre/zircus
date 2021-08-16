@@ -139,21 +139,25 @@
 }
 
 @import "helpers";
+@import "typography";
+@import "button";
 @import "page";
 @import "home";
 @import "general";
 @import "nav";
 @import "footer";
-@import "typography";
 @import "product";
-@import "button";
 @import "cart";
 @import "checkout";
 @import "about";
 @import "stripe";
 @import "sizing";
-@import "contact";
-@import "modal";
-@import "notification";
-@import "lang";
 @import "order";
+
+// Components
+@import "components/hero";
+@import "components/tagline";
+@import "components/notification";
+@import "components/modal";
+@import "components/langlinks";
+@import "components/contact";

@@ -12,7 +12,6 @@ export default class Payment extends HTMLElement {
   #checkoutShipping;
   #shippingInputs;
   #productList;
-  #stripe;
 
   connectedCallback() {
     if (!state.cart.length) {
@@ -28,22 +27,6 @@ export default class Payment extends HTMLElement {
     this.#checkoutShipping = this.querySelector("#checkout-shipping");
     this.#shippingInputs = this.querySelector("zircus-shipping-inputs");
     this.#productList = this.querySelector("#checkout-products");
-
-    this.#stripe = new ZircusElement(
-      "zircus-stripe",
-      "stripe-payment-form",
-      {
-        heading: this.getAttribute("heading"),
-        buttontext: this.getAttribute("buttontext"),
-        canceltext: this.getAttribute("canceltext"),
-        id: "stripe-payment-modal",
-        success: this.getAttribute("success"),
-        failure: this.getAttribute("failure"),
-        complete: this.getAttribute("complete"),
-      },
-    ).render();
-
-    this.appendChild(this.#stripe);
 
     // Render Items
     this.renderCartItems();

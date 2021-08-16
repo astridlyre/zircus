@@ -14,18 +14,18 @@ export default class Hero extends HTMLElement {
     appendPreloadLinks(this.#images);
     this.#imageElement = new ZircusElement(
       "img",
-      "section__hero_image",
+      "hero__image",
       { src: this.src },
     ).render();
     this.#container = new ZircusElement("div", "hero__container").addChild(
       new ZircusElement("div", [
         "bg-light",
-        "rounded-big",
+        "hero__rounded",
       ]),
     ).render();
     this.#container.appendChild(this.#imageElement);
     this.appendChild(this.#container);
-    this.classList.add("section__hero");
+    this.classList.add("hero");
     this.#interval = setInterval(() => {
       this.#imageElement.src = this.src;
     }, 4500);

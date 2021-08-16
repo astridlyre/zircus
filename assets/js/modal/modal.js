@@ -84,7 +84,9 @@ export default class ZircusModal extends HTMLElement {
           .addChild(content)
           .render(),
       );
-    } else if (content instanceof HTMLElement) {
+    } else if (
+      content instanceof HTMLElement || content instanceof DocumentFragment
+    ) {
       this.#content.appendChild(content);
     }
 

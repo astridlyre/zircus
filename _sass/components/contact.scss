@@ -1,0 +1,55 @@
+.contact {
+  &__form {
+    max-width: 75ch;
+
+    fieldset {
+      width: 100%;
+      display: flex;
+      flex-flow: row wrap;
+      gap: var(--base-spacing);
+      margin-bottom: var(--md-spacing);
+    }
+
+    .label_lg {
+      width: 100%;
+    }
+
+    .label_sm {
+      flex-basis: 14rem;
+    }
+
+    .label_lg,
+    .label_sm {
+      display: flex;
+      flex-flow: column nowrap;
+      flex-grow: 1;
+    }
+
+    span {
+      font-size: var(--small-font-size);
+      letter-spacing: var(--letter-spacing);
+    }
+
+    textarea {
+      resize: none;
+      height: unset;
+      padding: var(--input-padding);
+    }
+
+    p {
+      margin-right: var(--base-spacing);
+      margin-bottom: 0;
+    }
+  }
+
+  &__button {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    button {
+      max-width: 12rem;
+      width: 100%;
+    }
+  }
+}

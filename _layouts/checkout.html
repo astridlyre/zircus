@@ -2,15 +2,7 @@
 layout: default
 ---
 
-<zircus-payment
-  heading="{{ page.label_card_details }}"
-  buttontext="{{ page.label_pay_now }}"
-  class="stripe-payment-form"
-  canceltext="{{ page.label_cancel }}"
-  success="{{ page.label_success_message }}"
-  failure="{{ page.label_failure_message }}"
-  complete="{{ site.data.labels[page.lang].order_complete }}"
->
+<zircus-payment>
   <div class="checkout container page__container">
     <h1 class="page__heading">{{ page.heading }}</h1>
     <zircus-checkout-form>
@@ -197,7 +189,7 @@ layout: default
                 name="{{ page.label_paypal }}"
                 title="{{ page.label_paypal_title }}"
               >
-                <template id="paypal-template">
+                <template>
                   <div class="modal__text flex">
                     <span id="paypal-text" class="small-spaced-bold"></span>
                     <span id="paypal-message" class="small-spaced-bold"></span>
@@ -236,4 +228,24 @@ layout: default
       </form>
     </zircus-checkout-form>
   </div>
+  <zircus-stripe
+    heading="{{ page.label_card_details }}"
+    buttontext="{{ page.label_pay_now }}"
+    class="stripe-payment-form"
+    canceltext="{{ page.label_cancel }}"
+    success="{{ page.label_success_message }}"
+    failure="{{ page.label_failure_message }}"
+    complete="{{ site.data.labels[page.lang].order_complete }}"
+  >
+    <template>
+      <div class="stripe-payment-form-text">
+        <span id="stripe-payment-price"></span>
+        <span id="stripe-result-message" class="result-message hidden"></span>
+      </div>
+      <div
+        id="stripe-card-element"
+        class="stripe-payment-form-card hidden"
+      ></div>
+    </template>
+  </zircus-stripe>
 </zircus-payment>

@@ -1,5 +1,5 @@
 .notification {
-  position: fixed;
+  @include fadeInUp(0.1s);
   @include res("md") {
     bottom: var(--md-spacing);
     right: var(--md-spacing);
@@ -10,18 +10,17 @@
   }
   bottom: var(--base-unit);
   right: var(--base-unit);
+  color: var(--dark);
   max-width: calc(100% - var(--base-unit) * 2);
-  z-index: 1000;
+  position: fixed;
+  z-index: 100;
   padding: var(--base-spacing);
   border-radius: var(--radius);
   box-shadow: var(--box-shadow-sm);
   border: 2px solid transparent;
   outline: none;
-  text-decoration: none !important;
-  background-color: rgba(243,240,244,0.9);
+  background-color: rgba(243,240,244,0.9); // var(--light) with 0.9 opacity
   border-color: var(--gray-30);
-  color: var(--dark) !important;
-  @include fadeInUp(0.1s);
 
   &:hover {
     transition: all 0.1s ease-out;
@@ -63,33 +62,29 @@
   }
 
   &__text {
-    margin: 0 var(--base-spacing) 0 0 !important;
     @include smallSpaced();
+    margin: 0 var(--base-spacing) 0 0;
     font-weight: 600;
-    text-decoration: none !important;
-  }
-
-  a {
-    color: inherit !important;
+    text-decoration: none;
   }
 
   &__prefix {
+    @include smallSpacedBold();
     border-radius: var(--radius);
     padding: 0 calc(var(--base-unit) * 2);
     margin-left: var(--base-unit);
     display: flex;
     justify-content: center;
     align-items: center;
-    @include smallSpacedBold();
 
     &.green {
       background-color: var(--green);
-      color: var(--gray-05) !important;
+      color: var(--gray-05);
     }
 
     &.red {
       background-color: var(--red);
-      color: var(--gray-05) !important;
+      color: var(--gray-05);
     }
   }
 }

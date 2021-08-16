@@ -1,10 +1,10 @@
 import { ZircusElement } from "../utils.js";
 
-export default class TagLine extends HTMLElement {
+export default class ZircusTagLine extends HTMLElement {
   connectedCallback() {
-    this.classList.add("home__heading_container");
+    this.classList.add("tagline");
     this.appendChild(
-      new ZircusElement("h1", "home__heading").addChild(
+      new ZircusElement("h1", "tagline__heading").addChild(
         new ZircusElement("span").addChild(
           this.getAttribute("taglines").split("|")[
             Math.floor(
@@ -20,4 +20,4 @@ export default class TagLine extends HTMLElement {
 }
 
 customElements.get("zircus-tag-line") ||
-  customElements.define("zircus-tag-line", TagLine);
+  customElements.define("zircus-tag-line", ZircusTagLine);

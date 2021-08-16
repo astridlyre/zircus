@@ -1,31 +1,5 @@
 // Home page styling
 .home {
-  &__heading {
-    margin: auto;
-    padding: var(--base-spacing) 0;
-    @include res('sm') {
-      padding: var(--md-spacing) 0 ;
-    }
-    @include res('md') {
-      padding: var(--y-padding) 0;
-    }
-    text-align: center;
-    font-family: var(--accent-font-family);
-    font-style: normal;
-    word-break: break-word;
-    @include res("md") {
-      line-height: 0.88;
-      font-size: var(--xxl-font-size);
-      max-width: 75vw;
-    }
-    @include res('lg') {
-      max-width: 60vw;
-    }
-    font-size: var(--xxl-font-size-mobile);
-    letter-spacing: -0.25rem;
-    line-height: 0.95;
-  }
-
   &__products {
     padding-top: var(--y-padding) !important;
     display: flex;
@@ -65,34 +39,6 @@
       }
     }
   }
-}
-
-.section__hero {
-  @include roundedBigTop();
-  background: var(--dark);
-  width: 100%;
-
-  &_image {
-    @include roundedBigTop();
-    width: 100%;
-    height: 95vh;
-    display: block;
-    object-fit: cover;
-  }
-
-  .rounded-big {
-    @include roundedBigTop();
-    background-color: var(--light);
-    height: var(--big-radius);
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-  }
-}
-
-.hero__container {
-  position: relative;
 }
 
 .section__text {
