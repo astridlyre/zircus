@@ -180,6 +180,7 @@
     @include res("md") {
       display: flex;
       gap: var(--base-spacing);
+      margin-right: -0.325rem;
     }
     display: none;
     align-items: center;
@@ -237,7 +238,7 @@
     bottom: var(--md-spacing);
     right: var(--md-spacing);
   }
-  z-index: 50;
+  z-index: 40;
   border: none;
   border-radius: var(--radius);
   display: flex;

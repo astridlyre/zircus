@@ -82,7 +82,7 @@
   display: flex;
   flex-flow: row wrap;
   gap: var(--base-spacing);
-  margin-right: -0.5rem;
+  margin-right: -0.325rem; // lining up with edge
 
   @include res("sm") {
     justify-content: flex-end;
@@ -113,6 +113,7 @@
   line-height: 1.2;
   margin-top: var(--md-spacing) !important;
   gap: var(--base-unit);
+  margin-right: -0.325rem;
 
 
   &_icon {

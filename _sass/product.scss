@@ -28,7 +28,7 @@
   }
 
   zircus-product-image {
-    flex-basis: 18rem;
+    flex-basis: 16rem;
     flex-grow: 0.5;
     margin-left: auto;
     margin-right: auto;
@@ -42,14 +42,18 @@
   }
 
   &__details {
-    flex-basis: 36rem;
+    flex-basis: 32rem;
     flex-grow: 1;
     @include res("md") {
       flex-grow: 0.5;
     }
     @include res("lg") {
-      flex-grow: 0;
+      flex-grow: 0.25;
       margin-right: unset;
+    }
+    @include res("xl") {
+      flex-basis: 38rem;
+      flex-grow: 0;
     }
     margin-left: auto;
     margin-right: auto;

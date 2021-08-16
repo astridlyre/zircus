@@ -116,7 +116,10 @@
 
 .hide-y {
   overflow-y: hidden;
-  padding-right: 10px; // for scroll bar
+
+  @include res('md') {
+    padding-right: calc(var(--md-spacing) + 10px);
+  }
 }
 
 .absolute {
