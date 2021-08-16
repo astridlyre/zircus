@@ -118,6 +118,9 @@
   overflow-y: hidden;
 
   @include res('md') {
+    padding-right: calc(var(--base-spacing) + 10px);
+  }
+  @include res('lg') {
     padding-right: calc(var(--md-spacing) + 10px);
   }
 }

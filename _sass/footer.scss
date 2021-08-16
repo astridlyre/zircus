@@ -19,8 +19,8 @@
   h4 {
     font-family: var(--accent-font-family) !important;
     font-style: normal;
-    padding-bottom: 0.75rem;
-    margin-bottom: 0.75rem;
+    padding-bottom: var(--base-spacing);
+    padding-top: var(--base-unit);
     border-bottom: 2px solid var(--dgray-60);
     display: inline-block;
   }
