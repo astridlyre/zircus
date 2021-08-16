@@ -5,7 +5,10 @@
   top: 0;
   margin: 0 auto;
   background: var(--dark);
-  width: calc(100vw - var(--md-spacing));
+  width: calc(100% - var(--md-spacing));
+  @include res("lg") {
+    width: calc(100% - var(--lg-spacing));
+  }
   z-index: 10;
   transform: translateY(0);
   transition: transform 0.1s ease-out;

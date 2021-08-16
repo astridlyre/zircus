@@ -30,8 +30,8 @@ autour de votre arrière, autre hanche, et de retour à l'endroit où vous avez
 commencé. Parce qu'il est difficile de faire assurez-vous que la bande est de
 niveau derrière vous, vous pouvez utiliser un miroir pour vérifier.
 
-<div class="sizing__measurements">
-<h2 class="sizing__measurements_heading">les mesures</h2>
+<fieldset class="sizing__measurements">
+<legend>Les Mesures</legend>
   <ul class="sizing__measurements_list">
     <li><span>xs</span>34-35"</li>
     <li><span>sm</span>36-37"</li>
@@ -44,4 +44,4 @@ niveau derrière vous, vous pouvez utiliser un miroir pour vérifier.
     <li><span>5xl</span>50-51"</li>
     <li><span>6xl</span>52-53"</li>
   </ul>
-</div>
+</fieldset>

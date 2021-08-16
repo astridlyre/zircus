@@ -3,6 +3,7 @@ import { appendPreloadLinks, ZircusElement } from "../utils.js";
 export default class Hero extends HTMLElement {
   #images;
   #imageElement;
+  #container;
   #currentImage = 1;
   #interval;
 
@@ -16,16 +17,14 @@ export default class Hero extends HTMLElement {
       "section__hero_image",
       { src: this.src },
     ).render();
-    this.appendChild(this.#imageElement);
-    this.appendChild(
+    this.#container = new ZircusElement("div", "hero__container").addChild(
       new ZircusElement("div", [
         "bg-light",
-        "rounded-big-top",
-        "absolute",
-        "b-0",
-        "l-0",
-      ]).render(),
-    );
+        "rounded-big",
+      ]),
+    ).render();
+    this.#container.appendChild(this.#imageElement);
+    this.appendChild(this.#container);
     this.classList.add("section__hero");
     this.#interval = setInterval(() => {
       this.#imageElement.src = this.src;

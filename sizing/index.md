@@ -26,8 +26,8 @@ Start at one hip and wrap the tape measure around your rear, around the
 other hip, and back to where you started. Because it is difficult to make
 sure the tape is level behind you, you can use a mirror to check.
 
-<div class="sizing__measurements">
-<h2 class="sizing__measurements_heading">measurements</h2>
+<fieldset class="sizing__measurements">
+<legend>Measurements Table</legend>
   <ul class="sizing__measurements_list">
     <li><span>xs</span>34-35"</li>
     <li><span>sm</span>36-37"</li>
@@ -40,4 +40,4 @@ sure the tape is level behind you, you can use a mirror to check.
     <li><span>5xl</span>50-51"</li>
     <li><span>6xl</span>52-53"</li>
   </ul>
-</div>
+</fieldset>

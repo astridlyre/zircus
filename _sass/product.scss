@@ -1,19 +1,14 @@
 .product {
-  display: grid;
-  grid-template-columns: 1fr;
-  @include res("md") {
-    grid-template-columns: 1fr 1fr;
-  }
+  display: flex;
+  flex-flow: row wrap;
   padding-bottom: 8rem;
   width: 100%;
   gap: var(--md-spacing);
 
-  &__heading {
-    &_container {
-      margin-bottom: var(--md-spacing);
-      @include res("md") {
-        margin-bottom: var(--lg-spacing);
-      }
+  &__subheading {
+    margin-bottom: var(--md-spacing);
+    @include res("sm") {
+      margin-bottom: var(--lg-spacing);
     }
   }
 
@@ -22,7 +17,7 @@
       font-size: var(--xxl-font-size);
     }
     font-size: var(--xxl-font-size-mobile);
-    margin: 2rem 0 1rem 0;
+    margin: var(--md-spacing) 0 var(--base-spacing) 0;
     width: 100%;
     text-align: right;
     font-weight: 600;
@@ -33,18 +28,13 @@
   }
 
   zircus-product-image {
+    flex-basis: 18rem;
+    flex-grow: 0.5;
     margin-left: auto;
     margin-right: auto;
+    z-index: 2;
     .product__img {
-      @include res("sm") {
-        max-width: 24rem;
-      }
-      @include res("lg") {
-        max-width: 36rem;
-      }
-      @include res("xl") {
-        max-width: 42rem;
-      }
+      margin: 0 auto;
       object-fit: contain;
       cursor: pointer;
       width: 100%;
@@ -52,16 +42,21 @@
   }
 
   &__details {
-    margin-left: auto;
+    flex-basis: 36rem;
+    flex-grow: 1;
     @include res("md") {
-      max-width: 36rem;
+      flex-grow: 0.5;
     }
+    @include res("lg") {
+      flex-grow: 0;
+      margin-right: unset;
+    }
+    margin-left: auto;
+    margin-right: auto;
     width: 100%;
     display: flex;
     flex-flow: column nowrap;
-    align-items: space-between;
     position: relative;
-    z-index: 0;
 
     &::before {
       @include res("sm") {
@@ -88,15 +83,15 @@
       height: 35rem;
       border-radius: 100%;
       position: absolute;
-      z-index: -1;
+    }
+
+    hr {
+      margin: var(--md-spacing) auto;
     }
   }
 
   &__details_container {
-    display: flex;
-    flex-flow: column nowrap;
-    align-content: flex-end;
-    justify-content: flex-end;
+    z-index: 10;
     @include res("sm") {
       border-radius: var(--big-radius);
       background: var(--light);
@@ -110,7 +105,6 @@
       padding: var(--md-spacing);
     }
     padding: 0;
-    gap: var(--base-spacing);
   }
 
   &__inputs {
@@ -137,19 +131,6 @@
       margin-top: var(--base-unit);
     }
 
-    &_stock.in-stock {
-      color: var(--dark);
-      @include dot();
-    }
-
-    &_stock.out-stock {
-      color: var(--gray-80);
-
-      &::after {
-        content: "";
-      }
-    }
-
     &_buttons {
       display: flex;
       flex-flow: row wrap;
@@ -168,15 +149,9 @@
     }
   }
 
-  &__form {
-    margin-top: auto;
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: flex-end;
-  }
-
   &__description {
     margin-top: 2rem;
+    grid-column: 1 2;
 
     p {
       margin-bottom: 0;

@@ -14,7 +14,6 @@ main {
 }
 
 .page {
-  @include flexCol();
   @include roundedBigTop();
   @include roundedBigBottom();
   overflow-x: hidden;
@@ -24,8 +23,6 @@ main {
   background: var(--light);
   color: var(--dark);
   width: 100%;
-  justify-content: flex-start;
-  align-items: center;
   flex-grow: 1;
   position: relative;
   z-index: 0;
@@ -92,18 +89,11 @@ main {
   }
 
   &__bottom_image {
-    @include flexCol();
     @include roundedBigBottom();
     min-height: calc(40vh + var(--y-padding));
     flex-grow: 1;
     flex-shrink: 1;
     width: 100%;
-    @include res("md") {
-      width: calc(100vw - var(--md-spacing));
-    }
-    @include res("xl") {
-      width: calc(100vw - var(--lg-spacing));
-    }
     background: var(--light);
     padding-bottom: var(--y-padding);
     position: relative;
@@ -121,12 +111,4 @@ main {
 
 #blur {
   width: 100%;
-
-  &.blur {
-    user-select: none;
-
-    a {
-      user-select: none !important;
-    }
-  }
 }

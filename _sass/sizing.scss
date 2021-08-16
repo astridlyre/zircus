@@ -12,10 +12,9 @@
 
   &__measurements {
     margin-top: var(--y-padding);
-    background-color: var(--gray-20);
-    padding: var(--base-spacing) !important;
-    @include roundedBigTop();
-    @include roundedBigBottom();
+    @include res('lg') {
+      padding: var(--md-spacing);
+    }
     max-width: 75ch;
 
     &_list {

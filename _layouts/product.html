@@ -3,12 +3,8 @@ layout: default
 ---
 
 <div class="container">
-  <div class="product__heading_container">
-    <h1 class="page__heading">
-      <span id="product-name">{{ page.name }}</span>
-    </h1>
-    <p class="page__subheading">{{ page.description }}</p>
-  </div>
+  <h1 class="page__heading">{{ page.name }}</h1>
+  <p class="page__subheading product__subheading">{{ page.description }}</p>
   <zircus-product
     prefix="{{ page.type }}"
     price="{{ page.price }}"
@@ -33,108 +29,104 @@ layout: default
     >
     </zircus-product-image>
     <div id="product-accent" class="product__details">
-      <div class="product__details_container">
-        <form class="product__form">
-          <h2 class="product__price">
-            <span id="product-price-text">$30</span>
-            <p id="product-status-text" class="product__inputs_stock">
-              {{ page.out_of_stock }}
-            </p>
-          </h2>
-          <div class="product__inputs">
-            <label
-              for="product-quantity"
-              class="column grow-half"
-              title="{{ site.data.labels.product[page.lang].label_quantity }}"
-              ><span
-                >{{ site.data.labels.product[page.lang].label_quantity }}</span
-              >
-              <input
-                id="product-quantity"
-                class="input"
-                max="10"
-                min="1"
-                step="1"
-                name="quantity"
-                type="number"
-                value="1"
-                disabled
-            /></label>
-            <label
-              for="product-size"
-              class="column grow"
-              title="{{ site.data.labels.product[page.lang].label_size }}"
-              ><span>{{ site.data.labels.product[page.lang].label_size }}</span>
-              <select id="product-size" accesskey="z" class="input">
-                <option value="xs" name="xs">xs</option>
-                <option value="sm" name="sm">sm</option>
-                <option selected value="md" name="md">md</option>
-                <option value="lg" name="lg">lg</option>
-                <option value="xl" name="xl">xl</option>
-                <option value="2xl" name="2xl">2xl</option>
-                <option value="3xl" name="3xl">3xl</option>
-                <option value="4xl" name="4xl">4xl</option>
-                <option value="5xl" name="5xl">5xl</option>
-                <option value="6xl" name="6xl">6xl</option>
-              </select></label
+      <form class="product__details_container">
+        <h2 class="product__price">
+          <span id="product-price-text">$30</span>
+          <p id="product-status-text" class="product__inputs_stock">
+            {{ page.out_of_stock }}
+          </p>
+        </h2>
+        <div class="product__inputs">
+          <label
+            for="product-quantity"
+            class="column grow-half"
+            title="{{ site.data.labels.product[page.lang].label_quantity }}"
+            ><span
+              >{{ site.data.labels.product[page.lang].label_quantity }}</span
             >
-            <label
-              for="product-color"
-              class="column grow"
-              title="{{ site.data.labels.product[page.lang].label_color }}"
-              ><span
-                >{{ site.data.labels.product[page.lang].label_color }}</span
-              >
-              <select id="product-color" class="input" name="color">
-                <option value="yellow" name="yellow">
-                  {{ site.data.labels.product[page.lang].label_color_yellow }}
-                </option>
-                <option value="teal" name="teal">
-                  {{ site.data.labels.product[page.lang].label_color_teal }}
-                </option>
-                <option value="purple" name="purple">
-                  {{ site.data.labels.product[page.lang].label_color_purple }}
-                </option>
-                <option value="stripe" name="striped">
-                  {{ site.data.labels.product[page.lang].label_color_stripe }}
-                </option>
-                <option value="black" name="black">
-                  {{ site.data.labels.product[page.lang].label_color_black}}
-                </option>
-              </select></label
-            >
-          </div>
-          <hr />
-          <div class="product__inputs_buttons">
-            <button
-              class="btn btn__primary"
-              type="button"
-              id="add-to-cart"
-              accesskey="a"
-              aria-label="{{ page.label_add_to_cart_aria }}"
-              title="{{ page.label_add_to_cart_aria }}"
+            <input
+              id="product-quantity"
+              class="input"
+              max="10"
+              min="1"
+              step="1"
+              name="quantity"
+              type="number"
+              value="1"
               disabled
+          /></label>
+          <label
+            for="product-size"
+            class="column grow"
+            title="{{ site.data.labels.product[page.lang].label_size }}"
+            ><span>{{ site.data.labels.product[page.lang].label_size }}</span>
+            <select id="product-size" accesskey="z" class="input">
+              <option value="xs" name="xs">xs</option>
+              <option value="sm" name="sm">sm</option>
+              <option selected value="md" name="md">md</option>
+              <option value="lg" name="lg">lg</option>
+              <option value="xl" name="xl">xl</option>
+              <option value="2xl" name="2xl">2xl</option>
+              <option value="3xl" name="3xl">3xl</option>
+              <option value="4xl" name="4xl">4xl</option>
+              <option value="5xl" name="5xl">5xl</option>
+              <option value="6xl" name="6xl">6xl</option>
+            </select></label
+          >
+          <label
+            for="product-color"
+            class="column grow"
+            title="{{ site.data.labels.product[page.lang].label_color }}"
+            ><span>{{ site.data.labels.product[page.lang].label_color }}</span>
+            <select id="product-color" class="input" name="color">
+              <option value="yellow" name="yellow">
+                {{ site.data.labels.product[page.lang].label_color_yellow }}
+              </option>
+              <option value="teal" name="teal">
+                {{ site.data.labels.product[page.lang].label_color_teal }}
+              </option>
+              <option value="purple" name="purple">
+                {{ site.data.labels.product[page.lang].label_color_purple }}
+              </option>
+              <option value="stripe" name="striped">
+                {{ site.data.labels.product[page.lang].label_color_stripe }}
+              </option>
+              <option value="black" name="black">
+                {{ site.data.labels.product[page.lang].label_color_black}}
+              </option>
+            </select></label
+          >
+        </div>
+        <hr />
+        <div class="product__inputs_buttons">
+          <button
+            class="btn btn__primary"
+            type="button"
+            id="add-to-cart"
+            accesskey="a"
+            aria-label="{{ page.label_add_to_cart_aria }}"
+            title="{{ page.label_add_to_cart_aria }}"
+            disabled
+          >
+            {{ site.data.labels.product[page.lang].label_add_to_cart }}
+          </button>
+          <zircus-router-link>
+            <a
+              class="btn btn__secondary"
+              id="go-to-cart"
+              name="Go to cart"
+              aria-label="{{ site.data.labels.product[page.lang].label_go_to_cart_aria }}"
+              title="{{ site.data.labels.product[page.lang].label_go_to_cart_aria }}"
+              href="{{ site.data.labels.product[page.lang].cart_link_path }}"
             >
-              {{ site.data.labels.product[page.lang].label_add_to_cart }}
-            </button>
-            <zircus-router-link>
-              <a
-                class="btn btn__secondary"
-                id="go-to-cart"
-                name="Go to cart"
-                aria-label="{{ site.data.labels.product[page.lang].label_go_to_cart_aria }}"
-                title="{{ site.data.labels.product[page.lang].label_go_to_cart_aria }}"
-                href="{{ site.data.labels.product[page.lang].cart_link_path }}"
-              >
-                {{ site.data.labels.product[page.lang].label_go_to_cart }}<span
-                  id="go-to-cart-qty"
-                ></span>
-              </a>
-            </zircus-router-link>
-          </div>
-        </form>
+              {{ site.data.labels.product[page.lang].label_go_to_cart }}<span
+                id="go-to-cart-qty"
+              ></span>
+            </a>
+          </zircus-router-link>
+        </div>
         <div class="product__description">{{ content }}</div>
-      </div>
+      </form>
     </div>
   </zircus-product>
 </div>

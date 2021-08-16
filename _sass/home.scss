@@ -71,7 +71,6 @@
   @include roundedBigTop();
   background: var(--dark);
   width: 100%;
-  position: relative;
 
   &_image {
     @include roundedBigTop();
@@ -82,17 +81,27 @@
   }
 
   .rounded-big {
+    @include roundedBigTop();
+    background-color: var(--light);
+    height: var(--big-radius);
     position: absolute;
     bottom: 0;
+    left: 0;
+    right: 0;
   }
+}
+
+.hero__container {
+  position: relative;
 }
 
 .section__text {
   width: 100%;
   display: flex;
   flex-flow: column nowrap;
-  padding: var(--y-padding) 0;
+  padding: calc(var(--radius) + var(--y-padding)) 0 var(--y-padding) 0;
   position: relative;
+  @include roundedBigTop();
 
   &_heading {
     @include res("md") {
