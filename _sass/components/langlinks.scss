@@ -19,7 +19,7 @@
     right: 0;
     background-color: var(--gray-10);
     border-radius: var(--radius);
-    padding: var(--input-padding);
+    padding: var(--input-padding) !important;
     box-shadow: var(--box-shadow-sm);
     visibility: hidden;
     min-height: var(--btn-height);

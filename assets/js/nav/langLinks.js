@@ -4,6 +4,9 @@ export default class ZircusLangLinks extends HTMLElement {
   #langLinks;
 
   connectedCallback() {
+    this.#langLinks = new ZircusElement("ul", "lang__list").render();
+    this.#langLinks.classList.add(this.getAttribute("type"));
+    this.appendChild(this.#langLinks);
     this.renderLangLinks();
 
     eventBus.addEventListener("navigated", () => {
@@ -13,8 +16,6 @@ export default class ZircusLangLinks extends HTMLElement {
   }
 
   renderLangLinks() {
-    this.#langLinks = new ZircusElement("ul", "lang__list").render();
-    this.#langLinks.classList.add(this.getAttribute("type"));
     this.getAttribute("langs")
       .split(",")
       .map((language) => [
