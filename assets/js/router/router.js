@@ -52,6 +52,10 @@ export default class ZircusRouter extends HTMLElement {
     return ["page"];
   }
 
+  static get NAVIGATED_EVENT() {
+    return "router-navigated";
+  }
+
   navigate(href) {
     this.#pushState && history.pushState(null, null, href);
     this.changePage();
@@ -110,7 +114,7 @@ export default class ZircusRouter extends HTMLElement {
 
   notifyChanged(newContent) {
     this.#currentPage = newContent;
-    eventBus.dispatchEvent(new CustomEvent("navigated"));
+    eventBus.dispatchEvent(new CustomEvent(ZircusRouter.NAVIGATED_EVENT));
     return window.scrollTo({ top: 0 });
   }
 

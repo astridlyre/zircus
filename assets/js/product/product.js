@@ -82,8 +82,14 @@ export default class Product extends HTMLElement {
       () => this.handleAddToCart(),
     );
 
-    eventBus.addEventListener("inv-updated", () => this.updateStatus());
-    eventBus.addEventListener("cart-updated", () => this.updateCartBtnQty());
+    eventBus.addEventListener(
+      state.INV_UPDATED_EVENT,
+      () => this.updateStatus(),
+    );
+    eventBus.addEventListener(
+      state.CART_UPDATED_EVENT,
+      () => this.updateCartBtnQty(),
+    );
   }
 
   get color() {

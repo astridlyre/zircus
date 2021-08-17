@@ -1,4 +1,5 @@
 import { eventBus, lang, ZircusElement } from "../utils.js";
+import ZircusRouter from "../router/router.js";
 
 export default class ZircusLangLinks extends HTMLElement {
   #langLinks;
@@ -9,7 +10,7 @@ export default class ZircusLangLinks extends HTMLElement {
     this.appendChild(this.#langLinks);
     this.renderLangLinks();
 
-    eventBus.addEventListener("navigated", () => {
+    eventBus.addEventListener(ZircusRouter.NAVIGATED_EVENT, () => {
       this.#langLinks.textContent = ""; // refresh lang links after navigation
       this.renderLangLinks();
     });

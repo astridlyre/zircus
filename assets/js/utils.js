@@ -45,8 +45,7 @@ export const eventBus = new EventBus();
  * initialization.
  *
  */
-class State {
-  #notificationFunction;
+export class State {
   #modalFunction;
   #state;
   #lastUpdated;
@@ -66,13 +65,25 @@ class State {
     localStorage.setItem("state", JSON.stringify(this.#state));
   }
 
+  get INV_UPDATED_EVENT() {
+    return "state-inv-updated";
+  }
+
+  get COUNTRIES_UPDATED_EVENT() {
+    return "state-countries-updated";
+  }
+
+  get CART_UPDATED_EVENT() {
+    return "state-cart-updated";
+  }
+
   get inv() {
     return this.#state.inv || [];
   }
 
   set inv(fn) {
     this.#set("inv", fn(this.inv));
-    eventBus.dispatchEvent(new CustomEvent("inv-updated"));
+    eventBus.dispatchEvent(new CustomEvent(this.INV_UPDATED_EVENT));
   }
 
   get countries() {
@@ -81,7 +92,7 @@ class State {
 
   set countries(fn) {
     this.#set("countries", fn(this.countries));
-    eventBus.dispatchEvent(new CustomEvent("countries-updated"));
+    eventBus.dispatchEvent(new CustomEvent(this.COUNTRIES_UPDATED_EVENT));
   }
 
   get cart() {
@@ -90,7 +101,7 @@ class State {
 
   set cart(fn) {
     this.#set("cart", fn(this.cart));
-    eventBus.dispatchEvent(new CustomEvent("cart-updated"));
+    eventBus.dispatchEvent(new CustomEvent(this.CART_UPDATED_EVENT));
   }
 
   get secret() {

@@ -1,4 +1,5 @@
 import { eventBus } from "../utils.js";
+import ZircusRouter from "./router.js";
 
 export default class ZircusRouterLink extends HTMLElement {
   #link;
@@ -19,7 +20,10 @@ export default class ZircusRouterLink extends HTMLElement {
       once: true,
     });
     this.#link.addEventListener("click", (event) => this.clicked(event));
-    eventBus.addEventListener("navigated", () => this.setStatus());
+    eventBus.addEventListener(
+      ZircusRouter.NAVIGATED_EVENT,
+      () => this.setStatus(),
+    );
     this.setStatus();
   }
 

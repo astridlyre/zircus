@@ -1,4 +1,5 @@
-import { eventBus } from "../utils.js";
+import { eventBus, state } from "../utils.js";
+import ZircusRouter from "../router/router.js";
 import withCartQuantity from "./withCartQuantity.js";
 
 export default class ZircusMobileMenu extends HTMLElement {
@@ -20,8 +21,14 @@ export default class ZircusMobileMenu extends HTMLElement {
       "click",
       () => (this.isHidden = !this.isHidden),
     );
-    eventBus.addEventListener("cart-updated", () => this.updateCartLink());
-    eventBus.addEventListener("navigated", () => (this.isHidden = true));
+    eventBus.addEventListener(
+      state.CART_UPDATED_EVENT,
+      () => this.updateCartLink(),
+    );
+    eventBus.addEventListener(
+      ZircusRouter.NAVIGATED_EVENT,
+      () => (this.isHidden = true),
+    );
   }
 
   set isHidden(value) {

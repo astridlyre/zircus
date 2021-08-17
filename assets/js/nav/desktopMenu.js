@@ -1,5 +1,6 @@
-import { eventBus } from "../utils.js";
+import { eventBus, state } from "../utils.js";
 import withCartQuantity from "./withCartQuantity.js";
+import ZircusRouter from "../router/router.js";
 
 const withScrollState = (prevPos, currentPos) => {
   function* scrollState() {
@@ -41,8 +42,11 @@ export default class ZircusDesktopMenu extends HTMLElement {
           this.scrollState.next().value <= 0,
       );
     });
-    eventBus.addEventListener("cart-updated", () => this.updateCartLink());
-    eventBus.addEventListener("navigated", () => {
+    eventBus.addEventListener(
+      state.CART_UPDATED_EVENT,
+      () => this.updateCartLink(),
+    );
+    eventBus.addEventListener(ZircusRouter.NAVIGATED_EVENT, () => {
       this.isHidden = false;
     });
   }
