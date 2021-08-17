@@ -1,3 +1,5 @@
+import { eventBus } from "../utils.js";
+
 export default class ZircusRouterLink extends HTMLElement {
   #link;
   #isActive = false;
@@ -17,7 +19,7 @@ export default class ZircusRouterLink extends HTMLElement {
       once: true,
     });
     this.#link.addEventListener("click", (event) => this.clicked(event));
-    document.addEventListener("navigated", () => this.setStatus());
+    eventBus.subscribe("navigated", () => this.setStatus());
     this.setStatus();
   }
 
@@ -54,7 +56,7 @@ export default class ZircusRouterLink extends HTMLElement {
   }
 
   hovered() {
-    document.dispatchEvent(
+    eventBus.dispatchEvent(
       new CustomEvent("preload", { detail: this.#link.href }),
     );
   }

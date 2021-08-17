@@ -1,3 +1,5 @@
+import { eventBus } from "../utils.js";
+
 export default class ZircusToTopButton extends HTMLElement {
   #MIN_SCROLL = 400;
   #button;
@@ -15,12 +17,12 @@ export default class ZircusToTopButton extends HTMLElement {
       () => this.scrollHandler(window.scrollY > this.#MIN_SCROLL),
     );
 
-    document.addEventListener(
+    eventBus.subscribe(
       "menu-open",
       () => !this.isHidden && this.hide(),
     );
 
-    document.addEventListener(
+    eventBus.subscribe(
       "menu-closed",
       () => !this.isHidden && this.show(),
     );

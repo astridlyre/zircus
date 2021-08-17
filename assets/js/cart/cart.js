@@ -1,4 +1,4 @@
-import { state, withLang, ZircusElement } from "../utils.js";
+import { eventBus, state, withLang, ZircusElement } from "../utils.js";
 
 /*
     Cart performs the functions manage the shopping cart.
@@ -21,7 +21,7 @@ export default class ZircusCart extends HTMLElement {
 
     this.renderCartProducts();
     this.#checkoutButton.addEventListener("click", () => this.goToCheckout());
-    document.dispatchEvent(
+    eventBus.dispatchEvent(
       new CustomEvent("preload", {
         detail: withLang({
           en: `/checkout`,

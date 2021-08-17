@@ -1,3 +1,4 @@
+import { eventBus } from "../utils.js";
 import withCartQuantity from "./withCartQuantity.js";
 
 const withScrollState = (prevPos, currentPos) => {
@@ -40,8 +41,8 @@ export default class ZircusDesktopMenu extends HTMLElement {
           this.scrollState.next().value <= 0,
       );
     });
-    document.addEventListener("cart-updated", () => this.updateCartLink());
-    document.addEventListener("navigated", () => {
+    eventBus.subscribe("cart-updated", () => this.updateCartLink());
+    eventBus.subscribe("navigated", () => {
       this.isHidden = false;
     });
   }

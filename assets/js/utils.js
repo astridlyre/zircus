@@ -9,6 +9,30 @@ export const API_ENDPOINT = ENV === "production"
 const ONE_DAY = 86_400_000;
 const FIVE_MINUTES = 300_000;
 
+class EventBus {
+  #listeners;
+  constructor() {
+    this.#listeners = new Map();
+  }
+
+  subscribe(event, callback) {
+    const cbs = this.#listeners.get(event) || new Set();
+    this.#listeners.set(
+      event,
+      cbs.add(callback),
+    );
+  }
+
+  dispatchEvent(customEvent) {
+    this.#listeners.get(customEvent.type)?.forEach((callback) =>
+      callback(customEvent)
+    );
+  }
+}
+
+// Event bus singleton
+export const eventBus = new EventBus();
+
 /*
  * State class, for centrally managing application state.
  *
@@ -37,10 +61,6 @@ class State {
     }
   }
 
-  static dispatch(event) {
-    return document.dispatchEvent(new CustomEvent(event));
-  }
-
   #set(key, val) {
     this.#state[key] = val;
     localStorage.setItem("state", JSON.stringify(this.#state));
@@ -52,7 +72,7 @@ class State {
 
   set inv(fn) {
     this.#set("inv", fn(this.inv));
-    State.dispatch("inv-updated");
+    eventBus.dispatchEvent(new CustomEvent("inv-updated"));
   }
 
   get countries() {
@@ -61,7 +81,7 @@ class State {
 
   set countries(fn) {
     this.#set("countries", fn(this.countries));
-    State.dispatch("countries-updated");
+    eventBus.dispatchEvent(new CustomEvent("countries-updated"));
   }
 
   get cart() {
@@ -70,7 +90,7 @@ class State {
 
   set cart(fn) {
     this.#set("cart", fn(this.cart));
-    State.dispatch("cart-updated");
+    eventBus.dispatchEvent(new CustomEvent("cart-updated"));
   }
 
   get secret() {
@@ -104,15 +124,6 @@ class State {
 
   showModal(modal) {
     return this.#modalFunction(modal);
-  }
-
-  _setNotificationFunction(func) {
-    this.#notificationFunction = func;
-  }
-
-  notify(notification) {
-    return this.#notificationFunction &&
-      this.#notificationFunction(notification);
   }
 }
 
@@ -221,22 +232,30 @@ export function notifySuccess(content) {
   } else if (content instanceof ZircusElement) {
     content = [content];
   }
-  return state.notify({
-    content,
-  });
+  return eventBus.dispatchEvent(
+    new CustomEvent("notification", {
+      detail: {
+        content,
+      },
+    }),
+  );
 }
 
 export function notifyFailure(content) {
-  return state.notify({
-    content: [
-      new ZircusElement("span", ["notification__prefix", "red"])
-        .addChild("!")
-        .render(),
-      new ZircusElement("p", ["notification__text"])
-        .addChild(content)
-        .render(),
-    ],
-  });
+  return eventBus.dispatchEvent(
+    new CustomEvent("notification", {
+      detail: {
+        content: [
+          new ZircusElement("span", ["notification__prefix", "red"])
+            .addChild("!")
+            .render(),
+          new ZircusElement("p", ["notification__text"])
+            .addChild(content)
+            .render(),
+        ],
+      },
+    }),
+  );
 }
 
 // Get Inventory to set max quantities of items

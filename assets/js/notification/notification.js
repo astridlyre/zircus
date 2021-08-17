@@ -1,4 +1,4 @@
-import { state, ZircusElement } from "../utils.js";
+import { eventBus, ZircusElement } from "../utils.js";
 
 const DEFAULT_TIME = 4_000; // 4 seconds
 
@@ -36,15 +36,16 @@ export default class ZircusNotification extends HTMLElement {
         )),
     );
 
-    return state._setNotificationFunction(
-      ({ content, time = DEFAULT_TIME }) => {
+    eventBus.subscribe(
+      "notification",
+      ({ detail }) => {
         if (this.#currentNotification) {
           clearTimeout(this.#currentNotification.id);
         }
         this.clear();
         return this.show({
-          content,
-          id: setTimeout(() => this.clear(), time),
+          content: detail.content,
+          id: setTimeout(() => this.clear(), detail.time || DEFAULT_TIME),
         });
       },
     );

@@ -1,3 +1,4 @@
+import { eventBus } from "../utils.js";
 import withCartQuantity from "./withCartQuantity.js";
 
 export default class ZircusMobileMenu extends HTMLElement {
@@ -19,8 +20,8 @@ export default class ZircusMobileMenu extends HTMLElement {
       "click",
       () => (this.isHidden = !this.isHidden),
     );
-    document.addEventListener("cart-updated", () => this.updateCartLink());
-    document.addEventListener("navigated", () => (this.isHidden = true));
+    eventBus.subscribe("cart-updated", () => this.updateCartLink());
+    eventBus.subscribe("navigated", () => (this.isHidden = true));
   }
 
   set isHidden(value) {
@@ -35,13 +36,13 @@ export default class ZircusMobileMenu extends HTMLElement {
   hide() {
     this.#list.classList.add("hide");
     document.body.classList.remove("hide-y");
-    document.dispatchEvent(new CustomEvent("menu-closed"));
+    eventBus.dispatchEvent(new CustomEvent("menu-closed"));
   }
 
   show() {
     this.#list.classList.remove("hide");
     document.body.classList.add("hide-y");
-    document.dispatchEvent(new CustomEvent("menu-open"));
+    eventBus.dispatchEvent(new CustomEvent("menu-open"));
   }
 }
 

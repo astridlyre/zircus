@@ -1,5 +1,6 @@
 import {
   appendPreloadLinks,
+  eventBus,
   notifyFailure,
   notifySuccess,
   setAttributes,
@@ -81,8 +82,8 @@ export default class Product extends HTMLElement {
       () => this.handleAddToCart(),
     );
 
-    document.addEventListener("inv-updated", () => this.updateStatus());
-    document.addEventListener("cart-updated", () => this.updateCartBtnQty());
+    eventBus.subscribe("inv-updated", () => this.updateStatus());
+    eventBus.subscribe("cart-updated", () => this.updateCartBtnQty());
   }
 
   get color() {

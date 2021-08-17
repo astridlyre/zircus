@@ -1,4 +1,4 @@
-import { notifyFailure, lang } from "../utils.js";
+import { eventBus, lang, notifyFailure } from "../utils.js";
 
 // Error for RouterNavigation
 class NavigationError extends Error {
@@ -25,7 +25,7 @@ export default class ZircusRouter extends HTMLElement {
       this.setAttribute("page", window.location.href);
     });
 
-    document.addEventListener(
+    eventBus.subscribe(
       "preload",
       (event) => this.loadPage(event.detail),
     );
@@ -110,7 +110,7 @@ export default class ZircusRouter extends HTMLElement {
 
   notifyChanged(newContent) {
     this.#currentPage = newContent;
-    document.dispatchEvent(new CustomEvent("navigated"));
+    eventBus.dispatchEvent(new CustomEvent("navigated"));
     return window.scrollTo({ top: 0 });
   }
 

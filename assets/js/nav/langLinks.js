@@ -1,4 +1,4 @@
-import { lang, ZircusElement } from "../utils.js";
+import { eventBus, lang, ZircusElement } from "../utils.js";
 
 export default class ZircusLangLinks extends HTMLElement {
   #langLinks;
@@ -6,7 +6,7 @@ export default class ZircusLangLinks extends HTMLElement {
   connectedCallback() {
     this.renderLangLinks();
 
-    document.addEventListener("navigated", () => {
+    eventBus.subscribe("navigated", () => {
       this.#langLinks.textContent = ""; // refresh lang links after navigation
       this.renderLangLinks();
     });
