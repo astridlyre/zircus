@@ -15,7 +15,7 @@ class EventBus {
     this.#listeners = new Map();
   }
 
-  subscribe(event, callback) {
+  addEventListener(event, callback) {
     const cbs = this.#listeners.get(event) || new Set();
     this.#listeners.set(
       event,

@@ -25,7 +25,7 @@ export default class ZircusRouter extends HTMLElement {
       this.setAttribute("page", window.location.href);
     });
 
-    eventBus.subscribe(
+    eventBus.addEventListener(
       "preload",
       (event) => this.loadPage(event.detail),
     );

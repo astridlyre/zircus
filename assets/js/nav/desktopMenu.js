@@ -41,8 +41,8 @@ export default class ZircusDesktopMenu extends HTMLElement {
           this.scrollState.next().value <= 0,
       );
     });
-    eventBus.subscribe("cart-updated", () => this.updateCartLink());
-    eventBus.subscribe("navigated", () => {
+    eventBus.addEventListener("cart-updated", () => this.updateCartLink());
+    eventBus.addEventListener("navigated", () => {
       this.isHidden = false;
     });
   }

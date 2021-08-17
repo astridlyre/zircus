@@ -19,7 +19,7 @@ export default class ZircusRouterLink extends HTMLElement {
       once: true,
     });
     this.#link.addEventListener("click", (event) => this.clicked(event));
-    eventBus.subscribe("navigated", () => this.setStatus());
+    eventBus.addEventListener("navigated", () => this.setStatus());
     this.setStatus();
   }
 

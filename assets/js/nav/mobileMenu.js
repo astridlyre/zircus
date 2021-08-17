@@ -20,8 +20,8 @@ export default class ZircusMobileMenu extends HTMLElement {
       "click",
       () => (this.isHidden = !this.isHidden),
     );
-    eventBus.subscribe("cart-updated", () => this.updateCartLink());
-    eventBus.subscribe("navigated", () => (this.isHidden = true));
+    eventBus.addEventListener("cart-updated", () => this.updateCartLink());
+    eventBus.addEventListener("navigated", () => (this.isHidden = true));
   }
 
   set isHidden(value) {

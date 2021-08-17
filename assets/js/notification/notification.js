@@ -36,7 +36,7 @@ export default class ZircusNotification extends HTMLElement {
         )),
     );
 
-    eventBus.subscribe(
+    eventBus.addEventListener(
       "notification",
       ({ detail }) => {
         if (this.#currentNotification) {
