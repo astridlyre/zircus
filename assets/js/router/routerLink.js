@@ -13,12 +13,9 @@ export default class ZircusRouterLink extends HTMLElement {
 
   connectedCallback() {
     this.#link = this.querySelector("a");
-    this.#link.addEventListener("pointerenter", () => this.hovered(), {
-      once: true,
-    });
-    this.#link.addEventListener("focus", () => this.hovered(), {
-      once: true,
-    });
+    eventBus.dispatchEvent(
+      new CustomEvent("preload-mounted", { detail: this.#link.href }),
+    );
     this.#link.addEventListener("click", (event) => this.clicked(event));
     eventBus.addEventListener(
       ZircusRouter.NAVIGATED_EVENT,
@@ -57,12 +54,6 @@ export default class ZircusRouterLink extends HTMLElement {
   clicked(event) {
     event.preventDefault();
     document.querySelector("zircus-router").page = this.#link.href;
-  }
-
-  hovered() {
-    eventBus.dispatchEvent(
-      new CustomEvent("preload", { detail: this.#link.href }),
-    );
   }
 }
 

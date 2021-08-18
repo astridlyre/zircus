@@ -15,8 +15,10 @@ export default class ZircusRouter extends HTMLElement {
   #currentPage;
   #currentLanguage;
   #pushState = true; // keep track of whether to change history state
+  #worker;
 
   connectedCallback() {
+    this.#worker = new Worker("/assets/js/router/routerCacheWorker.js");
     this.#currentLanguage = lang();
     this.#currentPage = this.querySelector("main");
 
@@ -26,9 +28,18 @@ export default class ZircusRouter extends HTMLElement {
     });
 
     eventBus.addEventListener(
-      "preload",
-      (event) => this.loadPage(event.detail),
+      "preload-mounted",
+      ({ detail }) =>
+        !this.cached(detail) && this.#worker.postMessage({ url: detail }),
     );
+
+    this.#worker.onmessage = ({ data }) => {
+      if (data.ok) {
+        cache.set(data.url, data.text);
+      } else {
+        notifyFailure(data.error.message);
+      }
+    };
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -38,6 +49,10 @@ export default class ZircusRouter extends HTMLElement {
       this.#pushState = true;
       this.#currentPage?.focus();
     }
+  }
+
+  cached(url) {
+    return cache.get(url);
   }
 
   get page() {
@@ -62,7 +77,10 @@ export default class ZircusRouter extends HTMLElement {
   }
 
   async loadPage(url, cached = cache.get(url)) {
-    if (cached) return cached;
+    if (cached) {
+      console.log("returning cached");
+      return cached;
+    }
     try {
       const res = await fetch(url, {
         method: "GET",

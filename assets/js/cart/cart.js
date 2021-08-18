@@ -28,7 +28,7 @@ export default class ZircusCart extends HTMLElement {
     this.renderCartProducts();
     this.#checkoutButton.addEventListener("click", () => this.goToCheckout());
     eventBus.dispatchEvent(
-      new CustomEvent("preload", {
+      new CustomEvent("preload-mounted", {
         detail: withLang({
           en: `/checkout`,
           fr: `/fr/la-caisse`,
