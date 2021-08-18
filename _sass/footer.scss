@@ -60,7 +60,8 @@
 
   &__misc {
     display: flex;
-    gap: var(--base-spacing);
+    flex-flow: row wrap;
+    gap: var(--base-unit) var(--base-spacing);
     width: 100%;
     justify-content: center;
     margin-top: var(--base-unit);
@@ -78,11 +79,12 @@
 .footer_links {
   display: flex;
   flex-flow: row wrap;
-  gap: var(--base-spacing);
+  gap: var(--base-unit) var(--base-spacing);
   margin-right: -0.325rem; // lining up with edge
 
   @include res("sm") {
     justify-content: flex-end;
+    gap: var(--base-spacing);
   }
 
   a {
