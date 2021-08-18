@@ -1,5 +1,6 @@
 import {
   API_ENDPOINT,
+  currency,
   isError,
   isJson,
   notifyFailure,
@@ -187,11 +188,7 @@ export default class ZircusStripe extends HTMLElement {
       id,
       identifier,
     };
-    this.#paymentPrice.textContent = `Calculated total: $${
-      total.toFixed(
-        2,
-      )
-    }`;
+    this.#paymentPrice.textContent = `Calculated total: ${currency(total)}`;
     this.#setButtonState({ isActive: false });
     !this.#isMounted && this.mountStripeElements(); // load mount stripe elements if not loaded
   }

@@ -101,7 +101,7 @@ export default class ZircusPayPal extends HTMLElement {
     const orderData = toOrderData({ formData, paymentMethod });
     requestAnimationFrame(() => {
       this.#message.textContent = `Calculated Total: ${
-        document.querySelector("#checkout-total").textContent
+        document.querySelector("#checkout-total").textContent // hacky?
       }`;
       paypal
         .Buttons({
