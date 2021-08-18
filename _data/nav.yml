@@ -25,3 +25,16 @@ fr:
     link: /fr/panier
     id: cart-link
     label: Aller au panier
+es:
+  - name: tienda
+    link: /es/tienda
+    id: shop-link
+    label: Ir a la tienda Zircus
+  - name: acerca
+    link: /es/acerca
+    id: about-link
+    label: Acerca de Zircus
+  - name: carrito
+    link: /es/carrito
+    id: cart-link
+    label: Ir al carro de la compra

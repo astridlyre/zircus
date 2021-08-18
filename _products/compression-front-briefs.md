@@ -11,7 +11,7 @@ default_color: purple
 description: a smooth, compressed fit in the front
 image_alt: "Compression front briefs: A smooth, compressed fit in the front to
 keep things in place. Excellent for tucking."
-label_add_to_cart_aria: Add Compression Front briefs to shopping the cart
+label_add_to_cart_aria: Add Compression Front briefs to shopping cart
 ---
 
 Classic briefs with compression for a flat look. No contortion necessary, these

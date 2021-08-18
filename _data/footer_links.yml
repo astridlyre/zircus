@@ -24,3 +24,16 @@ fr:
   - name: contactez-nous
     link: /fr/contactez-nous
     label: Contactez Zircus
+es:
+  - name: preguntas
+    link: /es/preguntas
+    label: Ver preguntas más frecuentes
+  - name: viscoso
+    link: /es/viscoso
+    label: Información de tamaño
+  - name: accesibilidad
+    link: /es/accesibilidad
+    label: Lea nuestra declaración sobre accesibilidad
+  - name: contáctenos
+    link: /es/contáctenos
+    label: Contáctenos

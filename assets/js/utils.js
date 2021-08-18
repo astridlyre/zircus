@@ -301,7 +301,7 @@ export function currency(num) {
   return new Intl.NumberFormat(`${lang()}-CA`, {
     style: "currency",
     currency: "CAD",
-  }).format(num).replace("CA", "");
+  }).format(num);
 }
 
 export function withLangUnits(unit) {

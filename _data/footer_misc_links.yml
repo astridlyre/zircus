@@ -12,3 +12,10 @@ fr:
   - name: confidentialité
     link: /fr/confidentialite
     label: Politique de confidentialité
+es:
+  - name: términos y condiciones
+    link: /es/términos
+    label: Ver los términos y condiciones del sitio
+  - name: privacidad
+    link: /es/privacidad
+    label: ver la política de privacidad del sitio

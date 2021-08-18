@@ -36,6 +36,24 @@ product:
     error_add: Impossible d'ajouter au panier, pas assez de stock
     success_add: Ajouté des | au panier
     cart_link_path: "/fr/panier"
+  es:
+    label_color: color
+    label_color_yellow: amarillo
+    label_color_teal: cerceta
+    label_color_purple: morado
+    label_color_stripe: rayado
+    label_color_black: negro
+    label_size: tamaño
+    label_quantity: cantidad
+    label_add_to_cart: añadir al carrito
+    label_go_to_cart: carrito
+    label_go_to_cart_aria: Ir al carrito
+    label_out_of_stock: Agotado
+    label_in_stock: En stock
+    label_few_left: Solo quedan | en stock
+    error_add: No se puede agregar al carrito, no hay suficiente stock
+    success_add: Se ha añadido | al carrito
+    cart_link_path: "/es/carrito"
 
 en:
   name: 'en'
@@ -64,3 +82,16 @@ fr:
   close_full_image: 'Fermer la vue pleine grandeur'
   view_full_image: 'Ouvre la vue pleine grandeur'
   order_complete: 'Merci, |! Votre commande est complète'
+es:
+  name: 'es'
+  home_link_path: '/es'
+  home_link: "Página principal de Zircus"
+  checkout_link_path: '/es/caja'
+  footer_text: "Una marca de ropa interior inspiradora, queer propiedad y cosida en la isla de Vancouver"
+  skip_link: 'Ir al contenido principal'
+  lang_dropdown: 'Seleccionar idioma'
+  close_notification: 'Cerrar notificación emergente'
+  back_to_top: 'Volver a la parte superior de la página'
+  close_full_image: 'Cerrar vista a tamaño completo'
+  view_full_image: 'Ver imagen a tamaño completo'
+  order_complete: 'Gracias |, su pedido está completo'
