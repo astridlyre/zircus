@@ -174,16 +174,12 @@ export default class Product extends HTMLElement {
     ]);
   }
 
-  itemsOfCurrentType(type) {
-    return [
-      state.cart.find((i) => i.type === type),
-      state.inv.find((i) => i.type === type),
-    ];
-  }
-
   handleAddToCart(
     { type, quantity } = this.currentItem,
-    [cartItem, invItem] = this.itemsOfCurrentType(type),
+    [cartItem, invItem] = [
+      state.cart.find((i) => i.type === type),
+      state.inv.find((i) => i.type === type),
+    ],
   ) {
     quantity - this.quantity < 0 || !quantity
       ? notifyFailure(this.getAttribute("erroradd"))
@@ -281,18 +277,6 @@ export default class Product extends HTMLElement {
     });
   }
 
-  updateStockStatusText() {
-    this.querySelector("#product-status-text").textContent =
-      this.currentItem.quantity <= 0
-        ? this.getAttribute("outstock")
-        : this.currentItem.quantity < 5
-        ? this.getAttribute("fewleft").replace(
-          "|",
-          this.currentItem.quantity,
-        )
-        : this.getAttribute("instock");
-  }
-
   updateStatus({ inv, currentItem } = state) {
     if (!inv || !this.currentItem) return this;
     requestAnimationFrame(() => {
@@ -309,7 +293,15 @@ export default class Product extends HTMLElement {
       );
       this.#currentColor = this.color;
       this.setProductPriceText();
-      this.updateStockStatusText();
+      this.querySelector("#product-status-text").textContent =
+        this.currentItem.quantity <= 0
+          ? this.getAttribute("outstock")
+          : this.currentItem.quantity < 5
+          ? this.getAttribute("fewleft").replace(
+            "|",
+            this.currentItem.quantity,
+          )
+          : this.getAttribute("instock");
       !this.currentItem || this.currentItem.quantity <= 0
         ? this.outOfStock()
         : this.inStock();

@@ -7,7 +7,6 @@ import {
   state,
   toOrderData,
   withLang,
-  ZircusElement,
 } from "../utils.js";
 import withAsyncScript from "./withAsyncScript.js";
 
@@ -212,18 +211,18 @@ export default class ZircusStripe extends HTMLElement {
       });
   }
 
-  mountStripeElements() {
-    const elements = stripe.elements();
-    const card = elements.create("card", { style: STRIPE_STYLE });
+  mountStripeElements(
+    elements = stripe.elements(),
+    card = elements.create("card", { style: STRIPE_STYLE }),
+  ) {
     card.mount("#stripe-card-element");
     card.on("change", (event) => {
       this.#setButtonState({ isActive: !event.empty });
-      if (event.error) {
-        return this.setErrorMessage({
+      return event.error
+        ? this.setErrorMessage({
           message: event.error.message,
-        });
-      }
-      return this.setErrorMessage();
+        })
+        : this.setErrorMessage();
     });
     this.#card = card; // card element
     this.#isMounted = true; // stripe is now loaded
