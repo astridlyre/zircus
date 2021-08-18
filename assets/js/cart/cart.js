@@ -1,4 +1,10 @@
-import { eventBus, state, withLang, ZircusElement } from "../utils.js";
+import {
+  currency,
+  eventBus,
+  state,
+  withLang,
+  ZircusElement,
+} from "../utils.js";
 
 /*
     Cart performs the functions manage the shopping cart.
@@ -51,11 +57,11 @@ export default class ZircusCart extends HTMLElement {
   }
 
   updateSubtotalText() {
-    this.#subtotalText.textContent = `$${
+    this.#subtotalText.textContent = currency(
       state.cart
         .reduce((acc, item) => (acc += item.price * item.quantity), 0)
-        .toFixed(2)
-    }`;
+        .toFixed(2),
+    );
     return this.setCheckoutButtonStatus();
   }
 

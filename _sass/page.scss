@@ -68,7 +68,7 @@ main {
     @include res("md") {
       font-size: var(--xxl-font-size);
       word-break: unset;
-      max-width: 40vw;
+      max-width: 45vw;
       letter-spacing: -0.25rem;
     }
     font-size: var(--xl-font-size-mobile);

@@ -1,4 +1,4 @@
-import { withLang, ZircusElement } from "../utils.js";
+import { currency, withLang, ZircusElement } from "../utils.js";
 import shippingTypes from "./shippingTypes.js";
 
 export default class ShippingInputs extends HTMLElement {
@@ -13,7 +13,7 @@ export default class ShippingInputs extends HTMLElement {
     Object.entries(shippingTypes).forEach(([key, type]) => {
       const labelText = new ZircusElement("span", null)
         .addChild(
-          `${withLang(type.name)} - $${type.price.toFixed(2)}`,
+          `${withLang(type.name)} - ${currency(type.price)}`,
         )
         .render();
 

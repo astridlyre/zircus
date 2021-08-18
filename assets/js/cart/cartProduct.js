@@ -1,4 +1,5 @@
 import {
+  currency,
   lang,
   notifySuccess,
   setAttributes,
@@ -81,7 +82,7 @@ export default class ZircusCartProduct extends HTMLElement {
 
   addCartProductActions() {
     this.#description.textContent = `${this.name} (${this.item.size})`;
-    this.#price.textContent = `$${this.item.price * this.item.quantity}`;
+    this.#price.textContent = currency(this.item.price * this.item.quantity);
 
     // quantity input
     this.#label.setAttribute("for", this.item.type);
@@ -116,7 +117,7 @@ export default class ZircusCartProduct extends HTMLElement {
       cart.map((i) =>
         i.id === this.item.id ? { ...i, quantity: this.quantity } : i
       );
-    this.#price.textContent = `$${this.item.price * this.quantity}`;
+    this.#price.textContent = currency(this.item.price * this.quantity);
     this.#removeButton.setAttribute(
       "title",
       withLang(

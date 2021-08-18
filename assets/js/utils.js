@@ -297,6 +297,21 @@ export function withLang(obj) {
   return obj[lang()];
 }
 
+export function currency(num) {
+  return new Intl.NumberFormat(`${lang()}-CA`, {
+    style: "currency",
+    currency: "CAD",
+  }).format(num).replace("CA", "");
+}
+
+export function withLangUnits(unit) {
+  return new Intl.NumberFormat(`${lang()}-CA`, {
+    style: "unit",
+    unit,
+    unitDisplay: "short",
+  });
+}
+
 // This was an API call, but with just two countries it seems unnecessary, so
 // for now it is hardcoded.
 const countries = {

@@ -1,4 +1,4 @@
-import { calculateTax, state, withLang, ZircusElement } from "../utils.js";
+import { calculateTax, currency, state, withLang } from "../utils.js";
 import intText from "../int/intText.js";
 import shippingTypes from "./shippingTypes.js";
 
@@ -73,10 +73,10 @@ export default class Payment extends HTMLElement {
       const total = subtotal + shipping + tax;
 
       // Set text
-      this.#checkoutSubtotal.textContent = `$${subtotal.toFixed(2)}`;
-      this.#checkoutShipping.textContent = `$${shipping.toFixed(2)}`;
-      this.#checkoutTax.textContent = `$${tax.toFixed(2)}`;
-      this.#checkoutTotal.textContent = `$${total.toFixed(2)}`;
+      this.#checkoutSubtotal.textContent = currency(subtotal);
+      this.#checkoutShipping.textContent = currency(shipping);
+      this.#checkoutTax.textContent = currency(tax);
+      this.#checkoutTotal.textContent = currency(total);
     });
   }
 

@@ -14,9 +14,9 @@
 
   &__price {
     @include res("md") {
-      font-size: var(--xxl-font-size);
+      font-size: var(--xl-font-size);
     }
-    font-size: var(--xxl-font-size-mobile);
+    font-size: var(--xl-font-size-mobile);
     margin: var(--md-spacing) 0 var(--base-spacing) 0;
     width: 100%;
     text-align: right;

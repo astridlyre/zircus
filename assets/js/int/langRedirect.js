@@ -26,7 +26,7 @@ const notify = (lang = "en", title = intText.redirect[lang]) => {
 export default function langRedirect() {
   // Redirect notification
   const lang = navigator.language;
-  const langInPath = location.pathname.includes(`/${lang}`);
+  const langInPath = location.pathname.includes(`/${lang.split("-")[0]}/`);
   const wasNotified = !!localStorage.getItem("notified");
 
   // French

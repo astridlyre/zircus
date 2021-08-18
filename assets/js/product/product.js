@@ -1,5 +1,6 @@
 import {
   appendPreloadLinks,
+  currency,
   eventBus,
   notifyFailure,
   notifySuccess,
@@ -118,11 +119,9 @@ export default class Product extends HTMLElement {
 
   setProductPriceText() {
     requestAnimationFrame(
-      () => (this.querySelector("#product-price-text").textContent = `$${
-        Math.abs(
-          this.quantity * this.currentItem.price,
-        )
-      }`),
+      () => (this.querySelector("#product-price-text").textContent = currency(
+        Math.abs(this.quantity * this.currentItem.price),
+      )),
     );
   }
 
