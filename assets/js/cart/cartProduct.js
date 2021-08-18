@@ -56,7 +56,7 @@ export default class ZircusCartProduct extends HTMLElement {
 
     if (!this.getAttribute("withactions")) {
       this.#description.textContent =
-        `${this.name} (${this.item.size}) x ${this.item.quantity}`;
+        `${this.name} (${this.item.size}) x${this.item.quantity}`;
     } else {
       this.addCartProductActions();
     }

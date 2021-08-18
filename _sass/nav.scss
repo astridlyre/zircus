@@ -182,16 +182,18 @@
   &_links {
     @include res("md") {
       display: flex;
-      gap: var(--base-spacing);
-      margin-right: -0.325rem;
+      gap: var(--md-spacing);
+      margin-right: -0.325rem; // lining up with edge
+    }
+    @include res('xl') {
+      gap: var(--lg-spacing);
     }
     display: none;
     align-items: center;
-    gap: var(--base-spacing);
   }
 
   &_link {
-    padding: var(--base-unit) var(--base-spacing);
+    padding: var(--base-unit);
     display: flex;
     justify-content: center;
     align-items: center;

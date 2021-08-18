@@ -30,15 +30,12 @@
   }
 
   .right {
-    flex-basis: 24rem;
+    flex-basis: 28rem;
     flex-grow: 1;
     flex-shrink: 1;
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: flex-end;
     @include res("md") {
       margin-left: auto;
-      max-width: 24rem;
+      max-width: 28rem;
     }
   }
 
@@ -111,10 +108,9 @@
   font-size: 0.9rem;
   font-weight: 600;
   line-height: 1.2;
-  margin-top: var(--md-spacing) !important;
+  margin-top: var(--md-spacing);
   gap: var(--base-unit);
-  margin-right: -0.325rem;
-
+  margin-right: -0.325rem; // lining up with edge
 
   &_icon {
     height: var(--base-spacing);
