@@ -77,10 +77,7 @@ export default class ZircusRouter extends HTMLElement {
   }
 
   async loadPage(url, cached = cache.get(url)) {
-    if (cached) {
-      console.log("returning cached");
-      return cached;
-    }
+    if (cached) return cached;
     try {
       const res = await fetch(url, {
         method: "GET",
