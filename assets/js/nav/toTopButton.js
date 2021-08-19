@@ -42,7 +42,7 @@ const Template = {
     position: fixed;
     bottom: var(--base-spacing);
     right: calc(var(--x-padding) - 0.6rem);
-    z-index: 40;
+    z-index: 30;
   }
 
   @media screen and (min-width: 901px) {

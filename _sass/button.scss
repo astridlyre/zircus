@@ -20,7 +20,8 @@
     background-color: var(--gold);
   }
 
-  &:focus, &:hover {
+  &:focus,
+  &:hover {
     background-color: var(--teal);
   }
 
@@ -80,7 +81,12 @@
     cursor: not-allowed;
   }
 
-  &:invalid {
+  &:required:valid {
+    position: relative;
+    border-color: var(--green);
+  }
+
+  &:required:invalid {
     border-color: var(--red);
   }
 

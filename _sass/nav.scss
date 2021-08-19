@@ -98,10 +98,15 @@
     display: none;
   }
 
-  .nav_mobile_list {
-    z-index: 25;
-    transition: transform 0.2s ease-out;
+  .nav_button:focus + .nav_mobile_list {
     transform: translateX(0);
+    transition: transform 0.1s ease-out;
+  }
+
+  .nav_mobile_list {
+    z-index: 50;
+    transition: transform 0.2s ease-out;
+    transform: translateX(100%);
     opacity: 1;
     position: fixed;
     top: 0;
@@ -116,8 +121,9 @@
     background: var(--dark);
     padding-right: var(--x-padding);
 
-    &.hide {
-      transform: translateX(100%) !important;
+    &:focus-within,
+    &:focus {
+      transform: translateX(0) !important;
       transition: transform 0.1s ease-out;
     }
   }
@@ -190,7 +196,7 @@
   padding: 0.5rem;
   right: calc(var(--x-padding) - 0.6rem);
   cursor: pointer;
-  z-index: 50;
+  z-index: 100;
 
   &:hover,
   &:focus {
