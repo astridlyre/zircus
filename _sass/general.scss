@@ -1,3 +1,7 @@
+*::selection {
+  background-color: var(--dark);
+  color: var(--light);
+}
 // Set default font-size
 html {
   font-size: 16px;
