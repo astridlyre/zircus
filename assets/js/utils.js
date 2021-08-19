@@ -806,10 +806,12 @@ export function toStateOrderData({ order }) {
 export class Range {
   #min;
   #max;
+  #step;
 
-  constructor(min = 1, max = 1) {
+  constructor(min = 1, max = 1, step = 1) {
     this.#min = min;
     this.#max = max;
+    this.#step = step;
   }
 
   normalize(num) {
@@ -828,7 +830,10 @@ export class Range {
     return this.#max;
   }
 
-  [Symbol.iterator] = function* (start = this.#min) {
-    while (start < this.#max) yield start++;
+  [Symbol.iterator] = function* (
+    start = this.#step > 0 ? this.#min : this.#max,
+  ) {
+    const withinBound = (n) => this.#step > 0 ? n < this.#max : n > this.#min;
+    while (withinBound(start)) yield start += this.#step;
   };
 }
