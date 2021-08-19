@@ -92,16 +92,6 @@ export default class ZircusToTopButton extends HTMLElement {
       "scroll",
       () => this.scrollHandler(window.scrollY > this.#MIN_SCROLL),
     );
-
-    eventBus.addEventListener(
-      "menu-open",
-      () => !this.isHidden && this.hide(),
-    );
-
-    eventBus.addEventListener(
-      "menu-closed",
-      () => !this.isHidden && this.show(),
-    );
   }
 
   get isHidden() {

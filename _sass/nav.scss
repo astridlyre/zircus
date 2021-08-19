@@ -98,11 +98,6 @@
     display: none;
   }
 
-  .nav_button:focus + .nav_mobile_list {
-    transform: translateX(0);
-    transition: transform 0.1s ease-out;
-  }
-
   .nav_mobile_list {
     z-index: 50;
     transition: transform 0.2s ease-out;
@@ -123,6 +118,11 @@
 
     &:focus-within,
     &:focus {
+      transform: translateX(0) !important;
+      transition: transform 0.1s ease-out;
+    }
+
+    &.show {
       transform: translateX(0) !important;
       transition: transform 0.1s ease-out;
     }
