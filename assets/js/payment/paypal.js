@@ -98,7 +98,6 @@ export default class ZircusPayPal extends HTMLElement {
   }
 
   mountPayPalButton({ formData, paymentMethod, closeModal }) {
-    const orderData = toOrderData({ formData, paymentMethod });
     requestAnimationFrame(() => {
       this.#message.textContent = `Calculated Total: ${
         document.querySelector("#checkout-total").textContent // hacky?
@@ -107,7 +106,10 @@ export default class ZircusPayPal extends HTMLElement {
         .Buttons({
           style: PAYPAL_STYLE,
           createOrder: () =>
-            this.createPaymentIntent({ orderData, closeModal }),
+            this.createPaymentIntent({
+              orderData: toOrderData({ formData, paymentMethod }),
+              closeModal,
+            }),
           onApprove: (_, actions) => this.onApprove(_, actions),
         })
         .render("#paypal-button");

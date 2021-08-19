@@ -78,25 +78,24 @@ export default class ZircusRouter extends HTMLElement {
 
   async loadPage(url, cached = cache.get(url)) {
     if (cached) return cached;
-    try {
-      const res = await fetch(url, {
-        method: "GET",
-      });
+    return await fetch(url, {
+      method: "GET",
+    }).then((res) => {
       if (!res.ok) {
         throw new NavigationError(`Network response was not ok`);
       }
-      const text = await res.text();
+      return res.text();
+    }).then((text) => {
       cache.set(url, text);
       return text;
-    } catch (e) {
+    }).catch((error) => {
       cache.delete(url);
-      notifyFailure(`Oops! ${e.message}`);
-    }
+      notifyFailure(`Oops! ${error.message}`);
+    });
   }
 
   async changePage() {
-    try {
-      const res = await this.loadPage(window.location.href);
+    return await this.loadPage(window.location.href).then((res) => {
       const { wrapper, newContent, lang, title } = this.extractContent(res);
       document.title = title;
       return lang === this.#currentLanguage
@@ -109,10 +108,10 @@ export default class ZircusRouter extends HTMLElement {
           wrapper.querySelector("#page"),
           lang,
         );
-    } catch (e) {
-      notifyFailure(`Oops! Network error: ${e.message}`);
+    }).catch((error) => {
+      notifyFailure(`Oops! Network error: ${error.message}`);
       history.back();
-    }
+    });
   }
 
   extractContent(res, wrapper = document.createElement("div")) {

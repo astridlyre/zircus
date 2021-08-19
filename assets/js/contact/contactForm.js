@@ -1,10 +1,10 @@
 import {
   API_ENDPOINT,
-  notifyFailure,
-  notifySuccess,
   isError,
   isJson,
   lang,
+  notifyFailure,
+  notifySuccess,
   state,
 } from "../utils.js";
 import intText from "../int/intText.js";
@@ -40,6 +40,7 @@ export default class ZircusContactForm extends HTMLElement {
       event.preventDefault();
 
       for (
+        // this needs to be a for loop
         const element of [
           this.#nameInput,
           this.#emailInput,

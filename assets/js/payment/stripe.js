@@ -178,17 +178,18 @@ export default class ZircusStripe extends HTMLElement {
   }
 
   setPendingOrderState({ clientSecret, order }) {
-    const { id, hasPaid, orderId, name, email, total, identifier } = order;
     state.secret = clientSecret;
     state.order = {
-      completed: hasPaid,
-      orderId,
-      name,
-      email,
-      id,
-      identifier,
+      completed: order.hasPaid,
+      orderId: order.orderId,
+      name: order.name,
+      email: order.email,
+      id: order.id,
+      identifier: order.identifier,
     };
-    this.#paymentPrice.textContent = `Calculated total: ${currency(total)}`;
+    this.#paymentPrice.textContent = `Calculated total: ${
+      currency(order.total)
+    }`;
     this.#setButtonState({ isActive: false });
     !this.#isMounted && this.mountStripeElements(); // load mount stripe elements if not loaded
   }

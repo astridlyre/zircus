@@ -25,6 +25,7 @@ export default class ShippingInputs extends HTMLElement {
         type: "radio",
         name: "shippingMethod",
         value: type.name.en.toLowerCase(),
+        "data-price": type.price,
         id: `shipping-${key}`,
       })
         .event("input", (event) => this.inputHandler(event, key))
@@ -32,6 +33,7 @@ export default class ShippingInputs extends HTMLElement {
 
       if (type.default) {
         this.setAttribute("shipping-type", key);
+        this.setAttribute("shipping-price", type.price);
         input.checked = true;
       }
 
@@ -44,12 +46,19 @@ export default class ShippingInputs extends HTMLElement {
   }
 
   get value() {
-    return this.getAttribute("shipping-type");
+    return {
+      type: this.getAttribute("shipping-type"),
+      price: Number(this.getAttribute("shipping-price")),
+    };
   }
 
   inputHandler(event, value) {
     if (event.target.checked) {
       this.setAttribute("shipping-type", value);
+      this.setAttribute(
+        "shipping-price",
+        event.target.getAttribute("data-price"),
+      );
       this.dispatchEvent(new CustomEvent("method-changed"));
     }
   }

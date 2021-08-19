@@ -2,7 +2,7 @@ import { eventBus, state } from "../utils.js";
 import withCartQuantity from "./withCartQuantity.js";
 import ZircusRouter from "../router/router.js";
 
-const withScrollState = (prevPos, currentPos) => {
+function withScrollState(prevPos, currentPos) {
   function* scrollState() {
     while (true) {
       [prevPos, currentPos] = [currentPos, window.scrollY];
@@ -10,7 +10,7 @@ const withScrollState = (prevPos, currentPos) => {
     }
   }
   return { scrollState: scrollState() };
-};
+}
 
 /*
  *   Menu for Zircus

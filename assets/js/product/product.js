@@ -12,10 +12,11 @@ import {
 
 const IMAGE_BASE_PATH = "/assets/img/products/masked/";
 // Preload images
-const makeLinks = (prefix, color) =>
-  ["a-400.png", "b-400.png", "a-1920.jpg"].map(
+function makeLinks(prefix, color) {
+  return ["a-400.png", "b-400.png", "a-1920.jpg"].map(
     (image) => `${IMAGE_BASE_PATH}${prefix}-${color}-${image}`,
   );
+}
 
 /* Path for masked product images. Images follow the convention:
 

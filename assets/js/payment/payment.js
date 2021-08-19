@@ -1,6 +1,5 @@
 import { calculateTax, currency, state, withLang } from "../utils.js";
 import intText from "../int/intText.js";
-import shippingTypes from "./shippingTypes.js";
 
 export default class Payment extends HTMLElement {
   #form;
@@ -61,9 +60,7 @@ export default class Payment extends HTMLElement {
 
   setTotals() {
     requestAnimationFrame(() => {
-      const shipping = Number(
-        shippingTypes[this.#shippingInputs.value]?.price,
-      );
+      const shipping = this.#shippingInputs.value.price;
       const subtotal = state.cart.reduce(
         (acc, item) => acc + item.price * item.quantity,
         0,

@@ -113,6 +113,16 @@ export default class ZircusToTopButton extends HTMLElement {
     requestAnimationFrame(() => this.#isHidden ? this.hide() : this.show());
   }
 
+  attributeChangedCallback(name, _, newValue) {
+    if (name === "tabindex") {
+      this.#button.setAttribute("tabindex", newValue);
+    }
+  }
+
+  static get observedAttributes() {
+    return ["tabindex"];
+  }
+
   show() {
     this.#button.classList.add("show");
     this.#isUpdating = false;

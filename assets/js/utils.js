@@ -16,10 +16,9 @@ class EventBus {
   }
 
   addEventListener(event, callback) {
-    const cbs = this.#listeners.get(event) || new Set();
     this.#listeners.set(
       event,
-      cbs.add(callback),
+      (this.#listeners.get(event) || new Set()).add(callback),
     );
   }
 
@@ -162,9 +161,9 @@ export class ZircusElement {
     }
 
     if (attributes) {
-      for (const [key, val] of Object.entries(attributes)) {
-        this.e.setAttribute(key, val);
-      }
+      Object.entries(attributes).forEach(([key, val]) =>
+        this.e.setAttribute(key, val)
+      );
     }
   }
   render() {
@@ -212,7 +211,7 @@ export function setAttributes(el, attrs) {
 }
 
 // Simple tax rate calculator - IMPROVE THIS!!
-export const calculateTax = (country, state) => {
+export function calculateTax(country, state) {
   if (country === "Canada") {
     switch (state) {
       case "New Brunswick":
@@ -228,7 +227,7 @@ export const calculateTax = (country, state) => {
   } else { // US Tax rate??
     return 0.07;
   }
-};
+}
 
 export function notifySuccess(content) {
   if (typeof content === "string") {
@@ -270,7 +269,7 @@ export function notifyFailure(content) {
 }
 
 // Get Inventory to set max quantities of items
-const getInventory = async () => {
+async function getInventory() {
   return await fetch(`${API_ENDPOINT}/inv`)
     .then((res) => {
       if (!res.ok) throw new Error("Connection error");
@@ -282,7 +281,7 @@ const getInventory = async () => {
     })
     .then((data) => (state.inv = () => [...data.cf, ...data.pf, ...data.ff]))
     .catch((e) => notifyFailure(`Unable to get inventory: ${e.message}`));
-};
+}
 
 getInventory(); // Get initial inventory
 setInterval(() => {
@@ -723,42 +722,29 @@ const countries = {
 state.countries = () => countries;
 
 export function disableElements() {
-  const blur = document.querySelector("#blur");
-  const nav = document.querySelector("zircus-desktop-menu");
-  const navMobile = document.querySelector("zircus-mobile-menu");
-  const toTopButton = document.querySelector(
-    "zircus-to-top-button",
-  );
-  const footer = document.querySelector(".footer__container");
-  const skipButton = document.querySelector(
-    "zircus-skip-button",
-  );
+  let els = [
+    document.querySelector(
+      "zircus-to-top-button",
+    ),
+    document.querySelector(
+      "zircus-skip-button",
+    ),
+  ];
 
-  let els = [];
-
-  for (
-    const parent of [
-      blur,
-      nav,
-      navMobile,
-      toTopButton,
-      footer,
-      skipButton,
-    ]
-  ) {
-    const textareas = parent.querySelectorAll("textarea");
-    const inputs = parent.querySelectorAll("input");
-    const buttons = parent.querySelectorAll("button");
-    const selects = parent.querySelectorAll("select");
-    const links = parent.querySelectorAll("a");
+  [
+    document.querySelector("#blur"),
+    document.querySelector("zircus-desktop-menu"),
+    document.querySelector("zircus-mobile-menu"),
+    document.querySelector(".footer__container"),
+  ].forEach((parent) => {
     els = els.concat([
-      ...inputs,
-      ...buttons,
-      ...selects,
-      ...links,
-      ...textareas,
+      ...parent.querySelectorAll("textarea"),
+      ...parent.querySelectorAll("input"),
+      ...parent.querySelectorAll("button"),
+      ...parent.querySelectorAll("select"),
+      ...parent.querySelectorAll("a"),
     ]);
-  }
+  });
 
   for (let i = 0; i < els.length; i++) {
     els[i].setAttribute("tabindex", -1);

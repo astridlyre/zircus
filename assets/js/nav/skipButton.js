@@ -66,6 +66,16 @@ export default class ZircusSkipButton extends HTMLElement {
   focusMain() {
     document.getElementById("main-content").focus();
   }
+
+  attributeChangedCallback(name, _, newValue) {
+    if (name === "tabindex") {
+      this.#button.setAttribute("tabindex", newValue);
+    }
+  }
+
+  static get observedAttributes() {
+    return ["tabindex"];
+  }
 }
 
 customElements.get("zircus-skip-button") ||

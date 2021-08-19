@@ -120,9 +120,8 @@ export default class ZircusOrder extends HTMLElement {
     });
   }
 
-  renderModalElements() {
+  renderModalElements(container = document.createElement("div")) {
     const template = this.querySelector("template").content.cloneNode(true);
-    const container = new ZircusElement("div").render();
     template.querySelector("span").textContent = this.getAttribute("modaltext");
     template.querySelector("label").setAttribute(
       "title",
