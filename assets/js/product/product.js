@@ -4,6 +4,7 @@ import {
   eventBus,
   notifyFailure,
   notifySuccess,
+  Range,
   setAttributes,
   state,
   withLang,
@@ -67,10 +68,8 @@ export default class Product extends HTMLElement {
     });
 
     this.#quantityInput.addEventListener("blur", () => {
-      this.#quantityInput.value = Math.max(
-        Math.min(this.quantity, this.currentItem.quantity),
-        1,
-      );
+      this.#quantityInput.value = new Range(1, this.currentItem.quantity)
+        .normalize(this.quantity);
       this.setProductPriceText();
     });
 

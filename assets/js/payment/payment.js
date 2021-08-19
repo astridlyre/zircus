@@ -40,6 +40,35 @@ export default class Payment extends HTMLElement {
     this.#shippingInputs.addEventListener("mounted", () => this.setTotals());
   }
 
+  get shippingTotal() {
+    return this.#shippingInputs.value.price;
+  }
+
+  get subTotal() {
+    return state.cart.reduce(
+      (acc, item) => acc + item.price * item.quantity,
+      0,
+    );
+  }
+
+  get taxTotal() {
+    return (this.subTotal + this.shippingTotal) *
+      calculateTax(this.#formCountry.value, this.#formState.value);
+  }
+
+  get total() {
+    return this.subTotal + this.shippingTotal + this.taxTotal;
+  }
+
+  setTotals() {
+    requestAnimationFrame(() => {
+      this.#checkoutSubtotal.textContent = currency(this.subTotal);
+      this.#checkoutShipping.textContent = currency(this.shippingTotal);
+      this.#checkoutTax.textContent = currency(this.taxTotal);
+      this.#checkoutTotal.textContent = currency(this.total);
+    });
+  }
+
   showEmptyCartModal() { // redirects user to shop page if no items in cart
     return state.showModal({
       content: withLang(intText.checkout.modalText).content,
@@ -55,25 +84,6 @@ export default class Payment extends HTMLElement {
           });
         },
       },
-    });
-  }
-
-  setTotals() {
-    requestAnimationFrame(() => {
-      const shipping = this.#shippingInputs.value.price;
-      const subtotal = state.cart.reduce(
-        (acc, item) => acc + item.price * item.quantity,
-        0,
-      );
-      const tax = (subtotal + shipping) *
-        calculateTax(this.#formCountry.value, this.#formState.value);
-      const total = subtotal + shipping + tax;
-
-      // Set text
-      this.#checkoutSubtotal.textContent = currency(subtotal);
-      this.#checkoutShipping.textContent = currency(shipping);
-      this.#checkoutTax.textContent = currency(tax);
-      this.#checkoutTotal.textContent = currency(total);
     });
   }
 

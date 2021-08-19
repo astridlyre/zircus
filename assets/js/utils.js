@@ -802,3 +802,33 @@ export function toStateOrderData({ order }) {
     identifier: order.identifier,
   };
 }
+
+export class Range {
+  #min;
+  #max;
+
+  constructor(min = 1, max = 1) {
+    this.#min = min;
+    this.#max = max;
+  }
+
+  normalize(num) {
+    return num > this.#max ? this.#max : num < this.#min ? this.#min : num;
+  }
+
+  includes(num) {
+    return num >= this.#min && num <= this.#max;
+  }
+
+  get min() {
+    return this.#min;
+  }
+
+  get max() {
+    return this.#max;
+  }
+
+  [Symbol.iterator] = function* (start = this.#min) {
+    while (start < this.#max) yield start++;
+  };
+}

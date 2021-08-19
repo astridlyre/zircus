@@ -98,19 +98,7 @@ export default class ZircusModal extends HTMLElement {
 
     this.#okButton.addEventListener(
       "click",
-      () => {
-        ok.action({
-          setButtonState: (value) => (this.isActive = value),
-          closeModal: () => this.hide(),
-          setCustomCloseText: (cancel) => {
-            this.#cancelButton.textContent = cancel.text;
-            this.#cancelButton.setAttribute(
-              "title",
-              cancel.title,
-            );
-          },
-        });
-      },
+      () => ok.action(this.createActionResponse(this.#cancelButton)),
     );
 
     document.getElementById("blur").classList.add("blur");
@@ -129,24 +117,23 @@ export default class ZircusModal extends HTMLElement {
       });
       this.#cancelButton.addEventListener(
         "click",
-        () => {
-          cancel.action({
-            setButtonState: (value) => (this.isActive = value),
-            closeModal: () => this.hide(),
-            setCustomCloseText: (cancel) => {
-              this.#cancelButton.textContent = cancel.text;
-              this.#cancelButton.setAttribute(
-                "title",
-                cancel.title,
-              );
-            },
-          });
-        },
+        () => cancel.action(this.createActionResponse(this.#cancelButton)),
       );
       this.#cancelButton.focus();
     } else {
       this.#okButton.focus();
     }
+  }
+
+  createActionResponse(cancelButton) {
+    return {
+      setButtonState: (value) => this.isActive = value,
+      closeModal: () => this.hide(),
+      setCustomCloseText: (cancel) => {
+        cancelButton.textContent = cancel.text;
+        cancelButton.setAttribute("title", cancel.title);
+      },
+    };
   }
 }
 

@@ -2,6 +2,7 @@ import {
   currency,
   lang,
   notifySuccess,
+  Range,
   setAttributes,
   state,
   withLang,
@@ -105,13 +106,10 @@ export default class ZircusCartProduct extends HTMLElement {
   }
 
   handleUpdateItemQuantity(event) {
-    event.target.value = Math.max( // set value within bounds
-      Math.min(
-        state.inv.find((i) => i.type === this.item.type).quantity,
-        this.quantity,
-      ),
+    event.target.value = new Range(
       1,
-    );
+      state.inv.find((i) => i.type === this.item.type).quantity,
+    ).normalize(this.quantity);
     state.cart = (cart) =>
       //update cart quantities
       cart.map((i) =>
