@@ -6,6 +6,7 @@ import {
   notifySuccess,
   state,
   toOrderData,
+  toStateOrderData,
   withLang,
   ZircusElement,
 } from "../utils.js";
@@ -15,7 +16,8 @@ import withAsyncScript from "./withAsyncScript.js";
 const ENDPOINT = `${API_ENDPOINT}/paypal`;
 const CLIENT_ID =
   "Aef4eC1Xxfc-wTn_x-wNgMzYB44l7d61xBmi_xB4E_bSFhYjZHsmQudrj8pMB3dn-BxA_cK227PcBzNv";
-const PAYPAL_SDK_SRC = `https://www.paypal.com/sdk/js?client-id=${CLIENT_ID}`;
+const PAYPAL_SDK_SRC =
+  `https://www.paypal.com/sdk/js?client-id=${CLIENT_ID}&currency=CAD&enable-funding=venmo`;
 const PAYPAL_STYLE = {
   shape: "rect",
   color: "black",
@@ -70,7 +72,7 @@ export default class ZircusPayPal extends HTMLElement {
 
   async loadPaypalScript() {
     return await this.loadScript({
-      src: `${PAYPAL_SDK_SRC}&currency=CAD&enable-funding=venmo`,
+      src: PAYPAL_SDK_SRC,
       id: "paypal-script",
     });
   }
@@ -141,17 +143,10 @@ export default class ZircusPayPal extends HTMLElement {
     })
       .then(isJson)
       .then(isError)
-      .then((data) => {
+      .then((order) => {
         // Set order details in state
-        state.order = {
-          name: data.name,
-          email: data.email,
-          orderId: data.orderId,
-          id: data.id,
-          completed: data.hasPaid,
-          identifier: data.identifier,
-        };
-        return data.orderId; // return orderId to client for next step
+        state.order = toStateOrderData({ order });
+        return order.orderId; // return orderId to client for next step
       }).catch((error) => {
         // If error creating intent, bail
         state.order = null;

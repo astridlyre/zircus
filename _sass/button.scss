@@ -15,6 +15,7 @@
   position: relative;
   z-index: 1;
   overflow: hidden;
+  min-width: fit-content;
 
   &__primary {
     background-color: var(--gold);

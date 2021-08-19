@@ -44,7 +44,7 @@ export const eventBus = new EventBus();
  * initialization.
  *
  */
-export class State {
+class State {
   #modalFunction;
   #state;
   #lastUpdated;
@@ -789,5 +789,16 @@ export function toOrderData({ formData, paymentMethod }) {
       type: item.type,
       quantity: item.quantity,
     })),
+  };
+}
+
+export function toStateOrderData({ order }) {
+  return {
+    name: order.name,
+    email: order.email,
+    orderId: order.orderId,
+    id: order.id,
+    completed: order.hasPaid,
+    identifier: order.identifier,
   };
 }

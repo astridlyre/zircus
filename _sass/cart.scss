@@ -75,12 +75,6 @@
           visibility: hidden;
         }
       }
-      @include res("md") {
-        max-width: 25vw;
-      }
-      @include res("sm") {
-        max-width: 40vw;
-      }
       display: flex;
       gap: 1rem;
     }
@@ -104,6 +98,7 @@
       text-align: right;
       .text {
         margin-right: var(--base-spacing);
+        min-width: fit-content;
       }
     }
 
@@ -112,7 +107,6 @@
 
       &_item {
         flex-grow: 1;
-        margin-left: 2.5rem;
       }
     }
   }

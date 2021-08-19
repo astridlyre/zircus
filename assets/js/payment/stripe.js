@@ -7,6 +7,7 @@ import {
   notifySuccess,
   state,
   toOrderData,
+  toStateOrderData,
   withLang,
 } from "../utils.js";
 import withAsyncScript from "./withAsyncScript.js";
@@ -179,14 +180,7 @@ export default class ZircusStripe extends HTMLElement {
 
   setPendingOrderState({ clientSecret, order }) {
     state.secret = clientSecret;
-    state.order = {
-      completed: order.hasPaid,
-      orderId: order.orderId,
-      name: order.name,
-      email: order.email,
-      id: order.id,
-      identifier: order.identifier,
-    };
+    state.order = toStateOrderData({ order });
     this.#paymentPrice.textContent = `Calculated total: ${
       currency(order.total)
     }`;
