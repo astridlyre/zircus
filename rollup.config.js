@@ -22,7 +22,7 @@ export default {
           {
             corejs: "3.16.1",
             useBuiltIns: "usage",
-            targets: "> 5% in CA, last 2 versions",
+            targets: "> 5% in CA and last 2 versions",
           },
         ],
       ],
