@@ -56,9 +56,7 @@ export default class ZircusStripe extends HTMLElement {
     this.#formElement.addEventListener("form-submit", (event) => {
       event.detail.paymentMethod === "stripe" &&
         (stripe // if global exists, we're loaded
-          ? this.showModal().then(() =>
-            this.createPaymentIntent({ orderData: event.detail })
-          )
+          ? this.showModal().createPaymentIntent({ orderData: event.detail })
           : notifyFailure(`Stripe not yet loaded!`));
     });
 
@@ -83,8 +81,8 @@ export default class ZircusStripe extends HTMLElement {
     return !!document.getElementById("stripe-script") && stripe;
   }
 
-  async showModal() {
-    return await Promise.resolve(ZircusModal.show({
+  showModal() {
+    ZircusModal.show({
       content: this.#modal,
       heading: this.getAttribute("heading"),
       ok: {
@@ -107,7 +105,8 @@ export default class ZircusStripe extends HTMLElement {
         text: this.getAttribute("canceltext"),
         title: this.getAttribute("canceltext"),
       },
-    }));
+    });
+    return this;
   }
 
   async createPaymentIntent({ orderData }) {

@@ -62,7 +62,7 @@ export default class ZircusPayPal extends HTMLElement {
 
   handleSubmit(orderData) {
     return this.#scriptLoaded
-      ? this.showModal().then(() => this.mountPayPalButton({ orderData }))
+      ? this.showModal().mountPayPalButton({ orderData })
       : notifyFailure(`PayPal is still loading`);
   }
 
@@ -74,7 +74,7 @@ export default class ZircusPayPal extends HTMLElement {
   }
 
   showModal() { // Show modal asking to redirect to PayPal
-    return Promise.resolve(ZircusModal.show({
+    ZircusModal.show({
       content: this.createPayPalModalElements(),
       heading: this.getAttribute("name"),
       ok: {
@@ -92,7 +92,8 @@ export default class ZircusPayPal extends HTMLElement {
           }
         },
       },
-    }));
+    });
+    return this;
   }
 
   mountPayPalButton({ orderData }) {
@@ -140,7 +141,7 @@ export default class ZircusPayPal extends HTMLElement {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ orderId: state.orderId }),
+        body: JSON.stringify({ orderId: state.order.orderId }),
       },
     ).then(isJson).then(isError).then(({ response }) => {
       state.order = null;
