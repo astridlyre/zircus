@@ -256,10 +256,7 @@ export default class Product extends HTMLElement {
   }
 
   updateStatus({ currentItem } = state) {
-    if (!this.currentItem && !inventory.length) {
-      this.#needsUpdate = true;
-      return this;
-    }
+    if (!inventory.length) return this;
     requestAnimationFrame(() => {
       if (currentItem) {
         this.#sizeInput.value = currentItem.size;

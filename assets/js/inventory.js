@@ -41,7 +41,7 @@ class Inventory {
 
   save() {
     localStorage.setItem("inventory", JSON.stringify(this.#items));
-    eventBus.dispatchEvent(this.INV_UPDATED_EVENT);
+    eventBus.dispatchEvent(new CustomEvent(this.INV_UPDATED_EVENT));
     notifySuccess("Inventory updated");
   }
 
