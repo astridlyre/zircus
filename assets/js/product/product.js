@@ -188,10 +188,10 @@ export default class Product extends HTMLElement {
   }
 
   updateCartItem() {
-    cart.update(this.currentItem.type, (item) => ({
-      ...item,
-      quantity: item.quantity + this.quantity,
-    }));
+    cart.update(
+      this.currentItem.type,
+      (item) => item.setQuantity(item.quantity + this.quantity),
+    );
     return this;
   }
 

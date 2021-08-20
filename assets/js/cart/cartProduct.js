@@ -112,18 +112,12 @@ export default class ZircusCartProduct extends HTMLElement {
       1,
       inventory.find(this.item.type).quantity,
     ).normalize(this.quantity);
-    cart.update(this.item.type, (item) => ({
-      ...item,
-      quantity: this.quantity,
-    }));
+    cart.update(this.item.type, (item) => item.setQuantity(this.quantity));
     this.#price.textContent = currency(this.item.price * this.quantity);
     this.#removeButton.setAttribute(
       "title",
       withLang(
-        removeButtonText({
-          ...this.item,
-          quantity: this.quantity,
-        }),
+        removeButtonText(this.item.setQuantity(this.quantity)),
       ),
     );
     this.dispatchEvent(new CustomEvent("update-totals"));

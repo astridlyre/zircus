@@ -6,6 +6,7 @@ import {
   notifyFailure,
   notifySuccess,
 } from "./utils.js";
+import InventoryItem from "./item.js";
 
 const FIVE_MINUTES = 300_000;
 
@@ -15,7 +16,9 @@ class Inventory {
   constructor() {
     const savedItems = localStorage.getItem("inventory");
     if (savedItems) {
-      this.#items = JSON.parse(savedItems);
+      this.#items = JSON.parse(savedItems).map((item) =>
+        new InventoryItem(item)
+      );
     } else {
       this.#items = [];
     }
@@ -29,7 +32,9 @@ class Inventory {
     return await fetch(`${API_ENDPOINT}/inv`)
       .then(isJson).then(isError)
       .then((data) => {
-        this.#items = [...data.cf, ...data.pf, ...data.ff];
+        this.#items = [...data.cf, ...data.pf, ...data.ff].map((item) =>
+          new InventoryItem(item)
+        );
         return this.save();
       })
       .catch((e) => notifyFailure(`Unable to get inventory: ${e.message}`));

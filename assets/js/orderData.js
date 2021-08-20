@@ -72,10 +72,14 @@ export default class OrderData {
   }
 
   get address() {
-    return this.#address;
+    return {
+      ...this.#address,
+    };
   }
   get breakdown() {
-    return this.#breakdown;
+    return {
+      ...this.#breakdown,
+    };
   }
   get capture() {
     return this.#capture;
@@ -99,7 +103,7 @@ export default class OrderData {
     return this.#id;
   }
   get items() {
-    return this.#items;
+    return this.#items.map((item) => ({ ...item }));
   }
   get name() {
     return this.#name;
@@ -117,7 +121,9 @@ export default class OrderData {
     return this.#preferredLanguage;
   }
   get shipping() {
-    return this.#shipping;
+    return {
+      ...this.#shipping,
+    };
   }
   get subtotal() {
     return this.#subtotal;
@@ -159,8 +165,8 @@ export default class OrderData {
   }
 
   [Symbol.iterator] = function* () {
-    for (const [key, val] of Object.entries(this.toJSON())) {
-      yield [key, val];
+    for (const entry of Object.entries(this.toJSON())) {
+      yield entry;
     }
   };
 }

@@ -1,5 +1,6 @@
 import { eventBus } from "./utils.js";
 import inventory from "./inventory.js";
+import CartItem from "./cartItem.js";
 
 class Cart {
   #items;
@@ -7,7 +8,7 @@ class Cart {
   constructor() {
     const savedItems = localStorage.getItem("cart");
     if (savedItems) {
-      this.#items = JSON.parse(savedItems);
+      this.#items = JSON.parse(savedItems).map((item) => new CartItem(item));
     } else {
       this.#items = [];
     }
@@ -29,10 +30,9 @@ class Cart {
   }
 
   add(type, quantity = 1) {
-    this.#items = this.#items.concat({
-      ...inventory.find(type),
-      quantity,
-    });
+    this.#items = this.#items.concat(
+      new CartItem(inventory.find(type).toJSON()).setQuantity(quantity),
+    );
     return this.save();
   }
 
