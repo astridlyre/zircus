@@ -723,17 +723,6 @@ export function isError(data) {
   });
 }
 
-export function toStateOrderData({ order }) {
-  return {
-    name: order.name,
-    email: order.email,
-    orderId: order.orderId,
-    id: order.id,
-    completed: order.hasPaid,
-    identifier: order.identifier,
-  };
-}
-
 export class Range {
   #min;
   #max;
