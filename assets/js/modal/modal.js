@@ -106,7 +106,6 @@ export default class ZircusModal extends HTMLElement {
       title: ok.title,
       "aria-hidden": false,
     });
-
     this.#okButton.addEventListener("click", ok.action);
 
     document.getElementById("blur").classList.add("blur");

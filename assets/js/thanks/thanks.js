@@ -1,4 +1,5 @@
 import { state, withLang, ZircusElement } from "../utils.js";
+import ZircusRouter from "../router/router.js";
 
 const thanksText = {
   en: (order) => `
@@ -40,7 +41,7 @@ export default class Thanks extends HTMLElement {
 
   connectedCallback() {
     const { order } = state;
-    !order && (document.querySelector("zircus-router").page = "/");
+    !order && ZircusRouter.navigate(withLang({ en: "/", fr: "/fr" }));
     this.#text = new ZircusElement("div").render();
     this.#text.innerHTML = withLang(thanksText)(order);
     this.appendChild(this.#text);

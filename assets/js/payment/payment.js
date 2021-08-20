@@ -1,5 +1,6 @@
 import { calculateTax, currency, withLang } from "../utils.js";
 import ZircusModal from "../modal/modal.js";
+import ZircusRouter from "../router/router.js";
 import intText from "../int/intText.js";
 import cart from "../cart.js";
 
@@ -77,10 +78,10 @@ export default class Payment extends HTMLElement {
         title: withLang(intText.checkout.modalText).okTitle,
         action: () => {
           ZircusModal.close();
-          document.querySelector("zircus-router").page = withLang({
+          ZircusRouter.navigate(withLang({
             en: "/shop",
             fr: "/fr/boutique",
-          });
+          }));
         },
       },
     });

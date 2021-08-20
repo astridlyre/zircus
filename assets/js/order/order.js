@@ -8,6 +8,8 @@ import {
   withLang,
 } from "../utils.js";
 import ZircusModal from "../modal/modal.js";
+import OrderData from "../orderData.js";
+import ZircusRouter from "../router/router.js";
 
 const template = (order) => `
 <article class="order">
@@ -75,10 +77,10 @@ export default class ZircusOrder extends HTMLElement {
   }
 
   handleFailure() {
-    document.querySelector("zircus-router").page = withLang({
+    ZircusRouter.navigate(withLang({
       en: "/",
       fr: "/fr",
-    });
+    }));
     ZircusModal.close();
     notifyFailure(
       withLang({
@@ -107,7 +109,8 @@ export default class ZircusOrder extends HTMLElement {
             identifier: this.#identifierInput.value,
           }).then(isJson).then(isError).then((order) => {
             requestAnimationFrame(() => {
-              this.#orderContainer.innerHTML = template(order);
+              state.order = new OrderData(order);
+              this.#orderContainer.innerHTML = template(state.order);
             });
             ZircusModal.close();
             notifySuccess(this.getAttribute("success"));

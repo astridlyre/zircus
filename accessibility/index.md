@@ -41,4 +41,4 @@ hours as detailed below and we will be happy to assist.
 If you wish to report an accessibility issue, have any questions or need
 assistance, please contact Customer Support as follows:
 
-Email: [info@zircus.ca](info@zircus.ca)
+Email: [info@zircus.ca](mailto:info@zircus.ca)

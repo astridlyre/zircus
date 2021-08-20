@@ -13,6 +13,7 @@ import withAsyncScript from "./withAsyncScript.js";
 import cart from "../cart.js";
 import OrderData from "../orderData.js";
 import ZircusModal from "../modal/modal.js";
+import ZircusRouter from "../router/router.js";
 
 const ENDPOINT = `${API_ENDPOINT}/paypal`;
 const CLIENT_ID =
@@ -82,10 +83,10 @@ export default class ZircusPayPal extends HTMLElement {
         action: () => {
           ZircusModal.close();
           if (state.order?.isCompleted && !cart.length) {
-            return document.querySelector("zircus-router").page = withLang({
+            ZircusRouter.navigate(withLang({
               en: "/thanks",
               fr: "/fr/merci",
-            });
+            }));
           } else if (state.order) { // Cancel payment intent if order not completed
             return this.cancelPaymentIntent();
           }

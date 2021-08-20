@@ -53,7 +53,7 @@ export default class ZircusRouterLink extends HTMLElement {
 
   clicked(event) {
     event.preventDefault();
-    document.querySelector("zircus-router").page = this.#link.href;
+    ZircusRouter.navigate(this.#link.href);
   }
 }
 

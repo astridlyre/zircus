@@ -1,4 +1,4 @@
-import { eventBus, state, ZircusElement } from "../utils.js";
+import { eventBus, ZircusElement } from "../utils.js";
 import intText from "./intText.js";
 
 const notify = (lang = "en", title = intText.redirect[lang]) => {

@@ -1,5 +1,6 @@
 import { currency, eventBus, withLang, ZircusElement } from "../utils.js";
 import cart from "../cart.js";
+import ZircusRouter from "../router/router.js";
 /*
     Cart performs the functions manage the shopping cart.
     Uses the 'state' object to store state in localStorage
@@ -20,7 +21,10 @@ export default class ZircusCart extends HTMLElement {
     );
 
     this.renderCartProducts();
-    this.#checkoutButton.addEventListener("click", () => this.goToCheckout());
+    this.#checkoutButton.addEventListener(
+      "click",
+      () => ZircusRouter.navigate(this.getAttribute("checkoutpath")),
+    );
     eventBus.dispatchEvent(
       new CustomEvent("preload-mounted", {
         detail: withLang({
@@ -34,13 +38,7 @@ export default class ZircusCart extends HTMLElement {
   disconnectedCallback() {
     this.#checkoutButton.removeEventListener(
       "click",
-      () => this.goToCheckout(),
-    );
-  }
-
-  goToCheckout() {
-    document.querySelector("zircus-router").page = this.getAttribute(
-      "checkoutpath",
+      () => ZircusRouter.navigate(this.getAttribute("checkoutpath")),
     );
   }
 

@@ -33,6 +33,11 @@ export default class ZircusRouter extends HTMLElement {
         !this.cached(detail) && this.#worker.postMessage({ url: detail }),
     );
 
+    eventBus.addEventListener(
+      ZircusRouter.NAVIGATION_REQUEST,
+      ({ detail }) => this.setAttribute("page", detail),
+    );
+
     this.#worker.onmessage = ({ data }) => {
       if (data.ok) {
         cache.set(data.url, data.text);
@@ -45,7 +50,7 @@ export default class ZircusRouter extends HTMLElement {
   attributeChangedCallback(name, oldValue, newValue) {
     if (oldValue === newValue) return;
     if (name === "page") {
-      this.navigate(newValue);
+      this.#navigate(newValue);
       this.#pushState = true;
       this.#currentPage?.focus();
     }
@@ -59,10 +64,6 @@ export default class ZircusRouter extends HTMLElement {
     return this.getAttribute("page");
   }
 
-  set page(value) {
-    this.setAttribute("page", value);
-  }
-
   static get observedAttributes() {
     return ["page"];
   }
@@ -71,7 +72,19 @@ export default class ZircusRouter extends HTMLElement {
     return "router-navigated";
   }
 
-  navigate(href) {
+  static get NAVIGATION_REQUEST() {
+    return "navigation-request";
+  }
+
+  static navigate(url) {
+    eventBus.dispatchEvent(
+      new CustomEvent(ZircusRouter.NAVIGATION_REQUEST, {
+        detail: url,
+      }),
+    );
+  }
+
+  #navigate(href) {
     this.#pushState && history.pushState(null, null, href);
     this.changePage();
   }

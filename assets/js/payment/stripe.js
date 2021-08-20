@@ -12,6 +12,7 @@ import withAsyncScript from "./withAsyncScript.js";
 import cart from "../cart.js";
 import OrderData from "../orderData.js";
 import ZircusModal from "../modal/modal.js";
+import ZircusRouter from "../router/router.js";
 
 const ENDPOINT = `${API_ENDPOINT}/stripe/`;
 const STRIPE_SDK_SRC = "https://js.stripe.com/v3/";
@@ -96,10 +97,10 @@ export default class ZircusStripe extends HTMLElement {
           this.setErrorMessage(); // cancel
           ZircusModal.close();
           if (state.order?.isCompleted && !cart.length) {
-            return document.querySelector("zircus-router").page = withLang({
+            return ZircusRouter.navigate(withLang({
               en: "/thanks",
               fr: "/fr/merci",
-            });
+            }));
           }
           return this.cancelPaymentIntent();
         },

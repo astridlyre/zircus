@@ -44,4 +44,4 @@ serons heureux de vous aider.
 Si vous désirez signaler un problème d'accessibilité, si vous avez des questions
 ou assistance, veuillez contacter le service clientèle comme suit:
 
-Par courriel: [info@zircus.ca](info@zircus.ca)
+Par courriel: [info@zircus.ca](mailto:info@zircus.ca)

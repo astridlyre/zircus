@@ -10,7 +10,10 @@ export default class OrderData {
   #address;
   #breakdown;
   #capture;
+  #createdOn;
   #email;
+  #hasShipped;
+  #hasPaid;
   #id;
   #identifier;
   #isCompleted = false;
@@ -29,7 +32,10 @@ export default class OrderData {
       address,
       breakdown = null,
       capture = null,
+      createdOn = null,
       email,
+      hasPaid = false,
+      hasShipped = false,
       identifier = null,
       id = null,
       items = cart.items.map((item) => ({
@@ -48,7 +54,10 @@ export default class OrderData {
     this.#address = address;
     this.#breakdown = breakdown;
     this.#capture = capture;
+    this.#createdOn = createdOn;
     this.#email = email;
+    this.#hasPaid = hasPaid;
+    this.#hasShipped = hasShipped;
     this.#identifier = identifier;
     this.#id = id;
     this.#items = items;
@@ -71,8 +80,17 @@ export default class OrderData {
   get capture() {
     return this.#capture;
   }
+  get createdOn() {
+    return this.#createdOn;
+  }
   get email() {
     return this.#email;
+  }
+  get hasPaid() {
+    return this.#hasPaid;
+  }
+  get hasShipped() {
+    return this.#hasShipped;
   }
   get identifier() {
     return this.#identifier;
@@ -121,7 +139,10 @@ export default class OrderData {
       address: this.address,
       breakdown: this.breakdown,
       capture: this.capture,
+      createdOn: this.createdOn,
       email: this.email,
+      hasPaid: this.hasPaid,
+      hasShipped: this.hasShipped,
       identifier: this.identifier,
       id: this.id,
       isCompleted: this.isCompleted,
