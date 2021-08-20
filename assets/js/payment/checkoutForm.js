@@ -2,6 +2,7 @@ import { state, withLang, ZircusElement } from "../utils.js";
 import intText from "../int/intText.js";
 import withPhoneValidation from "./withPhoneValidation.js";
 import withPostalCodeValidation from "./withPostalCodeValidation.js";
+import OrderData from "../orderData.js";
 
 const CANADA_POSTAL_CODE = /^[A-Za-z][0-9][A-Za-z] ?[0-9][A-Za-z][0-9]$/;
 const US_ZIP_CODE = /^[0-9]{5}(-[0-9]{4})?$/;
@@ -15,6 +16,7 @@ export default class ZircusCheckoutForm extends HTMLElement {
   #countryInput;
   #stateInput;
   #stateLabel;
+  #shippingInputs;
 
   connectedCallback() {
     this.#form = this.querySelector("form");
@@ -24,6 +26,7 @@ export default class ZircusCheckoutForm extends HTMLElement {
     this.#countryInput = this.querySelector("#checkout-country");
     this.#stateInput = this.querySelector("#checkout-state");
     this.#stateLabel = this.querySelector("#checkout-state-text");
+    this.#shippingInputs = this.querySelector("zircus-shipping-inputs");
 
     this.handleCountryChange();
 
@@ -61,10 +64,10 @@ export default class ZircusCheckoutForm extends HTMLElement {
       event.preventDefault();
       this.dispatchEvent(
         new CustomEvent("form-submit", {
-          detail: {
+          detail: new OrderData({
+            ...this.processFormData(),
             paymentMethod: event.submitter.value,
-            formData: this.processFormData(),
-          },
+          }),
         }),
       );
     });
@@ -80,6 +83,11 @@ export default class ZircusCheckoutForm extends HTMLElement {
               ...obj.address,
               [key.replace("address-", "")]: val.trim(),
             },
+          }
+          : key.startsWith("shipping")
+          ? {
+            ...obj,
+            shipping: this.#shippingInputs.value,
           }
           : {
             ...obj,

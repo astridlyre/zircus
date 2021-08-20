@@ -1,5 +1,6 @@
 import { calculateTax, currency, state, withLang } from "../utils.js";
 import intText from "../int/intText.js";
+import cart from "../cart.js";
 
 export default class Payment extends HTMLElement {
   #form;
@@ -13,7 +14,7 @@ export default class Payment extends HTMLElement {
   #productList;
 
   connectedCallback() {
-    if (!state.cart.length) {
+    if (!cart.length) {
       this.showEmptyCartModal();
     }
 
@@ -41,14 +42,11 @@ export default class Payment extends HTMLElement {
   }
 
   get shippingTotal() {
-    return this.#shippingInputs.value.price;
+    return this.#shippingInputs.value.total;
   }
 
   get subTotal() {
-    return state.cart.reduce(
-      (acc, item) => acc + item.price * item.quantity,
-      0,
-    );
+    return cart.total;
   }
 
   get taxTotal() {
@@ -89,7 +87,7 @@ export default class Payment extends HTMLElement {
 
   renderCartItems(fragment = new DocumentFragment()) {
     return requestAnimationFrame(() => {
-      state.cart.forEach((item) => {
+      cart.items.forEach((item) => {
         const el = document.createElement("zircus-cart-product");
         el.item = item;
         fragment.appendChild(el);

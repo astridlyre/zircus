@@ -7,7 +7,6 @@ export const API_ENDPOINT = ENV === "production"
   : "http://localhost:3000/api";
 
 const ONE_DAY = 86_400_000;
-const FIVE_MINUTES = 300_000;
 
 class EventBus {
   #listeners;
@@ -64,25 +63,8 @@ class State {
     localStorage.setItem("state", JSON.stringify(this.#state));
   }
 
-  get INV_UPDATED_EVENT() {
-    return "state-inv-updated";
-  }
-
   get COUNTRIES_UPDATED_EVENT() {
     return "state-countries-updated";
-  }
-
-  get CART_UPDATED_EVENT() {
-    return "state-cart-updated";
-  }
-
-  get inv() {
-    return this.#state.inv || [];
-  }
-
-  set inv(fn) {
-    this.#set("inv", fn(this.inv));
-    eventBus.dispatchEvent(new CustomEvent(this.INV_UPDATED_EVENT));
   }
 
   get countries() {
@@ -92,15 +74,6 @@ class State {
   set countries(fn) {
     this.#set("countries", fn(this.countries));
     eventBus.dispatchEvent(new CustomEvent(this.COUNTRIES_UPDATED_EVENT));
-  }
-
-  get cart() {
-    return this.#state.cart || [];
-  }
-
-  set cart(fn) {
-    this.#set("cart", fn(this.cart));
-    eventBus.dispatchEvent(new CustomEvent(this.CART_UPDATED_EVENT));
   }
 
   get secret() {
@@ -267,26 +240,6 @@ export function notifyFailure(content) {
     }),
   );
 }
-
-// Get Inventory to set max quantities of items
-async function getInventory() {
-  return await fetch(`${API_ENDPOINT}/inv`)
-    .then((res) => {
-      if (!res.ok) throw new Error("Connection error");
-      const contentType = res.headers.get("content-type");
-      if (!contentType || !contentType.includes("application/json")) {
-        throw new TypeError("Not JSON data");
-      }
-      return res.json();
-    })
-    .then((data) => (state.inv = () => [...data.cf, ...data.pf, ...data.ff]))
-    .catch((e) => notifyFailure(`Unable to get inventory: ${e.message}`));
-}
-
-getInventory(); // Get initial inventory
-setInterval(() => {
-  getInventory().finally(() => notifySuccess("Inventory updated"));
-}, FIVE_MINUTES); // Check every 5 minutes
 
 export function lang() {
   return document.documentElement.getAttribute("lang");
@@ -778,18 +731,6 @@ export function isError(data) {
       resolve(data);
     }
   });
-}
-
-export function toOrderData({ formData, paymentMethod }) {
-  return {
-    ...formData,
-    paymentMethod,
-    preferredLanguage: lang(),
-    items: state.cart.map((item) => ({
-      type: item.type,
-      quantity: item.quantity,
-    })),
-  };
 }
 
 export function toStateOrderData({ order }) {

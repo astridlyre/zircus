@@ -1,4 +1,5 @@
-import { eventBus, state } from "../utils.js";
+import { eventBus } from "../utils.js";
+import cart from "../cart.js";
 import withCartQuantity from "./withCartQuantity.js";
 import ZircusRouter from "../router/router.js";
 
@@ -43,7 +44,7 @@ export default class ZircusDesktopMenu extends HTMLElement {
       );
     });
     eventBus.addEventListener(
-      state.CART_UPDATED_EVENT,
+      cart.CART_UPDATED_EVENT,
       () => this.updateCartLink(),
     );
     eventBus.addEventListener(ZircusRouter.NAVIGATED_EVENT, () => {

@@ -1,20 +1,15 @@
-import { state } from "../utils.js";
+import cart from "../cart.js";
 
 // Function to update a menu's cart link with current quantity of items
 export default function withCartQuantity() {
   return {
     updateCartLink() {
-      return state.cart.length > 0
+      return cart.length > 0
         ? (this.cartLink.textContent = `${
           this.getAttribute(
             "carttext",
           )
-        } (${
-          state.cart.reduce(
-            (acc, item) => acc + item.quantity,
-            0,
-          )
-        })`)
+        } (${cart.length})`)
         : (this.cartLink.textContent = this.getAttribute("carttext"));
     },
   };

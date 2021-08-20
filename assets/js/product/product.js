@@ -11,6 +11,9 @@ import {
   ZircusElement,
 } from "../utils.js";
 
+import cart from "../cart.js";
+import inventory from "../inv.js";
+
 const IMAGE_BASE_PATH = "/assets/img/products/masked/";
 // Preload images
 function makeLinks(prefix, color) {
@@ -84,11 +87,11 @@ export default class Product extends HTMLElement {
     );
 
     eventBus.addEventListener(
-      state.INV_UPDATED_EVENT,
+      inventory.INV_UPDATED_EVENT,
       () => this.updateStatus(),
     );
     eventBus.addEventListener(
-      state.CART_UPDATED_EVENT,
+      cart.CART_UPDATED_EVENT,
       () => this.updateCartBtnQty(),
     );
   }
@@ -108,10 +111,8 @@ export default class Product extends HTMLElement {
   get currentItem() {
     if (this.#needsUpdate) {
       this.#needsUpdate = false;
-      return (this.#currentItem = state.inv.find(
-        (item) =>
-          item.type ===
-            `${this.prefix}-${this.color}-${this.#sizeInput.value}`,
+      return (this.#currentItem = inventory.find(
+        `${this.prefix}-${this.color}-${this.#sizeInput.value}`,
       ));
     }
     return this.#currentItem;
@@ -175,10 +176,7 @@ export default class Product extends HTMLElement {
 
   handleAddToCart(
     { type, quantity } = this.currentItem,
-    [cartItem, invItem] = [
-      state.cart.find((i) => i.type === type),
-      state.inv.find((i) => i.type === type),
-    ],
+    [cartItem, invItem] = [cart.find(type), inventory.find(type)],
   ) {
     quantity - this.quantity < 0 || !quantity
       ? notifyFailure(this.getAttribute("erroradd"))
@@ -190,36 +188,22 @@ export default class Product extends HTMLElement {
   }
 
   updateCartItem() {
-    state.cart = (cart) =>
-      cart.map((i) =>
-        i.type === this.currentItem.type
-          ? {
-            ...i,
-            quantity: i.quantity + this.quantity,
-          }
-          : i
-      );
+    cart.update(this.currentItem.type, (item) => ({
+      ...item,
+      quantity: item.quantity + this.quantity,
+    }));
     return this;
   }
 
   addNewCartItem() {
-    state.cart = (cart) =>
-      cart.concat({
-        ...this.currentItem,
-        quantity: this.quantity,
-      });
+    cart.add(this.currentItem.type, this.quantity);
     return this;
   }
 
-  updateCartBtnQty(
-    newQuantity = state.cart.reduce(
-      (acc, item) => acc + item.quantity,
-      0,
-    ),
-  ) {
+  updateCartBtnQty() {
     requestAnimationFrame(() => {
-      this.querySelector("#go-to-cart-qty").textContent = newQuantity
-        ? `(${newQuantity})`
+      this.querySelector("#go-to-cart-qty").textContent = cart.length
+        ? `(${cart.length})`
         : "";
     });
     return this;
@@ -246,8 +230,7 @@ export default class Product extends HTMLElement {
     requestAnimationFrame(() =>
       [...input.children].forEach((child) => {
         child.textContent = `${child.textContent.split(" - ")[0]} - (${alt} ${
-          state.inv.find((item) => test({ item, child }))
-              ?.quantity > 0
+          inventory.find(test(child))?.quantity > 0
             ? this.getAttribute("instock").toLowerCase()
             : this.getAttribute("outstock").toLowerCase()
         })`;
@@ -260,9 +243,7 @@ export default class Product extends HTMLElement {
     return this.updateOptionText({
       input: this.#sizeInput,
       alt: this.color,
-      test: ({ child, item }) =>
-        item.type ===
-          `${this.prefix}-${this.color}-${child.value}`,
+      test: (child) => `${this.prefix}-${this.color}-${child.value}`,
     });
   }
 
@@ -270,14 +251,15 @@ export default class Product extends HTMLElement {
     return this.updateOptionText({
       input: this.#colorInput,
       alt: this.#sizeInput.value,
-      test: ({ child, item }) =>
-        item.type ===
-          `${this.prefix}-${child.value}-${this.#sizeInput.value}`,
+      test: (child) => `${this.prefix}-${child.value}-${this.#sizeInput.value}`,
     });
   }
 
-  updateStatus({ inv, currentItem } = state) {
-    if (!inv || !this.currentItem) return this;
+  updateStatus({ currentItem } = state) {
+    if (!this.currentItem && !inventory.length) {
+      this.#needsUpdate = true;
+      return this;
+    }
     requestAnimationFrame(() => {
       if (currentItem) {
         this.#sizeInput.value = currentItem.size;

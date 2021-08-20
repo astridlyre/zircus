@@ -9,6 +9,8 @@ import {
   ZircusElement,
 } from "../utils.js";
 import intText from "../int/intText.js";
+import inventory from "../inv.js";
+import cart from "../cart.js";
 
 const { removeButtonText, removeNotificationText } = intText.cart;
 
@@ -108,13 +110,12 @@ export default class ZircusCartProduct extends HTMLElement {
   handleUpdateItemQuantity(event) {
     event.target.value = new Range(
       1,
-      state.inv.find((i) => i.type === this.item.type).quantity,
+      inventory.find(this.item.type).quantity,
     ).normalize(this.quantity);
-    state.cart = (cart) =>
-      //update cart quantities
-      cart.map((i) =>
-        i.id === this.item.id ? { ...i, quantity: this.quantity } : i
-      );
+    cart.update(this.item.type, (item) => ({
+      ...item,
+      quantity: this.quantity,
+    }));
     this.#price.textContent = currency(this.item.price * this.quantity);
     this.#removeButton.setAttribute(
       "title",
@@ -129,10 +130,10 @@ export default class ZircusCartProduct extends HTMLElement {
   }
 
   handleRemoveItem() {
-    state.cart = (cart) => cart.filter((i) => i.id !== this.item.id);
+    cart.remove(this.item.type);
     notifySuccess(this.createNotificationElements(this.#link.href));
     this.dispatchEvent(new CustomEvent("update-totals"));
-    !state.cart.length &&
+    !cart.length &&
       this.dispatchEvent(new CustomEvent("render"));
     this.remove();
   }

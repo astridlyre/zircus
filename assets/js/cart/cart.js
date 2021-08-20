@@ -1,11 +1,5 @@
-import {
-  currency,
-  eventBus,
-  state,
-  withLang,
-  ZircusElement,
-} from "../utils.js";
-
+import { currency, eventBus, withLang, ZircusElement } from "../utils.js";
+import cart from "../cart.js";
 /*
     Cart performs the functions manage the shopping cart.
     Uses the 'state' object to store state in localStorage
@@ -51,22 +45,18 @@ export default class ZircusCart extends HTMLElement {
   }
 
   setCheckoutButtonStatus() {
-    return state.cart.length > 0
+    return cart.length > 0
       ? (this.#checkoutButton.disabled = false)
       : (this.#checkoutButton.disabled = true);
   }
 
   updateSubtotalText() {
-    this.#subtotalText.textContent = currency(
-      state.cart
-        .reduce((acc, item) => (acc += item.price * item.quantity), 0)
-        .toFixed(2),
-    );
+    this.#subtotalText.textContent = currency(cart.total);
     return this.setCheckoutButtonStatus();
   }
 
   renderCartProducts() {
-    !state.cart.length
+    !cart.length
       ? requestAnimationFrame(() => {
         this.#emptyCartPlaceholder.classList.remove("hidden");
         this.updateSubtotalText();
@@ -74,7 +64,7 @@ export default class ZircusCart extends HTMLElement {
       : requestAnimationFrame(() => {
         const fragment = new DocumentFragment();
         this.#emptyCartPlaceholder.classList.add("hidden");
-        state.cart.forEach((item) => {
+        cart.items.forEach((item) => {
           const aCartProduct = new ZircusElement(
             "zircus-cart-product",
             null,

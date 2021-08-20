@@ -23,7 +23,7 @@ export default class ShippingInputs extends HTMLElement {
 
       const input = new ZircusElement("input", null, {
         type: "radio",
-        name: "shippingMethod",
+        name: "shipping",
         value: type.name.en.toLowerCase(),
         "data-price": type.price,
         id: `shipping-${key}`,
@@ -47,8 +47,8 @@ export default class ShippingInputs extends HTMLElement {
 
   get value() {
     return {
-      type: this.getAttribute("shipping-type"),
-      price: Number(this.getAttribute("shipping-price")),
+      method: this.getAttribute("shipping-type"),
+      total: Number(this.getAttribute("shipping-price")),
     };
   }
 

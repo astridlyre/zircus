@@ -6,11 +6,11 @@ import {
   notifyFailure,
   notifySuccess,
   state,
-  toOrderData,
-  toStateOrderData,
   withLang,
 } from "../utils.js";
 import withAsyncScript from "./withAsyncScript.js";
+import cart from "../cart.js";
+import OrderData from "../orderData.js";
 
 const ENDPOINT = `${API_ENDPOINT}/stripe/`;
 const STRIPE_SDK_SRC = "https://js.stripe.com/v3/";
@@ -53,13 +53,12 @@ export default class ZircusStripe extends HTMLElement {
 
     // Listen for custom form submission
     this.#formElement.addEventListener("form-submit", (event) => {
-      const { paymentMethod, formData } = event.detail;
+      const { paymentMethod } = event.detail;
       paymentMethod === "stripe" &&
         (stripe // if global exists, we're loaded
           ? this.showModal().then(({ closeModal, setButtonState }) =>
             this.createPaymentIntent({
-              paymentMethod,
-              formData,
+              orderData: event.detail,
               closeModal,
               setButtonState,
             })
@@ -103,7 +102,7 @@ export default class ZircusStripe extends HTMLElement {
         action: ({ closeModal, setButtonState }) => {
           this.setErrorMessage({ setButtonState }); // cancel
           closeModal();
-          if (state.order.completed && !state.cart.length) {
+          if (state.order?.isCompleted && !cart.length) {
             return document.querySelector("zircus-router").page = withLang({
               en: "/thanks",
               fr: "/fr/merci",
@@ -118,7 +117,7 @@ export default class ZircusStripe extends HTMLElement {
   }
 
   async createPaymentIntent(
-    { paymentMethod, formData, setButtonState, closeModal },
+    { orderData, setButtonState, closeModal },
   ) {
     this.#setButtonState = setButtonState; // set private prop because we use this so much
     this.#setButtonState({ isActive: false, isSpinning: true });
@@ -130,15 +129,12 @@ export default class ZircusStripe extends HTMLElement {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        ...toOrderData({ formData, paymentMethod }),
-        clientSecret: state.secret,
-      }),
+      body: JSON.stringify(orderData),
     })
       .then(isJson)
       .then(isError)
-      .then(({ order, clientSecret }) =>
-        this.setPendingOrderState({ order, clientSecret })
+      .then(({ orderData, clientSecret }) =>
+        this.setPendingOrderState({ orderData, clientSecret })
       )
       .catch((error) => {
         closeModal();
@@ -178,11 +174,11 @@ export default class ZircusStripe extends HTMLElement {
       });
   }
 
-  setPendingOrderState({ clientSecret, order }) {
+  setPendingOrderState({ orderData, clientSecret }) {
     state.secret = clientSecret;
-    state.order = toStateOrderData({ order });
+    state.order = new OrderData(orderData);
     this.#paymentPrice.textContent = `Calculated total: ${
-      currency(order.total)
+      currency(state.order.total)
     }`;
     this.#setButtonState({ isActive: false });
     !this.#isMounted && this.mountStripeElements(); // load mount stripe elements if not loaded
@@ -236,9 +232,9 @@ export default class ZircusStripe extends HTMLElement {
 
   handlePaymentSuccess({ setCustomCloseText }) {
     this.#setButtonState({ isActive: false, isSpinning: false });
-    state.cart = () => [];
+    cart.clear();
     state.secret = null;
-    state.order.completed = true;
+    state.order.setCompleted();
     requestAnimationFrame(() => {
       setCustomCloseText({
         text: withLang({ en: "finish", fr: "complétez" }),

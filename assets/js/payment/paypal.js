@@ -5,13 +5,13 @@ import {
   notifyFailure,
   notifySuccess,
   state,
-  toOrderData,
-  toStateOrderData,
   withLang,
   ZircusElement,
 } from "../utils.js";
 import paypalIcon from "./paypalIcon.js";
 import withAsyncScript from "./withAsyncScript.js";
+import cart from "../cart.js";
+import OrderData from "../orderData.js";
 
 const ENDPOINT = `${API_ENDPOINT}/paypal`;
 const CLIENT_ID =
@@ -58,12 +58,11 @@ export default class ZircusPayPal extends HTMLElement {
     );
   }
 
-  handleSubmit({ paymentMethod, formData }) {
+  handleSubmit(orderData) {
     return this.#scriptLoaded
       ? this.showModal().then(({ closeModal }) =>
         this.mountPayPalButton({
-          formData,
-          paymentMethod,
+          orderData,
           closeModal,
         })
       )
@@ -86,7 +85,7 @@ export default class ZircusPayPal extends HTMLElement {
         title: this.getAttribute("canceltext"),
         action: ({ closeModal }) => {
           closeModal(); // Close modal
-          if (state.order?.completed && !state.cart.length) {
+          if (state.order?.isCompleted && !cart.length) {
             return document.querySelector("zircus-router").page = withLang({
               en: "/thanks",
               fr: "/fr/merci",
@@ -99,7 +98,7 @@ export default class ZircusPayPal extends HTMLElement {
     }));
   }
 
-  mountPayPalButton({ formData, paymentMethod, closeModal }) {
+  mountPayPalButton({ orderData, closeModal }) {
     requestAnimationFrame(() => {
       this.#message.textContent = `Calculated Total: ${
         document.querySelector("#checkout-total").textContent // hacky?
@@ -109,7 +108,7 @@ export default class ZircusPayPal extends HTMLElement {
           style: PAYPAL_STYLE,
           createOrder: () =>
             this.createPaymentIntent({
-              orderData: toOrderData({ formData, paymentMethod }),
+              orderData,
               closeModal,
             }),
           onApprove: (_, actions) => this.onApprove(_, actions),
@@ -143,10 +142,10 @@ export default class ZircusPayPal extends HTMLElement {
     })
       .then(isJson)
       .then(isError)
-      .then((order) => {
+      .then((orderData) => {
         // Set order details in state
-        state.order = toStateOrderData({ order });
-        return order.orderId; // return orderId to client for next step
+        state.order = new OrderData(orderData);
+        return state.order.orderId; // return orderId to client for next step
       }).catch((error) => {
         // If error creating intent, bail
         state.order = null;
@@ -181,8 +180,8 @@ export default class ZircusPayPal extends HTMLElement {
       this.#paypalButton.textContent = "";
       this.#paypalButton.classList.add("disabled");
       this.changeButtonText();
-      state.cart = () => [];
-      state.order.completed = true;
+      cart.clear();
+      state.order.setCompleted();
     });
   }
 
