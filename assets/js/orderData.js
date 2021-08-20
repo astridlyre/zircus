@@ -1,6 +1,11 @@
 import { lang } from "./utils.js";
 import cart from "./cart.js";
 
+/*
+  * OrderData is the data-type for sending order details to the Zircus backend
+  * API.
+  *
+*/
 export default class OrderData {
   #address;
   #breakdown;
