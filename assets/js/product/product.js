@@ -12,7 +12,7 @@ import {
 } from "../utils.js";
 
 import cart from "../cart.js";
-import inventory from "../inv.js";
+import inventory from "../inventory.js";
 
 const IMAGE_BASE_PATH = "/assets/img/products/masked/";
 // Preload images

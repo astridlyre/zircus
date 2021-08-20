@@ -9,7 +9,7 @@ import {
   ZircusElement,
 } from "../utils.js";
 import intText from "../int/intText.js";
-import inventory from "../inv.js";
+import inventory from "../inventory.js";
 import cart from "../cart.js";
 
 const { removeButtonText, removeNotificationText } = intText.cart;

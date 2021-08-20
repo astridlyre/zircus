@@ -1,5 +1,5 @@
 import { eventBus, state } from "./utils.js";
-import inventory from "./inv.js";
+import inventory from "./inventory.js";
 
 class Cart {
   #items;
