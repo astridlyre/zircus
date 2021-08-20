@@ -12,6 +12,7 @@ import paypalIcon from "./paypalIcon.js";
 import withAsyncScript from "./withAsyncScript.js";
 import cart from "../cart.js";
 import OrderData from "../orderData.js";
+import ZircusModal from "../modal/modal.js";
 
 const ENDPOINT = `${API_ENDPOINT}/paypal`;
 const CLIENT_ID =
@@ -60,12 +61,7 @@ export default class ZircusPayPal extends HTMLElement {
 
   handleSubmit(orderData) {
     return this.#scriptLoaded
-      ? this.showModal().then(({ closeModal }) =>
-        this.mountPayPalButton({
-          orderData,
-          closeModal,
-        })
-      )
+      ? this.showModal().then(() => this.mountPayPalButton({ orderData }))
       : notifyFailure(`PayPal is still loading`);
   }
 
@@ -77,14 +73,14 @@ export default class ZircusPayPal extends HTMLElement {
   }
 
   showModal() { // Show modal asking to redirect to PayPal
-    return Promise.resolve(state.showModal({
+    return Promise.resolve(ZircusModal.show({
       content: this.createPayPalModalElements(),
       heading: this.getAttribute("name"),
       ok: {
         text: this.getAttribute("canceltext"),
         title: this.getAttribute("canceltext"),
-        action: ({ closeModal }) => {
-          closeModal(); // Close modal
+        action: () => {
+          ZircusModal.close();
           if (state.order?.isCompleted && !cart.length) {
             return document.querySelector("zircus-router").page = withLang({
               en: "/thanks",
@@ -98,7 +94,7 @@ export default class ZircusPayPal extends HTMLElement {
     }));
   }
 
-  mountPayPalButton({ orderData, closeModal }) {
+  mountPayPalButton({ orderData }) {
     requestAnimationFrame(() => {
       this.#message.textContent = `Calculated Total: ${
         document.querySelector("#checkout-total").textContent // hacky?
@@ -106,33 +102,14 @@ export default class ZircusPayPal extends HTMLElement {
       paypal
         .Buttons({
           style: PAYPAL_STYLE,
-          createOrder: () =>
-            this.createPaymentIntent({
-              orderData,
-              closeModal,
-            }),
+          createOrder: () => this.createPaymentIntent({ orderData }),
           onApprove: (_, actions) => this.onApprove(_, actions),
         })
         .render("#paypal-button");
     });
   }
 
-  changeButtonText() { // Handle post-payment UI change
-    const button = document.getElementById("modal-button-text");
-    button.textContent = withLang({
-      en: "close",
-      fr: "fermer",
-    });
-    button.setAttribute(
-      "title",
-      withLang({
-        en: "Close modal and finish order",
-        fr: "Fermez modal et completez votre commande",
-      }),
-    );
-  }
-
-  async createPaymentIntent({ orderData, closeModal }) {
+  async createPaymentIntent({ orderData }) {
     return await fetch(`${ENDPOINT}/create-payment-intent`, {
       method: "POST",
       headers: {
@@ -149,7 +126,7 @@ export default class ZircusPayPal extends HTMLElement {
       }).catch((error) => {
         // If error creating intent, bail
         state.order = null;
-        closeModal(); // Close modal
+        ZircusModal.close();
         notifyFailure(error);
       });
   }
@@ -174,12 +151,18 @@ export default class ZircusPayPal extends HTMLElement {
     notifySuccess(
       this.getAttribute("complete").replace("|", state.order.name),
     );
+    ZircusModal.setStatus({
+      okText: withLang({ en: "close", fr: "fermer" }),
+      okTitle: withLang({
+        en: "Close modal and finish order",
+        fr: "Fermez modal et completez votre commande",
+      }),
+    });
     return requestAnimationFrame(() => {
       this.#text.textContent = this.getAttribute("success");
       this.#text.classList.add("green");
       this.#paypalButton.textContent = "";
       this.#paypalButton.classList.add("disabled");
-      this.changeButtonText();
       cart.clear();
       state.order.setCompleted();
     });

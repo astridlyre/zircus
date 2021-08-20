@@ -6,8 +6,8 @@ import {
   notifySuccess,
   state,
   withLang,
-  ZircusElement,
 } from "../utils.js";
+import ZircusModal from "../modal/modal.js";
 
 const template = (order) => `
 <article class="order">
@@ -74,12 +74,12 @@ export default class ZircusOrder extends HTMLElement {
     }
   }
 
-  handleFailure({ closeModal } = {}) {
+  handleFailure() {
     document.querySelector("zircus-router").page = withLang({
       en: "/",
       fr: "/fr",
     });
-    closeModal && closeModal();
+    ZircusModal.close();
     notifyFailure(
       withLang({
         en: "Unable to find order",
@@ -89,19 +89,19 @@ export default class ZircusOrder extends HTMLElement {
   }
 
   showModal() {
-    return state.showModal({
+    return ZircusModal.show({
       heading: this.getAttribute("heading"),
       content: this.renderModalElements(),
       cancel: {
         text: this.getAttribute("canceltext"),
         title: this.getAttribute("canceltext"),
-        action: ({ closeModal }) => this.handleFailure({ closeModal }),
+        action: this.handleFailure,
       },
       ok: {
         text: this.getAttribute("oktext"),
         title: this.getAttribute("oktext"),
-        action: ({ closeModal, setButtonState }) => {
-          setButtonState({ isActive: false, isSpinning: true });
+        action: () => {
+          ZircusModal.setStatus({ isActive: false, isSpinning: true });
           this.authenticate({
             ...this.#searchParams,
             identifier: this.#identifierInput.value,
@@ -109,10 +109,10 @@ export default class ZircusOrder extends HTMLElement {
             requestAnimationFrame(() => {
               this.#orderContainer.innerHTML = template(order);
             });
-            closeModal();
+            ZircusModal.close();
             notifySuccess(this.getAttribute("success"));
           }).catch((error) => {
-            setButtonState({ isActive: true });
+            ZircusModal.setStatus({ isActive: true });
             notifyFailure(error);
           });
         },

@@ -1,4 +1,5 @@
-import { calculateTax, currency, state, withLang } from "../utils.js";
+import { calculateTax, currency, withLang } from "../utils.js";
+import ZircusModal from "../modal/modal.js";
 import intText from "../int/intText.js";
 import cart from "../cart.js";
 
@@ -68,14 +69,14 @@ export default class Payment extends HTMLElement {
   }
 
   showEmptyCartModal() { // redirects user to shop page if no items in cart
-    return state.showModal({
+    return ZircusModal.show({
       content: withLang(intText.checkout.modalText).content,
       heading: withLang(intText.checkout.modalText).heading,
       ok: {
         text: withLang(intText.checkout.modalText).okText,
         title: withLang(intText.checkout.modalText).okTitle,
-        action: ({ closeModal }) => {
-          closeModal();
+        action: () => {
+          ZircusModal.close();
           document.querySelector("zircus-router").page = withLang({
             en: "/shop",
             fr: "/fr/boutique",

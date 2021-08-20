@@ -11,6 +11,7 @@ import {
 import withAsyncScript from "./withAsyncScript.js";
 import cart from "../cart.js";
 import OrderData from "../orderData.js";
+import ZircusModal from "../modal/modal.js";
 
 const ENDPOINT = `${API_ENDPOINT}/stripe/`;
 const STRIPE_SDK_SRC = "https://js.stripe.com/v3/";
@@ -44,7 +45,6 @@ export default class ZircusStripe extends HTMLElement {
   #paymentPrice;
   #resultMessage;
   #cardElement;
-  #setButtonState;
 
   connectedCallback() {
     this.classList.add("stripe-payment-form");
@@ -55,12 +55,8 @@ export default class ZircusStripe extends HTMLElement {
     this.#formElement.addEventListener("form-submit", (event) => {
       event.detail.paymentMethod === "stripe" &&
         (stripe // if global exists, we're loaded
-          ? this.showModal().then(({ closeModal, setButtonState }) =>
-            this.createPaymentIntent({
-              orderData: event.detail,
-              closeModal,
-              setButtonState,
-            })
+          ? this.showModal().then(() =>
+            this.createPaymentIntent({ orderData: event.detail })
           )
           : notifyFailure(`Stripe not yet loaded!`));
     });
@@ -87,27 +83,25 @@ export default class ZircusStripe extends HTMLElement {
   }
 
   async showModal() {
-    return await Promise.resolve(state.showModal({
+    return await Promise.resolve(ZircusModal.show({
       content: this.#modal,
       heading: this.getAttribute("heading"),
       ok: {
-        action: ({ setCustomCloseText }) => {
-          this.confirmCardPayment({ setCustomCloseText }); // pay with card
-        },
+        action: () => this.confirmCardPayment(), // pay with card
         text: this.getAttribute("buttontext"),
         title: this.getAttribute("buttontext"),
       },
       cancel: {
-        action: ({ closeModal, setButtonState }) => {
-          this.setErrorMessage({ setButtonState }); // cancel
-          closeModal();
+        action: () => {
+          this.setErrorMessage(); // cancel
+          ZircusModal.close();
           if (state.order?.isCompleted && !cart.length) {
             return document.querySelector("zircus-router").page = withLang({
               en: "/thanks",
               fr: "/fr/merci",
             });
           }
-          return this.cancelPaymentIntent({ closeModal });
+          return this.cancelPaymentIntent();
         },
         text: this.getAttribute("canceltext"),
         title: this.getAttribute("canceltext"),
@@ -115,11 +109,8 @@ export default class ZircusStripe extends HTMLElement {
     }));
   }
 
-  async createPaymentIntent(
-    { orderData, setButtonState, closeModal },
-  ) {
-    this.#setButtonState = setButtonState; // set private prop because we use this so much
-    this.#setButtonState({ isActive: false, isSpinning: true });
+  async createPaymentIntent({ orderData }) {
+    ZircusModal.setStatus({ isActive: false, isSpinning: true });
     requestAnimationFrame(() => {
       this.#cardElement.classList.remove("hidden");
     });
@@ -136,15 +127,15 @@ export default class ZircusStripe extends HTMLElement {
         this.setPendingOrderState({ orderData, clientSecret })
       )
       .catch((error) => {
-        closeModal();
+        ZircusModal.close();
         notifyFailure(
           `Error Creating Payment Intent: ${error}`,
         );
       });
   }
 
-  async cancelPaymentIntent({ closeModal }) {
-    closeModal(); // close modal
+  async cancelPaymentIntent() {
+    ZircusModal.close();
     await fetch(`${ENDPOINT}/cancel-payment-intent/${state.order.id}`, {
       method: "POST",
       headers: {
@@ -179,20 +170,20 @@ export default class ZircusStripe extends HTMLElement {
     this.#paymentPrice.textContent = `Calculated total: ${
       currency(state.order.total)
     }`;
-    this.#setButtonState({ isActive: false });
+    ZircusModal.setStatus({ isActive: false });
     !this.#isMounted && this.mountStripeElements(); // load mount stripe elements if not loaded
   }
 
   setErrorMessage({ message = null } = {}) {
     return message
       ? requestAnimationFrame(() => {
-        this.#setButtonState({ isActive: false });
+        ZircusModal.setStatus({ isActive: false });
         this.#resultMessage.textContent = message;
         this.#resultMessage.classList.remove("hidden");
         this.#resultMessage.classList.add("red");
       })
       : requestAnimationFrame(() => {
-        this.#setButtonState({ isActive: true });
+        ZircusModal.setStatus({ isActive: true });
         this.#resultMessage.classList.add("hidden");
         this.#resultMessage.classList.remove("red");
       });
@@ -204,7 +195,7 @@ export default class ZircusStripe extends HTMLElement {
   ) {
     card.mount("#stripe-card-element");
     card.on("change", (event) => {
-      this.#setButtonState({ isActive: !event.empty });
+      ZircusModal.setStatus({ isActive: !event.empty });
       return event.error
         ? this.setErrorMessage({
           message: event.error.message,
@@ -215,8 +206,8 @@ export default class ZircusStripe extends HTMLElement {
     this.#isMounted = true; // stripe is now loaded
   }
 
-  confirmCardPayment({ setCustomCloseText }) {
-    this.#setButtonState({ isActive: false, isSpinning: true });
+  confirmCardPayment() {
+    ZircusModal.setStatus({ isActive: false, isSpinning: true });
     return stripe
       .confirmCardPayment(state.secret, {
         payment_method: { card: this.#card },
@@ -225,19 +216,20 @@ export default class ZircusStripe extends HTMLElement {
         if (result.error) {
           return this.setErrorMessage(result.error.message);
         }
-        return this.handlePaymentSuccess({ setCustomCloseText });
+        return this.handlePaymentSuccess();
       });
   }
 
-  handlePaymentSuccess({ setCustomCloseText }) {
-    this.#setButtonState({ isActive: false, isSpinning: false });
+  handlePaymentSuccess() {
     cart.clear();
     state.secret = null;
     state.order.setCompleted();
     requestAnimationFrame(() => {
-      setCustomCloseText({
-        text: withLang({ en: "finish", fr: "complétez" }),
-        title: withLang({ en: "finish", fr: "complétez" }),
+      ZircusModal.setStatus({
+        isActive: false,
+        isSpinning: false,
+        cancelText: withLang({ en: "finish", fr: "complétez" }),
+        cancelTitle: withLang({ en: "finish", fr: "complétez" }),
       });
       this.#cardElement.textContent = "";
       this.#cardElement.classList.add("disabled");

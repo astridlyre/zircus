@@ -1,12 +1,11 @@
 import {
   disableElements,
+  eventBus,
   setAttributes,
-  state,
   ZircusElement,
 } from "../utils.js";
 
 export default class ZircusModal extends HTMLElement {
-  #isActive = false;
   #modal;
   #okText;
   #okButton;
@@ -21,19 +20,35 @@ export default class ZircusModal extends HTMLElement {
     this.#modal = new ZircusElement("div", "modal__container").render();
     this.#template = this.querySelector("template");
     this.appendChild(this.#modal);
-    state._setModalFunction((modal) => {
-      requestAnimationFrame(() => this.show(modal));
-      this.#enableElements = disableElements();
-      return {
-        setButtonState: (value) => (this.isActive = value),
-        closeModal: () => this.hide(),
-      };
-    });
+    eventBus.addEventListener(
+      ZircusModal.SHOW_MODAL_EVENT,
+      (event) =>
+        requestAnimationFrame(() => {
+          this.show(event.detail);
+          this.#enableElements = disableElements();
+        }),
+    );
+    eventBus.addEventListener(ZircusModal.CLOSE_MODAL_EVENT, () => this.hide());
+    eventBus.addEventListener(
+      ZircusModal.CHANGE_MODAL_EVENT,
+      (event) => this.setStatus(event.detail),
+    );
   }
 
-  set isActive({ isActive, isSpinning = false }) {
-    requestAnimationFrame(() => {
-      this.#isActive = isActive;
+  setStatus({
+    isActive = true,
+    isSpinning = false,
+    okText,
+    okTitle,
+    cancelText,
+    cancelTitle,
+  }) {
+    return requestAnimationFrame(() => {
+      okText && (this.#okText.textContent = okText);
+      okTitle && this.#okButton.setAttribute("title", okTitle);
+      cancelText && (this.#cancelButton.textContent = cancelText);
+      cancelTitle && this.#cancelButton.setAttribute("title", cancelTitle);
+
       if (isSpinning) {
         this.#okText.classList.add("hidden");
         this.#spinner.classList.remove("hidden");
@@ -41,16 +56,12 @@ export default class ZircusModal extends HTMLElement {
         this.#okText.classList.remove("hidden");
         this.#spinner.classList.add("hidden");
       }
-      if (this.#isActive) {
+      if (isActive) {
         this.#okButton.disabled = false;
       } else {
         this.#okButton.disabled = true;
       }
     });
-  }
-
-  get isActive() {
-    return this.#isActive;
   }
 
   hide() {
@@ -96,10 +107,7 @@ export default class ZircusModal extends HTMLElement {
       "aria-hidden": false,
     });
 
-    this.#okButton.addEventListener(
-      "click",
-      () => ok.action(this.createActionResponse(this.#cancelButton)),
-    );
+    this.#okButton.addEventListener("click", ok.action);
 
     document.getElementById("blur").classList.add("blur");
     document.getElementById("nav").classList.add("blur");
@@ -115,25 +123,43 @@ export default class ZircusModal extends HTMLElement {
         title: cancel.title,
         "aria-hidden": false,
       });
-      this.#cancelButton.addEventListener(
-        "click",
-        () => cancel.action(this.createActionResponse(this.#cancelButton)),
-      );
+      this.#cancelButton.addEventListener("click", cancel.action);
       this.#cancelButton.focus();
     } else {
       this.#okButton.focus();
     }
   }
 
-  createActionResponse(cancelButton) {
-    return {
-      setButtonState: (value) => this.isActive = value,
-      closeModal: () => this.hide(),
-      setCustomCloseText: (cancel) => {
-        cancelButton.textContent = cancel.text;
-        cancelButton.setAttribute("title", cancel.title);
-      },
-    };
+  static get SHOW_MODAL_EVENT() {
+    return "show-modal";
+  }
+
+  static get CLOSE_MODAL_EVENT() {
+    return "close-modal";
+  }
+
+  static get CHANGE_MODAL_EVENT() {
+    return "change-modal";
+  }
+
+  static close() {
+    eventBus.dispatchEvent(new CustomEvent(ZircusModal.CLOSE_MODAL_EVENT));
+  }
+
+  static show(detail) {
+    eventBus.dispatchEvent(
+      new CustomEvent(ZircusModal.SHOW_MODAL_EVENT, {
+        detail,
+      }),
+    );
+  }
+
+  static setStatus(detail) {
+    eventBus.dispatchEvent(
+      new CustomEvent(ZircusModal.CHANGE_MODAL_EVENT, {
+        detail,
+      }),
+    );
   }
 }
 

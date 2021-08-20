@@ -5,9 +5,9 @@ import {
   lang,
   notifyFailure,
   notifySuccess,
-  state,
 } from "../utils.js";
 import intText from "../int/intText.js";
+import ZircusModal from "../modal/modal.js";
 
 const { contactText } = intText;
 
@@ -93,13 +93,13 @@ export default class ZircusContactForm extends HTMLElement {
   }
 
   handleFailure(error) {
-    state.showModal({
+    ZircusModal.show({
       heading: contactText[lang()].error[0],
       content: error,
       ok: {
         text: contactText[lang()].error[1],
         title: contactText[lang()].error[0],
-        action: ({ closeModal }) => closeModal(),
+        action: ZircusModal.close,
       },
     });
     return notifyFailure(
@@ -108,13 +108,13 @@ export default class ZircusContactForm extends HTMLElement {
   }
 
   handleSuccess(data) {
-    state.showModal({
+    ZircusModal.show({
       heading: contactText[lang()].default[0],
       content: contactText[lang()].message(data.name, data.email),
       ok: {
         text: contactText[lang()].default[1],
         title: contactText[lang()].default[2],
-        action: ({ closeModal }) => closeModal(),
+        action: ZircusModal.close,
       },
     });
     return notifySuccess(

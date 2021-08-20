@@ -44,7 +44,6 @@ export const eventBus = new EventBus();
  *
  */
 class State {
-  #modalFunction;
   #state;
   #lastUpdated;
 
@@ -98,15 +97,6 @@ class State {
 
   set order(order) {
     this.#set("order", order);
-  }
-
-  _setModalFunction(func) {
-    this.#modalFunction = func;
-    return this;
-  }
-
-  showModal(modal) {
-    return this.#modalFunction(modal);
   }
 }
 
