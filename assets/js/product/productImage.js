@@ -5,32 +5,37 @@ export default class ProductImage extends HTMLElement {
   #isHovered = false;
   #updating = false;
   #fullImage;
+  #parent;
 
   connectedCallback() {
+    this.#parent = document.querySelector("zircus-product");
     this.#image = new ZircusElement("img", "product__img").render();
     this.#fullImage = document.createElement("zircus-full-image");
-    this.appendChild(this.#image);
-    this.appendChild(this.#fullImage);
     setAttributes(this.#fullImage, {
       alt: this.getAttribute("alt"),
       title: this.getAttribute("fulltitle"),
-      src: this.getAttribute("fullsrc"),
       hidden: true,
     });
-    this.#fullImage.addEventListener(
-      "click",
-      () => (this.#fullImage.hidden = true),
-    );
     setAttributes(this.#image, {
-      src: this.getAttribute("src"),
       alt: this.getAttribute("alt"),
+      src: this.getAttribute("src"),
       title: `${this.getAttribute("title")} (${
         this.getAttribute(
           "viewfull",
         )
       })`,
     });
+    this.appendChild(this.#image);
+    this.appendChild(this.#fullImage);
 
+    this.#parent.addEventListener(
+      "wants-update",
+      ({ detail }) => detail.images && this.handleUpdate(),
+    );
+    this.#fullImage.addEventListener(
+      "click",
+      () => (this.#fullImage.hidden = true),
+    );
     this.#image.addEventListener(
       "pointerenter",
       () => !this.#updating && (this.isHovered = true),
@@ -45,38 +50,27 @@ export default class ProductImage extends HTMLElement {
     );
   }
 
-  attributeChangedCallback(name, _, newValue) {
-    switch (name) {
-      case "alt":
-        return this.#image && (this.#image.alt = newValue);
-      case "title":
-        return (
-          this.#image &&
-          this.#image.setAttribute("title", newValue)
-        );
-      case "src":
-        return this.#image && (this.#image.src = newValue);
-      case "fullsrc":
-        return this.#fullImage && (this.#fullImage.src = newValue);
-    }
+  handleUpdate() {
+    this.#fullImage.src = this.images.lg_a;
+    this.#image.src = this.images.sm_a;
+  }
+
+  get images() {
+    return this.#parent.currentItem.images;
   }
 
   set isHovered(value) {
     this.#isHovered = value;
     requestAnimationFrame(() => {
       this.#isHovered
-        ? (this.#image.src = this.getAttribute("hovered"))
-        : (this.#image.src = this.getAttribute("src"));
+        ? (this.#image.src = this.images.sm_b)
+        : (this.#image.src = this.images.sm_a);
       this.#updating = false;
     });
   }
 
   get isHovered() {
     return this.#isHovered;
-  }
-
-  static get observedAttributes() {
-    return ["src", "hovered", "alt", "title", "fullsrc"];
   }
 }
 

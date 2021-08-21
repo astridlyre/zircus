@@ -13,29 +13,23 @@ layout: default
     carthref="{{ site.data.labels.product[page.lang].cart_link_path }}"
     carttitle="{{  site.data.labels.product[page.lang].label_go_to_cart_aria }}"
     instock="{{ site.data.labels.product[page.lang].label_in_stock }}"
-    fewleft="{{ site.data.labels.product[page.lang].label_few_left }}"
     outstock="{{ site.data.labels.product[page.lang].label_out_of_stock }}"
-    addcarttext="{{ site.data.labels.product[page.lang].label_add_to_cart }}"
-    erroradd="{{ site.data.labels.product[page.lang].error_add }}"
-    successadd="{{ site.data.labels.product[page.lang].success_add }}"
   >
     <zircus-product-image
       src="{{ page.image }}"
       alt="{{ page.image_alt }}"
       title="{{ page.name }} - {{ page.description }}"
       fulltitle="{{ site.data.labels[page.lang].close_full_image }}"
-      fullsrc=""
       viewfull="{{ site.data.labels[page.lang].view_full_image }}"
     >
     </zircus-product-image>
     <div id="product-accent" class="product__details">
       <form class="product__details_container">
-        <h2 class="product__price">
-          <span id="product-price-text">$30</span>
-          <p id="product-status-text" class="product__inputs_stock">
-            {{ page.out_of_stock }}
-          </p>
-        </h2>
+        <zircus-product-price-text
+          instock="{{ site.data.labels.product[page.lang].label_in_stock }}"
+          fewleft="{{ site.data.labels.product[page.lang].label_few_left }}"
+          outstock="{{ site.data.labels.product[page.lang].label_out_of_stock }}"
+        ></zircus-product-price-text>
         <div class="product__inputs">
           <label
             for="product-quantity"
@@ -99,17 +93,16 @@ layout: default
         </div>
         <hr />
         <div class="product__inputs_buttons">
-          <button
-            class="btn btn__primary"
-            type="button"
-            id="add-to-cart"
-            accesskey="a"
+          <zircus-add-to-cart-button
+            outstock="{{ site.data.labels.product[page.lang].label_out_of_stock }}"
+            addcarttext="{{ site.data.labels.product[page.lang].label_add_to_cart }}"
             aria-label="{{ page.label_add_to_cart_aria }}"
             title="{{ page.label_add_to_cart_aria }}"
-            disabled
-          >
-            {{ site.data.labels.product[page.lang].label_add_to_cart }}
-          </button>
+            erroradd="{{ site.data.labels.product[page.lang].error_add }}"
+            successadd="{{ site.data.labels.product[page.lang].success_add }}"
+            carthref="{{ site.data.labels.product[page.lang].cart_link_path }}"
+            carttitle="{{  site.data.labels.product[page.lang].label_go_to_cart_aria }}"
+          ></zircus-add-to-cart-button>
           <zircus-router-link>
             <a
               class="btn btn__secondary"

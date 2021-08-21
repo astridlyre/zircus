@@ -12,7 +12,7 @@
     }
   }
 
-  &__price {
+  zircus-product-price-text {
     @include res("md") {
       font-size: var(--xl-font-size);
     }
@@ -21,9 +21,11 @@
     width: 100%;
     text-align: right;
     font-weight: 600;
+    display: block;
 
     span {
       font-style: normal;
+      margin-left: auto;
     }
   }
 
@@ -132,7 +134,6 @@
 
     &_stock {
       font-size: var(--default-font-size);
-      margin-top: var(--base-unit);
     }
 
     &_buttons {
@@ -141,10 +142,14 @@
       flex-grow: 1;
       gap: var(--base-unit);
 
-      button,
+      zircus-add-to-cart-button,
       zircus-router-link {
         flex-grow: 1;
         flex-basis: 11rem;
+      }
+
+      zircus-add-to-cart-button button {
+        width: 100%;
       }
 
       a {

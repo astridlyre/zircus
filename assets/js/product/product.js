@@ -1,16 +1,4 @@
-import {
-  appendPreloadLinks,
-  currency,
-  eventBus,
-  notifyFailure,
-  notifySuccess,
-  Range,
-  setAttributes,
-  state,
-  withLang,
-  ZircusElement,
-} from "../utils.js";
-
+import { appendPreloadLinks, eventBus, Range, state } from "../utils.js";
 import cart from "../cart.js";
 import inventory from "../inventory.js";
 
@@ -39,19 +27,17 @@ export default class Product extends HTMLElement {
   #colorInput;
   #defaultColor;
   #currentColor;
-  #addToCartButton;
 
   connectedCallback() {
     this.#sizeInput = this.querySelector("#product-size");
     this.#quantityInput = this.querySelector("#product-quantity");
     this.#colorInput = this.querySelector("#product-color");
-    this.#addToCartButton = this.querySelector("#add-to-cart");
     this.#defaultColor = this.getAttribute("defaultcolor");
     this.#currentColor = this.color;
 
     // Initial updates
     this.preloadImages()
-      .updateStatus()
+      .updateStatus({ price: true, status: true })
       .updateCartBtnQty()
       .updateColorOptionText()
       .updateSizeOptionText();
@@ -59,7 +45,9 @@ export default class Product extends HTMLElement {
     // Add event listeners
     this.#colorInput.addEventListener(
       "change",
-      () => this.updateStatus().updateSizeOptionText(),
+      () =>
+        this.updateStatus({ images: true, status: true })
+          .updateSizeOptionText(),
     );
 
     this.#quantityInput.addEventListener("change", () => {
@@ -67,32 +55,41 @@ export default class Product extends HTMLElement {
         this.quantity,
         this.currentItem.quantity,
       );
-      this.setProductPriceText();
+      this.wantsUpdate({ price: true });
     });
 
     this.#quantityInput.addEventListener("blur", () => {
       this.#quantityInput.value = new Range(1, this.currentItem.quantity)
         .normalize(this.quantity);
-      this.setProductPriceText();
+      this.wantsUpdate({ price: true });
     });
 
     this.#sizeInput.addEventListener(
       "change",
-      () => this.updateStatus().updateColorOptionText(),
-    );
-
-    this.#addToCartButton.addEventListener(
-      "click",
-      () => this.handleAddToCart(),
+      () => this.updateStatus({ status: true }).updateColorOptionText(),
     );
 
     eventBus.addEventListener(
       inventory.INV_UPDATED_EVENT,
-      () => this.updateStatus(),
+      () => this.updateStatus({ status: true }),
     );
     eventBus.addEventListener(
       cart.CART_UPDATED_EVENT,
       () => this.updateCartBtnQty(),
+    );
+  }
+
+  wantsUpdate(
+    { images = false, status = false, price = false },
+  ) {
+    this.dispatchEvent(
+      new CustomEvent("wants-update", {
+        detail: {
+          images,
+          status,
+          price,
+        },
+      }),
     );
   }
 
@@ -118,14 +115,6 @@ export default class Product extends HTMLElement {
     return this.#currentItem;
   }
 
-  setProductPriceText() {
-    requestAnimationFrame(
-      () => (this.querySelector("#product-price-text").textContent = currency(
-        Math.abs(this.quantity * this.currentItem.price),
-      )),
-    );
-  }
-
   preloadImages(
     colors = [...this.#colorInput.children],
     defaultColor = colors.find(
@@ -143,63 +132,6 @@ export default class Product extends HTMLElement {
     return this;
   }
 
-  setImage() {
-    this.currentItem &&
-      setAttributes(this.querySelector("zircus-product-image"), {
-        src: this.currentItem.images["sm_a"],
-        hovered: this.currentItem.images["sm_b"],
-        fullsrc: this.currentItem.images["lg_a"],
-      });
-  }
-
-  notifySuccess() {
-    return notifySuccess([
-      new ZircusElement("img", "notification__image", {
-        src: this.currentItem.images.sm_a,
-        alt: this.currentItem.name,
-      }).render(),
-      new ZircusElement("zircus-router-link")
-        .addChild(
-          new ZircusElement("a", "notification__text", {
-            href: this.getAttribute("carthref"),
-            title: this.getAttribute("carttitle"),
-          }).addChild(
-            this.getAttribute("successadd").replace(
-              "|",
-              withLang(this.currentItem.name),
-            ),
-          ),
-        )
-        .render(),
-    ]);
-  }
-
-  handleAddToCart(
-    { type, quantity } = this.currentItem,
-    [cartItem, invItem] = [cart.find(type), inventory.find(type)],
-  ) {
-    quantity - this.quantity < 0 || !quantity
-      ? notifyFailure(this.getAttribute("erroradd"))
-      : cartItem
-      ? cartItem.quantity + this.quantity <= invItem.quantity
-        ? this.updateCartItem().notifySuccess()
-        : notifyFailure(this.getAttribute("erroradd"))
-      : this.addNewCartItem().notifySuccess();
-  }
-
-  updateCartItem() {
-    cart.update(
-      this.currentItem.type,
-      (item) => item.setQuantity(item.quantity + this.quantity),
-    );
-    return this;
-  }
-
-  addNewCartItem() {
-    cart.add(this.currentItem.type, this.quantity);
-    return this;
-  }
-
   updateCartBtnQty() {
     requestAnimationFrame(() => {
       this.querySelector("#go-to-cart-qty").textContent = cart.length
@@ -207,23 +139,6 @@ export default class Product extends HTMLElement {
         : "";
     });
     return this;
-  }
-
-  outOfStock() {
-    this.#quantityInput.disabled = true;
-    this.#addToCartButton.disabled = true;
-    this.#addToCartButton.textContent = this.getAttribute("outstock")
-      .toLowerCase();
-  }
-
-  inStock() {
-    if (this.currentItem.quantity < this.quantity) {
-      this.#quantityInput.value = this.currentItem.quantity;
-    }
-    this.#quantityInput.disabled = false;
-    this.#addToCartButton.disabled = false;
-    this.#addToCartButton.textContent = this.getAttribute("addcarttext")
-      .toLowerCase();
   }
 
   updateOptionText({ input, test, alt }) {
@@ -255,8 +170,16 @@ export default class Product extends HTMLElement {
     });
   }
 
-  updateStatus({ currentItem } = state) {
+  updateAccentColor() {
+    this.querySelector("#product-accent").classList.replace(
+      `${this.#currentColor}-before`,
+      `${this.color}-before`,
+    );
+  }
+
+  updateStatus({ images, status, price }) {
     if (!inventory.length) return this;
+    const { currentItem } = state;
     requestAnimationFrame(() => {
       if (currentItem) {
         this.#sizeInput.value = currentItem.size;
@@ -264,25 +187,17 @@ export default class Product extends HTMLElement {
         state.currentItem = null;
       }
       this.#needsUpdate = true;
-      this.setImage(); // must be before updating currentColor
-      this.querySelector("#product-accent").classList.replace(
-        `${this.#currentColor}-before`,
-        `${this.color}-before`,
-      );
+      this.updateAccentColor();
       this.#currentColor = this.color;
-      this.setProductPriceText();
-      this.querySelector("#product-status-text").textContent =
-        this.currentItem.quantity <= 0
-          ? this.getAttribute("outstock")
-          : this.currentItem.quantity < 5
-          ? this.getAttribute("fewleft").replace(
-            "|",
-            this.currentItem.quantity,
-          )
-          : this.getAttribute("instock");
-      !this.currentItem || this.currentItem.quantity <= 0
-        ? this.outOfStock()
-        : this.inStock();
+      if (!this.currentItem || this.currentItem.quantity <= 0) {
+        this.#quantityInput.disabled = true;
+      } else {
+        if (this.currentItem.quantity < this.quantity) {
+          this.#quantityInput.value = this.currentItem.quantity;
+        }
+        this.#quantityInput.disabled = false;
+      }
+      this.wantsUpdate({ images, status, price });
     });
     return this;
   }
