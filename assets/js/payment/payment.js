@@ -16,10 +16,7 @@ export default class Payment extends HTMLElement {
   #productList;
 
   connectedCallback() {
-    if (!cart.length) {
-      this.showEmptyCartModal();
-    }
-
+    !cart.length && this.showEmptyCartModal();
     this.#form = this.querySelector("zircus-checkout-form");
     this.#formState = this.querySelector("#checkout-state");
     this.#formCountry = this.querySelector("#checkout-country");

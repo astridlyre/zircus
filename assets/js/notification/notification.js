@@ -39,9 +39,8 @@ export default class ZircusNotification extends HTMLElement {
     eventBus.addEventListener(
       "notification",
       ({ detail }) => {
-        if (this.#currentNotification) {
+        this.#currentNotification &&
           clearTimeout(this.#currentNotification.id);
-        }
         this.clear();
         return this.show({
           content: detail.content,

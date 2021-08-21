@@ -38,13 +38,10 @@ export default class ZircusRouter extends HTMLElement {
       ({ detail }) => this.setAttribute("page", detail),
     );
 
-    this.#worker.onmessage = ({ data }) => {
-      if (data.ok) {
-        cache.set(data.url, data.text);
-      } else {
-        notifyFailure(data.error.message);
-      }
-    };
+    this.#worker.onmessage = ({ data }) =>
+      data.ok
+        ? cache.set(data.url, data.text)
+        : notifyFailure(data.error.message);
   }
 
   attributeChangedCallback(name, oldValue, newValue) {

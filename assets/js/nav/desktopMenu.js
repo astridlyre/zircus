@@ -24,7 +24,7 @@ export default class ZircusDesktopMenu extends HTMLElement {
   #MIN_SCROLL = 100;
   #isHidden = false;
   #isFocused = false;
-  #updating = false;
+  #isUpdating = false;
   #nav;
   cartLink;
 
@@ -70,23 +70,23 @@ export default class ZircusDesktopMenu extends HTMLElement {
   }
 
   set isHidden(value) {
-    this.#updating = true;
+    this.#isUpdating = true;
     this.#isHidden = value;
     requestAnimationFrame(() => this.#isHidden ? this.hide() : this.show());
   }
 
   show() {
     document.querySelector("#nav").classList.remove("slide-up");
-    this.#updating = false;
+    this.#isUpdating = false;
   }
 
   hide() {
     document.querySelector("#nav").classList.add("slide-up");
-    this.#updating = false;
+    this.#isUpdating = false;
   }
 
   scrollHandler(isScrollingUp) {
-    if (this.#updating) return;
+    if (this.#isUpdating) return;
     if (isScrollingUp && this.isHidden) return (this.isHidden = false);
     if (!isScrollingUp && !this.isHidden) return (this.isHidden = true);
   }

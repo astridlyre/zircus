@@ -15,9 +15,10 @@ export default class ZircusMobileMenu extends HTMLElement {
     this.#list = this.querySelector("#menu-mobile-list");
     this.#button = this.querySelector("#menu-mobile-btn");
     this.updateCartLink();
-    this.#list.addEventListener("click", (event) => {
-      if (event.target === this.#list) this.isHidden = true;
-    });
+    this.#list.addEventListener(
+      "click",
+      (event) => this.isHidden = event.target === this.#list,
+    );
     this.#button.addEventListener(
       "click",
       () => (this.isHidden = !this.isHidden),
