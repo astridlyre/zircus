@@ -21,7 +21,7 @@ export default class ZircusAddToCartButton extends HTMLElement {
     this.#parent = document.querySelector("zircus-product");
     this.#parent.addEventListener(
       "wants-update",
-      ({ detail }) => this.handleUpdate(detail),
+      ({ detail }) => detail.status && this.handleUpdate(),
     );
     this.#button.addEventListener("click", () => this.handleAddToCart());
   }
@@ -31,7 +31,8 @@ export default class ZircusAddToCartButton extends HTMLElement {
   }
 
   enoughStock(existingQuantity = 0) {
-    return this.item.quantity >= (this.#parent.quantity + existingQuantity);
+    return this.item.quantity &&
+      this.item.quantity >= (this.#parent.quantity + existingQuantity);
   }
 
   handleAddToCart() {
@@ -80,9 +81,9 @@ export default class ZircusAddToCartButton extends HTMLElement {
     ]);
   }
 
-  handleUpdate({ productQuantity }) {
-    this.#button.disabled = productQuantity <= 0;
-    this.#button.textContent = productQuantity <= 0
+  handleUpdate() {
+    this.#button.disabled = this.item.quantity <= 0;
+    this.#button.textContent = this.item.quantity <= 0
       ? this.getAttribute("outstock").toLowerCase()
       : this.getAttribute("addcarttext").toLowerCase();
   }
