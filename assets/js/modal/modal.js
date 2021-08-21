@@ -56,11 +56,7 @@ export default class ZircusModal extends HTMLElement {
         this.#okText.classList.remove("hidden");
         this.#spinner.classList.add("hidden");
       }
-      if (isActive) {
-        this.#okButton.disabled = false;
-      } else {
-        this.#okButton.disabled = true;
-      }
+      this.#okButton.disabled = !isActive;
     });
   }
 

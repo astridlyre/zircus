@@ -42,22 +42,16 @@ export default class ZircusCart extends HTMLElement {
     );
   }
 
-  setCheckoutButtonStatus() {
-    return cart.length > 0
-      ? (this.#checkoutButton.disabled = false)
-      : (this.#checkoutButton.disabled = true);
-  }
-
-  updateSubtotalText() {
+  updateStatus() {
     this.#subtotalText.textContent = currency(cart.total);
-    return this.setCheckoutButtonStatus();
+    this.#checkoutButton.disabled = cart.length <= 0;
   }
 
   renderCartProducts() {
     !cart.length
       ? requestAnimationFrame(() => {
         this.#emptyCartPlaceholder.classList.remove("hidden");
-        this.updateSubtotalText();
+        this.updateStatus();
       })
       : requestAnimationFrame(() => {
         const fragment = new DocumentFragment();
@@ -73,7 +67,7 @@ export default class ZircusCart extends HTMLElement {
           aCartProduct.item = item;
           aCartProduct.addEventListener(
             "update-totals",
-            () => this.updateSubtotalText(),
+            () => this.updateStatus(),
           );
           aCartProduct.addEventListener(
             "render",
@@ -82,7 +76,7 @@ export default class ZircusCart extends HTMLElement {
           fragment.appendChild(aCartProduct);
         });
         this.#cartProductsList.appendChild(fragment);
-        this.updateSubtotalText();
+        this.updateStatus();
       });
   }
 }

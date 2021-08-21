@@ -1,6 +1,7 @@
 import { appendPreloadLinks, eventBus, Range, state } from "../utils.js";
 import cart from "../cart.js";
 import inventory from "../inventory.js";
+import withCartQuantity from "../nav/withCartQuantity.js";
 
 const IMAGE_BASE_PATH = "/assets/img/products/masked/";
 // Preload images
@@ -19,7 +20,7 @@ function makeLinks(prefix, color) {
   view is 'a' (front) or 'b' (folded)
   and size is the image size 400, 600 or 1000
 */
-export default class Product extends HTMLElement {
+export default class ZircusProduct extends HTMLElement {
   #needsUpdate = true;
   #currentItem;
   #sizeInput;
@@ -27,20 +28,23 @@ export default class Product extends HTMLElement {
   #colorInput;
   #defaultColor;
   #currentColor;
+  #productAccent;
 
   connectedCallback() {
     this.#sizeInput = this.querySelector("#product-size");
     this.#quantityInput = this.querySelector("#product-quantity");
     this.#colorInput = this.querySelector("#product-color");
+    this.cartLink = this.querySelector("#go-to-cart");
+    this.#productAccent = this.querySelector("#product-accent");
     this.#defaultColor = this.getAttribute("defaultcolor");
     this.#currentColor = this.color;
 
     // Initial updates
     this.preloadImages()
       .updateStatus({ price: true, status: true })
-      .updateCartBtnQty()
       .updateColorOptionText()
-      .updateSizeOptionText();
+      .updateSizeOptionText()
+      .updateCartLink();
 
     // Add event listeners
     this.#colorInput.addEventListener(
@@ -75,7 +79,7 @@ export default class Product extends HTMLElement {
     );
     eventBus.addEventListener(
       cart.CART_UPDATED_EVENT,
-      () => this.updateCartBtnQty(),
+      () => this.updateCartLink(),
     );
   }
 
@@ -132,15 +136,6 @@ export default class Product extends HTMLElement {
     return this;
   }
 
-  updateCartBtnQty() {
-    requestAnimationFrame(() => {
-      this.querySelector("#go-to-cart-qty").textContent = cart.length
-        ? `(${cart.length})`
-        : "";
-    });
-    return this;
-  }
-
   updateOptionText({ input, test, alt }) {
     requestAnimationFrame(() =>
       [...input.children].forEach((child) => {
@@ -170,13 +165,6 @@ export default class Product extends HTMLElement {
     });
   }
 
-  updateAccentColor() {
-    this.querySelector("#product-accent").classList.replace(
-      `${this.#currentColor}-before`,
-      `${this.color}-before`,
-    );
-  }
-
   updateStatus({ images, status, price }) {
     if (!inventory.length) return this;
     const { currentItem } = state;
@@ -187,21 +175,22 @@ export default class Product extends HTMLElement {
         state.currentItem = null;
       }
       this.#needsUpdate = true;
-      this.updateAccentColor();
+      this.#productAccent.classList.replace(
+        `${this.#currentColor}-before`,
+        `${this.color}-before`,
+      );
       this.#currentColor = this.color;
-      if (!this.currentItem || this.currentItem.quantity <= 0) {
-        this.#quantityInput.disabled = true;
-      } else {
-        if (this.currentItem.quantity < this.quantity) {
-          this.#quantityInput.value = this.currentItem.quantity;
-        }
-        this.#quantityInput.disabled = false;
-      }
+      this.#quantityInput.disabled = !this.currentItem ||
+        this.currentItem.quantity <= 0;
+      this.#quantityInput.value = new Range(1, this.currentItem.quantity)
+        .normalize(this.quantity);
       this.wantsUpdate({ images, status, price });
     });
     return this;
   }
 }
 
+Object.assign(ZircusProduct.prototype, withCartQuantity());
+
 customElements.get("zircus-product") ||
-  customElements.define("zircus-product", Product);
+  customElements.define("zircus-product", ZircusProduct);

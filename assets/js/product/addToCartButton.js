@@ -81,15 +81,10 @@ export default class ZircusAddToCartButton extends HTMLElement {
   }
 
   handleUpdate({ productQuantity }) {
-    if (productQuantity <= 0) {
-      this.#button.disabled = true;
-      this.#button.textContent = this.getAttribute("outstock")
-        .toLowerCase();
-    } else {
-      this.#button.disabled = false;
-      this.#button.textContent = this.getAttribute("addcarttext")
-        .toLowerCase();
-    }
+    this.#button.disabled = productQuantity <= 0;
+    this.#button.textContent = productQuantity <= 0
+      ? this.getAttribute("outstock").toLowerCase()
+      : this.getAttribute("addcarttext").toLowerCase();
   }
 }
 

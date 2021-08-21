@@ -2,6 +2,7 @@ import { ZircusElement } from "../utils.js";
 
 export default class FullImage extends HTMLElement {
   #image;
+  #isHidden;
 
   connectedCallback() {
     this.#image = new ZircusElement(
@@ -9,21 +10,22 @@ export default class FullImage extends HTMLElement {
       "product__full__img",
     ).render();
     this.appendChild(this.#image);
+    this.#image.src = this.getAttribute("src");
+    this.#image.alt = this.getAttribute("alt");
+    this.#image.title = this.getAttribute("title");
     this.classList.add("full");
   }
 
   set hidden(value) {
-    this.setAttribute("hidden", value);
+    this.#isHidden = value;
+    this.#isHidden ? this.hide() : this.show();
   }
 
-  get hidden() {
-    return this.getAttribute("hidden") === "true";
+  set src(value) {
+    this.#image.src = value;
   }
 
   show() {
-    this.#image.src = this.getAttribute("src");
-    this.#image.alt = this.getAttribute("alt");
-    this.#image.title = this.getAttribute("title");
     this.style.display = "flex";
     document.getElementById("nav").classList.add("hidden");
     document.getElementById("menu-mobile-btn").classList.add("hidden");
@@ -37,29 +39,6 @@ export default class FullImage extends HTMLElement {
       .getElementById("menu-mobile-btn")
       .classList.remove("hidden");
     document.body.classList.remove("hide-y");
-  }
-
-  attributeChangedCallback(name, _, newValue) {
-    switch (name) {
-      case "src":
-        return this.#image && (this.#image.src = newValue);
-      case "hidden":
-        return requestAnimationFrame(() =>
-          this.hidden ? this.hide() : this.show()
-        );
-    }
-  }
-
-  set src(value) {
-    this.setAttribute("src", value);
-  }
-
-  get src() {
-    return this.getAttribute("src");
-  }
-
-  static get observedAttributes() {
-    return ["src", "hidden"];
   }
 }
 
