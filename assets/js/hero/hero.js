@@ -1,5 +1,14 @@
 import { appendPreloadLinks, ZircusElement } from "../utils.js";
 
+const preloadImages = (() => {
+  let preloaded = false;
+  return (images) => {
+    if (preloaded) return;
+    preloaded = true;
+    appendPreloadLinks(images);
+  };
+})();
+
 export default class Hero extends HTMLElement {
   #images;
   #imageElement;
@@ -11,7 +20,7 @@ export default class Hero extends HTMLElement {
     this.#images = new Array(Number(this.getAttribute("num-images")))
       .fill("")
       .map((_, i) => `${this.getAttribute("image-path")}${i + 1}.jpg`);
-    appendPreloadLinks(this.#images);
+    preloadImages(this.#images);
     this.#imageElement = new ZircusElement(
       "img",
       "hero__image",

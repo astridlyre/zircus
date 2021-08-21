@@ -11,6 +11,24 @@ function makeLinks(prefix, color) {
   );
 }
 
+// One shot bb
+const preloadImages = (() => {
+  const preloaded = {};
+  return (colorInput, defaultColor, prefix) => {
+    if (preloaded[prefix]) return;
+    preloaded[prefix] = true;
+    const colors = [...colorInput.children].map((child) => {
+      if (child.value === defaultColor) {
+        child.setAttribute("selected", true);
+      }
+      return child;
+    });
+    appendPreloadLinks(
+      colors.flatMap((color) => makeLinks(prefix, color.value)),
+    );
+  };
+})();
+
 /* Path for masked product images. Images follow the convention:
 
   [prefix]-[color]-[view]-[size].png
@@ -21,7 +39,6 @@ function makeLinks(prefix, color) {
   and size is the image size 400, 600 or 1000
 */
 export default class ZircusProduct extends HTMLElement {
-  #needsUpdate = true;
   #currentItem;
   #sizeInput;
   #quantityInput;
@@ -34,8 +51,12 @@ export default class ZircusProduct extends HTMLElement {
     this.cartLink = this.querySelector("#go-to-cart");
 
     // Initial updates
-    this.preloadImages()
-      .updateStatus({ price: true, status: true })
+    preloadImages(
+      this.#colorInput,
+      this.getAttribute("defaultcolor"),
+      this.prefix,
+    );
+    this.updateStatus({ price: true, status: true })
       .updateColorOptionText()
       .updateSizeOptionText()
       .updateCartLink();
@@ -104,26 +125,12 @@ export default class ZircusProduct extends HTMLElement {
   }
 
   get currentItem() {
-    if (this.#needsUpdate) {
-      this.#needsUpdate = false;
+    if (!this.#currentItem || this.color !== this.#currentItem.color) {
       return (this.#currentItem = inventory.find(
         `${this.prefix}-${this.color}-${this.#sizeInput.value}`,
       ));
     }
     return this.#currentItem;
-  }
-
-  preloadImages(
-    colors = [...this.#colorInput.children],
-    defaultColor = colors.find(
-      (child) => child.value === this.getAttribute("defaultcolor"),
-    ),
-  ) {
-    appendPreloadLinks(
-      colors.flatMap((color) => makeLinks(this.prefix, color.value)),
-    );
-    defaultColor.setAttribute("selected", true);
-    return this;
   }
 
   updateOptionText({ input, test, alt }) {
@@ -164,7 +171,6 @@ export default class ZircusProduct extends HTMLElement {
         this.#colorInput.value = currentItem.color;
         state.currentItem = null;
       }
-      this.#needsUpdate = true;
       this.#quantityInput.disabled = !this.currentItem ||
         this.currentItem.quantity <= 0;
       this.#quantityInput.value = new Range(1, this.currentItem.quantity)
