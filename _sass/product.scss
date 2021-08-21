@@ -15,10 +15,11 @@
   zircus-product-price-text {
     @include res("md") {
       font-size: var(--xl-font-size);
+      margin: var(--md-spacing) 0 var(--base-spacing) 0;
     }
     font-size: var(--xl-font-size-mobile);
-    margin: var(--md-spacing) 0 var(--base-spacing) 0;
     width: 100%;
+    margin-left: auto;
     text-align: right;
     font-weight: 600;
     display: block;
@@ -57,52 +58,20 @@
       flex-basis: 38rem;
       flex-grow: 0;
     }
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: calc(var(--x-padding) - (2 * var(--x-padding)));
+    margin-right: calc(var(--x-padding) - (2 * var(--x-padding)));
+    padding: var(--base-spacing);
     width: 100%;
     display: flex;
     flex-flow: column nowrap;
     position: relative;
-
-    &::before {
-      @include res("sm") {
-        content: "";
-      }
-      @include res("md") {
-        top: -8rem;
-        right: -12rem;
-        left: unset;
-      }
-      @include res("lg") {
-        width: 40rem;
-        height: 40rem;
-      }
-      @include res("xl") {
-        top: -12rem;
-        right: -12rem;
-        width: 45rem;
-        height: 45rem;
-      }
-      top: 2rem;
-      left: -12rem;
-      width: 35rem;
-      height: 35rem;
-      border-radius: 100%;
-      position: absolute;
-    }
-
-    hr {
-      margin: var(--md-spacing) auto;
-    }
-  }
-
-  &__details_container {
-    z-index: 10;
+    background-color: var(--light);
     @include res("sm") {
       border-radius: var(--big-radius);
-      background: var(--light);
       padding: var(--md-spacing);
       border: 2px solid var(--dark);
+      margin-left: auto;
+      margin-right: auto;
     }
     @include res("md") {
       padding: var(--base-spacing);
@@ -110,7 +79,10 @@
     @include res("lg") {
       padding: var(--md-spacing);
     }
-    padding: 0;
+
+    hr {
+      margin: var(--md-spacing) auto;
+    }
   }
 
   &__inputs {
@@ -134,6 +106,7 @@
 
     &_stock {
       font-size: var(--default-font-size);
+      margin-bottom: 0;
     }
 
     &_buttons {

@@ -26,6 +26,7 @@ import zircusProductImage from "./product/productImage.js";
 import zircusProductFullImage from "./product/productFullImage.js";
 import zircusAddToCartButton from "./product/addToCartButton.js";
 import zircusProductPriceText from "./product/productPriceText.js";
+import zircusProductAccent from "./product/productAccent.js";
 
 // router
 import zircusRouter from "./router/router.js";

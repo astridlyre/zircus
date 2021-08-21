@@ -26,18 +26,12 @@ export default class ZircusProduct extends HTMLElement {
   #sizeInput;
   #quantityInput;
   #colorInput;
-  #defaultColor;
-  #currentColor;
-  #productAccent;
 
   connectedCallback() {
     this.#sizeInput = this.querySelector("#product-size");
     this.#quantityInput = this.querySelector("#product-quantity");
     this.#colorInput = this.querySelector("#product-color");
     this.cartLink = this.querySelector("#go-to-cart");
-    this.#productAccent = this.querySelector("#product-accent");
-    this.#defaultColor = this.getAttribute("defaultcolor");
-    this.#currentColor = this.color;
 
     // Initial updates
     this.preloadImages()
@@ -122,17 +116,13 @@ export default class ZircusProduct extends HTMLElement {
   preloadImages(
     colors = [...this.#colorInput.children],
     defaultColor = colors.find(
-      (child) => child.value === this.#defaultColor,
+      (child) => child.value === this.getAttribute("defaultcolor"),
     ),
   ) {
     appendPreloadLinks(
       colors.flatMap((color) => makeLinks(this.prefix, color.value)),
     );
     defaultColor.setAttribute("selected", true);
-    this.querySelector("#product-accent").classList.add(
-      `${defaultColor.value}-before`,
-    );
-    this.#currentColor = defaultColor.value; // set currentColor
     return this;
   }
 
@@ -175,11 +165,6 @@ export default class ZircusProduct extends HTMLElement {
         state.currentItem = null;
       }
       this.#needsUpdate = true;
-      this.#productAccent.classList.replace(
-        `${this.#currentColor}-before`,
-        `${this.color}-before`,
-      );
-      this.#currentColor = this.color;
       this.#quantityInput.disabled = !this.currentItem ||
         this.currentItem.quantity <= 0;
       this.#quantityInput.value = new Range(1, this.currentItem.quantity)

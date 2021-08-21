@@ -68,32 +68,6 @@
   flex-grow: 1;
 }
 
-.black-before::before {
-  background: var(--dark);
-}
-
-.teal-before::before {
-  background: var(--teal);
-}
-
-.yellow-before::before {
-  background: var(--gold);
-}
-
-.purple-before::before {
-  background: var(--purple);
-}
-
-.stripe-before::before {
-  border: 2px solid var(--dark);
-  background-image: repeating-linear-gradient(
-    45deg,
-    var(--dark),
-    var(--dark) 3rem,
-    var(--light) 3rem,
-    var(--light) 6rem
-  );
-}
 
 .flex-col {
   @include flexCol();

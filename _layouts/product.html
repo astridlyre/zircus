@@ -16,6 +16,7 @@ layout: default
     instock="{{ site.data.labels.product[page.lang].label_in_stock }}"
     outstock="{{ site.data.labels.product[page.lang].label_out_of_stock }}"
   >
+    <zircus-product-accent></zircus-product-accent>
     <zircus-product-image
       src="{{ page.image }}"
       alt="{{ page.image_alt }}"
@@ -24,103 +25,99 @@ layout: default
       viewfull="{{ site.data.labels[page.lang].view_full_image }}"
     >
     </zircus-product-image>
-    <div id="product-accent" class="product__details">
-      <form class="product__details_container">
-        <zircus-product-price-text
-          instock="{{ site.data.labels.product[page.lang].label_in_stock }}"
-          fewleft="{{ site.data.labels.product[page.lang].label_few_left }}"
+    <form class="product__details">
+      <zircus-product-price-text
+        instock="{{ site.data.labels.product[page.lang].label_in_stock }}"
+        fewleft="{{ site.data.labels.product[page.lang].label_few_left }}"
+        outstock="{{ site.data.labels.product[page.lang].label_out_of_stock }}"
+      ></zircus-product-price-text>
+      <div class="product__inputs">
+        <label
+          for="product-quantity"
+          class="column grow-half"
+          title="{{ site.data.labels.product[page.lang].label_quantity }}"
+          ><span>{{ site.data.labels.product[page.lang].label_quantity }}</span>
+          <input
+            id="product-quantity"
+            class="input"
+            max="10"
+            min="1"
+            step="1"
+            name="quantity"
+            type="number"
+            value="1"
+            disabled
+        /></label>
+        <label
+          for="product-size"
+          class="column grow"
+          title="{{ site.data.labels.product[page.lang].label_size }}"
+          ><span>{{ site.data.labels.product[page.lang].label_size }}</span>
+          <select id="product-size" accesskey="z" class="input">
+            <option value="xs" name="xs">xs</option>
+            <option value="sm" name="sm">sm</option>
+            <option selected value="md" name="md">md</option>
+            <option value="lg" name="lg">lg</option>
+            <option value="xl" name="xl">xl</option>
+            <option value="2xl" name="2xl">2xl</option>
+            <option value="3xl" name="3xl">3xl</option>
+            <option value="4xl" name="4xl">4xl</option>
+            <option value="5xl" name="5xl">5xl</option>
+            <option value="6xl" name="6xl">6xl</option>
+          </select></label
+        >
+        <label
+          for="product-color"
+          class="column grow"
+          title="{{ site.data.labels.product[page.lang].label_color }}"
+          ><span>{{ site.data.labels.product[page.lang].label_color }}</span>
+          <select id="product-color" class="input" name="color">
+            <option value="yellow" name="yellow">
+              {{ site.data.labels.product[page.lang].label_color_yellow }}
+            </option>
+            <option value="teal" name="teal">
+              {{ site.data.labels.product[page.lang].label_color_teal }}
+            </option>
+            <option value="purple" name="purple">
+              {{ site.data.labels.product[page.lang].label_color_purple }}
+            </option>
+            <option value="stripe" name="striped">
+              {{ site.data.labels.product[page.lang].label_color_stripe }}
+            </option>
+            <option value="black" name="black">
+              {{ site.data.labels.product[page.lang].label_color_black}}
+            </option>
+          </select></label
+        >
+      </div>
+      <hr />
+      <div class="product__inputs_buttons">
+        <zircus-add-to-cart-button
           outstock="{{ site.data.labels.product[page.lang].label_out_of_stock }}"
-        ></zircus-product-price-text>
-        <div class="product__inputs">
-          <label
-            for="product-quantity"
-            class="column grow-half"
-            title="{{ site.data.labels.product[page.lang].label_quantity }}"
-            ><span
-              >{{ site.data.labels.product[page.lang].label_quantity }}</span
-            >
-            <input
-              id="product-quantity"
-              class="input"
-              max="10"
-              min="1"
-              step="1"
-              name="quantity"
-              type="number"
-              value="1"
-              disabled
-          /></label>
-          <label
-            for="product-size"
-            class="column grow"
-            title="{{ site.data.labels.product[page.lang].label_size }}"
-            ><span>{{ site.data.labels.product[page.lang].label_size }}</span>
-            <select id="product-size" accesskey="z" class="input">
-              <option value="xs" name="xs">xs</option>
-              <option value="sm" name="sm">sm</option>
-              <option selected value="md" name="md">md</option>
-              <option value="lg" name="lg">lg</option>
-              <option value="xl" name="xl">xl</option>
-              <option value="2xl" name="2xl">2xl</option>
-              <option value="3xl" name="3xl">3xl</option>
-              <option value="4xl" name="4xl">4xl</option>
-              <option value="5xl" name="5xl">5xl</option>
-              <option value="6xl" name="6xl">6xl</option>
-            </select></label
+          addcarttext="{{ site.data.labels.product[page.lang].label_add_to_cart }}"
+          aria-label="{{ page.label_add_to_cart_aria }}"
+          title="{{ page.label_add_to_cart_aria }}"
+          erroradd="{{ site.data.labels.product[page.lang].error_add }}"
+          successadd="{{ site.data.labels.product[page.lang].success_add }}"
+          carthref="{{ site.data.labels.product[page.lang].cart_link_path }}"
+          carttitle="{{  site.data.labels.product[page.lang].label_go_to_cart_aria }}"
+        ></zircus-add-to-cart-button>
+        <zircus-router-link>
+          <a
+            class="btn btn__secondary"
+            id="go-to-cart"
+            name="Go to cart"
+            aria-label="{{ site.data.labels.product[page.lang].label_go_to_cart_aria }}"
+            title="{{ site.data.labels.product[page.lang].label_go_to_cart_aria }}"
+            href="{{ site.data.labels.product[page.lang].cart_link_path }}"
           >
-          <label
-            for="product-color"
-            class="column grow"
-            title="{{ site.data.labels.product[page.lang].label_color }}"
-            ><span>{{ site.data.labels.product[page.lang].label_color }}</span>
-            <select id="product-color" class="input" name="color">
-              <option value="yellow" name="yellow">
-                {{ site.data.labels.product[page.lang].label_color_yellow }}
-              </option>
-              <option value="teal" name="teal">
-                {{ site.data.labels.product[page.lang].label_color_teal }}
-              </option>
-              <option value="purple" name="purple">
-                {{ site.data.labels.product[page.lang].label_color_purple }}
-              </option>
-              <option value="stripe" name="striped">
-                {{ site.data.labels.product[page.lang].label_color_stripe }}
-              </option>
-              <option value="black" name="black">
-                {{ site.data.labels.product[page.lang].label_color_black}}
-              </option>
-            </select></label
-          >
-        </div>
-        <hr />
-        <div class="product__inputs_buttons">
-          <zircus-add-to-cart-button
-            outstock="{{ site.data.labels.product[page.lang].label_out_of_stock }}"
-            addcarttext="{{ site.data.labels.product[page.lang].label_add_to_cart }}"
-            aria-label="{{ page.label_add_to_cart_aria }}"
-            title="{{ page.label_add_to_cart_aria }}"
-            erroradd="{{ site.data.labels.product[page.lang].error_add }}"
-            successadd="{{ site.data.labels.product[page.lang].success_add }}"
-            carthref="{{ site.data.labels.product[page.lang].cart_link_path }}"
-            carttitle="{{  site.data.labels.product[page.lang].label_go_to_cart_aria }}"
-          ></zircus-add-to-cart-button>
-          <zircus-router-link>
-            <a
-              class="btn btn__secondary"
-              id="go-to-cart"
-              name="Go to cart"
-              aria-label="{{ site.data.labels.product[page.lang].label_go_to_cart_aria }}"
-              title="{{ site.data.labels.product[page.lang].label_go_to_cart_aria }}"
-              href="{{ site.data.labels.product[page.lang].cart_link_path }}"
-            >
-              {{ site.data.labels.product[page.lang].label_go_to_cart }}<span
-                id="go-to-cart-qty"
-              ></span>
-            </a>
-          </zircus-router-link>
-        </div>
-        <div class="product__description">{{ content }}</div>
-      </form>
-    </div>
+            {{ site.data.labels.product[page.lang].label_go_to_cart }}<span
+              id="go-to-cart-qty"
+            ></span>
+          </a>
+        </zircus-router-link>
+      </div>
+      <div class="product__description">{{ content }}</div>
+    </form>
   </zircus-product>
 </div>
