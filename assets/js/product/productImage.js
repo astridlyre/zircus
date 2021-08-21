@@ -14,11 +14,12 @@ export default class ProductImage extends HTMLElement {
     setAttributes(this.#fullImage, {
       alt: this.getAttribute("alt"),
       title: this.getAttribute("fulltitle"),
+      src: this.images.lg_a,
       hidden: true,
     });
     setAttributes(this.#image, {
       alt: this.getAttribute("alt"),
-      src: this.getAttribute("src"),
+      src: this.images.sm_a,
       title: `${this.getAttribute("title")} (${
         this.getAttribute(
           "viewfull",
