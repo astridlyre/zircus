@@ -1,4 +1,4 @@
-import { state, withLang, ZircusElement } from "../utils.js";
+import { notifyFailure, state, withLang, ZircusElement } from "../utils.js";
 import intText from "../int/intText.js";
 import withPhoneValidation from "./withPhoneValidation.js";
 import withPostalCodeValidation from "./withPostalCodeValidation.js";
@@ -10,6 +10,7 @@ const { formText } = intText.checkout;
 
 export default class ZircusCheckoutForm extends HTMLElement {
   #form;
+  #formElements;
   #phoneInput;
   #postalCodeInput;
   #postalCodeLabel;
@@ -27,6 +28,17 @@ export default class ZircusCheckoutForm extends HTMLElement {
     this.#stateInput = this.querySelector("#checkout-state");
     this.#stateLabel = this.querySelector("#checkout-state-text");
     this.#shippingInputs = this.querySelector("zircus-shipping-inputs");
+    this.#formElements = [
+      this.querySelector("#checkout-name"),
+      this.querySelector("#checkout-phone"),
+      this.querySelector("#checkout-email"),
+      this.querySelector("#checkout-address-line1"),
+      this.querySelector("#checkout-address-line2"),
+      this.querySelector("#checkout-city"),
+      this.#stateInput,
+      this.#countryInput,
+      this.#postalCodeInput,
+    ];
 
     this.handleCountryChange();
 
@@ -60,9 +72,27 @@ export default class ZircusCheckoutForm extends HTMLElement {
       () => this.dispatchEvent(new CustomEvent("state-changed")),
     );
 
+    this.#formElements.forEach((element) => {
+      element.addEventListener("input", () => {
+        if (this.isFilled) {
+          this.dispatchEvent(
+            new CustomEvent("filled", {
+              detail: new OrderData(this.processFormData()),
+            }),
+          );
+        }
+      });
+    });
+
     this.#form.addEventListener("submit", (event) => {
       event.preventDefault();
-      this.dispatchEvent(
+      if (
+        !this.#shippingInputs.isMounted ||
+        (this.#shippingInputs.isMounted && !this.#shippingInputs.value)
+      ) {
+        return notifyFailure(`Please select a shipping method`);
+      }
+      return this.dispatchEvent(
         new CustomEvent("form-submit", {
           detail: new OrderData({
             ...this.processFormData(),
@@ -71,6 +101,15 @@ export default class ZircusCheckoutForm extends HTMLElement {
         }),
       );
     });
+  }
+
+  get isFilled() {
+    for (const el of this.#formElements) {
+      if (!el.checkValidity()) {
+        return false;
+      }
+    }
+    return true;
   }
 
   processFormData() {

@@ -1,47 +1,75 @@
-import { currency, withLang, ZircusElement } from "../utils.js";
-import shippingTypes from "./shippingTypes.js";
+import {
+  API_ENDPOINT,
+  currency,
+  isError,
+  isJson,
+  withLang,
+  ZircusElement,
+} from "../utils.js";
 
 export default class ShippingInputs extends HTMLElement {
   #fieldset;
   #container;
+  #quotes = [];
+  #form;
 
   connectedCallback() {
+    this.#form = document.querySelector("zircus-checkout-form");
     this.#fieldset = this.querySelector(
       "#checkout-shipping-inputs",
     );
+    this.#fieldset.classList.add("hidden");
     this.#container = new ZircusElement("div", "flex-inputs").render();
-    Object.entries(shippingTypes).forEach(([key, type]) => {
+    this.#form.addEventListener("filled", async ({ detail }) => {
+      await this.fetchQuotes(detail);
+    });
+  }
+
+  get isMounted() {
+    console.log(this.#quotes.length > 0);
+    return this.#quotes.length > 0;
+  }
+
+  async fetchQuotes(orderData) {
+    await fetch(`${API_ENDPOINT}/orders/shipping`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(orderData),
+    }).then(isJson).then(isError).then((quotes) => this.render(quotes));
+  }
+
+  render(quotes) {
+    quotes.forEach((quote) => {
       const labelText = new ZircusElement("span", null)
         .addChild(
-          `${withLang(type.name)} - ${currency(type.price)}`,
+          `${quote.name} (${quote.details.days} days) - ${
+            currency(quote.priceDetails.total)
+          }`,
         )
         .render();
 
       const label = new ZircusElement("label", "row", {
-        for: `shipping-${key}`,
+        for: `shipping-${quote.code}`,
       }).render();
 
       const input = new ZircusElement("input", null, {
         type: "radio",
         name: "shipping",
-        value: type.name.en.toLowerCase(),
-        "data-price": type.price,
-        id: `shipping-${key}`,
+        value: quote.code,
+        "data-price": quote.priceDetails.total,
+        id: `shipping-${quote.code}`,
       })
-        .event("input", (event) => this.inputHandler(event, key))
+        .event("input", (event) => this.inputHandler(event, quote.code))
         .render();
-
-      if (type.default) {
-        this.setAttribute("shipping-type", key);
-        this.setAttribute("shipping-price", type.price);
-        input.checked = true;
-      }
 
       label.appendChild(input);
       label.appendChild(labelText);
       this.#container.appendChild(label);
     });
     this.#fieldset.appendChild(this.#container);
+    this.#fieldset.classList.remove("hidden");
     this.dispatchEvent(new CustomEvent("mounted"));
   }
 

@@ -14,7 +14,7 @@
   color: var(--lgrey);
 }
 .bg-lgrey {
-  background-color: var(--lgrey);
+  background-color: var(--lgrey) !important;
 }
 
 .light {
@@ -33,10 +33,14 @@
 }
 
 .dark {
-  color: var(--dark);
+  color: var(--dark) !important;
+
+  svg {
+    color: var(--dark) !important;
+  }
 }
 .bg-dark {
-  background-color: var(--dark);
+  background-color: var(--dark) !important;
 }
 
 .gold {
@@ -68,7 +72,6 @@
   flex-grow: 1;
 }
 
-
 .flex-col {
   @include flexCol();
   justify-content: flex-end;
@@ -91,10 +94,10 @@
 .hide-y {
   overflow-y: hidden;
 
-  @include res('md') {
+  @include res("md") {
     padding-right: calc(var(--base-spacing) + 10px);
   }
-  @include res('lg') {
+  @include res("lg") {
     padding-right: calc(var(--md-spacing) + 10px);
   }
 }
