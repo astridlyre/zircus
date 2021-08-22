@@ -41,12 +41,13 @@ export default class ShippingInputs extends HTMLElement {
   }
 
   render(quotes) {
+    this.#container.textContent = "";
     quotes.forEach((quote) => {
       const labelText = new ZircusElement("span", null)
         .addChild(
-          `${quote.name} (${quote.details.days} days) - ${
-            currency(quote.priceDetails.total)
-          }`,
+          `${quote.name} ${
+            quote.details.days ? `(${quote.details.days} days)` : ""
+          } - ${currency(quote.priceDetails.total)}`,
         )
         .render();
 
