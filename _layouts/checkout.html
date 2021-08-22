@@ -153,32 +153,12 @@ layout: default
           </template>
           <div id="checkout-products" class="checkout__products"></div>
           <div class="checkout__total">
-            <ul class="cart__total_prices">
-              <li class="cart__total_price">
-                <span class="text">{{ page.label_subtotal }}:</span
-                ><span
-                  class="cart__total_price_item"
-                  id="checkout-subtotal"
-                ></span>
-              </li>
-              <li class="cart__total_price">
-                <span class="text">{{ page.label_shipping }}:</span
-                ><span
-                  class="cart__total_price_item"
-                  id="checkout-shipping"
-                ></span>
-              </li>
-              <li class="cart__total_price">
-                <span class="text">{{ page.label_estimated_tax }}:</span
-                ><span class="cart__total_price_item" id="checkout-tax"></span>
-              </li>
-              <li class="cart__total_price bold">
-                {{ page.label_total }}:<span
-                  class="cart__total_price_item"
-                  id="checkout-total"
-                ></span>
-              </li>
-            </ul>
+            <zircus-cart-totals
+              total-label="{{ page.label_total }}"
+              subtotal-label="{{ page.label_subtotal }}"
+              tax-label="{{ page.label_estimated_tax }}"
+              shipping-label="{{ page.label_shipping }}"
+            ></zircus-cart-totals>
             <div class="checkout__button">
               <zircus-paypal
                 heading="{{ page.label_card_details }}"

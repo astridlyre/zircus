@@ -14,7 +14,7 @@ export default class ZircusCart extends HTMLElement {
 
   connectedCallback() {
     this.#checkoutButton = this.querySelector("#cart-checkout");
-    this.#subtotalText = this.querySelector("#cart-subtotal");
+    this.#subtotalText = this.querySelector("zircus-cart-totals");
     this.#cartProductsList = this.querySelector("#cart-products");
     this.#emptyCartPlaceholder = this.querySelector(
       "#cart-products-none",
@@ -43,7 +43,7 @@ export default class ZircusCart extends HTMLElement {
   }
 
   updateStatus() {
-    this.#subtotalText.textContent = currency(cart.total);
+    this.#subtotalText.setAttribute("subtotal", cart.total);
     this.#checkoutButton.disabled = cart.length <= 0;
   }
 

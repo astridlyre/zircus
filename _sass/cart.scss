@@ -88,29 +88,6 @@
     }
   }
 
-  &__total {
-    @include flexRow();
-    width: 100%;
-    justify-content: flex-end;
-    padding: 2rem 0;
-
-    &_prices {
-      text-align: right;
-      .text {
-        margin-right: var(--base-spacing);
-        min-width: fit-content;
-      }
-    }
-
-    &_price {
-      @include flexRow();
-
-      &_item {
-        flex-grow: 1;
-      }
-    }
-  }
-
   &__buttons {
     margin-left: auto;
     width: fit-content;
@@ -118,6 +95,12 @@
     button {
       min-width: 12rem;
     }
+  }
+
+  &__total {
+    max-width: 12rem;
+    margin-left: auto;
+    padding: var(--base-spacing) 0;
   }
 }
 

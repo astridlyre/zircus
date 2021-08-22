@@ -1,4 +1,4 @@
-import { calculateTax, currency, withLang } from "../utils.js";
+import { calculateTax, withLang } from "../utils.js";
 import ZircusModal from "../modal/modal.js";
 import ZircusRouter from "../router/router.js";
 import intText from "../int/intText.js";
@@ -8,10 +8,7 @@ export default class Payment extends HTMLElement {
   #form;
   #formState;
   #formCountry;
-  #checkoutSubtotal;
-  #checkoutTotal;
-  #checkoutTax;
-  #checkoutShipping;
+  #totals;
   #shippingInputs;
   #productList;
 
@@ -20,10 +17,7 @@ export default class Payment extends HTMLElement {
     this.#form = this.querySelector("zircus-checkout-form");
     this.#formState = this.querySelector("#checkout-state");
     this.#formCountry = this.querySelector("#checkout-country");
-    this.#checkoutSubtotal = this.querySelector("#checkout-subtotal");
-    this.#checkoutTax = this.querySelector("#checkout-tax");
-    this.#checkoutTotal = this.querySelector("#checkout-total");
-    this.#checkoutShipping = this.querySelector("#checkout-shipping");
+    this.#totals = this.querySelector("zircus-cart-totals");
     this.#shippingInputs = this.querySelector("zircus-shipping-inputs");
     this.#productList = this.querySelector("#checkout-products");
 
@@ -40,29 +34,21 @@ export default class Payment extends HTMLElement {
     this.#shippingInputs.addEventListener("mounted", () => this.setTotals());
   }
 
-  get shippingTotal() {
-    return this.#shippingInputs.value.total;
-  }
-
-  get subTotal() {
-    return cart.total;
-  }
-
   get taxTotal() {
-    return (this.subTotal + this.shippingTotal) *
+    return (cart.total + this.#shippingInputs.value.total) *
       calculateTax(this.#formCountry.value, this.#formState.value);
   }
 
   get total() {
-    return this.subTotal + this.shippingTotal + this.taxTotal;
+    return cart.total + this.#shippingInputs.value.total + this.taxTotal;
   }
 
   setTotals() {
     requestAnimationFrame(() => {
-      this.#checkoutSubtotal.textContent = currency(this.subTotal);
-      this.#checkoutShipping.textContent = currency(this.shippingTotal);
-      this.#checkoutTax.textContent = currency(this.taxTotal);
-      this.#checkoutTotal.textContent = currency(this.total);
+      this.#totals.setAttribute("subtotal", cart.total);
+      this.#totals.setAttribute("shipping", this.#shippingInputs.value.total);
+      this.#totals.setAttribute("tax", this.taxTotal);
+      this.#totals.setAttribute("total", this.total);
     });
   }
 

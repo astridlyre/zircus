@@ -5,6 +5,7 @@ import zircusNotification from "./notification/notification.js";
 // cart
 import zircusCart from "./cart/cart.js";
 import zircusCartProduct from "./cart/cartProduct.js";
+import zircusCartTotals from "./cart/cartTotals.js";
 
 // navigation
 import zircusDesktopMenu from "./nav/desktopMenu.js";

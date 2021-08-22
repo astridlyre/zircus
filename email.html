@@ -4,6 +4,55 @@
     <title>Thanks for your order</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script>
+      const order = {
+        address: {
+          line1: "34900 McCabe Place",
+          line2: "",
+          city: "Abbotsford",
+          state: "British Columbia",
+          country: "Canada",
+          postalCode: "V3G 1H1",
+        },
+        breakdown: {
+          subtotal: 30,
+          tax: 1.5,
+          shipping: 10.4895,
+        },
+        capture: null,
+        createdOn: "2021-08-22T03:13:56.955Z",
+        email: "erin.burton@outlook.com",
+        hasPaid: false,
+        hasShipped: false,
+        identifier: "backhand stressing carriers",
+        id: "6121c0f574b891001d18e974",
+        isCompleted: false,
+        items: [
+          {
+            name: "Pouch front briefs - teal - md",
+            url: "pouch-front-briefs.html",
+            type: "pf-teal-md",
+            image: "/assets/img/products/masked/pf-teal-a-400.png",
+            price: 30,
+            quantity: 1,
+            tax: 1.5,
+            description:
+              "Pouch front briefs, with a bit more space to hold what you're packing in style. Each pair has a 1.25\" wide white-on-black Zircus waistband, black elastic trim, and 95% cotton 5% spandex fabric that is Oeko-Tex Certified",
+          },
+        ],
+        name: "Erin Burton",
+        orderId: "pi_3JR78DDIzwSFHzdz1R2pVvJc",
+        paymentMethod: "stripe",
+        phone: "604 556 0584",
+        preferredLanguage: "en",
+        shipping: {
+          method: "standard",
+          total: 10.4895,
+        },
+        subtotal: 30,
+        total: 41.99,
+      };
+    </script>
   </head>
   <body>
     <div
@@ -100,6 +149,13 @@
           </a>
         </div>
       </main>
+      <footer style="margin-top: 24px">
+        <small
+          >This email was send automatically when you placed your order. Please
+          do not reply to this email. For support or other inquiryies, contact
+          us at </small
+        ><a href="mailto:support@zircus.ca">support@zircus.ca</a>.
+      </footer>
     </div>
   </body>
 </html>
