@@ -38,8 +38,8 @@ const Template = {
   html: () => `
   <ul>
     <li><span id="subtotal-label"></span><span id="subtotal"></span></li>
-    <li><span id="shipping-label"></span><span id="shipping"></span></li>
     <li><span id="tax-label"></span><span id="tax"></span></li>
+    <li><span id="shipping-label"></span><span id="shipping"></span></li>
     <li><span id="total-label"></span><span id="total"></span></li>
   </ul>
   `,

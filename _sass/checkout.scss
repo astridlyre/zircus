@@ -93,7 +93,6 @@
     left: calc(50% - 10px);
     right: calc(50% - 10px);
     top: 10px;
-
   }
 }
 
@@ -113,6 +112,17 @@ zircus-paypal {
     border: 2px solid var(--dark);
     outline: none;
 
+    &:disabled {
+      background-color: var(--gray-30) !important;
+      border-color: var(--gray-50) !important;
+      color: var(--dgray-60) !important;
+      cursor: not-allowed !important;
+
+      img {
+        filter: invert(1) contrast(0.2) !important;
+      }
+    }
+
     &:focus,
     &:hover {
       background-color: var(--teal);
@@ -130,4 +140,10 @@ zircus-paypal {
       object-fit: contain;
     }
   }
+}
+
+.shipping__placeholder {
+  margin: 0 auto;
+  @include smallSpaced();
+  color: var(--gray-80);
 }

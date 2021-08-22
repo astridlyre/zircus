@@ -1,5 +1,6 @@
 import {
   API_ENDPOINT,
+  currency,
   isError,
   isJson,
   notifyFailure,
@@ -46,6 +47,16 @@ export default class ZircusPayPal extends HTMLElement {
       event.detail.paymentMethod === "paypal" &&
         this.handleSubmit(event.detail);
     });
+
+    this.#formElement.addEventListener(
+      "form-filled",
+      () => this.#button.disabled = false,
+    );
+
+    this.#formElement.addEventListener(
+      "form-not-filled",
+      () => this.#button.disabled = true,
+    );
 
     if (!this.scriptElementAttached) { // Load PayPal third-party script
       this.loadPaypalScript().then((res) => {
@@ -99,7 +110,9 @@ export default class ZircusPayPal extends HTMLElement {
   mountPayPalButton({ orderData }) {
     requestAnimationFrame(() => {
       this.#message.textContent = `Calculated Total: ${
-        document.querySelector("#checkout-total").textContent // hacky?
+        currency(
+          document.querySelector("zircus-cart-totals").getAttribute("total"),
+        ) // hacky?
       }`;
       paypal
         .Buttons({
@@ -205,6 +218,7 @@ export default class ZircusPayPal extends HTMLElement {
       title: this.getAttribute("title"),
       value: "paypal",
       name: this.getAttribute("name"),
+      disabled: true,
     })
       .addChild(
         new ZircusElement("img", null, {

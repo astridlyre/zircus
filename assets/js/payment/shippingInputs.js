@@ -10,24 +10,30 @@ import {
 export default class ShippingInputs extends HTMLElement {
   #fieldset;
   #container;
-  #quotes = [];
   #form;
+  #isMounted;
 
   connectedCallback() {
+    this.#isMounted = false;
     this.#form = document.querySelector("zircus-checkout-form");
     this.#fieldset = this.querySelector(
       "#checkout-shipping-inputs",
     );
-    this.#fieldset.classList.add("hidden");
     this.#container = new ZircusElement("div", "flex-inputs").render();
-    this.#form.addEventListener("filled", async ({ detail }) => {
+    this.#container.innerHTML = Template.placeholder();
+    this.#fieldset.appendChild(this.#container);
+    this.#form.addEventListener("form-filled", async ({ detail }) => {
+      this.#container.innerHTML = Template.spinner;
       await this.fetchQuotes(detail);
     });
+    this.#form.addEventListener(
+      "form-not-filled",
+      () => this.#container.innerHTML = Template.placeholder(),
+    );
   }
 
   get isMounted() {
-    console.log(this.#quotes.length > 0);
-    return this.#quotes.length > 0;
+    return this.#isMounted;
   }
 
   async fetchQuotes(orderData) {
@@ -42,35 +48,45 @@ export default class ShippingInputs extends HTMLElement {
 
   render(quotes) {
     this.#container.textContent = "";
-    quotes.forEach((quote) => {
+    quotes.forEach((quote, i) => {
       const labelText = new ZircusElement("span", null)
         .addChild(
-          `${quote.name} ${
-            quote.details.days ? `(${quote.details.days} days)` : ""
-          } - ${currency(quote.priceDetails.total)}`,
+          `${quote.serviceName} ${
+            quote.serviceStandard.expectedTransitTime
+              ? `(${quote.serviceStandard.expectedTransitTime} ${
+                withLang({ en: "days", fr: "jours" })
+              })`
+              : ""
+          } - ${currency(quote.priceDetails.due)}`,
         )
         .render();
 
       const label = new ZircusElement("label", "row", {
-        for: `shipping-${quote.code}`,
+        for: `shipping-${quote.serviceCode}`,
       }).render();
 
       const input = new ZircusElement("input", null, {
         type: "radio",
         name: "shipping",
-        value: quote.code,
-        "data-price": quote.priceDetails.total,
-        id: `shipping-${quote.code}`,
+        value: quote.serviceCode,
+        "data-price": quote.priceDetails.due,
+        id: `shipping-${quote.serviceCode}`,
       })
-        .event("input", (event) => this.inputHandler(event, quote.code))
+        .event("input", (event) => this.inputHandler(event, quote.serviceCode))
         .render();
 
+      if (i === 0) {
+        input.setAttribute("checked", true);
+        this.setAttribute("shipping-type", quote.serviceCode);
+        this.setAttribute("shipping-price", quote.priceDetails.due);
+      }
       label.appendChild(input);
       label.appendChild(labelText);
       this.#container.appendChild(label);
     });
     this.#fieldset.appendChild(this.#container);
     this.#fieldset.classList.remove("hidden");
+    this.#isMounted = true;
     this.dispatchEvent(new CustomEvent("mounted"));
   }
 
@@ -92,6 +108,18 @@ export default class ShippingInputs extends HTMLElement {
     }
   }
 }
+
+const Template = {
+  spinner: `<zircus-spinner></zircus-spinner>`,
+  placeholder: () =>
+    `<span class="shipping__placeholder">(${
+      withLang({
+        en: "shipping options will load once form is filled",
+        fr:
+          "les options d'expédition se chargeront une fois le formulaire rempli",
+      })
+    })</span>`,
+};
 
 customElements.get("zircus-shipping-inputs") ||
   customElements.define("zircus-shipping-inputs", ShippingInputs);

@@ -20,6 +20,7 @@ import zircusCheckoutForm from "./payment/checkoutForm.js";
 import zircusStripe from "./payment/stripe.js";
 import zircusPaypal from "./payment/paypal.js";
 import zircusShippingInputs from "./payment/shippingInputs.js";
+import zircusSpinner from "./spinner.js";
 
 // product page
 import zircusProduct from "./product/product.js";

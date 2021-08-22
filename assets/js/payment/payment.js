@@ -35,7 +35,7 @@ export default class Payment extends HTMLElement {
   }
 
   get taxTotal() {
-    return (cart.total + this.#shippingInputs.value.total) *
+    return cart.total *
       calculateTax(this.#formCountry.value, this.#formState.value);
   }
 

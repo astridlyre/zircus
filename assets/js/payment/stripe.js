@@ -46,11 +46,13 @@ export default class ZircusStripe extends HTMLElement {
   #paymentPrice;
   #resultMessage;
   #cardElement;
+  #button;
 
   connectedCallback() {
     this.classList.add("stripe-payment-form");
     this.#modal = this.createInitialElements(); // create modal elements
     this.#formElement = document.querySelector("zircus-checkout-form");
+    this.#button = this.#formElement.querySelector("#pay-with-card");
 
     // Listen for custom form submission
     this.#formElement.addEventListener("form-submit", (event) => {
@@ -59,6 +61,15 @@ export default class ZircusStripe extends HTMLElement {
           ? this.showModal().createPaymentIntent({ orderData: event.detail })
           : notifyFailure(`Stripe not yet loaded!`));
     });
+
+    this.#formElement.addEventListener(
+      "form-filled",
+      () => this.#button.disabled = false,
+    );
+    this.#formElement.addEventListener(
+      "form-not-filled",
+      () => this.#button.disabled = true,
+    );
 
     // Load stripe third-party script
     if (!this.scriptLoaded) {

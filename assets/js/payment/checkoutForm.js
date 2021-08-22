@@ -73,15 +73,7 @@ export default class ZircusCheckoutForm extends HTMLElement {
     );
 
     this.#formElements.forEach((element) => {
-      element.addEventListener("input", () => {
-        if (this.isFilled) {
-          this.dispatchEvent(
-            new CustomEvent("filled", {
-              detail: new OrderData(this.processFormData()),
-            }),
-          );
-        }
-      });
+      element.addEventListener("input", () => this.handleFilled());
     });
 
     this.#form.addEventListener("submit", (event) => {
@@ -101,6 +93,20 @@ export default class ZircusCheckoutForm extends HTMLElement {
         }),
       );
     });
+  }
+
+  handleFilled() {
+    if (this.isFilled) {
+      this.dispatchEvent(
+        new CustomEvent("form-filled", {
+          detail: new OrderData(this.processFormData()),
+        }),
+      );
+    } else {
+      this.dispatchEvent(
+        new CustomEvent("form-not-filled"),
+      );
+    }
   }
 
   get isFilled() {
@@ -178,6 +184,7 @@ export default class ZircusCheckoutForm extends HTMLElement {
         country === "Canada" ? "7" : "10",
       );
       this.dispatchEvent(new CustomEvent("country-changed"));
+      this.handleFilled();
     });
   }
 }
