@@ -14,15 +14,10 @@ function makeLinks(prefix, color) {
 // One shot bb
 const preloadImages = (() => {
   const preloaded = {};
-  return (colorInput, defaultColor, prefix) => {
+  return (colorInput, prefix) => {
     if (preloaded[prefix]) return;
     preloaded[prefix] = true;
-    const colors = [...colorInput.children].map((child) => {
-      if (child.value === defaultColor) {
-        child.setAttribute("selected", true);
-      }
-      return child;
-    });
+    const colors = [...colorInput.children];
     appendPreloadLinks(
       colors.flatMap((color) => makeLinks(prefix, color.value)),
     );
@@ -51,11 +46,13 @@ export default class ZircusProduct extends HTMLElement {
     this.cartLink = this.querySelector("#go-to-cart");
 
     // Initial updates
-    preloadImages(
-      this.#colorInput,
-      this.getAttribute("defaultcolor"),
-      this.prefix,
-    );
+    preloadImages(this.#colorInput, this.prefix);
+    [...this.#colorInput.children].forEach((child) => {
+      if (child.value === this.getAttribute("defaultcolor")) {
+        child.setAttribute("selected", true);
+      }
+    });
+
     this.updateStatus({ price: true, status: true })
       .updateColorOptionText()
       .updateSizeOptionText()
