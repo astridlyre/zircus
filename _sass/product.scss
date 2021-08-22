@@ -66,7 +66,9 @@
     flex-flow: column nowrap;
     position: relative;
     background-color: var(--light);
+    box-shadow: 0 -9px 8px 1px rgba(33, 27, 34, 0.1);
     @include res("sm") {
+      box-shadow: unset;
       border-radius: var(--big-radius);
       padding: var(--md-spacing);
       border: 2px solid var(--dark);

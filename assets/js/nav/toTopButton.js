@@ -5,8 +5,7 @@ const Template = {
     return `${this.html()}
             ${this.css()}`;
   },
-  html() {
-    return `
+  html: () => `
 <button>
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -21,13 +20,11 @@ const Template = {
     <polyline points="17 11 12 6 7 11"></polyline>
     <polyline points="17 18 12 13 7 18"></polyline>
   </svg>
-</button>`;
-  },
-  css() {
-    return `
+</button>`,
+  css: () => `
 <style>
   button {
-    opacity: 0.5;
+    opacity: 0.9;
     padding: var(--base-unit);
     transform: translateY(15px);
     background: var(--gray-40);
@@ -37,11 +34,11 @@ const Template = {
     display: flex;
     align-items: center;
     justify-content: center;
-    outline: none;
     transition: transform 0.2s ease-out;
     position: fixed;
     bottom: var(--base-spacing);
     right: calc(var(--x-padding) - 0.6rem);
+    box-shadow: var(--box-shadow-sm);
     z-index: 30;
   }
 
@@ -53,11 +50,8 @@ const Template = {
   }
 
   button:focus,
-  button:hover {
-    opacity: 1;
-    cursor: pointer;
-  }
-
+  button:hover { opacity: 1; cursor: pointer; }
+  button:focus { outline-color: var(--teal); }
   button.show {
     visibility: unset;
     transform: translateY(0);
@@ -69,8 +63,7 @@ const Template = {
     height: 1.55rem;
     width: 1.55rem;
   }
-</style>`;
-  },
+</style>`,
 };
 
 export default class ZircusToTopButton extends HTMLElement {

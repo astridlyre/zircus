@@ -27,6 +27,7 @@ const Template = {
         font-family: var(--site-font-family);
         font-weight: 600;
         letter-spacing: var(--letter-spacing);
+        box-shadow: var(--box-shadow-sm);
       }
 
       button:hover {
