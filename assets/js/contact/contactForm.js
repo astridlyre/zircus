@@ -1,5 +1,6 @@
 import {
   API_ENDPOINT,
+  capitalize,
   isError,
   isJson,
   lang,
@@ -28,6 +29,13 @@ export default class ZircusContactForm extends HTMLElement {
     this.#messageText = this.querySelector("#contact-message");
     this.#sendButtonText = this.querySelector("#contact-button-text");
     this.#spinner = this.querySelector("#contact-spinner");
+    this.#nameInput.addEventListener("input", (event) => {
+      if (event.inputType === "deleteContentBackward" || event.data === " ") {
+        return;
+      }
+      const words = event.target.value.split(" ").map(capitalize);
+      event.target.value = words.join(" ");
+    });
 
     const formElements = [
       this.#nameInput,
