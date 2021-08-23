@@ -27,6 +27,8 @@ export default class Payment extends HTMLElement {
     // Add event listeners
     this.#form.addEventListener("country-changed", () => this.setTotals());
     this.#form.addEventListener("state-changed", () => this.setTotals());
+    this.#form.addEventListener("form-filled", () => this.setTotals());
+    this.#form.addEventListener("form-not-filled", () => this.setTotals());
     this.#shippingInputs.addEventListener(
       "method-changed",
       () => this.setTotals(),

@@ -3,6 +3,8 @@ import {
   currency,
   isError,
   isJson,
+  notifyFailure,
+  notifySuccess,
   withLang,
   ZircusElement,
 } from "../utils.js";
@@ -28,7 +30,11 @@ export default class ShippingInputs extends HTMLElement {
     });
     this.#form.addEventListener(
       "form-not-filled",
-      () => this.#container.innerHTML = Template.placeholder(),
+      () => {
+        this.#container.innerHTML = Template.placeholder();
+        this.removeAttribute("shipping-price");
+        this.removeAttribute("shipping-type");
+      },
     );
   }
 
@@ -43,7 +49,15 @@ export default class ShippingInputs extends HTMLElement {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(orderData),
-    }).then(isJson).then(isError).then((quotes) => this.render(quotes));
+    }).then(isJson).then(isError).then((quotes) => {
+      this.render(quotes);
+      notifySuccess(
+        withLang({
+          en: "Shipping methods updated",
+          fr: "Les méthodes d'expédition ont été mises à jour",
+        }),
+      );
+    }).catch((error) => notifyFailure(error));
   }
 
   render(quotes) {
@@ -85,7 +99,6 @@ export default class ShippingInputs extends HTMLElement {
       this.#container.appendChild(label);
     });
     this.#fieldset.appendChild(this.#container);
-    this.#fieldset.classList.remove("hidden");
     this.#isMounted = true;
     this.dispatchEvent(new CustomEvent("mounted"));
   }
@@ -93,7 +106,9 @@ export default class ShippingInputs extends HTMLElement {
   get value() {
     return {
       method: this.getAttribute("shipping-type"),
-      total: Number(this.getAttribute("shipping-price")),
+      total: this.getAttribute("shipping-price")
+        ? Number(this.getAttribute("shipping-price"))
+        : 0,
     };
   }
 

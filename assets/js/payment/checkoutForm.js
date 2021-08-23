@@ -41,48 +41,45 @@ export default class ZircusCheckoutForm extends HTMLElement {
     ];
 
     this.handleCountryChange();
-
     this.#phoneInput.addEventListener(
       "input",
       (event) => this.validatePhone(event),
     );
-
     this.#phoneInput.addEventListener(
       "blur",
       (event) => this.validatePhone(event),
     );
-
     this.#postalCodeInput.addEventListener(
       "input",
       (event) => this.validatePostalCode(event, this.#countryInput.value),
     );
-
     this.#postalCodeInput.addEventListener(
       "blur",
       (event) => this.validatePostalCode(event, this.#countryInput.value),
     );
-
     this.#countryInput.addEventListener(
       "input",
       () => this.handleCountryChange(),
     );
-
     this.#stateInput.addEventListener(
       "input",
       () => this.dispatchEvent(new CustomEvent("state-changed")),
     );
-
     this.#formElements.forEach((element) => {
       element.addEventListener("input", () => this.handleFilled());
     });
-
     this.#form.addEventListener("submit", (event) => {
       event.preventDefault();
       if (
         !this.#shippingInputs.isMounted ||
         (this.#shippingInputs.isMounted && !this.#shippingInputs.value)
       ) {
-        return notifyFailure(`Please select a shipping method`);
+        return notifyFailure(
+          withLang({
+            en: "Please select a shipping method",
+            fr: "Veuillez sélectionner une méthode d'expédition",
+          }),
+        );
       }
       return this.dispatchEvent(
         new CustomEvent("form-submit", {
