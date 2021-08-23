@@ -2,17 +2,15 @@
 lang: en
 ref: home
 layout: home
-title: zircus underwear
+title: home · zircus apparel
 bottom_image: /assets/img/products/1920/closeup-a-1920.jpg
-heading: queer owned & sewn
-description: "Queer owned & sewn underwear from Vancouver Island"
+heading: We fit you.
+description: "Ethical gender-free underwear, made in Canada on Vancouver Island with Oeko-Tex stretch cotton fabric."
 hero_alt: "Colourful photos of Zircus underwear, worn by several different models of varying gender and presentation."
 hero_title: "Zircus models showing off their colourful underwear."
 tag_lines: "For your thunder down under|If you are here, you may be gay|Guard the crown jewels|For your national treasure|A luxury condo for your privates|Contain your thunder in style|A stylish shape for your bits|One person's junk is another's treasure"
 ---
 
-Zircus Apparel is Queer owned and sewn with material that has the Oeko-Tex
-certification. I hand make each pair in my home shop on Vancouver Island.
-In this shop you won't see Women's or Men's used as descriptions but
-instead each style of underwear is available in a flat front, pouch front,
-or compression front.
+Tired of being stuck in between a rock and a hard place? Escape the
+underwear binary with Zircus Apparel underwear. Enjoy the perfect fit, while
+looking fantastic.

@@ -1,7 +1,7 @@
 ---
 lang: en
 ref: ff
-title: flat front · zircus
+title: flat front briefs · zircus
 name: flat front
 type: ff
 price: 30

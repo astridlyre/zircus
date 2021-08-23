@@ -2,7 +2,7 @@
 lang: en
 ref: sizing
 layout: generic
-title: sizing · zircus
+title: sizing · zircus apparel
 bottom_image: /assets/img/products/1920/group-a-1920.jpg
 bg_image: /assets/img/people/atana-b.jpg
 bg_image_alt: "A close up shot of a model pulling their overalls down to show their purple Zircus underwear. It looks great next to their studded braclet."

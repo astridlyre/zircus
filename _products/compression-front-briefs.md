@@ -1,7 +1,7 @@
 ---
 lang: en
 ref: cf
-title: compression front · zircus
+title: compression front briefs · zircus apparel
 name: compression front
 type: cf
 price: 38

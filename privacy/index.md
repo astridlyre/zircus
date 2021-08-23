@@ -2,7 +2,7 @@
 lang: en
 ref: privacy
 layout: generic
-title: privacy · zircus
+title: privacy policy · zircus apparel
 bottom_image: /assets/img/products/1920/group-d-1920.jpg
 heading: privacy policy
 subheading: Last updated July 07 2021

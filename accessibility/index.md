@@ -3,7 +3,7 @@ lang: en
 ref: access
 layout: generic
 heading: accessibility statement
-title: accessibility · zircus
+title: accessibility · zircus apparel
 subheading: Last Updated July 19 2021
 bottom_image: /assets/img/products/1920/group-d-1920.jpg
 ---

@@ -2,7 +2,7 @@
 lang: en
 ref: contact
 layout: contact
-title: contact · zircus
+title: contact · zircus apparel
 heading: contact zircus
 bg_image: /assets/img/people/hero1.jpg
 bg_image_alt: "A rear-view shot of a Zircus model wearing brown pants. Their bright teal underwear is just visible from their waistband."

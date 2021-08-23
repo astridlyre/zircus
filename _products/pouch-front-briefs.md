@@ -1,7 +1,7 @@
 ---
 lang: en
 ref: pf
-title: pouch front · zircus
+title: pouch front briefs · zircus apparel
 name: pouch front
 type: pf
 price: 30

@@ -2,6 +2,7 @@
 include: [_headers, _redirects]
 
 name: "zircus"
+base: 'https://zircus.netlify.app'
 
 collections:
   products:
