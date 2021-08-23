@@ -90,4 +90,18 @@
   %} {% for page in pages %}
   <link rel="alternate" hreflang="{{ page.lang }}" href="{{ page.url }}" />
   {% endfor %}
+
+  <script type="application/ld+json">
+     {
+    "@content": "http://schema.org",
+    "@type": "Organization",
+    "name": "Zircus Apparel",
+    "logo": "https://zircus.netlify.app/logo.png"
+    "sameAs": [
+    	"https://www.facebook.com/zircusapparel",
+    	"https://www.instagram.com/zircusapparel",
+    ],
+    "url": "https://zircus.netlify.app"
+     }
+  </script>
 </head>

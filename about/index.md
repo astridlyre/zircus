@@ -3,7 +3,7 @@ lang: en
 ref: about
 layout: generic
 title: about · zircus apparel
-description: "About Canadian underwear brand Zircus - queer owned and sewn on Vancouver Island"
+description: "Read our story: How a small queer-owned underwear brand is making a difference on Vancouver Island"
 heading: about zircus
 bg_image: /assets/img/people/about.jpg
 bg_image_alt: "Zircus founder Alicia and their good friend Atana, standing defiant, proud to show off their colourful underwear and unique style."

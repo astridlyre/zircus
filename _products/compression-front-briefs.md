@@ -8,7 +8,8 @@ price: 38
 image: /assets/img/products/masked/cf-purple-a-400.png
 bottom_image: /assets/img/products/1920/closeup-e-1920.jpg
 default_color: purple
-description: a smooth, compressed fit in the front
+subheading: a smooth, compressed fit in the front
+description: 'No contortion necessary - these briefs compress with no stress. Power-net and Oeko-Tex Certified Fabric 95% Cotton 5% Spandex. Handmade on Vancouver Island, Canada.'
 image_alt: "Compression front briefs: A smooth, compressed fit in the front to
 keep things in place. Excellent for tucking."
 label_add_to_cart_aria: Add Compression Front briefs to shopping cart

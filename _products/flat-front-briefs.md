@@ -8,7 +8,8 @@ price: 30
 image: /assets/img/products/masked/ff-yellow-a-400.png
 bottom_image: /assets/img/products/1920/closeup-d-1920.jpg
 default_color: yellow
-description: close & comfortable
+subheading: close & comfortable
+description: 'Retro briefs for your future comfort. Full coverage mid-rise, with a functional fly. Oeko-Tex Certified fabric, 95% Cotton 5% Spandex. Handmade on Vancouver Island, Canada.'
 image_alt: "Flat front briefs: The classic and comfortable fit of traditional
 underwear, with a bold fresh style."
 label_add_to_cart_aria: Add Flat Front briefs to shopping the cart
