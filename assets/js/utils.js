@@ -757,3 +757,7 @@ export class Range {
     while (withinBound(start)) yield start += this.#step;
   };
 }
+
+export function capitalize(word) {
+  return `${word[0].toUpperCase()}${word.substring(1).toLowerCase()}`;
+}

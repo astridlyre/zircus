@@ -1,4 +1,10 @@
-import { notifyFailure, state, withLang, ZircusElement } from "../utils.js";
+import {
+  capitalize,
+  notifyFailure,
+  state,
+  withLang,
+  ZircusElement,
+} from "../utils.js";
 import intText from "../int/intText.js";
 import withPhoneValidation from "./withPhoneValidation.js";
 import withPostalCodeValidation from "./withPostalCodeValidation.js";
@@ -9,11 +15,17 @@ const US_ZIP_CODE = /^[0-9]{5}(-[0-9]{4})?$/;
 const { formText } = intText.checkout;
 
 export default class ZircusCheckoutForm extends HTMLElement {
+  #didUpdate = false;
   #form;
   #formElements;
+  #nameInput;
   #phoneInput;
+  #emailInput;
+  #addressLine1;
+  #addressLine2;
   #postalCodeInput;
   #postalCodeLabel;
+  #cityInput;
   #countryInput;
   #stateInput;
   #stateLabel;
@@ -21,7 +33,12 @@ export default class ZircusCheckoutForm extends HTMLElement {
 
   connectedCallback() {
     this.#form = this.querySelector("form");
+    this.#nameInput = this.querySelector("#checkout-name");
+    this.#emailInput = this.querySelector("#checkout-email");
     this.#phoneInput = this.querySelector("#checkout-phone");
+    this.#addressLine1 = this.querySelector("#checkout-address-line1");
+    this.#addressLine2 = this.querySelector("#checkout-address-line2");
+    this.#cityInput = this.querySelector("#checkout-city");
     this.#postalCodeInput = this.querySelector("#checkout-postal-code");
     this.#postalCodeLabel = this.querySelector("#checkout-postal-code-text");
     this.#countryInput = this.querySelector("#checkout-country");
@@ -29,18 +46,21 @@ export default class ZircusCheckoutForm extends HTMLElement {
     this.#stateLabel = this.querySelector("#checkout-state-text");
     this.#shippingInputs = this.querySelector("zircus-shipping-inputs");
     this.#formElements = [
-      this.querySelector("#checkout-name"),
-      this.querySelector("#checkout-phone"),
-      this.querySelector("#checkout-email"),
-      this.querySelector("#checkout-address-line1"),
-      this.querySelector("#checkout-address-line2"),
-      this.querySelector("#checkout-city"),
+      this.#nameInput,
+      this.#phoneInput,
+      this.#emailInput,
+      this.#addressLine1,
+      this.#addressLine2,
+      this.#cityInput,
       this.#stateInput,
       this.#countryInput,
       this.#postalCodeInput,
     ];
-
     this.handleCountryChange();
+    this.#nameInput.addEventListener("input", this.titleCase);
+    this.#addressLine1.addEventListener("input", this.titleCase);
+    this.#addressLine2.addEventListener("input", this.titleCase);
+    this.#cityInput.addEventListener("input", this.titleCase);
     this.#phoneInput.addEventListener(
       "input",
       (event) => this.validatePhone(event),
@@ -92,14 +112,27 @@ export default class ZircusCheckoutForm extends HTMLElement {
     });
   }
 
+  titleCase(event) {
+    if (event.data === " " || event.inputType === "deleteContentBackward") {
+      return;
+    }
+    const words = event.target.value.split(" ").filter(Boolean).map(
+      capitalize,
+    );
+    event.target.value = words.join(" ");
+  }
+
   handleFilled() {
-    if (this.isFilled) {
+    if (this.isFilled && this.#didUpdate) return; // debounce
+    if (this.isFilled && !this.#didUpdate) {
+      this.#didUpdate = true;
       this.dispatchEvent(
         new CustomEvent("form-filled", {
           detail: new OrderData(this.processFormData()),
         }),
       );
     } else {
+      this.#didUpdate = false;
       this.dispatchEvent(
         new CustomEvent("form-not-filled"),
       );
