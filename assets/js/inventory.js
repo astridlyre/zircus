@@ -32,9 +32,7 @@ class Inventory {
     return await fetch(`${API_ENDPOINT}/inv`)
       .then(isJson).then(isError)
       .then((data) => {
-        this.#items = [...data.cf, ...data.pf, ...data.ff].map((item) =>
-          new InventoryItem(item)
-        );
+        this.#items = data.map((item) => new InventoryItem(item));
         return this.save();
       })
       .catch((e) => notifyFailure(`Unable to get inventory: ${e.message}`));
