@@ -1,16 +1,14 @@
 import {
   API_ENDPOINT,
   currency,
-  isError,
-  isJson,
   notifyFailure,
   notifySuccess,
   state,
   withLang,
 } from "../utils.js";
 import withAsyncScript from "./withAsyncScript.js";
+import withPaymentIntent from "./withPaymentIntent.js";
 import cart from "../cart.js";
-import OrderData from "../orderData.js";
 import ZircusModal from "../modal/modal.js";
 import ZircusRouter from "../router/router.js";
 
@@ -59,6 +57,7 @@ export default class ZircusStripe extends HTMLElement {
       event.detail.paymentMethod === "stripe" &&
         (stripe // if global exists, we're loaded
           ? this.showModal().createPaymentIntent({ orderData: event.detail })
+            .then(() => this.mountStripe())
           : notifyFailure(`Stripe not yet loaded!`));
     });
 
@@ -117,72 +116,11 @@ export default class ZircusStripe extends HTMLElement {
         title: this.getAttribute("canceltext"),
       },
     });
-    return this;
-  }
-
-  async createPaymentIntent({ orderData }) {
     ZircusModal.setStatus({ isActive: false, isSpinning: true });
     requestAnimationFrame(() => {
       this.#cardElement.classList.remove("hidden");
     });
-    return await fetch(`${ENDPOINT}/create-payment-intent`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(orderData),
-    })
-      .then(isJson)
-      .then(isError)
-      .then(({ orderData, clientSecret }) =>
-        this.setPendingOrderState({ orderData, clientSecret })
-      )
-      .catch((error) => {
-        ZircusModal.close();
-        notifyFailure(
-          `Error Creating Payment Intent: ${error}`,
-        );
-      });
-  }
-
-  async cancelPaymentIntent() {
-    ZircusModal.close();
-    await fetch(`${ENDPOINT}/cancel-payment-intent/${state.order.id}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        clientSecret: state.secret,
-        orderId: state.order.orderId,
-      }),
-    })
-      .then(isJson)
-      .then(isError)
-      .then(() => {
-        state.order = null; // clear order
-        notifySuccess("Canceled Stripe Payment-Intent");
-      })
-      .catch((error) => {
-        notifyFailure(
-          `Unable to cancel Payment Intent: ${
-            error.substring(
-              0,
-              24,
-            )
-          }...`,
-        );
-      });
-  }
-
-  setPendingOrderState({ orderData, clientSecret }) {
-    state.secret = clientSecret;
-    state.order = new OrderData(orderData);
-    this.#paymentPrice.textContent = `Calculated total: ${
-      currency(state.order.total)
-    }`;
-    ZircusModal.setStatus({ isActive: false });
-    !this.#isMounted && this.mountStripeElements(); // load mount stripe elements if not loaded
+    return this;
   }
 
   setErrorMessage({ message = null } = {}) {
@@ -198,6 +136,14 @@ export default class ZircusStripe extends HTMLElement {
         this.#resultMessage.classList.add("hidden");
         this.#resultMessage.classList.remove("red");
       });
+  }
+
+  mountStripe() {
+    this.#paymentPrice.textContent = `Calculated total: ${
+      currency(state.order.total)
+    }`;
+    ZircusModal.setStatus({ isActive: false });
+    !this.#isMounted && this.mountStripeElements(); // load mount stripe elements if not loaded
   }
 
   mountStripeElements(
@@ -262,7 +208,11 @@ export default class ZircusStripe extends HTMLElement {
   }
 }
 
-Object.assign(ZircusStripe.prototype, withAsyncScript());
+Object.assign(
+  ZircusStripe.prototype,
+  withAsyncScript(),
+  withPaymentIntent(ENDPOINT),
+);
 
 customElements.get("zircus-stripe") ||
   customElements.define("zircus-stripe", ZircusStripe);

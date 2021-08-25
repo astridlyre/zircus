@@ -3,7 +3,7 @@ lang: es
 ref: cf
 title: calzoncillos frontales de compresión · zircus
 name: compresion
-type: cf
+prefix: cf
 price: 38
 image: /assets/img/products/masked/cf-purple-a-400.png
 bottom_image: /assets/img/products/1920/closeup-e-1920.jpg

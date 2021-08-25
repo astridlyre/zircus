@@ -3,7 +3,7 @@ lang: fr
 ref: ff
 title: avant plat · zircus
 name: avant plat
-type: ff
+prefix: ff
 price: 30
 image: /assets/img/products/masked/ff-yellow-a-400.png
 bottom_image: /assets/img/products/1920/closeup-d-1920.jpg

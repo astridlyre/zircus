@@ -1,8 +1,6 @@
 import {
   API_ENDPOINT,
   currency,
-  isError,
-  isJson,
   notifyFailure,
   notifySuccess,
   state,
@@ -11,8 +9,8 @@ import {
 } from "../utils.js";
 import paypalIcon from "./paypalIcon.js";
 import withAsyncScript from "./withAsyncScript.js";
+import withPaymentIntent from "./withPaymentIntent.js";
 import cart from "../cart.js";
-import OrderData from "../orderData.js";
 import ZircusModal from "../modal/modal.js";
 import ZircusRouter from "../router/router.js";
 
@@ -117,49 +115,14 @@ export default class ZircusPayPal extends HTMLElement {
       paypal
         .Buttons({
           style: PAYPAL_STYLE,
-          createOrder: () => this.createPaymentIntent({ orderData }),
+          createOrder: async () =>
+            await this.createPaymentIntent({ orderData }).then((order) =>
+              order.orderId
+            ).catch(() => ZircusModal.close()),
           onApprove: (_, actions) => this.onApprove(_, actions),
         })
         .render("#paypal-button");
     });
-  }
-
-  async createPaymentIntent({ orderData }) {
-    return await fetch(`${ENDPOINT}/create-payment-intent`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(orderData),
-    })
-      .then(isJson)
-      .then(isError)
-      .then((orderData) => {
-        // Set order details in state
-        state.order = new OrderData(orderData);
-        return state.order.orderId; // return orderId to client for next step
-      }).catch((error) => {
-        // If error creating intent, bail
-        state.order = null;
-        ZircusModal.close();
-        notifyFailure(error);
-      });
-  }
-
-  async cancelPaymentIntent() { // Cancel payment intent & pending order
-    return await fetch(
-      `${ENDPOINT}/cancel-payment-intent/${state.order.id}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ orderId: state.order.orderId }),
-      },
-    ).then(isJson).then(isError).then(({ response }) => {
-      state.order = null;
-      notifySuccess(`Payment intent ${response}`);
-    }).catch((error) => notifyFailure(`Error: ${error}`));
   }
 
   handlePaymentSuccess() { // update UI after successful payment
@@ -230,7 +193,11 @@ export default class ZircusPayPal extends HTMLElement {
   }
 }
 
-Object.assign(ZircusPayPal.prototype, withAsyncScript());
+Object.assign(
+  ZircusPayPal.prototype,
+  withAsyncScript(),
+  withPaymentIntent(ENDPOINT),
+);
 
 customElements.get("zircus-paypal") ||
   customElements.define("zircus-paypal", ZircusPayPal);
