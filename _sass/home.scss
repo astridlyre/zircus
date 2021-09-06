@@ -1,13 +1,14 @@
 // Home page styling
 .home {
   &__products {
-    padding-top: var(--y-padding) !important;
+    padding-top: var(--md-spacing);
     display: flex;
     gap: var(--base-spacing);
     flex-flow: row wrap;
     justify-content: center;
     @include res("lg") {
       justify-content: space-evenly;
+      padding-top: var(--lg-spacing);
     }
 
     &_product {

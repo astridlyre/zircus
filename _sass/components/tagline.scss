@@ -5,9 +5,6 @@
     @include res("sm") {
       padding: var(--md-spacing) 0;
     }
-    @include res("md") {
-      padding: var(--y-padding) 0;
-    }
     text-align: center;
     font-family: var(--accent-font-family);
     font-style: normal;
