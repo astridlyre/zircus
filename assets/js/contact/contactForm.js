@@ -8,28 +8,18 @@ import {
   notifySuccess,
 } from "../utils.js";
 import intText from "../int/intText.js";
+import withMapDOM from "../withMapDom.js";
 import ZircusModal from "../modal/modal.js";
 
 const { contactText } = intText;
 
 export default class ZircusContactForm extends HTMLElement {
-  #form;
-  #nameInput;
-  #emailInput;
-  #sendButton;
-  #messageText;
-  #sendButtonText;
-  #spinner;
+  #dom;
 
   connectedCallback() {
-    this.#form = this.querySelector("#contact-form");
-    this.#nameInput = this.querySelector("#contact-name");
-    this.#emailInput = this.querySelector("#contact-email");
-    this.#sendButton = this.querySelector("#contact-button");
-    this.#messageText = this.querySelector("#contact-message");
-    this.#sendButtonText = this.querySelector("#contact-button-text");
-    this.#spinner = this.querySelector("#contact-spinner");
-    this.#nameInput.addEventListener("input", (event) => {
+    this.#dom = this.mapDOM(this);
+
+    this.#dom.contactName.addEventListener("input", event => {
       if (event.inputType === "deleteContentBackward" || event.data === " ") {
         return;
       }
@@ -38,23 +28,21 @@ export default class ZircusContactForm extends HTMLElement {
     });
 
     const formElements = [
-      this.#nameInput,
-      this.#emailInput,
-      this.#sendButton,
-      this.#messageText,
+      this.#dom.contactName,
+      this.#dom.contactEmail,
+      this.#dom.contactButton,
+      this.#dom.contactMessage,
     ];
 
-    this.#form.addEventListener("submit", (event) => {
+    this.#dom.contactForm.addEventListener("submit", event => {
       event.preventDefault();
 
-      for (
-        // this needs to be a for loop
-        const element of [
-          this.#nameInput,
-          this.#emailInput,
-          this.#messageText,
-        ]
-      ) {
+      // this needs to be a for loop
+      for (const element of [
+        this.#dom.contactName,
+        this.#dom.contactEmail,
+        this.#dom.contactMessage,
+      ]) {
         if (!element.value.length) {
           notifyFailure(this.getAttribute("fields"));
           return element.focus();
@@ -62,10 +50,10 @@ export default class ZircusContactForm extends HTMLElement {
       }
 
       const formData = Object.fromEntries(
-        new FormData(this.#form).entries(),
+        new FormData(this.#dom.contactForm).entries()
       ); // this must be before inputs are disabled
 
-      formElements.forEach((element) => {
+      formElements.forEach(element => {
         element.disabled = true;
       });
 
@@ -76,23 +64,21 @@ export default class ZircusContactForm extends HTMLElement {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(
-          formData,
-        ),
+        body: JSON.stringify(formData),
       })
         .then(isJson)
         .then(isError)
-        .then((data) => {
+        .then(data => {
           this.handleSuccess(data);
           this.setDoneState();
-          formElements.forEach((element) => {
+          formElements.forEach(element => {
             element.disabled = false;
             element.value = "";
           });
         })
-        .catch((error) => {
+        .catch(error => {
           this.setDoneState();
-          formElements.forEach((element) => {
+          formElements.forEach(element => {
             element.disabled = false;
           });
           notifyFailure(error);
@@ -110,9 +96,7 @@ export default class ZircusContactForm extends HTMLElement {
         action: ZircusModal.close,
       },
     });
-    return notifyFailure(
-      `${this.getAttribute("failure")}: ${error.message}`,
-    );
+    return notifyFailure(`${this.getAttribute("failure")}: ${error.message}`);
   }
 
   handleSuccess(data) {
@@ -125,25 +109,25 @@ export default class ZircusContactForm extends HTMLElement {
         action: ZircusModal.close,
       },
     });
-    return notifySuccess(
-      this.getAttribute("success").replace("|", data.name),
-    );
+    return notifySuccess(this.getAttribute("success").replace("|", data.name));
   }
 
   setBusyState() {
     requestAnimationFrame(() => {
-      this.#spinner.classList.remove("hidden");
-      this.#sendButtonText.classList.add("hidden");
+      this.#dom.contactSpinner.classList.remove("hidden");
+      this.#dom.contactButtonText.classList.add("hidden");
     });
   }
 
   setDoneState() {
     requestAnimationFrame(() => {
-      this.#sendButtonText.classList.remove("hidden");
-      this.#spinner.classList.add("hidden");
+      this.#dom.contactButtonText.classList.remove("hidden");
+      this.#dom.contactSpinner.classList.add("hidden");
     });
   }
 }
+
+Object.assign(ZircusContactForm.prototype, withMapDOM());
 
 customElements.get("zircus-contact-form") ||
   customElements.define("zircus-contact-form", ZircusContactForm);

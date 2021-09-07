@@ -7,23 +7,23 @@ layout: generic
   failure="{{ page.label_failure }}"
   fields="{{ page.label_fields }}"
 >
-  <form id="contact-form" class="contact__form">
+  <form id="contactForm" class="contact__form">
     <fieldset>
       <legend>{{ page.label_contact }}</legend>
-      <label for="contact-name" class="label_sm">
+      <label for="contactName" class="label_sm">
         <span>{{ page.label_name }}</span>
         <input
-          id="contact-name"
+          id="contactName"
           type="text"
           name="name"
           maxlength="80"
           value=""
           class="input"
       /></label>
-      <label for="contact-email" class="label_sm">
+      <label for="contactEmail" class="label_sm">
         <span>{{ page.label_email }}</span>
         <input
-          id="contact-email"
+          id="contactEmail"
           type="email"
           name="email"
           value=""
@@ -31,22 +31,22 @@ layout: generic
           maxlength="80"
         />
       </label>
-      <label for="contact-message" class="label_lg">
+      <label for="contactMessage" class="label_lg">
         <span>{{ page.label_message }}</span>
         <textarea
           name="message"
           rows="10"
           class="input"
-          id="contact-message"
+          id="contactMessage"
           maxlength="500"
         ></textarea>
       </label>
     </fieldset>
     <div class="contact__button">
-      <p id="contact-sent" class="hidden">{{ page.label_message_sent }}</p>
-      <button type="submit" id="contact-button" class="btn btn__primary">
-        <span id="contact-spinner" class="spinner hidden"></span>
-        <span id="contact-button-text"> {{ page.label_button_text }} </span>
+      <p id="contactSent" class="hidden">{{ page.label_message_sent }}</p>
+      <button type="submit" id="contactButton" class="btn btn__primary">
+        <span id="contactSpinner" class="spinner hidden"></span>
+        <span id="contactButtonText"> {{ page.label_button_text }} </span>
       </button>
     </div>
   </form>
