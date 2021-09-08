@@ -17,10 +17,8 @@
   padding: var(--base-spacing);
   border-radius: var(--radius);
   box-shadow: var(--box-shadow-sm);
-  border: 2px solid transparent;
   outline: none;
-  background-color: rgba(243,240,244,0.9); // var(--light) with 0.9 opacity
-  border-color: var(--gray-30);
+  background-color: rgba(243,240,244,0.95); // var(--light) with 0.9 opacity
 
   &:hover {
     transition: all 0.1s ease-out;
@@ -62,14 +60,12 @@
   }
 
   &__text {
-    @include smallSpaced();
     margin: 0 var(--base-spacing) 0 0;
-    font-weight: 600;
     text-decoration: none;
   }
 
   &__prefix {
-    @include smallSpacedBold();
+    font-weight: 600;
     border-radius: var(--radius);
     padding: 0 calc(var(--base-unit) * 2);
     margin-left: var(--base-unit);

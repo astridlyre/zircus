@@ -21,7 +21,7 @@
   color: var(--light);
 }
 .bg-light {
-  background-color: var(--light);
+  background-color: var(--gray-20);
 }
 
 .red {
@@ -160,9 +160,9 @@
 }
 
 .small-spaced-bold {
-  @include smallSpacedBold();
+  font-weight: 600;
 }
 
 .small-spaced {
-  @include smallSpaced();
+  font-weight: 600;
 }

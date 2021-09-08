@@ -45,11 +45,15 @@ export default class ZircusProduct extends HTMLElement {
 
     // Initial updates
     preloadImages(this.#colorInput, this.prefix);
-    [...this.#colorInput.children].forEach(child => {
-      if (child.value === this.getAttribute("defaultcolor")) {
-        child.setAttribute("selected", true);
-      }
-    });
+    const params = new URLSearchParams(document.location.search);
+    if (params.get("color")) {
+      this.#colorInput.value = params.get("color");
+    } else {
+      this.#colorInput.value = this.getAttribute("defaultcolor");
+    }
+    if (params.get("size")) {
+      this.#sizeInput.value = params.get("size");
+    }
 
     this.updateStatus({ price: true, status: true })
       .updateColorOptionText()
@@ -113,8 +117,16 @@ export default class ZircusProduct extends HTMLElement {
     return this.getAttribute("prefix");
   }
 
+  get size() {
+    return this.#sizeInput.value;
+  }
+
   get currentItem() {
-    if (!this.#currentItem || this.color !== this.#currentItem.color) {
+    if (
+      !this.#currentItem ||
+      this.color !== this.#currentItem.color ||
+      this.size !== this.#currentItem.size
+    ) {
       return (this.#currentItem = inventory.find(
         `${this.prefix}-${this.color}-${this.#sizeInput.value}`
       ));
@@ -153,16 +165,7 @@ export default class ZircusProduct extends HTMLElement {
 
   updateStatus({ images, status, price }) {
     if (!inventory.length) return this;
-    const { currentItem } = state;
     requestAnimationFrame(() => {
-      if (currentItem) {
-        this.#sizeInput.value = currentItem.size;
-        this.#colorInput.value = currentItem.color;
-        state.currentItem = null;
-        images = true;
-        status = true;
-        price = true;
-      }
       this.#quantityInput.disabled =
         !this.currentItem || this.currentItem.quantity <= 0;
       this.#quantityInput.value = new Range(

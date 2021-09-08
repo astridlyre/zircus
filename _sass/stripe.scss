@@ -10,7 +10,7 @@
       gap: var(--base-unit);
 
       span:first-of-type {
-        @include smallSpacedBold();
+        font-weight: 600;
       }
     }
 
@@ -18,13 +18,20 @@
       width: 100%;
       margin-bottom: var(--base-spacing);
       height: var(--btn-height);
-      border: 2px solid var(--dark);
+      border: 2px solid var(--gray-20);
       border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       padding: var(--input-padding);
+
+      div {
+        width: 100%;
+      }
 
       &.disabled {
         background: var(--gray-30);
-        border-color: var(--gray-50) !important;
+        border-color: var(--gray-40) !important;
         cursor: not-allowed;
       }
     }
@@ -94,5 +101,4 @@
 
 .result-message {
   letter-spacing: 0.1rem;
-  @include smallSpacedBold();
 }

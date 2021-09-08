@@ -18,7 +18,7 @@
 
   h4 {
     font-family: var(--accent-font-family) !important;
-    font-style: normal;
+    font-weight: 400;
     padding-bottom: var(--base-spacing);
     padding-top: var(--base-unit);
     border-bottom: 2px solid var(--dgray-60);
@@ -71,7 +71,6 @@
     &__link {
       color: var(--light) !important;
       padding: var(--base-unit);
-      @include smallSpacedBold();
       @include borderHover();
     }
   }

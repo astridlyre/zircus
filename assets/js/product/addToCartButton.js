@@ -15,13 +15,12 @@ export default class ZircusAddToCartButton extends HTMLElement {
       type: "button",
       title: this.getAttribute("title"),
       "aria-label": this.getAttribute("aria-label"),
-    })
-      .render();
+    }).render();
     this.appendChild(this.#button);
     this.#parent = document.querySelector("zircus-product");
     this.#parent.addEventListener(
       "wants-update",
-      ({ detail }) => detail.status && this.handleUpdate(),
+      ({ detail }) => detail.status && this.handleUpdate()
     );
     this.#button.addEventListener("click", () => this.handleAddToCart());
   }
@@ -31,8 +30,10 @@ export default class ZircusAddToCartButton extends HTMLElement {
   }
 
   enoughStock(existingQuantity = 0) {
-    return this.item.quantity &&
-      this.item.quantity >= (this.#parent.quantity + existingQuantity);
+    return (
+      this.item.quantity &&
+      this.item.quantity >= this.#parent.quantity + existingQuantity
+    );
   }
 
   handleAddToCart() {
@@ -49,9 +50,8 @@ export default class ZircusAddToCartButton extends HTMLElement {
 
   updateCartItem(itemToUpdate) {
     if (this.enoughStock(itemToUpdate.quantity)) {
-      cart.update(
-        this.item.type,
-        (item) => item.setQuantity(item.quantity + this.#parent.quantity),
+      cart.update(this.item.type, item =>
+        item.setQuantity(item.quantity + this.#parent.quantity)
       );
       return this.notifySuccess();
     } else {
@@ -73,9 +73,9 @@ export default class ZircusAddToCartButton extends HTMLElement {
           }).addChild(
             this.getAttribute("successadd").replace(
               "|",
-              withLang(this.item.name),
-            ),
-          ),
+              withLang(this.item.name)
+            )
+          )
         )
         .render(),
     ]);
@@ -83,9 +83,10 @@ export default class ZircusAddToCartButton extends HTMLElement {
 
   handleUpdate() {
     this.#button.disabled = this.item.quantity <= 0;
-    this.#button.textContent = this.item.quantity <= 0
-      ? this.getAttribute("outstock").toLowerCase()
-      : this.getAttribute("addcarttext").toLowerCase();
+    this.#button.textContent =
+      this.item.quantity <= 0
+        ? this.getAttribute("outstock").toLowerCase()
+        : this.getAttribute("addcarttext").toLowerCase();
   }
 }
 

@@ -14,19 +14,22 @@
 
   zircus-product-price-text {
     @include res("md") {
-      font-size: var(--xl-font-size);
+      font-size: var(--lg-font-size);
       margin: var(--md-spacing) 0 var(--base-spacing) 0;
+    }
+    @include res('xl') {
+      font-size: var(--xl-font-size);
     }
     font-size: var(--xl-font-size-mobile);
     width: 100%;
     margin-left: auto;
     text-align: right;
-    font-weight: 600;
     display: block;
 
     span {
       font-style: normal;
       margin-left: auto;
+      font-weight: 500;
     }
   }
 
@@ -66,15 +69,15 @@
     flex-flow: column nowrap;
     position: relative;
     background-color: var(--light);
-    box-shadow: 0 -6px 5px 0 rgba(33, 27, 34, 0.08),
-      0 -10px 9px 2px rgba(33, 27, 34, 0.05);
+    box-shadow: 0 var(--base-spacing) 0 0
+      rgba(46, 47, 49, 0.2);
     @include res("sm") {
-      box-shadow: unset;
+      box-shadow: var(--box-shadow-lg);
       border-radius: var(--big-radius);
       padding: var(--md-spacing);
-      border: 2px solid var(--dark);
       margin-left: auto;
       margin-right: auto;
+      background-color: var(--gray-10);
     }
     @include res("md") {
       padding: var(--base-spacing);
@@ -108,7 +111,7 @@
     }
 
     &_stock {
-      font-size: var(--default-font-size);
+      font-size: var(--medium-font-size);
       margin-bottom: 0;
     }
 

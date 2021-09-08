@@ -4,7 +4,6 @@ import {
   notifySuccess,
   Range,
   setAttributes,
-  state,
   withLang,
   ZircusElement,
 } from "../utils.js";
@@ -48,19 +47,8 @@ export default class ZircusCartProduct extends HTMLElement {
       alt: `${this.name} ${this.item.size} ${this.item.color} underwear`,
     });
 
-    // Add link click event
-    this.#link.addEventListener(
-      "click",
-      () => (state.currentItem = {
-        type: this.item.type,
-        color: this.item.color,
-        size: this.item.size,
-      }),
-    );
-
     if (!this.getAttribute("withactions")) {
-      this.#description.textContent =
-        `${this.name} (${this.item.size}) x${this.item.quantity}`;
+      this.#description.textContent = `${this.name} (${this.item.size}) x${this.item.quantity}`;
     } else {
       this.addCartProductActions();
     }
@@ -94,9 +82,8 @@ export default class ZircusCartProduct extends HTMLElement {
       id: this.item.type,
       name: `${this.name} ${this.item.size} ${this.item.color}`,
     });
-    this.#quantity.addEventListener(
-      "input",
-      (event) => this.handleUpdateItemQuantity(event),
+    this.#quantity.addEventListener("input", event =>
+      this.handleUpdateItemQuantity(event)
     );
 
     // Add remove button functionality
@@ -110,15 +97,13 @@ export default class ZircusCartProduct extends HTMLElement {
   handleUpdateItemQuantity(event) {
     event.target.value = new Range(
       1,
-      inventory.find(this.item.type).quantity,
+      inventory.find(this.item.type).quantity
     ).normalize(this.quantity);
-    cart.update(this.item.type, (item) => item.setQuantity(this.quantity));
+    cart.update(this.item.type, item => item.setQuantity(this.quantity));
     this.#price.textContent = currency(this.item.price * this.quantity);
     this.#removeButton.setAttribute(
       "title",
-      withLang(
-        removeButtonText(this.item.setQuantity(this.quantity)),
-      ),
+      withLang(removeButtonText(this.item.setQuantity(this.quantity)))
     );
     this.dispatchEvent(new CustomEvent("update-totals"));
   }
@@ -127,18 +112,14 @@ export default class ZircusCartProduct extends HTMLElement {
     cart.remove(this.item.type);
     notifySuccess(this.createNotificationElements(this.#link.href));
     this.dispatchEvent(new CustomEvent("update-totals"));
-    !cart.length &&
-      this.dispatchEvent(new CustomEvent("render"));
+    !cart.length && this.dispatchEvent(new CustomEvent("render"));
     this.remove();
   }
 
   createLinkHref(item) {
-    return `/products/${
-      item.name.en
-        .toLowerCase()
-        .split(" ")
-        .join("-")
-    }${lang() !== "en" ? `-${lang()}` : ""}.html`;
+    return `/products/${item.name.en.toLowerCase().split(" ").join("-")}${
+      lang() !== "en" ? `-${lang()}` : ""
+    }.html?color=${this.item.color}&size=${this.item.size}`;
   }
 
   createNotificationElements(href) {
@@ -155,9 +136,7 @@ export default class ZircusCartProduct extends HTMLElement {
               en: "Go to product page",
               fr: "Aller au page du produit",
             }),
-          }).addChild(
-            withLang(removeNotificationText(this.item)),
-          ),
+          }).addChild(withLang(removeNotificationText(this.item)))
         )
         .render(),
     ];

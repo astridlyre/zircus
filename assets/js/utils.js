@@ -2,9 +2,10 @@ const ENV = window.location.hostname.includes("zircus")
   ? "production"
   : "development";
 
-export const API_ENDPOINT = ENV === "production"
-  ? "https://zircus.herokuapp.com/api"
-  : "http://localhost:3000/api";
+export const API_ENDPOINT =
+  ENV === "production"
+    ? "https://zircus.herokuapp.com/api"
+    : "http://localhost:3000/api";
 
 const ONE_DAY = 86_400_000;
 
@@ -17,14 +18,14 @@ class EventBus {
   addEventListener(event, callback) {
     this.#listeners.set(
       event,
-      (this.#listeners.get(event) || new Set()).add(callback),
+      (this.#listeners.get(event) || new Set()).add(callback)
     );
   }
 
   dispatchEvent(customEvent) {
-    this.#listeners.get(customEvent.type)?.forEach((callback) =>
-      callback(customEvent)
-    );
+    this.#listeners
+      .get(customEvent.type)
+      ?.forEach(callback => callback(customEvent));
   }
 }
 
@@ -83,14 +84,6 @@ class State {
     this.#set("secret", secret);
   }
 
-  get currentItem() {
-    return this.#state.currentItem || null;
-  }
-
-  set currentItem(item) {
-    this.#set("currentItem", item);
-  }
-
   get order() {
     return this.#state.order || null;
   }
@@ -116,7 +109,7 @@ export class ZircusElement {
     this.children = [];
 
     if (classes && Array.isArray(classes)) {
-      classes.forEach((c) => {
+      classes.forEach(c => {
         this.e.classList.add(c);
       });
     } else if (classes && typeof classes === "string") {
@@ -130,7 +123,7 @@ export class ZircusElement {
     }
   }
   render() {
-    this.children.forEach((child) => {
+    this.children.forEach(child => {
       if (child instanceof ZircusElement) {
         this.e.appendChild(child.render());
       } else {
@@ -154,15 +147,15 @@ export class ZircusElement {
 export function appendPreloadLinks(
   links,
   fragment = new DocumentFragment(),
-  target = document.head,
+  target = document.head
 ) {
-  links.forEach((link) => {
+  links.forEach(link => {
     fragment.appendChild(
       new ZircusElement("link", null, {
         href: link,
         rel: "prefetch",
         as: "image",
-      }).render(),
+      }).render()
     );
   });
   return target.appendChild(fragment);
@@ -187,7 +180,8 @@ export function calculateTax(country, state) {
       default:
         return 0.05;
     }
-  } else { // US Tax rate??
+  } else {
+    // US Tax rate??
     return 0.07;
   }
 }
@@ -198,9 +192,7 @@ export function notifySuccess(content) {
       new ZircusElement("span", ["notification__prefix", "green"])
         .addChild("!")
         .render(),
-      new ZircusElement("p", "notification__text")
-        .addChild(content)
-        .render(),
+      new ZircusElement("p", "notification__text").addChild(content).render(),
     ];
   } else if (content instanceof ZircusElement) {
     content = [content];
@@ -210,7 +202,7 @@ export function notifySuccess(content) {
       detail: {
         content,
       },
-    }),
+    })
   );
 }
 
@@ -227,7 +219,7 @@ export function notifyFailure(content) {
             .render(),
         ],
       },
-    }),
+    })
   );
 }
 
@@ -666,12 +658,8 @@ state.countries = () => countries;
 
 export function disableElements() {
   let els = [
-    document.querySelector(
-      "zircus-to-top-button",
-    ),
-    document.querySelector(
-      "zircus-skip-button",
-    ),
+    document.querySelector("zircus-to-top-button"),
+    document.querySelector("zircus-skip-button"),
   ];
 
   [
@@ -679,7 +667,7 @@ export function disableElements() {
     document.querySelector("zircus-desktop-menu"),
     document.querySelector("zircus-mobile-menu"),
     document.querySelector(".footer__container"),
-  ].forEach((parent) => {
+  ].forEach(parent => {
     els = els.concat([
       ...parent.querySelectorAll("textarea"),
       ...parent.querySelectorAll("input"),
@@ -749,10 +737,10 @@ export class Range {
   }
 
   [Symbol.iterator] = function* (
-    start = this.#step > 0 ? this.#min : this.#max,
+    start = this.#step > 0 ? this.#min : this.#max
   ) {
-    const withinBound = (n) => this.#step > 0 ? n < this.#max : n > this.#min;
-    while (withinBound(start)) yield start += this.#step;
+    const withinBound = n => (this.#step > 0 ? n < this.#max : n > this.#min);
+    while (withinBound(start)) yield (start += this.#step);
   };
 }
 

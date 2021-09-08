@@ -1,16 +1,16 @@
 .btn {
-  @include smallSpacedBold();
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 0 var(--btn-padding);
   height: var(--btn-height);
-  background: var(--gray-20);
+  background: var(--gray-30);
   border-radius: var(--radius);
-  border: 2px solid var(--dark);
+  border: 2px solid transparent;
   color: var(--dark);
   outline: none;
   font-family: var(--site-font-family);
+  font-weight: 500;
   cursor: pointer;
   position: relative;
   z-index: 1;
@@ -28,8 +28,8 @@
 
   &:disabled {
     background: var(--gray-30);
-    border-color: var(--gray-50) !important;
-    color: var(--dgray-60) !important;
+    border-color: var(--gray-40) !important;
+    color: var(--dgray-50) !important;
     cursor: not-allowed;
   }
 
@@ -59,11 +59,10 @@
 }
 
 .input {
-  @include smallSpaced();
   height: var(--btn-height);
   padding: 0 var(--input-padding);
   border-radius: var(--radius);
-  border: 2px solid var(--dark);
+  border: 2px solid var(--gray-20);
   background-color: var(--gray-05);
   font-family: var(--site-font-family);
   min-width: 4rem;
@@ -88,10 +87,6 @@
     border-color: var(--green);
   }
 
-  &:required:invalid {
-    border-color: var(--red);
-  }
-
   &__textarea {
     resize: none;
     padding: var(--input-padding);
@@ -113,10 +108,6 @@
       background: var(--lgrey);
       border-color: var(--grey) !important;
       cursor: not-allowed;
-    }
-
-    &:invalid {
-      border-color: var(--red);
     }
   }
 }

@@ -15,7 +15,7 @@ html {
 }
 
 hr {
-  border: 0 solid var(--gray-30);
+  border: 0 solid var(--gray-20);
   @include res("sm") {
     width: 33%;
   }
@@ -42,10 +42,11 @@ details + details {
 }
 
 details {
-  border: 2px solid var(--gray-30);
+  border: 2px solid transparent;
   border-radius: var(--radius);
   padding: 1rem 1rem 0;
   max-width: 75ch;
+  background-color: var(--gray-10);
 
   &:hover {
     border-color: var(--teal);
@@ -61,7 +62,7 @@ details[open] {
 }
 
 details[open] summary {
-  border-bottom: 2px solid var(--gray-30);
+  border-bottom: 2px solid var(--gray-20);
   margin-bottom: 1rem;
 }
 
@@ -87,8 +88,8 @@ summary {
 }
 
 fieldset {
-  border: 2px solid var(--gray-30);
-  background-color: var(--gray-20);
+  border: 2px solid transparent;
+  background-color: var(--gray-10);
   border-radius: var(--radius);
   padding: var(--base-spacing);
 
@@ -116,7 +117,7 @@ input[type="radio"] {
 }
 
 legend {
-  @include smallSpacedBold();
+  font-weight: 500;
 }
 
 label.column {
@@ -124,8 +125,7 @@ label.column {
   flex-flow: column nowrap;
 
   span {
-    height: 1.5rem;
-    @include smallSpacedBold();
+    line-height: 1.2;
   }
 }
 
@@ -134,10 +134,6 @@ label.row {
   flex-flow: row nowrap;
   align-items: center;
   gap: var(--base-unit);
-
-  span {
-    @include smallSpacedBold();
-  }
 }
 
 body {
@@ -169,7 +165,6 @@ img {
 a {
   color: var(--link);
   text-decoration: none;
-  font-weight: 500;
   outline-color: var(--teal);
 
   &:hover,

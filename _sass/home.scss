@@ -12,10 +12,18 @@
     }
 
     &_product {
-      flex-basis: 18rem;
+      flex-basis: 16rem;
+      @include res('md') {
+        flex-basis: 18rem;
+      }
+      @include res('lg') {
+        flex-basis: 20rem;
+      }
+      @include res('xl') {
+        flex-basis: 24rem;
+      }
       flex-shrink: 1;
       display: flex;
-      @include headings-common-base();
 
       &_link {
         display: flex;
@@ -23,8 +31,17 @@
         flex-flow: column nowrap;
         align-items: center;
         justify-content: flex-start;
-        padding: var(--base-spacing);
-        @include borderHoverBig();
+        padding: var(--md-spacing);
+        border-radius: var(--big-radius);
+        transform: translateY(0);
+        transition: transform 0.1s ease-out;
+        outline: none;
+
+        &:hover, &:focus {
+          background-color: var(--gray-10);
+          box-shadow: var(--box-shadow-md);
+          transform: translateY(calc(var(--base-unit) - (var(--base-unit) * 2)));
+        }
       }
 
       &_text {

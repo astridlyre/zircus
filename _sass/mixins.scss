@@ -115,47 +115,56 @@
   @include set-heading-font-family();
   letter-spacing: var(--letter-spacing);
   font-weight: 500;
-  line-height: var(--heading-line-height);
-  font-style: italic;
 }
 
 @mixin heading-1() {
   font-size: var(--xxl-font-size-mobile);
+  letter-spacing: -0.12rem;
+  line-height: 0.95;
 
   @media screen and (min-width: 901px) {
     font-size: var(--xxl-font-size);
+    line-height: 0.94;
   }
 }
 
 @mixin heading-2() {
   font-size: var(--xl-font-size-mobile);
+  line-height: 0.92;
 
   @media screen and (min-width: 901px) {
     font-size: var(--xl-font-size);
+    line-height: 0.89;
   }
 }
 
 @mixin heading-3() {
   font-size: var(--lg-font-size-mobile);
+  line-height: 0.95;
 
   @media screen and (min-width: 901px) {
     font-size: var(--lg-font-size);
+    line-height: 0.92;
   }
 }
 
 @mixin heading-4() {
   font-size: var(--md-font-size-mobile);
+  line-height: 0.96;
 
   @media screen and (min-width: 901px) {
     font-size: var(--md-font-size);
+    line-height: 0.94;
   }
 }
 
 @mixin heading-5() {
   font-size: var(--sm-font-size-mobile);
+  line-height: 0.99;
 
   @media screen and (min-width: 901px) {
     font-size: var(--sm-font-size);
+    line-height: 0.97;
   }
 }
 
@@ -270,15 +279,4 @@
 @mixin roundedBigBottom() {
   border-bottom-left-radius: var(--big-radius);
   border-bottom-right-radius: var(--big-radius);
-}
-
-@mixin smallSpacedBold() {
-  letter-spacing: var(--letter-spacing);
-  font-size: var(--small-font-size);
-  font-weight: 600;
-}
-
-@mixin smallSpaced() {
-  letter-spacing: var(--letter-spacing);
-  font-size: var(--small-font-size);
 }

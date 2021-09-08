@@ -13,7 +13,7 @@
 
   &__rounded {
     @include roundedBigTop();
-    background-color: var(--light);
+    background-color: var(--gray-20);
     height: var(--big-radius);
     position: absolute;
     bottom: 0;

@@ -37,6 +37,7 @@
 
         p {
           border-color: var(--teal);
+          line-height: 1;
         }
       }
 
@@ -61,6 +62,7 @@
         padding: var(--base-unit);
         border: 2px solid transparent;
         border-radius: var(--radius);
+        line-height: 1;
       }
     }
 
@@ -80,11 +82,9 @@
     }
 
     &_price {
-      font-size: var(--medium-font-size);
-      font-weight: 600;
-      letter-spacing: 0.1rem;
       display: flex;
       align-items: center;
+      line-height: 1;
     }
   }
 
@@ -100,6 +100,7 @@
   &__total {
     max-width: 12rem;
     margin-left: auto;
+    font-weight: 600;
     padding: var(--base-spacing) 0;
     @include res("md") {
       margin-top: var(--md-spacing);

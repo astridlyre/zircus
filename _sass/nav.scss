@@ -130,10 +130,10 @@
 
   .nav_mobile_list_link {
     text-align: right;
-    font-size: var(--lg-font-size);
+    font-size: var(--md-font-size);
 
     @include res("sm") {
-      font-size: var(--xl-font-size);
+      font-size: var(--lg-font-size);
     }
 
     a,

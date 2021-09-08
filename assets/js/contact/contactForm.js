@@ -15,9 +15,16 @@ const { contactText } = intText;
 
 export default class ZircusContactForm extends HTMLElement {
   #dom;
+  #formElements;
 
   connectedCallback() {
     this.#dom = this.mapDOM(this);
+    this.#formElements = [
+      this.#dom.contactName,
+      this.#dom.contactEmail,
+      this.#dom.contactButton,
+      this.#dom.contactMessage,
+    ];
 
     this.#dom.contactName.addEventListener("input", event => {
       if (event.inputType === "deleteContentBackward" || event.data === " ") {
@@ -26,13 +33,6 @@ export default class ZircusContactForm extends HTMLElement {
       const words = event.target.value.split(" ").map(capitalize);
       event.target.value = words.join(" ");
     });
-
-    const formElements = [
-      this.#dom.contactName,
-      this.#dom.contactEmail,
-      this.#dom.contactButton,
-      this.#dom.contactMessage,
-    ];
 
     this.#dom.contactForm.addEventListener("submit", event => {
       event.preventDefault();
@@ -49,14 +49,11 @@ export default class ZircusContactForm extends HTMLElement {
         }
       }
 
-      const formData = Object.fromEntries(
-        new FormData(this.#dom.contactForm).entries()
-      ); // this must be before inputs are disabled
+      const formData = Object.fromEntries([
+        ...new FormData(this.#dom.contactForm),
+      ]); // this must be before inputs are disabled
 
-      formElements.forEach(element => {
-        element.disabled = true;
-      });
-
+      this.#dom.contactForm.reset();
       this.setBusyState(); // UI feedback
 
       fetch(`${API_ENDPOINT}/message`, {
@@ -71,16 +68,9 @@ export default class ZircusContactForm extends HTMLElement {
         .then(data => {
           this.handleSuccess(data);
           this.setDoneState();
-          formElements.forEach(element => {
-            element.disabled = false;
-            element.value = "";
-          });
         })
         .catch(error => {
           this.setDoneState();
-          formElements.forEach(element => {
-            element.disabled = false;
-          });
           notifyFailure(error);
         });
     });
@@ -114,6 +104,9 @@ export default class ZircusContactForm extends HTMLElement {
 
   setBusyState() {
     requestAnimationFrame(() => {
+      this.#formElements.forEach(element => {
+        element.disabled = true;
+      });
       this.#dom.contactSpinner.classList.remove("hidden");
       this.#dom.contactButtonText.classList.add("hidden");
     });
@@ -121,6 +114,9 @@ export default class ZircusContactForm extends HTMLElement {
 
   setDoneState() {
     requestAnimationFrame(() => {
+      this.#formElements.forEach(element => {
+        element.disabled = false;
+      });
       this.#dom.contactButtonText.classList.remove("hidden");
       this.#dom.contactSpinner.classList.add("hidden");
     });

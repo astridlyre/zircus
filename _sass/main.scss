@@ -41,14 +41,14 @@
   --dark-green: #3d6b3e;
   --yellow: #f6cb5a;
   --dark-yellow: #c5a249;
-  --heading-font-family: "Nunito", sans-serif;
-  --site-font-family: "Nunito Sans", sans-serif;
+  --heading-font-family: "Urbanist", sans-serif;
+  --site-font-family: "Urbanist", sans-serif;
   --accent-font-family: "Virgo 01", sans-serif;
   --medium-font-size: 1.25rem;
-  --default-font-size: 1.1rem;
-  --small-font-size: 0.85rem;
+  --default-font-size: 1rem;
+  --small-font-size: 0.9rem;
   --tiny-text: 0.75rem;
-  --letter-spacing: 0.1rem;
+  --letter-spacing: 0rem;
   --doc-line-height: 1.75;
   --code-line-height: 1.4;
   --heading-line-height: 1.2;
@@ -56,11 +56,11 @@
   --max-line-length-fallback: 45rem;
 
   // Desktop Typescale
-  --xxl-font-size: 5.653rem;
-  --xl-font-size: 3.998rem;
-  --lg-font-size: 2.827rem;
-  --md-font-size: 1.999rem;
-  --sm-font-size: 1.414rem;
+  --xxl-font-size: 7.594rem;
+  --xl-font-size: 5.063rem;
+  --lg-font-size: 3.375rem;
+  --md-font-size: 2.25rem;
+  --sm-font-size: 1.5rem;
 
   // Mobile Typescale
   --xxl-font-size-mobile: 3.052rem;
@@ -120,7 +120,7 @@
   --radius: 0.325rem;
   --btn-padding: var(--base-spacing);
   --input-padding: 0.5rem;
-  --btn-height: 2.75rem;
+  --btn-height: 2.95rem;
 
   // Gap for two-col layouts
   // Gap for generic grid
@@ -133,8 +133,11 @@
   --two-col-gap: 2rem;
   --grid-gap: 1rem;
   box-sizing: border-box;
-  --box-shadow-sm: 0 8px 12px 1px rgba(29, 17, 51, 0.04),
-    0 3px 16px 2px rgba(9, 32, 77, 0.05), 0 5px 10px -3px rgba(29, 17, 51, 0.06);
+  --box-shadow-sm: 4px 8px 0 0 rgba(45, 46, 47, 0.2);
+  --box-shadow-md: var(--base-unit) calc(var(--base-unit) * 2) 0 0
+    rgba(45, 47, 48, 0.2);
+  --box-shadow-lg: calc(var(--base-unit) * 2) var(--base-spacing) 0 0
+    rgba(45, 47, 48, 0.2);
 }
 
 @import "helpers";

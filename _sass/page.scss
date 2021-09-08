@@ -20,7 +20,7 @@ main {
   width: 100%;
   margin-top: var(--nav-height);
   padding-top: var(--y-padding);
-  background: var(--light);
+  background: var(--gray-20);
   color: var(--dark);
   width: 100%;
   flex-grow: 1;
@@ -62,20 +62,11 @@ main {
 
   &__heading {
     margin-bottom: var(--md-spacing);
-    font-family: var(--accent-font-family);
-    line-height: 0.95;
-    font-style: normal;
     @include res("md") {
-      font-size: var(--xxl-font-size);
-      word-break: unset;
-      max-width: 45vw;
-      letter-spacing: -0.25rem;
+      max-width: 55vw;
     }
-    font-size: var(--xl-font-size-mobile);
-    letter-spacing: -0.1rem;
     @media screen and (max-width: 420px) {
       font-size: calc(var(--xl-font-size-mobile) * 0.8);
-      letter-spacing: unset;
     }
   }
 
@@ -84,7 +75,6 @@ main {
       font-size: var(--medium-font-size);
     }
     margin-top: -1rem;
-    @include headings-common-base();
     @include dot();
   }
 
@@ -94,7 +84,7 @@ main {
     flex-grow: 1;
     flex-shrink: 1;
     width: 100%;
-    background: var(--light);
+    background: var(--gray-20);
     padding-bottom: var(--y-padding);
     position: relative;
 
