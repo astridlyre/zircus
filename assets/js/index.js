@@ -51,3 +51,36 @@ import zircusOrder from "./order/order.js";
 // handle one time language redirect
 import zircusLangRedirect from "./int/langRedirect.js";
 zircusLangRedirect();
+
+export {
+  zircusModal,
+  zircusNotification,
+  zircusCart,
+  zircusCartProduct,
+  zircusCartTotals,
+  zircusDesktopMenu,
+  zircusSkipButton,
+  zircusMobileMenu,
+  zircusToTopButton,
+  zircusLangLinks,
+  zircusPayment,
+  zircusCheckoutForm,
+  zircusStripe,
+  zircusPaypal,
+  zircusShippingInputs,
+  zircusSpinner,
+  zircusProduct,
+  zircusProductImage,
+  zircusProductFullImage,
+  zircusAddToCartButton,
+  zircusProductPriceText,
+  zircusProductAccent,
+  zircusRouter,
+  zircusRouterLink,
+  zircusRouterPageLink,
+  zircusHero,
+  zircusTagLine,
+  zircusThanks,
+  zircusContactForm,
+  zircusOrder,
+};
