@@ -5,10 +5,7 @@ export default class FullImage extends HTMLElement {
   #isHidden;
 
   connectedCallback() {
-    this.#image = new ZircusElement(
-      "img",
-      "product__full__img",
-    ).render();
+    this.#image = new ZircusElement("img", "product__full__img").render();
     this.appendChild(this.#image);
     this.#image.src = this.getAttribute("src");
     this.#image.alt = this.getAttribute("alt");
@@ -21,8 +18,16 @@ export default class FullImage extends HTMLElement {
     this.#isHidden ? this.hide() : this.show();
   }
 
+  get hidden() {
+    return this.#isHidden;
+  }
+
   set src(value) {
     this.#image.src = value;
+  }
+
+  get src() {
+    return this.#image.src;
   }
 
   show() {
@@ -35,9 +40,7 @@ export default class FullImage extends HTMLElement {
   hide() {
     this.style.display = "none";
     document.getElementById("nav").classList.remove("hidden");
-    document
-      .getElementById("menu-mobile-btn")
-      .classList.remove("hidden");
+    document.getElementById("menu-mobile-btn").classList.remove("hidden");
     document.body.classList.remove("hide-y");
   }
 }

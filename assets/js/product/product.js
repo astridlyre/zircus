@@ -55,10 +55,12 @@ export default class ZircusProduct extends HTMLElement {
       this.#sizeInput.value = params.get("size");
     }
 
-    this.updateStatus({ price: true, status: true })
-      .updateColorOptionText()
-      .updateSizeOptionText()
-      .updateCartLink();
+    if (inventory.length > 0) {
+      this.updateStatus({ price: true, status: true })
+        .updateColorOptionText()
+        .updateSizeOptionText()
+        .updateCartLink();
+    }
 
     // Add event listeners
     this.#colorInput.addEventListener("change", () =>
@@ -86,7 +88,7 @@ export default class ZircusProduct extends HTMLElement {
     );
 
     eventBus.addEventListener(inventory.INV_UPDATED_EVENT, () =>
-      this.updateStatus({ status: true })
+      this.updateStatus({ status: true, images: true })
     );
     eventBus.addEventListener(cart.CART_UPDATED_EVENT, () =>
       this.updateCartLink()

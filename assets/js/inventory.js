@@ -11,18 +11,9 @@ import InventoryItem from "./item.js";
 const FIVE_MINUTES = 300_000;
 
 class Inventory {
-  #items;
+  #items = [];
 
   constructor() {
-    const savedItems = localStorage.getItem("inventory");
-    if (savedItems) {
-      this.#items = JSON.parse(savedItems).map((item) =>
-        new InventoryItem(item)
-      );
-    } else {
-      this.#items = [];
-    }
-
     this.getInventory();
     setInterval(() => this.getInventory(), FIVE_MINUTES);
   }
@@ -30,22 +21,18 @@ class Inventory {
   // Get Inventory to set max quantities of items
   async getInventory() {
     return await fetch(`${API_ENDPOINT}/inv`)
-      .then(isJson).then(isError)
-      .then((data) => {
-        this.#items = data.map((item) => new InventoryItem(item));
-        return this.save();
+      .then(isJson)
+      .then(isError)
+      .then(data => {
+        this.#items = data.map(item => new InventoryItem(item));
+        eventBus.dispatchEvent(new CustomEvent(this.INV_UPDATED_EVENT));
+        notifySuccess("Inventory updated");
       })
-      .catch((e) => notifyFailure(`Unable to get inventory: ${e.message}`));
+      .catch(e => notifyFailure(`Unable to get inventory: ${e.message}`));
   }
 
   find(type) {
-    return this.#items.find((item) => item.type === type);
-  }
-
-  save() {
-    localStorage.setItem("inventory", JSON.stringify(this.#items));
-    eventBus.dispatchEvent(new CustomEvent(this.INV_UPDATED_EVENT));
-    notifySuccess("Inventory updated");
+    return this.#items.find(item => item.type === type);
   }
 
   get length() {

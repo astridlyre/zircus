@@ -1,7 +1,7 @@
 import { setAttributes, ZircusElement } from "../utils.js";
 
 export default class ProductImage extends HTMLElement {
-  #image;
+  #image = null;
   #isHovered = false;
   #updating = false;
   #fullImage;
@@ -9,6 +9,15 @@ export default class ProductImage extends HTMLElement {
 
   connectedCallback() {
     this.#parent = document.querySelector("zircus-product");
+    this.#parent.addEventListener("wants-update", ({ detail }) => {
+      if (detail.images) {
+        if (!this.#image) this.init();
+        else this.handleUpdate();
+      }
+    });
+  }
+
+  init() {
     this.#image = new ZircusElement("img", "product__img").render();
     this.#fullImage = document.createElement("zircus-full-image");
     setAttributes(this.#fullImage, {
@@ -20,34 +29,25 @@ export default class ProductImage extends HTMLElement {
     setAttributes(this.#image, {
       alt: this.getAttribute("alt"),
       src: this.images.sm_a,
-      title: `${this.getAttribute("title")} (${
-        this.getAttribute(
-          "viewfull",
-        )
-      })`,
+      title: `${this.getAttribute("title")} (${this.getAttribute("viewfull")})`,
     });
     this.appendChild(this.#image);
     this.appendChild(this.#fullImage);
-
-    this.#parent.addEventListener(
-      "wants-update",
-      ({ detail }) => detail.images && this.handleUpdate(),
-    );
     this.#fullImage.addEventListener(
       "click",
-      () => (this.#fullImage.hidden = true),
+      () => (this.#fullImage.hidden = true)
     );
     this.#image.addEventListener(
       "pointerenter",
-      () => !this.#updating && (this.isHovered = true),
+      () => !this.#updating && (this.isHovered = true)
     );
     this.#image.addEventListener(
       "pointerleave",
-      () => !this.#updating && (this.isHovered = false),
+      () => !this.#updating && (this.isHovered = false)
     );
     this.#image.addEventListener(
       "click",
-      () => (this.#fullImage.hidden = false),
+      () => (this.#fullImage.hidden = false)
     );
   }
 
