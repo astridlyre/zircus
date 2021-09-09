@@ -15,7 +15,7 @@ export default class ZircusProductAccent extends HTMLElement {
     this.handleUpdate();
     this.#parent.addEventListener(
       "wants-update",
-      ({ detail }) => detail.images && this.handleUpdate(),
+      ({ detail }) => detail.images && this.handleUpdate()
     );
   }
 
@@ -37,7 +37,7 @@ const Template = {
   `,
   css: () =>
     `<style>
-:host { position: relative; z-index: -1; width: 100%; }
+:host { position: absolute; z-index: -1; width: 100%; }
 #accent.black { background: var(--dark); }
 #accent.teal { background: var(--teal); }
 #accent.yellow { background: var(--gold); }
@@ -55,7 +55,7 @@ const Template = {
 #accent {
   z-index: -1;
   top: 2rem;
-  left: -12rem;
+  left: -8rem;
   width: 35rem;
   height: 35rem;
   border-radius: 100%;
@@ -65,19 +65,19 @@ const Template = {
   #accent { display: block; }
 }
 @media screen and (min-width: 901px) {
-  #accent { top: -6rem; right: -12rem; left: unset; }
+  #accent { top: -12rem; right: 8rem; left: unset; }
 }
 @media screen and (min-width: 1281px) {
   #accent { width: 40rem; height: 40rem; }
 }
 @media screen and (min-width: 1921px) {
-  #accent { top: -12rem; right: -12rem; width: 45rem; height: 45rem; }
+  #accent { top: -12rem; right: 0rem; width: 45rem; height: 45rem; }
 }
 </style>`,
   render() {
     return `${this.html()}${this.css()}`;
   },
-  mapDOM: (scope) => ({
+  mapDOM: scope => ({
     accent: scope.querySelector("#accent"),
   }),
 };

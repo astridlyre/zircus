@@ -1,12 +1,14 @@
 .product {
   display: flex;
   flex-flow: row wrap;
-  justify-content: space-between;
+  justify-content: center;
   padding-bottom: 8rem;
   width: 100%;
   gap: var(--md-spacing);
-  @include res('md') {
-    gap: unset;
+  @include res('lg') {
+    justify-content: space-between;
+    gap: 0 var(--md-spacing);
+    flex-flow: row nowrap;
   }
 
   &__subheading {
@@ -40,6 +42,7 @@
   zircus-product-image {
     flex-basis: 16rem;
     flex-grow: 1;
+    flex-shrink: 1;
     max-width: 32rem;
     margin-left: auto;
     margin-right: auto;
@@ -60,11 +63,9 @@
     flex-grow: 1;
     @include res("md") {
       flex-grow: unset;
-      flex-basis: 34rem;
     }
     @include res("lg") {
       margin-right: unset;
-      flex-basis: 36rem;
     }
     @include res("xl") {
       flex-basis: 38rem;

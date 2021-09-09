@@ -210,6 +210,9 @@ blockquote {
   padding: 0 var(--x-padding);
   width: 100%;
   @include res("lg") {
+    width: 85.5%;
+  }
+  @media screen and (min-width: 1601px) {
     width: 80.5%;
   }
   @include res("xl") {
