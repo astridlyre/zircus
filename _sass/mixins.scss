@@ -115,6 +115,7 @@
   @include set-heading-font-family();
   letter-spacing: var(--letter-spacing);
   font-weight: 500;
+  max-width: 50vw;
 }
 
 @mixin heading-1() {

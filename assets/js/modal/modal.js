@@ -20,18 +20,15 @@ export default class ZircusModal extends HTMLElement {
     this.#modal = new ZircusElement("div", "modal__container").render();
     this.#template = this.querySelector("template");
     this.appendChild(this.#modal);
-    eventBus.addEventListener(
-      ZircusModal.SHOW_MODAL_EVENT,
-      (event) =>
-        requestAnimationFrame(() => {
-          this.show(event.detail);
-          this.#enableElements = disableElements();
-        }),
+    eventBus.addEventListener(ZircusModal.SHOW_MODAL_EVENT, event =>
+      requestAnimationFrame(() => {
+        this.show(event.detail);
+        this.#enableElements = disableElements();
+      })
     );
     eventBus.addEventListener(ZircusModal.CLOSE_MODAL_EVENT, () => this.hide());
-    eventBus.addEventListener(
-      ZircusModal.CHANGE_MODAL_EVENT,
-      (event) => this.setStatus(event.detail),
+    eventBus.addEventListener(ZircusModal.CHANGE_MODAL_EVENT, event =>
+      this.setStatus(event.detail)
     );
   }
 
@@ -42,12 +39,15 @@ export default class ZircusModal extends HTMLElement {
     okTitle,
     cancelText,
     cancelTitle,
+    makeCancelPrimary = false,
   }) {
     return requestAnimationFrame(() => {
       okText && (this.#okText.textContent = okText);
       okTitle && this.#okButton.setAttribute("title", okTitle);
       cancelText && (this.#cancelButton.textContent = cancelText);
       cancelTitle && this.#cancelButton.setAttribute("title", cancelTitle);
+      makeCancelPrimary &&
+        this.#cancelButton.classList.replace("btn__secondary", "btn__primary");
 
       if (isSpinning) {
         this.#okText.classList.add("hidden");
@@ -87,12 +87,11 @@ export default class ZircusModal extends HTMLElement {
 
     if (typeof content === "string") {
       this.#content.appendChild(
-        new ZircusElement("p", "modal__text")
-          .addChild(content)
-          .render(),
+        new ZircusElement("p", "modal__text").addChild(content).render()
       );
     } else if (
-      content instanceof HTMLElement || content instanceof DocumentFragment
+      content instanceof HTMLElement ||
+      content instanceof DocumentFragment
     ) {
       this.#content.appendChild(content);
     }
@@ -145,7 +144,7 @@ export default class ZircusModal extends HTMLElement {
     eventBus.dispatchEvent(
       new CustomEvent(ZircusModal.SHOW_MODAL_EVENT, {
         detail,
-      }),
+      })
     );
   }
 
@@ -153,7 +152,7 @@ export default class ZircusModal extends HTMLElement {
     eventBus.dispatchEvent(
       new CustomEvent(ZircusModal.CHANGE_MODAL_EVENT, {
         detail,
-      }),
+      })
     );
   }
 }

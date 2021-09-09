@@ -1,9 +1,13 @@
 .product {
   display: flex;
   flex-flow: row wrap;
+  justify-content: space-between;
   padding-bottom: 8rem;
   width: 100%;
   gap: var(--md-spacing);
+  @include res('md') {
+    gap: unset;
+  }
 
   &__subheading {
     margin-bottom: var(--md-spacing);
@@ -35,9 +39,13 @@
 
   zircus-product-image {
     flex-basis: 16rem;
-    flex-grow: 0.5;
+    flex-grow: 1;
+    max-width: 32rem;
     margin-left: auto;
     margin-right: auto;
+    @include res('lg') {
+      margin-left: unset;
+    }
     z-index: 15;
     .product__img {
       margin: 0 auto;
@@ -51,15 +59,15 @@
     flex-basis: 32rem;
     flex-grow: 1;
     @include res("md") {
-      flex-grow: 0.5;
+      flex-grow: unset;
+      flex-basis: 34rem;
     }
     @include res("lg") {
-      flex-grow: 0.25;
       margin-right: unset;
+      flex-basis: 36rem;
     }
     @include res("xl") {
       flex-basis: 38rem;
-      flex-grow: 0;
     }
     margin-left: calc(var(--x-padding) - (2 * var(--x-padding)));
     margin-right: calc(var(--x-padding) - (2 * var(--x-padding)));
@@ -75,8 +83,8 @@
       box-shadow: var(--box-shadow-lg);
       border-radius: var(--big-radius);
       padding: var(--md-spacing);
-      margin-left: auto;
-      margin-right: auto;
+      margin-left: unset;
+      margin-right: unset;
       background-color: var(--gray-10);
     }
     @include res("md") {

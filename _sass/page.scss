@@ -63,7 +63,7 @@ main {
   &__heading {
     margin-bottom: var(--md-spacing);
     @include res("md") {
-      max-width: 55vw;
+      max-width: 50vw;
     }
     @media screen and (max-width: 420px) {
       font-size: calc(var(--xl-font-size-mobile) * 0.8);
