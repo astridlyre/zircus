@@ -68,9 +68,6 @@ main {
     @include res('lg') {
       max-width: 45vw;
     }
-    @media screen and (max-width: 420px) {
-      font-size: calc(var(--xl-font-size-mobile) * 0.8);
-    }
   }
 
   &__subheading {

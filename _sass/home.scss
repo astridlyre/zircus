@@ -12,7 +12,7 @@
     }
 
     &_product {
-      flex-basis: 12rem;
+      flex-basis: 14rem;
       @include res("sm") {
         flex-basis: 16rem;
       }
