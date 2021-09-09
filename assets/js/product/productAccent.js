@@ -65,10 +65,10 @@ const Template = {
   #accent { display: block; }
 }
 @media screen and (min-width: 901px) {
-  #accent { top: -12rem; right: 8rem; left: unset; }
+  #accent { top: -12rem; right: -4rem; left: unset; }
 }
 @media screen and (min-width: 1281px) {
-  #accent { width: 40rem; height: 40rem; }
+  #accent { right: 8rem; width: 40rem; height: 40rem; }
 }
 @media screen and (min-width: 1921px) {
   #accent { top: -12rem; right: 0rem; width: 45rem; height: 45rem; }

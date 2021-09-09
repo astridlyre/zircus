@@ -1,17 +1,15 @@
 .tagline {
   &__heading {
-    margin: auto;
+    max-width: 100%;
     padding: var(--base-spacing) 0;
     @include res("sm") {
       padding: var(--md-spacing) 0;
     }
     text-align: center;
     font-weight: 600;
-    @include res("md") {
-      max-width: 75vw;
-    }
     @include res("lg") {
-      max-width: 60vw;
+      margin: 0 auto;
+      max-width: 65vw;
     }
   }
 }
