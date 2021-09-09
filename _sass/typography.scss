@@ -24,9 +24,6 @@ h4 + p,
 h5 + p,
 h6 + p {
   margin-top: var(--base-spacing);
-  @include res('md') {
-    margin-top: var(--md-spacing);
-  }
 }
 
 p + h1,
