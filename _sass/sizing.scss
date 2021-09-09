@@ -12,11 +12,11 @@
 
     li {
       display: flex;
-      border-bottom: 2px solid var(--gray-20);
+      border-bottom: 2px solid var(--gray-05);
       padding: var(--input-padding);
 
       &:hover {
-        background: var(--gray-20);
+        background: var(--gray-05);
       }
 
       span {

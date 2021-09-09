@@ -4,7 +4,7 @@
   position: fixed;
   top: 0;
   margin: 0 auto;
-  background: var(--dark);
+  background: var(--gray-110);
   width: 100%;
   @include res("md") {
     width: calc(100% - var(--md-spacing));
@@ -65,9 +65,8 @@
     content: "";
     position: absolute;
     right: -1.5rem;
-    top: 0.35rem;
-    color: var(--teal);
-    background: var(--teal);
+    top: 0.18rem;
+    background: var(--teal-60);
     width: 1.25rem;
     height: 1.25rem;
     border-radius: 100%;
@@ -84,7 +83,7 @@
   a:focus,
   a:visited:hover,
   a:visited:focus {
-    color: var(--light) !important;
+    color: var(--gray-05) !important;
     text-decoration: none;
   }
 }
@@ -113,7 +112,7 @@
     justify-content: center;
     gap: var(--base-spacing);
     align-items: flex-end;
-    background: var(--dark);
+    background: var(--gray-110);
     padding-right: var(--x-padding);
 
     &:focus-within,
@@ -142,18 +141,18 @@
     a:visited,
     a:visited:hover,
     a:visited:focus {
-      color: var(--light) !important;
+      color: var(--gray-05) !important;
       letter-spacing: var(--letter-spacing);
       text-decoration: none !important;
     }
 
     a:focus {
-      outline-color: var(--teal);
+      outline-color: var(--teal-60);
     }
 
     a:hover::before {
       content: "• ";
-      color: var(--teal);
+      color: var(--teal-60);
     }
   }
 }
@@ -178,7 +177,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    color: var(--light) !important;
+    color: var(--gray-05) !important;
     text-align: center;
   }
 }
@@ -186,7 +185,7 @@
 // Nav Button
 .nav_button {
   position: fixed;
-  background: var(--dark);
+  background: var(--gray-110);
   border: 2px solid transparent;
   border-radius: var(--radius);
   outline: none;
@@ -200,11 +199,11 @@
 
   &:hover,
   &:focus {
-    border-color: var(--teal);
+    border-color: var(--teal-60);
   }
 
   svg {
-    color: var(--light);
+    color: var(--gray-05);
     height: 100%;
     width: 100%;
   }

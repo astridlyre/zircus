@@ -17,7 +17,7 @@
     gap: var(--base-unit);
     position: absolute;
     right: 0;
-    background-color: var(--gray-10);
+    background-color: var(--gray-05);
     border-radius: var(--radius);
     padding: var(--input-padding) !important;
     box-shadow: var(--box-shadow-sm);
@@ -43,13 +43,13 @@
     a:focus,
     a:visited,
     a:visited:hover {
-      color: var(--gray-90) !important;
+      color: var(--gray-60) !important;
     }
 
     a.active,
     a.active:hover,
     a.active:focus {
-      color: var(--dark) !important;
+      color: var(--gray-120) !important;
     }
   }
 }

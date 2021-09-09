@@ -141,21 +141,21 @@ ol[class] {
 /* text links */
 a:link,
 a:visited {
-  color: var(--link);
+  color: var(--teal-110);
   text-decoration: none;
 
   &:hover,
   &:focus,
   &:active {
     text-decoration: underline;
-    color: var(--link-hover);
+    color: var(--teal-120);
   }
 
   &:visited {
-    color: var(--link-visited);
+    color: var(--purple-100);
 
     &:hover {
-      color: var(--link-visited-hover);
+      color: var(--purple-110);
     }
   }
 }

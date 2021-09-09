@@ -17,8 +17,8 @@ const Template = {
         left: 0;
         z-index: 1000;
         border-bottom-right-radius: var(--radius);
-        background: var(--light);
-        color: var(--dark);
+        background: var(--gray-05);
+        color: var(--gray-110);
         outline: none;
         border: 2px solid transparent;
         transition: all 0.1s ease-out;
@@ -36,7 +36,7 @@ const Template = {
       button:focus {
         top: 0;
         transition: all 0.1s ease-out;
-        border-color: var(--teal);
+        border-color: var(--teal-60);
       }
     </style>
     `;

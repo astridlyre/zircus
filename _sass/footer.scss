@@ -12,7 +12,7 @@
     margin-bottom: var(--y-padding);
 
     hr {
-      border-color: var(--dgray-60);
+      border-color: var(--gray-90);
     }
   }
 
@@ -21,7 +21,8 @@
     font-weight: 400;
     padding-bottom: var(--base-spacing);
     padding-top: var(--base-unit);
-    border-bottom: 2px solid var(--dgray-60);
+    border-bottom: 2px solid var(--gray-90);
+    color: var(--gray-05);
     display: inline-block;
   }
 
@@ -69,7 +70,7 @@
     margin-top: var(--base-unit);
 
     &__link {
-      color: var(--light) !important;
+      color: var(--gray-05) !important;
       padding: var(--base-unit);
       @include borderHover();
     }
@@ -89,7 +90,7 @@
   }
 
   a {
-    color: var(--light) !important;
+    color: var(--gray-05) !important;
     padding: var(--base-unit);
   }
 
@@ -97,7 +98,7 @@
   a:focus,
   a:visited,
   a:visited:hover {
-    color: var(--light);
+    color: var(--gray-05);
   }
 }
 
@@ -118,11 +119,11 @@
   &_icon {
     height: var(--base-spacing);
     width: var(--base-spacing);
-    color: var(--light);
+    color: var(--gray-05);
   }
 
   a {
-    color: var(--light);
+    color: var(--gray-05);
   }
 }
 
@@ -134,10 +135,10 @@
 
   a {
     padding: var(--base-unit);
-    color: var(--gray-90) !important;
+    color: var(--gray-70) !important;
   }
 
   a.active {
-    color: var(--light) !important;
+    color: var(--gray-120) !important;
   }
 }

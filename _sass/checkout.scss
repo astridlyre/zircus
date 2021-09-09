@@ -80,11 +80,12 @@
 
 #paypal-button {
   display: flex;
+  align-items: center;
   justify-content: center;
   height: var(--btn-height) !important;
   width: 100%;
-  background: var(--gray-30);
-  border-color: var(--gray-40) !important;
+  background: var(--gray-05);
+  border-color: var(--gray-30) !important;
   cursor: not-allowed;
   position: relative;
 
@@ -102,7 +103,7 @@ zircus-paypal {
   flex-grow: 1;
 
   .paypal-button {
-    background-color: var(--dark);
+    background-color: var(--gray-110);
     width: 10rem;
     height: var(--btn-height);
     border-radius: var(--radius);
@@ -111,11 +112,12 @@ zircus-paypal {
     align-items: center;
     border: 2px solid transparent;
     outline: none;
+    box-shadow: var(--box-shadow-sm-soft);
 
     &:disabled {
-      background-color: var(--gray-30) !important;
-      border-color: var(--gray-40) !important;
-      color: var(--dgray-60) !important;
+      background-color: var(--gray-20) !important;
+      border-color: var(--gray-30) !important;
+      color: var(--gray-50) !important;
       cursor: not-allowed !important;
 
       img {
@@ -125,10 +127,18 @@ zircus-paypal {
 
     &:focus,
     &:hover {
-      background-color: var(--teal);
-      border-color: var(--teal);
+      background-color: var(--teal-60);
+      border-color: var(--teal-60);
       cursor: pointer;
 
+      img {
+        filter: invert(1);
+      }
+    }
+
+    &:active {
+      background-color: var(--teal-50);
+      border-color: var(--teal-50);
       img {
         filter: invert(1);
       }
@@ -145,5 +155,5 @@ zircus-paypal {
 .shipping__placeholder {
   margin: 0 auto;
   font-size: var(--small-font-size);
-  color: var(--gray-80);
+  color: var(--gray-40);
 }

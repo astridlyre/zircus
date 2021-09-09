@@ -27,7 +27,7 @@ const Template = {
     opacity: 0.9;
     padding: var(--base-unit);
     transform: translateY(15px);
-    background: var(--gray-40);
+    background: var(--gray-10);
     visibility: hidden;
     border: none;
     border-radius: var(--radius);
@@ -81,9 +81,8 @@ export default class ZircusToTopButton extends HTMLElement {
       window.scroll({ top: 0 });
       this.#button.blur();
     });
-    document.addEventListener(
-      "scroll",
-      () => this.scrollHandler(window.scrollY > this.#MIN_SCROLL),
+    document.addEventListener("scroll", () =>
+      this.scrollHandler(window.scrollY > this.#MIN_SCROLL)
     );
   }
 
@@ -93,7 +92,7 @@ export default class ZircusToTopButton extends HTMLElement {
 
   set isHidden(value) {
     this.#isHidden = value;
-    requestAnimationFrame(() => this.#isHidden ? this.hide() : this.show());
+    requestAnimationFrame(() => (this.#isHidden ? this.hide() : this.show()));
   }
 
   attributeChangedCallback(name, _, newValue) {

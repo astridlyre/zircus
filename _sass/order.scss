@@ -30,10 +30,10 @@
     width: 100%;
     @include readable-line-length();
     gap: var(--base-spacing);
-    padding: var(--base-spacing);
+    background-color: var(--gray-00);
     border-radius: var(--radius);
-    border: 2px solid var(--gray-30);
-    background-color: var(--gray-20);
+    padding: var(--base-spacing);
+    box-shadow: var(--box-shadow-lg-soft);
 
     &__quantity {
       display: flex;
@@ -42,13 +42,13 @@
       justify-content: center;
       align-items: center;
       padding: var(--base-unit);
-      background-color: var(--dark);
+      background-color: var(--gray-110);
       border-radius: 100%;
-      color: var(--light);
+      color: var(--gray-05);
     }
 
     &__description {
-      color: var(--dgray-20);
+      color: var(--gray-110);
       font-weight: 600;
     }
 

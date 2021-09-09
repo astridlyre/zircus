@@ -4,64 +4,64 @@
 }
 
 .grey {
-  color: var(--grey);
+  color: var(--grey-30);
 }
 .bg-grey {
-  background-color: var(--grey);
+  background-color: var(--gray-30);
 }
 
 .lgrey {
-  color: var(--lgrey);
+  color: var(--gray-20);
 }
 .bg-lgrey {
-  background-color: var(--lgrey) !important;
+  background-color: var(--gray-20) !important;
 }
 
 .light {
-  color: var(--light);
+  color: var(--gray-05);
 }
 .bg-light {
-  background-color: var(--gray-20);
+  background-color: var(--gray-05);
 }
 
 .red {
-  color: var(--red);
+  color: var(--red-100);
 }
 
 .green {
-  color: var(--green);
+  color: var(--green-100);
 }
 
 .dark {
-  color: var(--dark) !important;
+  color: var(--gray-110) !important;
 
   svg {
-    color: var(--dark) !important;
+    color: var(--gray-110) !important;
   }
 }
 .bg-dark {
-  background-color: var(--dark) !important;
+  background-color: var(--gray-110) !important;
 }
 
 .gold {
-  color: var(--gold);
+  color: var(--gold-80);
 }
 .bg-gold {
-  background-color: var(--gold);
+  background-color: var(--gold-80);
 }
 
 .teal {
-  color: var(--teal);
+  color: var(--teal-80);
 }
 .bg-teal {
-  background-color: var(--teal);
+  background-color: var(--teal-80);
 }
 
 .purple {
-  color: var(--purple);
+  color: var(--purple-80);
 }
 .bg-purple {
-  background-color: var(--purple);
+  background-color: var(--purple-80);
 }
 
 .underline {

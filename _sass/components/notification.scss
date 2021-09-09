@@ -10,7 +10,7 @@
   }
   bottom: var(--base-unit);
   right: var(--base-unit);
-  color: var(--dark);
+  color: var(--gray-110);
   max-width: calc(100% - var(--base-unit) * 2);
   position: fixed;
   z-index: 100;
@@ -18,6 +18,7 @@
   border-radius: var(--radius);
   box-shadow: var(--box-shadow-sm);
   outline: none;
+  border: 2px solid var(--gray-10);
   background-color: rgba(243,240,244,0.95); // var(--light) with 0.9 opacity
 
   &:hover {
@@ -35,7 +36,7 @@
     border: none;
     display: flex;
     background: none;
-    color: var(--dark);
+    color: var(--gray-110);
     border-radius: var(--radius);
     outline: none;
 
@@ -74,13 +75,13 @@
     align-items: center;
 
     &.green {
-      background-color: var(--green);
-      color: var(--gray-05);
+      background-color: var(--green-80);
+      color: var(--gray-00);
     }
 
     &.red {
-      background-color: var(--red);
-      color: var(--gray-05);
+      background-color: var(--red-80);
+      color: var(--gray-00);
     }
   }
 }

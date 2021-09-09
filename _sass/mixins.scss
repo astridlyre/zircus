@@ -83,7 +83,7 @@
 
   &:hover,
   &:focus {
-    border-color: var(--teal);
+    border-color: var(--teal-80);
   }
 }
 
@@ -95,7 +95,7 @@
 
   &:hover,
   &:focus {
-    border-color: var(--teal);
+    border-color: var(--teal-80);
   }
 }
 
@@ -270,7 +270,7 @@
 @mixin dot() {
   &::after {
     content: " • ";
-    color: var(--teal);
+    color: var(--teal-100);
   }
 }
 

@@ -38,18 +38,18 @@ const Template = {
   css: () =>
     `<style>
 :host { position: absolute; z-index: -1; width: 100%; }
-#accent.black { background: var(--dark); }
-#accent.teal { background: var(--teal); }
-#accent.yellow { background: var(--gold); }
-#accent.purple { background: var(--purple); }
+#accent.black { background: var(--gray-120); }
+#accent.teal { background: var(--teal-70); }
+#accent.yellow { background: var(--gold-70); }
+#accent.purple { background: var(--purple-110); }
 #accent.stripe {
   border: 2px solid var(--dark);
   background-image: repeating-linear-gradient(
     45deg,
-    var(--dark),
-    var(--dark) 3rem,
-    var(--light) 3rem,
-    var(--light) 6rem
+    var(--gray-120),
+    var(--gray-120) 3rem,
+    var(--gray-05) 3rem,
+    var(--gray-05) 6rem
   );
 }
 #accent {

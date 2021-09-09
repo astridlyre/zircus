@@ -45,11 +45,12 @@
     }
     padding: var(--base-spacing);
     border-radius: var(--big-radius);
-    background-color: var(--gray-10);
+    border: 2px solid var(--gray-05);
+    background-color: var(--gray-00);
     width: 100%;
     margin: 0 var(--base-unit);
     max-width: 42rem;
-    color: var(--dark);
+    color: var(--gray-110);
     box-shadow: var(--box-shadow-lg);
   }
 

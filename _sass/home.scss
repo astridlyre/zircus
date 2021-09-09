@@ -30,7 +30,7 @@
 
       &_link {
         display: flex;
-        color: var(--dark) !important;
+        color: var(--gray-120) !important;
         flex-flow: column nowrap;
         align-items: center;
         justify-content: flex-start;
@@ -42,7 +42,7 @@
 
         &:hover,
         &:focus {
-          background-color: var(--gray-10);
+          background-color: var(--white);
           box-shadow: var(--box-shadow-md);
           transform: translateY(
             calc(var(--base-unit) - (var(--base-unit) * 2))

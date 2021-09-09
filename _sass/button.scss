@@ -4,13 +4,15 @@
   align-items: center;
   padding: 0 var(--btn-padding);
   height: var(--btn-height);
-  background: var(--gray-30);
+  background: var(--white);
   border-radius: var(--radius);
-  border: 2px solid transparent;
-  color: var(--dark);
+  border: 2px solid var(--gray-05);
+  color: var(--gray-120);
   outline: none;
   font-family: var(--site-font-family);
   font-weight: 500;
+  text-shadow: 0 1px 1px rgba(45, 46, 47, 0.1);
+  box-shadow: var(--box-shadow-xs-soft);
   cursor: pointer;
   position: relative;
   z-index: 1;
@@ -18,18 +20,24 @@
   min-width: fit-content;
 
   &__primary {
-    background-color: var(--gold);
+    background-color: var(--gold-70);
+    border-color: var(--gold-70);
   }
 
   &:focus,
   &:hover {
-    background-color: var(--teal);
+    background-color: var(--teal-60);
+    border-color: var(--teal-60);
+  }
+
+  &:active {
+    background-color: var(--teal-50);
   }
 
   &:disabled {
-    background: var(--gray-30);
-    border-color: var(--gray-40) !important;
-    color: var(--dgray-50) !important;
+    background: var(--gray-20);
+    border-color: var(--gray-30) !important;
+    color: var(--gray-50) !important;
     cursor: not-allowed;
   }
 
@@ -49,12 +57,12 @@
   padding: 0.5rem;
   background: none;
   background-color: transparent;
-  color: var(--light);
+  color: var(--gray-05);
   cursor: pointer;
   @include borderHover();
 
   svg {
-    color: var(--light);
+    color: var(--gray-05);
   }
 }
 
@@ -62,9 +70,10 @@
   height: var(--btn-height);
   padding: 0 var(--input-padding);
   border-radius: var(--radius);
-  border: 2px solid var(--gray-20);
-  background-color: var(--gray-05);
+  border: 2px solid var(--gray-05);
+  background-color: var(--white);
   font-family: var(--site-font-family);
+  box-shadow: var(--box-shadow-xs-soft);
   min-width: 4rem;
 
   &:hover,
@@ -72,19 +81,20 @@
   &:active,
   &:focus-within,
   &:focus-visible {
-    border-color: var(--teal) !important;
+    border-color: var(--teal-60) !important;
     outline: none;
   }
 
   &:disabled {
-    background: var(--lgrey);
-    border-color: var(--grey) !important;
+    background: var(--gray-20);
+    border-color: var(--gray-30) !important;
+    color: var(--gray-50);
     cursor: not-allowed;
   }
 
   &:required:valid {
     position: relative;
-    border-color: var(--green);
+    border-color: var(--green-50);
   }
 
   &__textarea {
@@ -102,11 +112,12 @@
     &:active,
     &:focus-within,
     &:focus-visible {
-      border-color: var(--teal);
+      border-color: var(--teal-60);
     }
     &:disabled {
-      background: var(--lgrey);
-      border-color: var(--grey) !important;
+      background: var(--gray-20);
+      border-color: var(--gray-30) !important;
+      color: var(--gray-50);
       cursor: not-allowed;
     }
   }

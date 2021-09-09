@@ -1,6 +1,6 @@
 *::selection {
-  background-color: var(--dark);
-  color: var(--light);
+  background-color: var(--gray-110);
+  color: var(--gray-05);
 }
 // Set default font-size
 html {
@@ -26,13 +26,13 @@ hr {
 }
 
 address {
-  border-left: var(--base-unit) solid var(--gray-30);
+  border-left: var(--base-unit) solid var(--gray-10);
   padding-left: var(--base-spacing);
-  color: var(--dgray-30);
+  color: var(--gray-80);
 }
 
 kbd {
-  background-color: var(--gray-30);
+  background-color: var(--gray-20);
   padding: calc(var(--base-unit) / 2);
   border-radius: var(--radius);
 }
@@ -46,10 +46,11 @@ details {
   border-radius: var(--radius);
   padding: 1rem 1rem 0;
   max-width: 75ch;
-  background-color: var(--gray-10);
+  background-color: var(--gray-00);
+  box-shadow: var(--box-shadow-lg-soft);
 
   &:hover {
-    border-color: var(--teal);
+    border-color: var(--teal-50);
   }
 
   p {
@@ -62,36 +63,37 @@ details[open] {
 }
 
 details[open] summary {
-  border-bottom: 2px solid var(--gray-20);
+  border-bottom: 2px solid var(--gray-05);
   margin-bottom: 1rem;
 }
 
 summary {
   margin: -1rem -1rem 0;
   padding: 0.5em;
-  color: var(--dark);
+  color: var(--gray-120);
   user-select: none;
 
   &:hover {
-    color: var(--teal);
+    color: var(--teal-50);
   }
 
   &:focus {
-    outline-color: var(--teal);
+    outline-color: var(--teal-50);
   }
 
   span {
     font-weight: 600;
     cursor: pointer;
-    color: var(--dark);
+    color: var(--gray-120);
   }
 }
 
 fieldset {
   border: 2px solid transparent;
-  background-color: var(--gray-10);
+  background-color: var(--gray-00);
   border-radius: var(--radius);
   padding: var(--base-spacing);
+  box-shadow: var(--box-shadow-lg-soft);
 
   .grid-inputs {
     @include res("sm") {
@@ -111,13 +113,22 @@ fieldset {
 }
 
 input[type="radio"] {
-  outline-color: var(--teal);
+  outline-color: var(--teal-60);
   margin: var(--base-unit);
   padding: var(--base-unit);
 }
 
 legend {
-  font-weight: 500;
+  font-weight: 600;
+  color: var(--gray-90);
+  text-shadow: 0 1px 1px rgba(46, 47, 48, 0.072);
+}
+
+label {
+  span {
+    font-weight: 500;
+    color: var(--gray-100);
+  }
 }
 
 label.column {
@@ -142,12 +153,12 @@ body {
   font-size: var(--default-font-size);
   line-height: var(--doc-line-height);
   max-width: 100vw;
-  background: var(--dark);
-  color: var(--light);
+  background: var(--gray-110);
+  color: var(--gray-05);
   font-family: var(--site-font-family);
   min-height: 100vh;
   scrollbar-width: thin;
-  scrollbar-color: var(--grey) var(--lgrey);
+  scrollbar-color: var(--gray-70) var(--gray-80);
 
   @include res("md") {
     padding: 0 var(--base-spacing);
@@ -163,22 +174,22 @@ img {
 
 // Links inherit color by default, no underline
 a {
-  color: var(--link);
+  color: var(--teal-110);
   text-decoration: none;
-  outline-color: var(--teal);
+  outline-color: var(--teal-60);
 
   &:hover,
   &:focus {
-    color: var(--link-hover);
+    color: var(--teal-120);
     text-decoration: underline;
   }
 
   &:visited {
-    color: var(--link-visited);
+    color: var(--purple-110);
 
     &:hover,
     &:focus {
-      color: var(--link-visited--hover);
+      color: var(--purple-120);
     }
   }
 
@@ -229,16 +240,16 @@ blockquote {
 ::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 6px rgba(18, 18, 19, 0.3);
   box-shadow: inset 0 0 6px rgba(18, 18, 19, 0.3);
-  background-color: var(--lgrey);
+  background-color: var(--gray-80);
 }
 
 ::-webkit-scrollbar {
   width: 0.4rem;
-  background-color: var(--lgrey);
+  background-color: var(--gray-80);
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: var(--grey);
+  background-color: var(--gray-70);
 }
 
 .roman-list {

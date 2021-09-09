@@ -77,7 +77,7 @@
     display: flex;
     flex-flow: column nowrap;
     position: relative;
-    background-color: var(--light);
+    background-color: var(--gray-00);
     box-shadow: 0 var(--base-spacing) 0 0
       rgba(46, 47, 49, 0.2);
     @include res("sm") {
@@ -86,7 +86,7 @@
       padding: var(--md-spacing);
       margin-left: unset;
       margin-right: unset;
-      background-color: var(--gray-10);
+      background-color: var(--gray-00);
     }
     @include res("md") {
       padding: var(--base-spacing);
@@ -168,7 +168,7 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background: var(--light);
+  background: var(--gray-00);
   z-index: 1000;
   cursor: pointer;
 
@@ -178,10 +178,10 @@
 }
 
 .added {
-  background-color: var(--gold) !important;
-  color: var(--dark) !important;
+  background-color: var(--gold-60) !important;
+  color: var(--gray-120) !important;
 
   &::after {
-    background-color: var(--gold) !important;
+    background-color: var(--gold-60) !important;
   }
 }
