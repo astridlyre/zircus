@@ -25,8 +25,7 @@ const Template = {
         padding: var(--base-unit) var(--base-spacing);
         font-size: var(--small-font-size);
         font-family: var(--site-font-family);
-        font-weight: 600;
-        letter-spacing: var(--letter-spacing);
+        font-weight: 500;
         box-shadow: var(--box-shadow-sm);
       }
 
