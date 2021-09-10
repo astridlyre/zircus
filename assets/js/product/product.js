@@ -55,12 +55,10 @@ export default class ZircusProduct extends HTMLElement {
       this.#sizeInput.value = params.get("size");
     }
 
-    if (inventory.length > 0) {
-      this.updateStatus({ price: true, status: true })
-        .updateColorOptionText()
-        .updateSizeOptionText()
-        .updateCartLink();
-    }
+    this.updateStatus({ price: true, status: true, images: true })
+      .updateColorOptionText()
+      .updateSizeOptionText()
+      .updateCartLink();
 
     // Add event listeners
     this.#colorInput.addEventListener("change", () =>
