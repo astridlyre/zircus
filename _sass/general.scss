@@ -15,7 +15,7 @@ html {
 }
 
 hr {
-  border: 0 solid var(--gray-20);
+  border: 0 solid var(--gray-05);
   @include res("sm") {
     width: 33%;
   }

@@ -86,7 +86,7 @@ export default class ZircusProduct extends HTMLElement {
     );
 
     eventBus.addEventListener(inventory.INV_UPDATED_EVENT, () =>
-      this.updateStatus({ status: true, images: true })
+      this.updateStatus({ price: true, status: true, images: true })
     );
     eventBus.addEventListener(cart.CART_UPDATED_EVENT, () =>
       this.updateCartLink()
